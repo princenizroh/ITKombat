@@ -4,19 +4,74 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public CharacterController2D controller;
+    private Rigidbody2D player;
+    public float jumpForce = 5f;
+    public float moveSpeed = 100;
+    public float direction;
+    private bool moveLeft, moveRight;
 
-    public float runSpeed = 40f;
+    //inputSystem script
+    PlayerControls controls;
 
-    float horizontalMove = 0f;
+    private void Awake()
+    {
+        controls = new PlayerControls();
+        controls.Enable();
+
+        controls.Player.Move.performed += info =>
+        {
+            direction = info.ReadValue<float>();
+        };
+    }
+
+    void Start()
+    {
+        player = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
-        Debug.Log(horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed);
+        player.velocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.velocity.y);
+        
+        if (moveLeft)
+        {
+            transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
+        }
+
+        if (moveRight)
+        {
+            transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
+        }
+
     }
 
-    void FixedUpdate()
+    public void JumpInput()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, false, false);
+        player.velocity = new Vector2(player.velocity.x, jumpForce);
+    }
+
+    public void LeftInputButtonDown()
+    {
+        //kiri
+        moveLeft = true;
+        direction = -1;
+    }
+
+    public void LeftInputButtonUp() 
+    {
+        moveLeft = false;
+    }
+
+    public void RightInputButtonDown()
+    {
+        //kanan
+        moveRight = true;
+        direction = 1;
+    }
+
+    public void RightInputButtonUp() 
+    {
+        moveRight = false;
+    
     }
 }
