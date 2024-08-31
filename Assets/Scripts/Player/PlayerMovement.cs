@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 100;
     public float direction;
     private bool moveLeft, moveRight;
-
+    private bool canJump = true; //jump 1x
     //inputSystem script
     PlayerControls controls;
 
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         player.velocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.velocity.y);
-        
+
         if (moveLeft)
         {
             transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
@@ -43,11 +43,19 @@ public class PlayerMovement : MonoBehaviour
             transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
         }
 
+        if (Mathf.Abs(player.velocity.y) < 0.1f)
+        {
+            canJump = true;
+        }
     }
 
     public void JumpInput()
     {
-        player.velocity = new Vector2(player.velocity.x, jumpForce);
+        if (canJump)
+        {
+            player.velocity = new Vector2(player.velocity.x, jumpForce);
+            canJump = false;
+        }
     }
 
     public void LeftInputButtonDown()
