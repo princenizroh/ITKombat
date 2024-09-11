@@ -7,10 +7,10 @@ using UnityEngine.InputSystem.EnhancedTouch;
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D player;
-    public float jumpForce = 5f;
-    public float moveSpeed = 40f;
+    public float jumpForce;
+    public float moveSpeed;
     public float direction;
-    public float jumpCooldown = 100f; //Adjust jump Cooldown
+    public float jumpCooldown; 
     private bool canJump = true;
     private bool moveLeft, moveRight;
     public bool crouch;
@@ -58,21 +58,19 @@ public class PlayerMovement : MonoBehaviour
 
     public void JumpInput()
     {
-        if (canJump)
+        if (canJump && Mathf.Abs(player.velocity.y) < 0.1f) // Pastikan kecepatan vertikal mendekati nol
         {
             player.velocity = new Vector2(player.velocity.x, jumpForce);
             StartCoroutine(JumpCooldown());
         }
-
     }
 
     IEnumerator JumpCooldown()
     {
         canJump = false;
         yield return new WaitForSeconds(jumpCooldown);
-        canJump = true;
+        canJump = true; // Atur kembali menjadi true setelah cooldown selesai
     }
-
 
     public void CrouchInputButtonDown()
     {
