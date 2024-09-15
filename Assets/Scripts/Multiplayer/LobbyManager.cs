@@ -11,8 +11,11 @@ namespace ITKombat
     public class LobbyManager : MonoBehaviour
     {
         private Lobby hostLobby;
+        private Lobby joinedLobby;
         private float heartbeatTimer;
-        private string playerName = "Player1" + UnityEngine.Random.Range(10, 99);
+        private float lobbyUpdateTimer;
+        private string playerName;
+
         private async void Start() 
         {
             await UnityServices.InitializeAsync();
@@ -23,15 +26,19 @@ namespace ITKombat
             };
 
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            playerName = "Player1" + UnityEngine.Random.Range(10, 99); 
+
+            Debug.Log(playerName);
         }
 
         private void Update()
         {
             HandleLobbyHeartbeat();
+            HandleLobbyPollForUpdates();
             ButtonLobby();
         }
 
-        private void HandleLobbyHeartbeat()
+        private async void HandleLobbyHeartbeat()
         {
             if (hostLobby != null)
             {
@@ -41,7 +48,7 @@ namespace ITKombat
                     float heartbeatTimerMax = 15;
                     heartbeatTimer = heartbeatTimerMax;
 
-                    LobbyService.Instance.SendHeartbeatPingAsync(hostLobby.Id);
+                    await LobbyService.Instance.SendHeartbeatPingAsync(hostLobby.Id);
                 }
             }
 
@@ -57,10 +64,21 @@ namespace ITKombat
                 CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
                 {
                     IsPrivate = false,
+                    Player = GetPlayer(),
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        {
+                            "GameMode", new DataObject(DataObject.VisibilityOptions.Public, "Ranked")
+                        },
+                        {
+                            "Map", new DataObject(DataObject.VisibilityOptions.Public, "Laboratorium")
+                        }
+                    }
                 };
                 // Create a new lobby
                 Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
                 hostLobby = lobby;
+                joinedLobby = hostLobby;
 
                 Debug.Log("Create Lobby!" + lobby.Name + "" + lobby.MaxPlayers + " " + lobby.Id + " " + lobby.LobbyCode);
                 PrintPlayers(hostLobby);
@@ -68,6 +86,23 @@ namespace ITKombat
             catch (LobbyServiceException e)
             {
                 Debug.Log("Failed to create lobby: " + e.Message);
+            }
+        }
+
+        private async void HandleLobbyPollForUpdates()
+        {
+            
+            if (joinedLobby != null)
+            {
+                lobbyUpdateTimer -= Time.deltaTime;
+                if (lobbyUpdateTimer < 0f)
+                {
+                    float lobbyUpdateTimerMax = 1.1f;
+                    lobbyUpdateTimer = lobbyUpdateTimerMax;
+
+                    Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
+                    joinedLobby = lobby;
+                }
             }
         }
 
@@ -79,7 +114,7 @@ namespace ITKombat
                 {
                     Count = 25,
                     Filters = new List<QueryFilter> { 
-                      new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
+                      new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT),
                     },
                     Order = new List<QueryOrder> { 
                       new QueryOrder(false, QueryOrder.FieldOptions.Created)
@@ -91,7 +126,7 @@ namespace ITKombat
 
                 foreach (Lobby lobby in queryResponse.Results)
                 {
-                    Debug.Log("Lobby: " + lobby.Name + " " + lobby.MaxPlayers);
+                    Debug.Log("Lobby: " + lobby.Name + " " + lobby.MaxPlayers + " " + lobby.Data["GameMode"].Value + " " + lobby.LobbyCode);
                 }
             }   catch (LobbyServiceException e)
             {
@@ -115,16 +150,26 @@ namespace ITKombat
             {
                 ListLobbies();
             }
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                UpdateLobbyGameMode("Unranked");
+            }
         }
 
-        private async void JoinLobby(string lobbyCode)
+        private async void JoinLobbyByCode(string lobbyCode)
         {
             try
             {
-
-                await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode);
+                JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
+                {
+                    Player = GetPlayer()
+                };
+                Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyByCodeOptions);
+                joinedLobby = lobby;
 
                 Debug.Log("Joined lobby: " + lobbyCode);
+
+                PrintPlayers(joinedLobby);
             }
             catch (LobbyServiceException e)
             {
@@ -145,12 +190,129 @@ namespace ITKombat
             }
         }
 
+        private Player GetPlayer()
+        {
+            return new Player
+            {
+                Data = new Dictionary<string, PlayerDataObject>
+                {
+                    {
+                        "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)
+                    }
+                }
+            };
+        }
+
+
+        private void PrintPlayers()
+        {
+            PrintPlayers(joinedLobby);
+        }
         private void PrintPlayers(Lobby lobby)
         {
-            Debug.Log("Players in lobby: " + lobby.Name);
+            Debug.Log("Players in lobby: " + lobby.Name + " " + lobby.Data["GameMode"].Value + "" + lobby.Data["Map"].Value);
             foreach (Player player in lobby.Players)
             {
-                Debug.Log("Player: " + player.Id);
+                Debug.Log("Player: " + player.Id + " " + player.Data["PlayerName"].Value);
+            }
+        }
+
+        private async void UpdateLobbyGameMode(string gameMode)
+        {
+            try
+            {
+
+                hostLobby =await Lobbies.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        {
+                            "GameMode", new DataObject(DataObject.VisibilityOptions.Public, gameMode)
+                        }
+                    }
+                });
+                joinedLobby = hostLobby;
+                PrintPlayers(hostLobby);
+            } 
+            catch (LobbyServiceException e)
+            {
+                Debug.Log("Failed to update lobby: " + e.Message);
+            }
+        }
+
+        private async void UpdatePlayerName(string newPlayerName)
+        {
+            try
+            {
+                playerName = newPlayerName;
+                await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId, new UpdatePlayerOptions
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        {
+                            "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)
+                        }
+                    }
+                });
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log("Failed to update player: " + e.Message);
+            }
+        }
+
+        private async void LeaveLobby()
+        {
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                Debug.Log("Left lobby");
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log("Failed to leave lobby: " + e.Message);
+            }
+        }
+
+        private async void KickPlayer()
+        {
+            try
+            {
+                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, joinedLobby.Players[1].Id);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log("Failed to kick player: " + e.Message);
+            }
+
+        }
+
+        private async void MigrateLobbyHost()
+        {
+            try
+              {
+                  hostLobby = await LobbyService.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions
+                  {
+                      HostId = joinedLobby.Players[1].Id
+                  });
+                  joinedLobby = hostLobby;
+
+              }
+              catch (LobbyServiceException e)
+              {
+                  Debug.Log("Failed to migrate lobby host: " + e.Message);
+              }
+        }
+
+        private async void DeleteLobby()
+        {
+            try
+            {
+                await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+            } 
+            catch (LobbyServiceException e)
+            {
+                Debug.Log("Failed to delete lobby: " + e.Message);
             }
         }
     }
