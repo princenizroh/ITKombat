@@ -25,7 +25,7 @@ namespace ITKombat
                 Debug.Log("Signed in" + AuthenticationService.Instance.PlayerId);
             };
 
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            // await AuthenticationService.Instance.SignInAnonymouslyAsync();
             playerName = "Player1" + UnityEngine.Random.Range(10, 99); 
 
             Debug.Log(playerName);
