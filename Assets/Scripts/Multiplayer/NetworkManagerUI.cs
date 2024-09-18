@@ -21,11 +21,18 @@ namespace ITKombat
             hostBtn.onClick.AddListener(() => 
                 {
                     NetworkManager.Singleton.StartHost();
+                    Hide();
                 });
             clientBtn.onClick.AddListener(() => 
                 {
                     NetworkManager.Singleton.StartClient();
+                    Hide();
                 });
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
         }
 
     }

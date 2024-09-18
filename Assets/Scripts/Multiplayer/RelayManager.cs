@@ -20,7 +20,7 @@ namespace ITKombat
             {
                 Debug.Log("Signed in successfully" + AuthenticationService.Instance.PlayerId);
             };
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            // await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
         private async void CreateRelay()
         {
