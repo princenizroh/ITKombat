@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 337235444542706609}
   - component: {fileID: 5878315107333385493}
   - component: {fileID: 1050003008328479119}
-  - component: {fileID: 5440876816935539866}
+  - component: {fileID: 8781909178023421714}
   - component: {fileID: 7989457574603583026}
   m_Layer: 0
   m_Name: Player_Test
@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2348547024044635574}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1103.7134, y: -714.837, z: -0.3508767}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
@@ -161,7 +161,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.83563995, y: 1.0381352}
   m_EdgeRadius: 0
---- !u!114 &5440876816935539866
+--- !u!114 &8781909178023421714
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,19 +170,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 2348547024044635574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad0b754420a3a4140a7e6c1d88e554b5, type: 3}
+  m_Script: {fileID: 11500000, guid: c188e2d80f05c304c81f97b3d330e690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 7
-  moveSpeed: 10
-  direction: 0
-  jumpCooldown: 50
-  crouch: 0
   animator: {fileID: 0}
+  moveSpeed: 0
   walkSound: {fileID: 0}
-  blockSound: {fileID: 0}
+  jumpForce: 0
+  jumpCooldown: 0
   jumpSound: {fileID: 0}
+  crouchSound: {fileID: 0}
+  fallSound: {fileID: 0}
+  fallThreshold: -5
   blockCooldown: 0
+  blockSound: {fileID: 0}
   punchCooldown: 0.5
   punchSound1: {fileID: 0}
   punchSound2: {fileID: 0}
