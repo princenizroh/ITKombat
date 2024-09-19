@@ -15,6 +15,8 @@ namespace ITKombat
         public float direction;
         private bool moveLeft, moveRight;
         private bool canJump = true; //jump 1x
+        public bool crouch;
+        public float jumpCooldown ;
         //inputSystem script
         PlayerControls controls;
 
@@ -37,6 +39,7 @@ namespace ITKombat
         void Update()
         {
             if (!IsOwner) return;
+            TestingKey();
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -63,21 +66,7 @@ namespace ITKombat
             }
             player.velocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.velocity.y);
 
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            {
-                moveLeft = true;
-                direction = -1;
-            }
-            else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-                moveRight = true;
-                direction = 1;
-            }
-            else
-            {
-                moveLeft = false;
-                moveRight = false;
-            }
+
             if (moveLeft)
             {
                 transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
@@ -91,6 +80,36 @@ namespace ITKombat
             if (Mathf.Abs(player.velocity.y) < 0.1f)
             {
                 canJump = true;
+            }
+        }
+
+        private void TestingKey()
+        { 
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveLeft = true;
+                direction = -1;
+            }
+            else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                moveRight = true;
+                direction = 1;
+            }
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                JumpInput();
+                Debug.Log("Jump");
+            }
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                crouch = true;
+                Debug.Log("Crouch");
+            }
+            else
+            {
+                moveLeft = false;
+                moveRight = false;
+                crouch = false;
             }
         }
         private NetworkVariable<MyCustomData> randomNumber = new NetworkVariable<MyCustomData>(
@@ -135,11 +154,18 @@ namespace ITKombat
 
         public void JumpInput()
         {
-            if (canJump)
+            if (canJump && Mathf.Abs(player.velocity.y) < 0.1f) // Pastikan kecepatan vertikal mendekati nol
             {
                 player.velocity = new Vector2(player.velocity.x, jumpForce);
-                canJump = false;
+                StartCoroutine(JumpCooldown());
             }
+        }
+
+        IEnumerator JumpCooldown()
+        {
+            canJump = false;
+            yield return new WaitForSeconds(jumpCooldown);
+            canJump = true; // Atur kembali menjadi true setelah cooldown selesai
         }
 
         public void LeftInputButtonDown()
