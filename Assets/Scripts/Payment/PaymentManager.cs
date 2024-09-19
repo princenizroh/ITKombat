@@ -48,7 +48,8 @@ namespace ITKombat
 
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
-            throw new System.NotImplementedException();
+            storeController = controller;
+            storeExtensionProvider = extensions;
         }
 
         public void OnInitializeFailed(InitializationFailureReason error)
@@ -68,7 +69,9 @@ namespace ITKombat
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
         {
-            throw new System.NotImplementedException();
+            
+            
+
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
