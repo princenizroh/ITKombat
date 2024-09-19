@@ -31,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        player.velocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.velocity.y);
+        player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
 
         if (moveLeft)
         {
@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
             transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
         }
 
-        if (Mathf.Abs(player.velocity.y) < 0.1f)
+        if (Mathf.Abs(player.linearVelocity.y) < 0.1f)
         {
             canJump = true;
         }
@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (canJump)
         {
-            player.velocity = new Vector2(player.velocity.x, jumpForce);
+            player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
             canJump = false;
         }
     }
