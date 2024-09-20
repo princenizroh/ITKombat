@@ -13,6 +13,7 @@ public class PlayerAttackTest : NetworkBehaviour
     public int maxCombo = 4;
     public float comboResetTime = 2.5f; //Adjust combo cooldown
     public LayerMask enemyLayer;
+    private Animator anim;
 
     private int currentCombo = 0;
     private bool canAttack = true;
@@ -33,6 +34,11 @@ public class PlayerAttackTest : NetworkBehaviour
         attackAction.performed += ctx => Attack();
     }
 
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     void Update()
     {
         if (!IsOwner) return;
@@ -41,6 +47,7 @@ public class PlayerAttackTest : NetworkBehaviour
         if (Input.GetKey(KeyCode.P))
         {
             TestingButton();
+            anim.SetTrigger("attack");
         }
     }
 

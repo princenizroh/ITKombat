@@ -17,6 +17,8 @@ namespace ITKombat
         private bool canJump = true; //jump 1x
         public bool crouch;
         public float jumpCooldown ;
+        private Animator anim;
+        public float movePower = 10f;
         //inputSystem script
         PlayerControls controls;
 
@@ -34,12 +36,14 @@ namespace ITKombat
         void Start()
         {
             player = GetComponent<Rigidbody2D>();
+            anim = GetComponent<Animator>();
         }
 
         void Update()
         {
             if (!IsOwner) return;
             TestingKey();
+            Run();
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -85,17 +89,7 @@ namespace ITKombat
 
         private void TestingKey()
         { 
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            {
-                moveLeft = true;
-                direction = -1;
-            }
-            else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-                moveRight = true;
-                direction = 1;
-            }
-            else if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space))
             {
                 JumpInput();
                 Debug.Log("Jump");
@@ -112,6 +106,37 @@ namespace ITKombat
                 crouch = false;
             }
         }
+
+        void Run()
+        {
+            Vector3 moveVelocity = Vector3.zero;
+            anim.SetBool("isRun", false);
+
+
+            if (Input.GetAxisRaw("Horizontal") < 0)
+            {
+                direction = -1;
+                moveVelocity = Vector3.left;
+
+                transform.localScale = new Vector3(direction, 1, 1);
+                if (!anim.GetBool("isJump"))
+                    anim.SetBool("isRun", true);
+
+            }
+            if (Input.GetAxisRaw("Horizontal") > 0)
+            {
+                direction = 1;
+                moveVelocity = Vector3.right;
+
+                transform.localScale = new Vector3(direction, 1, 1);
+                if (!anim.GetBool("isJump"))
+                    anim.SetBool("isRun", true);
+
+            }
+            transform.position += moveVelocity * movePower * Time.deltaTime;
+        }
+
+
         private NetworkVariable<MyCustomData> randomNumber = new NetworkVariable<MyCustomData>(
             new MyCustomData{
               _int = 56,
