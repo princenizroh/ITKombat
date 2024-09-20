@@ -80,7 +80,7 @@ namespace ITKombat
 
         private void Update()
         {
-            player.velocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.velocity.y);
+            player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
 
             if (moveLeft)
             {
@@ -92,16 +92,16 @@ namespace ITKombat
                 transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
             }
 
-            if (Mathf.Abs(player.velocity.y) < 0.1f)
+            if (Mathf.Abs(player.linearVelocity.y) < 0.1f)
             {
                 canJump = true;
             }
 
-            if (Mathf.Abs(player.velocity.x) > 0 && !walkSound.isPlaying)
+            if (Mathf.Abs(player.linearVelocity.x) > 0 && !walkSound.isPlaying)
             {
                 walkSound.Play();
             }
-            else if (Mathf.Abs(player.velocity.x) == 0 && walkSound.isPlaying)
+            else if (Mathf.Abs(player.linearVelocity.x) == 0 && walkSound.isPlaying)
             {
                 walkSound.Stop();
             }
@@ -131,7 +131,7 @@ namespace ITKombat
                 StandUp();
             }
 
-            if (player.velocity.y < fallThreshold && !isFalling)
+            if (player.linearVelocity.y < fallThreshold && !isFalling)
             {
                 Fall();
             }
@@ -139,9 +139,9 @@ namespace ITKombat
 
         public void JumpInput()
         {
-            if (canJump && Mathf.Abs(player.velocity.y) < 0.1f) 
+            if (canJump && Mathf.Abs(player.linearVelocity.y) < 0.1f) 
             {
-                player.velocity = new Vector2(player.velocity.x, jumpForce);
+                player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
                 StartCoroutine(JumpCooldown());
             }
         }

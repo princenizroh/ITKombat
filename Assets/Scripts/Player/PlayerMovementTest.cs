@@ -68,7 +68,7 @@ namespace ITKombat
                     Destroy(spawnedObjectTransform.gameObject);
                 }
             }
-            player.velocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.velocity.y);
+            player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
 
 
             if (moveLeft)
@@ -81,7 +81,7 @@ namespace ITKombat
                 transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
             }
 
-            if (Mathf.Abs(player.velocity.y) < 0.1f)
+            if (Mathf.Abs(player.linearVelocity.y) < 0.1f)
             {
                 canJump = true;
             }
@@ -179,9 +179,9 @@ namespace ITKombat
 
         public void JumpInput()
         {
-            if (canJump && Mathf.Abs(player.velocity.y) < 0.1f) // Pastikan kecepatan vertikal mendekati nol
+            if (canJump && Mathf.Abs(player.linearVelocity.y) < 0.1f) // Pastikan kecepatan vertikal mendekati nol
             {
-                player.velocity = new Vector2(player.velocity.x, jumpForce);
+                player.linearVelocity = new Vector2(player.linearVelocity.x, jumpForce);
                 StartCoroutine(JumpCooldown());
             }
         }
