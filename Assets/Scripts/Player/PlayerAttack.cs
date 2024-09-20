@@ -1,36 +1,56 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("Attack Settings")]
     public Transform attackPoint;
-    public float attackForce = 10f;
-    public float attackRadius = 1f;
-    public float attackCooldown = 0.5f; //Adjust attack cooldown
-    public int maxCombo = 4;
-    public float comboResetTime = 2.5f; //Adjust combo cooldown
-    public LayerMask enemyLayer;
+    public float attackForce = 10f;     // Adding force in between attacks
+    public float attackRadius = 1f;     // Radius for the area of effects
+    public float attackCooldown = 0.5f; // Adjust attack cooldown
+    public int maxCombo = 4;            // Max Combo
+    public float comboResetTime = 2.5f; // Adjust combo cooldown
 
     private int currentCombo = 0;
     private bool canAttack = true;
     private float lastAttackTime = 0f;
 
+    [Header("Input Action")]
     private InputActionAsset inputActionAsset;
     private InputAction attackAction;
 
     PlayerControls controls;
 
+    [Header("Damage Settings")]
+    public int damageAmount = 25; // Damage to deal
+    public LayerMask enemyLayer;
+    private GameObject parentPlayer; // Parent player GameObject
+
+    private void Start()
+    {
+        // Get parent from GameObject of the player
+        parentPlayer = transform.root.gameObject; // Assume the player object is a child under "Player"
+
+        // Ensure the attackPoint has a collider and is set to trigger
+        var collider = attackPoint.gameObject.GetComponent<Collider2D>();
+        {
+            collider = attackPoint.gameObject.AddComponent<CircleCollider2D>();
+            collider.isTrigger = true;
+        }
+    }
+
     private void Awake()
     {
-
+        // Finding Input Action for the Attack
         var playerActionMap = inputActionAsset.FindActionMap("Player");
-
+        playerActionMap.Enable();
         attackAction = playerActionMap.FindAction("Attack");
 
-
+        // Input Action scritps
         controls = new PlayerControls();
         controls.Enable();
         attackAction = controls.Player.Attack;
@@ -77,6 +97,8 @@ public class PlayerAttack : MonoBehaviour
 
             else
             {
+                // If Combo already Max then start the timed AttackCooldown timer
+
                 StartCoroutine(AttackCooldown());
             }
 
@@ -84,10 +106,12 @@ public class PlayerAttack : MonoBehaviour
     }
     private IEnumerator AttackCooldown()
     {
+        // Pauses Attack
         canAttack = false;
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
-
+        
+        // Resetting Combo per Time
         if (Time.time - lastAttackTime > comboResetTime)
         {
             currentCombo = 0;
@@ -97,6 +121,7 @@ public class PlayerAttack : MonoBehaviour
 
     private IEnumerator ComboCooldown()
     {
+        // Pauses Cooldown
         canAttack = false;
         yield return new WaitForSeconds(comboResetTime);
 
@@ -107,6 +132,7 @@ public class PlayerAttack : MonoBehaviour
         Debug.Log("Combo reset after completing full combo.");
     }
 
+    // Making Attack Area Visible
     private void OnDrawGizmosSelected()
     {
         if (attackPoint == null)
@@ -115,13 +141,25 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        // Get root object of the collided object
+        GameObject otherParent = collision.transform.root.gameObject;
+
+        // Ensure the collided object is a different player and not the player themselves
+        if (otherParent != parentPlayer && otherParent.CompareTag("Player"))
+        {
+            Health otherHealth = otherParent.GetComponentInChildren<Health>();
+            
+            if (otherHealth != null)
+            {
+                // Deal damage to the other player
+                otherHealth.TakeDamage(damageAmount);
+                Debug.Log($"{gameObject.name} has been hit!");
+            }
+        }
+
     }
 
-    void Update()
-    {
-        
-    }
+
 }

@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce = 5f;
     public float moveSpeed = 40f;
     public float direction;
-    public float jumpCooldown = 100f; //Adjust jump Cooldown
+    public float jumpCooldown = 2f; //Adjust jump Cooldown
     private bool canJump = true;
     private bool moveLeft, moveRight;
     public bool crouch;
@@ -38,8 +38,18 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+
+        // Handle Keyboard Input
+
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        Vector2 moveDirection = 
+
+        // Determine movement direction
         player.velocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.velocity.y);
 
+        // Add directional velocity
         if (moveLeft)
         {
             transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
@@ -61,32 +71,39 @@ public class PlayerMovement : MonoBehaviour
         if (canJump)
         {
             player.velocity = new Vector2(player.velocity.x, jumpForce);
+            // Executing Timed Jump
             StartCoroutine(JumpCooldown());
+
+            Debug.Log("JUMPING!");
         }
 
     }
 
     IEnumerator JumpCooldown()
     {
+        // Pauses Jump 
         canJump = false;
         yield return new WaitForSeconds(jumpCooldown);
         canJump = true;
     }
 
-
+    // Button Inputs
     public void CrouchInputButtonDown()
     {
         crouch = true;
+        Debug.Log("Crouching");
+        
     }
 
     public void CrouchInputButtonUp()
     {
         crouch = false;
+        Debug.Log("Stop Crouching!");
     }
 
     public void LeftInputButtonDown()
     {
-        //kiri
+        // Button Left
         moveLeft = true;
         direction = -1;
     }
@@ -98,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void RightInputButtonDown()
     {
-        //kanan
+        // Button Right
         moveRight = true;
         direction = 1;
     }
