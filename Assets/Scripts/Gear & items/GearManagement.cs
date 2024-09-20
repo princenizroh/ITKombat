@@ -1,41 +1,92 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.Universal.Internal;
+using UnityEngine.UI;
 
 namespace ITKombat
 {
     public class GearManagement : MonoBehaviour
     {
-        public int hpStat;
-        public int atkStat;
-        public int spdStat;
+        
+        public TMP_Text gearLevelText;
+        public TMP_Text gearExpStatusText;
+        public TMP_Text gearMaterialList;
+        public TMP_Text gearStats1;
+        public TMP_Text gearStats2;
+        public GameObject warningInsufficientText;
+        public GameObject warningAscendText;
+        public GameObject upgradeGearButtonGO;
+        public Button upgradeGearButton;
+        public Button ascendGearButton;
         public int gearLevel;
-        public int gearExp;
-        public int gearExpReq = 50;
+        public int gearExpMax = 100;
+        public int gearExpStatus;
+        private bool gearAscendStatus = false;
 
-        public void gearUpgrade() {
+        public void upgradeGear(int exp) {
 
-            if (gearExp >= gearExpReq) {
+            int gearExpStatusFixed = gearExpMax - gearExpStatus;
 
-                // tiap penambahan level dari sebuah gear, maka kebutuhan exp dari gear akan meningkat sebesar 0.5
-                int finalExpRequired = gearExpReq * 1/2;
-                gearExpReq = finalExpRequired;
+            if (gearExpStatusFixed < 0) {
 
-                // menambahkan level pada gear
-                gearLevel =+ 1;
+                int expstatuschange = gearExpStatusFixed * -1;
 
-                if (gearLevel >= 4) {
-                    
-                } else if (gearLevel >= 8) {
-                    
-                } else if (gearLevel >= 12) {
+                gearExpStatus =+ expstatuschange;
 
-                } else if (gearLevel >= 15) {
+            } else {
 
-                }
+                gearExpStatus += exp;
+
+                Debug.Log("added " + exp + " exps to the gear");
+
+            }
+
+            if (gearLevel == 15) {
+
+                upgradeGearButtonGO.SetActive(false);
+
+            } else if (gearLevel == 5 & gearAscendStatus == false) {
+
+                warningAscendText.SetActive(true);
+                upgradeGearButton.enabled = false;
+
+            } else if (gearLevel == 10 & gearAscendStatus == false) {
+
+                warningAscendText.SetActive(true);
+                upgradeGearButton.enabled = false;
+
+            } else if (gearLevel == 13 & gearAscendStatus == false) {
+
+                warningAscendText.SetActive(true);
+                upgradeGearButton.enabled = false;
+
+            } else if (gearExpStatus >= gearExpMax) {
+
+                gearLevel += 1;
+                gearExpMax *= 2;
+
+                Debug.Log("gear upgraded");
+                gearAscendStatus = false;
+                
             }
 
         }
+
+        public void ascendGear() {
+
+            warningAscendText.SetActive(false);
+            upgradeGearButton.enabled = true;
+            gearAscendStatus = true;
+
+            if (gearLevel > 13) {
+
+                upgradeGearButtonGO.SetActive(false);
+
+            }
+
+        }
+
     }
 }
