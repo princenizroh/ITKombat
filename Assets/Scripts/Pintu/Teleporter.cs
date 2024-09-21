@@ -7,14 +7,14 @@ public class Teleporter : MonoBehaviour
 {
     [SerializeField] private Transform destination;
     public GameObject Objek; 
-    public Button yourButton; 
+    public Button Button; 
     private bool isObjekInside = false;
 
     private void Start()
     {
-        if (yourButton != null)
+        if (Button != null)
         {
-            yourButton.onClick.AddListener(OnButtonClick); 
+            Button.onClick.AddListener(OnButtonClick); 
         }
     }
     public Transform GetDestination()
