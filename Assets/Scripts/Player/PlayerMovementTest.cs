@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Collections;
+using System;
 namespace ITKombat
 {
     public class PlayerMovementTest : NetworkBehaviour
@@ -21,6 +22,8 @@ namespace ITKombat
         public float movePower = 10f;
         //inputSystem script
         PlayerControls controls;
+
+        public static event EventHandler OnAnyPlayerSpawned;
 
         private void Awake()
         {
@@ -44,6 +47,10 @@ namespace ITKombat
             if (!IsOwner) return;
             TestingKey();
             Run();
+            if (IsServer)
+            {
+                NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+            }
 
             if (Input.GetKeyDown(KeyCode.T))
             {
@@ -87,6 +94,13 @@ namespace ITKombat
             }
         }
 
+        private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+        {
+            if (clientId == OwnerClientId)
+            {
+                Debug.Log("Server disconnected");
+            }
+        }
         private void TestingKey()
         { 
             if (Input.GetKey(KeyCode.Space))
