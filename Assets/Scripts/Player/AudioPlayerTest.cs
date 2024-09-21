@@ -1,23 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; // Tambahkan namespace ini untuk mengelola scene
 
 namespace ITKombat
 {
     public class AudioPlayerTest : MonoBehaviour
     {
-        // Tombol Button
+        // Tombol-tombol UI untuk aksi
         public Button walkButton;
         public Button jumpButton;
         public Button crouchButton;
-        public Button fallButton;
         public Button blockButton;
         public Button punchButton;
+        public Button dashButton;
         public Button skillButton1;
         public Button skillButton2;
         public Button skillButton3;
 
-        // Suara untuk masing-masing aksi
-        public AudioSource walkSound;
+        // Suara
+        public AudioSource walkSoundScene1;
+        public AudioSource walkSoundScene2;
+        private AudioSource currentWalkSound; // Menyimpan suara walk yang aktif
         public AudioSource jumpSound;
         public AudioSource crouchSound;
         public AudioSource fallSound;
@@ -29,42 +32,74 @@ namespace ITKombat
         public AudioSource skillSound1;
         public AudioSource skillSound2;
         public AudioSource skillSound3;
+        public AudioSource dashSound;
 
-        private int punchStage = 0;
+        // Player object dan tracking untuk fall
+        public GameObject player;
+        private bool isJumping = false;  
+        private bool isGrounded = true;  
+
+        private int punchStage = 0;  //menghitung punch
 
         private void Start()
         {
-            // Tambahkan event listener untuk setiap button
             walkButton.onClick.AddListener(PlayWalkSound);
             jumpButton.onClick.AddListener(PlayJumpSound);
             crouchButton.onClick.AddListener(PlayCrouchSound);
-            fallButton.onClick.AddListener(PlayFallSound);
             blockButton.onClick.AddListener(PlayBlockSound);
             punchButton.onClick.AddListener(PlayPunchSound);
+            dashButton.onClick.AddListener(PlayDashSound);
 
             skillButton1.onClick.AddListener(() => PlaySkillSound(1));
             skillButton2.onClick.AddListener(() => PlaySkillSound(2));
             skillButton3.onClick.AddListener(() => PlaySkillSound(3));
+
+            SetWalkSound(); //set suara scene yang sekarang
+        }
+
+        private void Update()
+        {
+            if (isJumping && isGrounded)
+            {
+                PlayFallSound();
+                isJumping = false; 
+            }
+        }
+
+        private void SetWalkSound()
+        {
+            string currentScene = SceneManager.GetActiveScene().name;
+            if (currentScene == "FightTest")  //scene 1
+            {
+                currentWalkSound = walkSoundScene1;
+            }
+            else if (currentScene == "..")  //scene 2
+            {
+                currentWalkSound = walkSoundScene2; //kalau mau nambah tinggal copy aja
+            }
         }
 
         private void PlayWalkSound()
         {
-            walkSound.Play();
+            if (currentWalkSound != null)
+            {
+                currentWalkSound.Play();
+            }
         }
 
         private void PlayJumpSound()
         {
-            jumpSound.Play();
+            if (isGrounded)  
+            {
+                jumpSound.Play();
+                isJumping = true;
+                isGrounded = false;  
+            }
         }
 
         private void PlayCrouchSound()
         {
             crouchSound.Play();
-        }
-
-        private void PlayFallSound()
-        {
-            fallSound.Play();
         }
 
         private void PlayBlockSound()
@@ -75,12 +110,11 @@ namespace ITKombat
         private void PlayPunchSound()
         {
             punchStage++;
-            // Reset stage jika melebihi 4
             if (punchStage > 4)
             {
                 punchStage = 1;
             }
-
+            
             if (punchStage == 1)
             {
                 punchSound1.Play();
@@ -96,7 +130,7 @@ namespace ITKombat
                 punchSound2.Play();
                 punchSound3.Play();
             }
-            else if (punchStage == 4)
+            else if (punchStage == 4) //combo
             {
                 punchSound1.Play();
                 punchSound2.Play();
@@ -118,6 +152,32 @@ namespace ITKombat
                 case 3:
                     skillSound3.Play();
                     break;
+            }
+        }
+
+        private void PlayFallSound()
+        {
+            fallSound.Play();
+        }
+
+        private void PlayDashSound()
+        {
+            dashSound.Play();
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.tag == "Ground")
+            {
+                isGrounded = true;
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.gameObject.tag == "Ground")
+            {
+                isGrounded = false;
             }
         }
     }
