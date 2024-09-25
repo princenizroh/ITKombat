@@ -13,7 +13,8 @@ public class PlayerAttack : MonoBehaviour
     public float attackRadius = 1f;     // Radius for the area of effects
     public float attackCooldown = 0.5f; // Adjust attack cooldown
     public int maxCombo = 4;            // Max Combo
-    public float comboResetTime = 2.5f; // Adjust combo cooldown
+    public float comboResetTime = 1f; // Adjust combo cooldown
+    public int requiredComboChain = 1;
 
     private int currentCombo = 0;
     private bool canAttack = true;
@@ -69,7 +70,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack()
     {
-        if (currentCombo < maxCombo)
+        if (currentCombo < maxCombo && canAttack)
         {
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
 
@@ -108,15 +109,15 @@ public class PlayerAttack : MonoBehaviour
     {
         // Pauses Attack
         canAttack = false;
-        yield return new WaitForSeconds(attackCooldown);
-        canAttack = true;
+        yield return new WaitForSecondsRealtime(attackCooldown);
         
         // Resetting Combo per Time
-        if (Time.time - lastAttackTime > comboResetTime)
+        if (currentCombo >= requiredComboChain && Time.time - lastAttackTime > comboResetTime)
         {
             currentCombo = 0;
             Debug.Log("Combo reset due to inactivity.");
         }
+        canAttack = true;
     }
 
     private IEnumerator ComboCooldown()

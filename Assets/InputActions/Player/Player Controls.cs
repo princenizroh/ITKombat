@@ -40,7 +40,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
                     ""id"": ""5f9410fe-0730-4c0e-bc39-822c0cb42fc2"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -49,7 +49,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""ee6cf988-a071-48b4-ad41-3c9654076bdf"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -58,7 +58,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Skills"",
                     ""type"": ""Button"",
                     ""id"": ""f4c75d94-0808-41d6-9349-84e827ca633a"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -67,7 +67,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Specials"",
                     ""type"": ""Button"",
                     ""id"": ""e4f3d1d8-85df-4202-ab9e-de4309e47cc4"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -76,16 +76,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""fc03a8af-3310-4224-9aaf-d9be0e19cd3b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
                     ""name"": ""Defense"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""eca2d586-6eab-4281-ae66-3e8313a63f58"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
