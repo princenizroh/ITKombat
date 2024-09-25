@@ -1,21 +1,20 @@
 using System.Collections;
-using TMPro; // Namespace untuk TextMeshPro
+using TMPro; 
 using UnityEngine;
 
 public class CounterTimer : MonoBehaviour
 {
-    public TextMeshProUGUI countdownText; // Ganti tipe data ke TextMeshProUGUI
-    private int timeElapsed; // Waktu yang telah berlalu dalam detik
-
+    public TextMeshProUGUI countdownText;
+    private int timeElapsed; 
     void Start()
     {
-        timeElapsed = 0; // Mulai dari 0 detik
+        timeElapsed = 0; 
         StartCoroutine(StartTimer());
     }
 
     IEnumerator StartTimer()
     {
-        while (true) // Timer akan berjalan terus menerus
+        while (true) 
         {
             int minutes = timeElapsed / 60;
             int seconds = timeElapsed % 60;
