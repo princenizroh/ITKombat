@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CountdownTimer : MonoBehaviour
 {
-    public TextMeshProUGUI countdownText; 
-    public int CountDown; 
+    public TextMeshProUGUI countdownText;
+    public int CountDown;
 
     void Start()
     {
@@ -14,17 +14,15 @@ public class CountdownTimer : MonoBehaviour
 
     IEnumerator StartCountdown()
     {
-        int countdown = CountDown;
+        int countdown = CountDown; 
 
-        while (countdown >= 0)
+        while (countdown >= 0) 
         {
-            int minutes = countdown / 60;
-            int seconds = countdown % 60;
-            countdownText.text = $"{minutes}:{seconds:D2}";
-            yield return new WaitForSeconds(1);
-            countdown--;
+            countdownText.text = $"{countdown:0}"; 
+            yield return new WaitForSeconds(1); 
+            countdown--; 
         }
 
-        countdownText.text = "Waktu Habis!";
+        countdownText.text = "Waktu Habis!"; 
     }
 }
