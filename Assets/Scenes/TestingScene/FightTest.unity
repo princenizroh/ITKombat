@@ -1192,6 +1192,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7310841620089615239}
+  - {fileID: 1370935917}
+  - {fileID: 998248398}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &631358978
@@ -1622,12 +1624,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998248396}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -29.652, y: -2.114, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1126.6554, y: -715.052, z: -0.3508767}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 610433122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &998248399
 Animator:
@@ -2991,12 +2993,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1370935914}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.01062, y: -2.04, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1122.014, y: -714.97797, z: -0.3508767}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 610433122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1433498561
 GameObject:
@@ -3656,7 +3658,7 @@ Transform:
   m_GameObject: {fileID: 1629111959}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.5965123, y: -7.9550934, z: -9.6358795}
+  m_LocalPosition: {x: -21.897171, y: -8.096085, z: -9.6358795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3683,7 +3685,7 @@ MonoBehaviour:
   m_StreamingVersion: 20230301
   m_LegacyPriority: 0
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 7310841620089615239}
+  m_Follow: {fileID: 1370935917}
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 6
@@ -4531,7 +4533,7 @@ Transform:
   m_GameObject: {fileID: 2068541931}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.5965123, y: -7.9550934, z: -9.6358795}
+  m_LocalPosition: {x: -21.897171, y: -8.096107, z: -9.6358795}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4949,6 +4951,9 @@ MonoBehaviour:
   direction: 0
   jumpCooldown: 2
   crouch: 0
+  dashSpeed: 10
+  dashDuration: 0.2
+  dashCooldown: 1
   animator: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -4959,5 +4964,3 @@ SceneRoots:
   - {fileID: 1134995141}
   - {fileID: 1450653501}
   - {fileID: 341551415}
-  - {fileID: 998248398}
-  - {fileID: 1370935917}

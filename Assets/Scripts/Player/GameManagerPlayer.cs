@@ -56,7 +56,8 @@ public class GameManagerPlayer : MonoBehaviour
     {
         playerMovement.StopMoveRight();
     }
-
+    
+    //jump
     public void OnJumpInput()
     {
         playerMovement.JumpInput();
