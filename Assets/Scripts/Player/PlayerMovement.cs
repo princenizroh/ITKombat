@@ -15,6 +15,18 @@ public class PlayerMovement : MonoBehaviour
     private bool moveLeft, moveRight;
     public bool crouch;
 
+    [Header("Dash Options")]
+    public float dashSpeed = 10f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 1f;
+    private float dashStartTime = 0f;
+
+    private bool isDoubleTap = false;
+    private bool isDashing = false;
+    private float lastTapTime = 0f;
+    private float doubleTapTime = 0.2f;
+
+    private Rigidbody2D rb;
     public Animator animator;
 
     //inputSystem script
@@ -29,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
         {
             direction = info.ReadValue<float>();
         };
+
     }
 
     void Start()
@@ -38,14 +51,24 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Masih on-going
 
-        // Handle Keyboard Input
+ /*       if (isDashing)
+        {
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
+            rb.linearVelocity = new Vector2(horizontalInput + moveSpeed, rb.linearVelocityY);
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Vector2 moveDirection = 
-
+            if (Time.time - lastTapTime < doubleTapTime && !isDoubleTap)
+            {
+                isDoubleTap = true;
+                StartCoroutine(Dash());
+            }
+            else
+            {
+                lastTapTime = Time.time;
+            }
+        }
+*/
         // Determine movement direction
         player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
 
@@ -64,7 +87,25 @@ public class PlayerMovement : MonoBehaviour
         {
             canJump = true;
         }
+
     }
+
+/*    private IEnumerator Dash()
+    {
+        if (Time.time - dashStartTime > dashCooldown)
+        {
+            isDashing = true;
+            dashStartTime = Time.time;
+
+            // Apply dash velocity
+            rb.linearVelocity = new Vector2(rb.linearVelocityX * dashSpeed, rb.linearVelocityY);
+
+            // Adjust dash duration as needed
+            yield return new WaitForSeconds(dashDuration);
+
+            isDashing = false;
+        }
+    }*/
 
     public void JumpInput()
     {
@@ -88,39 +129,39 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Button Inputs
-    public void CrouchInputButtonDown()
+    public void Crouch()
     {
         crouch = true;
         Debug.Log("Crouching");
         
     }
 
-    public void CrouchInputButtonUp()
+    public void StopCrouch()
     {
         crouch = false;
         Debug.Log("Stop Crouching!");
     }
 
-    public void LeftInputButtonDown()
+    public void MoveLeft()
     {
         // Button Left
         moveLeft = true;
         direction = -1;
     }
 
-    public void LeftInputButtonUp()
+    public void StopMoveLeft()
     {
         moveLeft = false;
     }
 
-    public void RightInputButtonDown()
+    public void MoveRight()
     {
         // Button Right
         moveRight = true;
         direction = 1;
     }
 
-    public void RightInputButtonUp()
+    public void StopMoveRight()
     {
         moveRight = false;
 
