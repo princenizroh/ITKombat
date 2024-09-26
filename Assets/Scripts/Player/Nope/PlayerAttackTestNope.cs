@@ -13,8 +13,14 @@ public class PlayerAttackTestNope : NetworkBehaviour
     public LayerMask enemyLayer;
 
     private int combo = 0;
-    public float cooldown = 0.5f; // Cooldown antara setiap serangan dalam kombo
-    private float timeSinceLastAttack; // Menyimpan waktu saat terakhir kali melakukan serangan
+    public float cooldown = 0.5f; // cooldown attack combo
+    private float timeSinceLastAttack;
+
+    // Crouch state
+    private bool isCrouching = false;
+    private bool isCrouchInitiated = false;
+
+    // Animator
     private Animator animator;
 
     private void Awake()
@@ -26,44 +32,106 @@ public class PlayerAttackTestNope : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        // Update timer untuk menghitung waktu sejak serangan terakhir
+        // Reset combo jika lebih dari cooldown
         if (Time.time - timeSinceLastAttack > cooldown)
         {
-            // Reset kombo jika lebih dari 0.5 detik berlalu sejak serangan terakhir
             combo = 0;
         }
 
-        HandleMovementInput(); // Hanya menangani pergerakan, tanpa input attack
+        HandleMovementInput();
+
+        // Crouch dan Attack dihandle di GameManagerButton
+    }
+
+    public bool IsCrouching()
+    {
+        return isCrouching;
+    }
+    public void StartCrouch()
+    {
+        if (!isCrouching)
+        {
+            isCrouching = true;
+            isCrouchInitiated = true;
+            animator.SetTrigger("startCrouch"); // Memicu animasi memulai crouch
+            Debug.Log("Player started crouching.");
+        }
+    }
+
+    public void StopCrouch()
+    {
+        if (isCrouching)
+        {
+            isCrouching = false;
+            isCrouchInitiated = false;
+            animator.SetBool("isCrouching", false); // Hentikan animasi crouch dan kembali ke idle
+            animator.SetTrigger("standUp"); // Memicu animasi berdiri
+            Debug.Log("Player stopped crouching.");
+        }
+    }
+
+    public void ContinueCrouch()
+    {
+        if (isCrouchInitiated)
+        {
+            animator.SetBool("isCrouching", true); // Bertahan dalam posisi crouch
+        }
     }
 
     public void PerformAttack()
     {
-        // Jika cooldown selesai dan kombo belum mencapai batas
-        if (Time.time - timeSinceLastAttack <= cooldown && combo < maxCombo)
+        if (!isCrouching)
         {
-            combo++; // Lanjut ke kombo berikutnya
+            if (Time.time - timeSinceLastAttack <= cooldown && combo < maxCombo)
+            {
+                combo++;
+            }
+            else
+            {
+                combo = 1; 
+            }
+
+            timeSinceLastAttack = Time.time;
+
+            // Deteksi musuh di sekitar
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+                if (enemyRb != null)
+                {
+                    enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
+                }
+            }
+
+            Debug.Log("Player performed attack " + combo);
+            TriggerAttackAnimation();
+        }
+
+    }
+
+    public void PerformCrouchAttack()
+    {
+        if (isCrouching)
+        {
+            Debug.Log("Crouch Attack triggered!");
+            animator.SetTrigger("crouchAttack");
+
+            // Lakukan logika crouch attack
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+                if (enemyRb != null)
+                {
+                    enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
+                }
+            }
         }
         else
         {
-            combo = 1; // Mulai dari kombo pertama
+            Debug.Log("Attack berdiri");
         }
-
-        // Catat waktu serangan terakhir
-        timeSinceLastAttack = Time.time;
-
-        // Cek hit pada musuh dalam radius serangan
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-            if (enemyRb != null)
-            {
-                enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
-            }
-        }
-
-        Debug.Log("Player performed attack " + combo);
-        TriggerAttackAnimation();
     }
 
     private void HandleMovementInput()
