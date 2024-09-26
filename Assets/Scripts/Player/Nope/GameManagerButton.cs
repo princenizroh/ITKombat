@@ -5,7 +5,7 @@ public class GameManagerButton : MonoBehaviour
     [SerializeField] 
     private PlayerAttackTestNope playerAttack;
 
-    private void Update()
+    private void Update() //debug
     {
         if (Input.GetKey(KeyCode.P) && playerAttack != null && !playerAttack.IsCrouching())
         {

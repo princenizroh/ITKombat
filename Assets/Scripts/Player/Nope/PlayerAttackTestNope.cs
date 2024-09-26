@@ -80,7 +80,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
 
     public void PerformAttack()
     {
-        if (!isCrouching)
+        if (!isCrouching) // debug
         {
             if (Time.time - timeSinceLastAttack <= cooldown && combo < maxCombo)
             {
