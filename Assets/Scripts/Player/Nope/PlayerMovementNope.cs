@@ -6,7 +6,7 @@ using Unity.Collections;
 using System;
 namespace ITKombat
 {
-    public class PlayerMovementTes1 : NetworkBehaviour
+    public class PlayerMovementNope : NetworkBehaviour
     {
         [SerializeField] private Transform spawnedObjectPrefab;
         private Transform spawnedObjectTransform;
