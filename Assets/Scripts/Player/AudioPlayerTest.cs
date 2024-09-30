@@ -1,28 +1,17 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement; // Tambahkan namespace ini untuk mengelola scene
+using UnityEngine.SceneManagement;
 
 namespace ITKombat
 {
     public class AudioPlayerTest : MonoBehaviour
     {
-        // Tombol-tombol UI untuk aksi
-        public Button walkButton;
-        public Button jumpButton;
-        public Button crouchButton;
-        public Button blockButton;
-        public Button punchButton;
-        public Button dashButton;
-        public Button skillButton1;
-        public Button skillButton2;
-        public Button skillButton3;
-
         // Suara
         public AudioSource walkSoundScene1;
         public AudioSource walkSoundScene2;
-        private AudioSource currentWalkSound; // Menyimpan suara walk yang aktif
+        private AudioSource currentWalkSound;
         public AudioSource jumpSound;
         public AudioSource crouchSound;
+        public AudioSource crouchAttackSound; // Suara serangan merunduk
         public AudioSource fallSound;
         public AudioSource blockSound;
         public AudioSource punchSound1;
@@ -38,28 +27,24 @@ namespace ITKombat
         public GameObject player;
         private bool isJumping = false;  
         private bool isGrounded = true;  
-
         private int punchStage = 0;  //menghitung punch
+
+        // Cooldown
+        private float punchCooldown = 0.5f;
+        private float lastPunchTime = -1f; // Inisialisasi dengan waktu negatif
 
         private void Start()
         {
-            walkButton.onClick.AddListener(PlayWalkSound);
-            jumpButton.onClick.AddListener(PlayJumpSound);
-            crouchButton.onClick.AddListener(PlayCrouchSound);
-            blockButton.onClick.AddListener(PlayBlockSound);
-            punchButton.onClick.AddListener(PlayPunchSound);
-            dashButton.onClick.AddListener(PlayDashSound);
-
-            skillButton1.onClick.AddListener(() => PlaySkillSound(1));
-            skillButton2.onClick.AddListener(() => PlaySkillSound(2));
-            skillButton3.onClick.AddListener(() => PlaySkillSound(3));
-
-            SetWalkSound(); //set suara scene yang sekarang
+            SetWalkSound();
         }
 
         private void Update()
         {
-            if (isJumping && isGrounded)
+            // Cek apakah pemain masih di tanah menggunakan Raycast
+            isGrounded = Physics2D.Raycast(player.transform.position, Vector2.down, 0.1f);
+
+            // Mainkan suara jatuh jika pemain tidak di tanah dan sedang jatuh
+            if (!isGrounded && isJumping)
             {
                 PlayFallSound();
                 isJumping = false; 
@@ -69,115 +54,117 @@ namespace ITKombat
         private void SetWalkSound()
         {
             string currentScene = SceneManager.GetActiveScene().name;
-            if (currentScene == "FightTest")  //scene 1
+            if (currentScene == "Test-Multiplayer")  //scene 1
             {
                 currentWalkSound = walkSoundScene1;
             }
             else if (currentScene == "..")  //scene 2
             {
-                currentWalkSound = walkSoundScene2; //kalau mau nambah tinggal copy aja
+                currentWalkSound = walkSoundScene2;
             }
         }
 
-        private void PlayWalkSound()
+        // Fungsi untuk memutar suara sesuai tombol
+        public void PlayWalkSound()
         {
-            if (currentWalkSound != null)
-            {
-                currentWalkSound.Play();
-            }
+            PlaySound(currentWalkSound);
         }
 
-        private void PlayJumpSound()
+        public void PlayJumpSound()
         {
             if (isGrounded)  
             {
-                jumpSound.Play();
+                PlaySound(jumpSound);
                 isJumping = true;
                 isGrounded = false;  
             }
         }
 
-        private void PlayCrouchSound()
+        public void PlayCrouchSound()
         {
-            crouchSound.Play();
+            PlaySound(crouchSound);
         }
 
-        private void PlayBlockSound()
+        public void PlayCrouchAttackSound()
         {
-            blockSound.Play();
+            PlaySound(crouchAttackSound);
         }
 
-        private void PlayPunchSound()
+        public void PlayBlockSound()
         {
+            PlaySound(blockSound);
+        }
+
+        public void PlayPunchSound()
+        {
+            // Cek cooldown
+            if (Time.time - lastPunchTime < punchCooldown)
+            {
+                return; // Jika masih dalam cooldown, jangan lakukan apa-apa
+            }
+
+            lastPunchTime = Time.time; // Set waktu terakhir punch
+
             punchStage++;
             if (punchStage > 4)
             {
-                punchStage = 1;
+                punchStage = 1; // Reset stage punch jika lebih dari 4
             }
-            
-            if (punchStage == 1)
+
+            switch (punchStage)
             {
-                punchSound1.Play();
-            }
-            else if (punchStage == 2)
-            {
-                punchSound1.Play();
-                punchSound2.Play();
-            }
-            else if (punchStage == 3)
-            {
-                punchSound1.Play();
-                punchSound2.Play();
-                punchSound3.Play();
-            }
-            else if (punchStage == 4) //combo
-            {
-                punchSound1.Play();
-                punchSound2.Play();
-                punchSound3.Play();
-                punchSound4.Play();
+                case 1:
+                    PlaySound(punchSound1);
+                    break;
+                case 2:
+                    PlaySound(punchSound1);
+                    PlaySound(punchSound2);
+                    break;
+                case 3:
+                    PlaySound(punchSound1);
+                    PlaySound(punchSound2);
+                    PlaySound(punchSound3);
+                    break;
+                case 4: //combo
+                    PlaySound(punchSound1);
+                    PlaySound(punchSound2);
+                    PlaySound(punchSound3);
+                    PlaySound(punchSound4);
+                    break;
             }
         }
 
-        private void PlaySkillSound(int skillNumber)
+        public void PlaySkillSound(int skillNumber)
         {
             switch (skillNumber)
             {
                 case 1:
-                    skillSound1.Play();
+                    PlaySound(skillSound1);
                     break;
                 case 2:
-                    skillSound2.Play();
+                    PlaySound(skillSound2);
                     break;
                 case 3:
-                    skillSound3.Play();
+                    PlaySound(skillSound3);
                     break;
             }
         }
 
         private void PlayFallSound()
         {
-            fallSound.Play();
+            PlaySound(fallSound);
         }
 
-        private void PlayDashSound()
+        public void PlayDashSound()
         {
-            dashSound.Play();
+            PlaySound(dashSound);
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void PlaySound(AudioSource sound)
         {
-            if (collision.gameObject.tag == "Ground")
+            if (sound != null)
             {
-                isGrounded = true;
-            }
-        }
-
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            if (collision.gameObject.tag == "Ground")
-            {
-                isGrounded = false;
+                sound.Play();
             }
         }
     }
