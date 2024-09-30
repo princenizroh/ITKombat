@@ -28,7 +28,7 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Damage Settings")]
     public int damageAmount = 25; // Damage to deal
-    public LayerMask enemyLayer;
+    public LayerMask enemyLayer;    // Tag/Layernya kasih Player biar ke detect damagenya ke Player
     private GameObject parentPlayer; // Parent player GameObject
 
     private void Start()
@@ -145,12 +145,13 @@ public class PlayerAttack : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Get root object of the collided object
-        GameObject otherParent = collision.transform.root.gameObject;
+        GameObject otherPlayer = collision.transform.root.gameObject;
 
         // Ensure the collided object is a different player and not the player themselves
-        if (otherParent != parentPlayer && otherParent.CompareTag("Player"))
+        // Tagnya harus "Player" buat ngasih damage ke player lain
+        if (otherPlayer == parentPlayer.transform.parent && otherPlayer.CompareTag("Player"))
         {
-            Health otherHealth = otherParent.GetComponentInChildren<Health>();
+            Health otherHealth = otherPlayer.GetComponentInChildren<Health>();
             
             if (otherHealth != null)
             {
