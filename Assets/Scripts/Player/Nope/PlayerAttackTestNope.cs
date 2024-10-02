@@ -13,7 +13,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
     public LayerMask enemyLayer;
 
     private int combo = 0;
-    public float cooldown = 0.5f; // cooldown attack combo
+    public float cooldown = 0.5f; 
     private float timeSinceLastAttack;
 
     // Crouch state
@@ -31,16 +31,12 @@ public class PlayerAttackTestNope : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner) return;
-
-        // Reset combo jika lebih dari cooldown
         if (Time.time - timeSinceLastAttack > cooldown)
         {
             combo = 0;
         }
 
         HandleMovementInput();
-
-        // Crouch dan Attack dihandle di GameManagerButton
     }
 
     public bool IsCrouching()
@@ -53,7 +49,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
         {
             isCrouching = true;
             isCrouchInitiated = true;
-            animator.SetTrigger("startCrouch"); // Memicu animasi memulai crouch
+            animator.SetTrigger("startCrouch"); 
             Debug.Log("Player started crouching.");
         }
     }
@@ -93,7 +89,6 @@ public class PlayerAttackTestNope : NetworkBehaviour
 
             timeSinceLastAttack = Time.time;
 
-            // Deteksi musuh di sekitar
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
             foreach (Collider2D enemy in hitEnemies)
             {
