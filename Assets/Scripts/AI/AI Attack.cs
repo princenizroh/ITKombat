@@ -2,52 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIAttack : MonoBehaviour
+public class AI_Attack : MonoBehaviour
 {
-    public float attackRange = 1.5f;
-    public float attackCooldown = 2f;
-    private float lastAttackTime;
-    public Transform player;
+    public float attackRange = 2.5f;         // Range within which the enemy can attack
+    // public float attackCooldown = 0.5f;    // Cooldown between attacks
+    public float attackForce = 10000f;
+    // private float nextAttackTime = 0f;     // Time when the enemy can attack again
+    public float currentCombo = 0;
+    private Transform player;
+    private Rigidbody2D playerRigidbody;
+    
+    void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        playerRigidbody = player.GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
-        // Mengecek jarak AI dengan Player
+
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        // Jika dalam jangkauan attack range dan cooldown selesai, lakukan attack
-        if (distanceToPlayer <= attackRange && Time.time > lastAttackTime + attackCooldown)
+        if (distanceToPlayer <= attackRange)
         {
-            PerformRandomAttack();
-            lastAttackTime = Time.time;
+            Attack();
+            // nextAttackTime = Time.time + attackCooldown; 
         }
     }
 
-    // Fungsi untuk melakukan serangan acak
-    void PerformRandomAttack()
+    void Attack()
     {
-        int randomAttack = Random.Range(1, 3); // Random antara attack1 dan attack2
-
-        if (randomAttack == 1)
-        {
-            Attack1();
-        }
-        else
-        {
-            Attack2();
-        }
+        // Trigger a random attack
+        Debug.Log("Enemy performs attack: Attack" + currentCombo);
+        currentCombo ++;
+        Knockback();
     }
 
-    // Fungsi Attack 1
-    void Attack1()
+    void Knockback()
     {
-        Debug.Log("AI performed Attack1!");
-        // Tambahkan logika serangan 1 di sini
-    }
-
-    // Fungsi Attack 2
-    void Attack2()
-    {
-        Debug.Log("AI performed Attack2!");
-        // Tambahkan logika serangan 2 di sini
+        if (playerRigidbody != null)
+        {
+            Vector2 knockbackDirection = (player.position - transform.position).normalized;
+            playerRigidbody.velocity = -knockbackDirection * attackForce;
+            Debug.Log("Player hit");
+        }
     }
 }
