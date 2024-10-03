@@ -6,7 +6,7 @@ public class AI_Attack : MonoBehaviour
 {
     public float attackRange = 2.5f;         // Range within which the enemy can attack
     // public float attackCooldown = 0.5f;    // Cooldown between attacks
-    public float attackForce = 10000f;
+    public float attackForce = 20f;
     // private float nextAttackTime = 0f;     // Time when the enemy can attack again
     public float currentCombo = 0;
     private Transform player;
@@ -32,7 +32,7 @@ public class AI_Attack : MonoBehaviour
     void Attack()
     {
         // Trigger a random attack
-        Debug.Log("Enemy performs attack: Attack" + currentCombo);
+        // Debug.Log("Enemy performs attack: Attack" + currentCombo);
         currentCombo ++;
         Knockback();
     }
@@ -42,7 +42,7 @@ public class AI_Attack : MonoBehaviour
         if (playerRigidbody != null)
         {
             Vector2 knockbackDirection = (player.position - transform.position).normalized;
-            playerRigidbody.velocity = -knockbackDirection * attackForce;
+            playerRigidbody.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
             Debug.Log("Player hit");
         }
     }
