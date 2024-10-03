@@ -27,7 +27,7 @@ public class HealthBar : NetworkBehaviour
             healthSlider.value = health;
         }
 
-        if (Input.GetMouseButtonDown(0)) 
+        if (Input.GetKeyDown(KeyCode.Q)) 
         {
             Debug.Log("Darah berkurang 10");
             TakeDamage(10);

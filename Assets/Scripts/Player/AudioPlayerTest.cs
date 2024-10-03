@@ -11,8 +11,6 @@ namespace ITKombat
         private AudioSource currentWalkSound;
         public AudioSource jumpSound;
         public AudioSource crouchSound;
-        public AudioSource crouchAttackSound; // Suara serangan merunduk
-        public AudioSource fallSound;
         public AudioSource blockSound;
         public AudioSource punchSound1;
         public AudioSource punchSound2;
@@ -21,50 +19,34 @@ namespace ITKombat
         public AudioSource skillSound1;
         public AudioSource skillSound2;
         public AudioSource skillSound3;
-        public AudioSource dashSound;
 
-        // Player object dan tracking untuk fall
+        // Player object dan tracking untuk punch
         public GameObject player;
-        private bool isJumping = false;  
-        private bool isGrounded = true;  
-        private int punchStage = 0;  //menghitung punch
+        private bool isCrouching = false;
+        private int punchStage = 0;
 
-        // Cooldown
+        // Cooldown untuk punch
         private float punchCooldown = 0.5f;
-        private float lastPunchTime = -1f; // Inisialisasi dengan waktu negatif
+        private float lastPunchTime = -1f;
 
         private void Start()
         {
             SetWalkSound();
         }
 
-        private void Update()
-        {
-            // Cek apakah pemain masih di tanah menggunakan Raycast
-            isGrounded = Physics2D.Raycast(player.transform.position, Vector2.down, 0.1f);
-
-            // Mainkan suara jatuh jika pemain tidak di tanah dan sedang jatuh
-            if (!isGrounded && isJumping)
-            {
-                PlayFallSound();
-                isJumping = false; 
-            }
-        }
-
         private void SetWalkSound()
         {
             string currentScene = SceneManager.GetActiveScene().name;
-            if (currentScene == "Test-Multiplayer")  //scene 1
+            if (currentScene == "Test-Multiplayer")
             {
                 currentWalkSound = walkSoundScene1;
             }
-            else if (currentScene == "..")  //scene 2
+            else if (currentScene == "..")
             {
                 currentWalkSound = walkSoundScene2;
             }
         }
 
-        // Fungsi untuk memutar suara sesuai tombol
         public void PlayWalkSound()
         {
             PlaySound(currentWalkSound);
@@ -72,22 +54,18 @@ namespace ITKombat
 
         public void PlayJumpSound()
         {
-            if (isGrounded)  
-            {
-                PlaySound(jumpSound);
-                isJumping = true;
-                isGrounded = false;  
-            }
+            PlaySound(jumpSound);
         }
 
         public void PlayCrouchSound()
         {
+            isCrouching = true;
             PlaySound(crouchSound);
         }
 
-        public void PlayCrouchAttackSound()
+        public void StopCrouchSound()
         {
-            PlaySound(crouchAttackSound);
+            isCrouching = false;
         }
 
         public void PlayBlockSound()
@@ -97,18 +75,24 @@ namespace ITKombat
 
         public void PlayPunchSound()
         {
-            // Cek cooldown
             if (Time.time - lastPunchTime < punchCooldown)
             {
-                return; // Jika masih dalam cooldown, jangan lakukan apa-apa
+                return;
             }
 
-            lastPunchTime = Time.time; // Set waktu terakhir punch
+            lastPunchTime = Time.time;
+
+            if (isCrouching)
+            {
+                Debug.Log("Crouch Attack");
+                // Menghapus pemanggilan PlayCrouchAttackSound
+                return;
+            }
 
             punchStage++;
             if (punchStage > 4)
             {
-                punchStage = 1; // Reset stage punch jika lebih dari 4
+                punchStage = 1;
             }
 
             switch (punchStage)
@@ -125,7 +109,7 @@ namespace ITKombat
                     PlaySound(punchSound2);
                     PlaySound(punchSound3);
                     break;
-                case 4: //combo
+                case 4:
                     PlaySound(punchSound1);
                     PlaySound(punchSound2);
                     PlaySound(punchSound3);
@@ -134,30 +118,19 @@ namespace ITKombat
             }
         }
 
-        public void PlaySkillSound(int skillNumber)
+        public void PlaySkill1Sound()
         {
-            switch (skillNumber)
-            {
-                case 1:
-                    PlaySound(skillSound1);
-                    break;
-                case 2:
-                    PlaySound(skillSound2);
-                    break;
-                case 3:
-                    PlaySound(skillSound3);
-                    break;
-            }
+            PlaySound(skillSound1);
         }
 
-        private void PlayFallSound()
+        public void PlaySkill2Sound()
         {
-            PlaySound(fallSound);
+            PlaySound(skillSound2);
         }
 
-        public void PlayDashSound()
+        public void PlaySkill3Sound()
         {
-            PlaySound(dashSound);
+            PlaySound(skillSound3);
         }
 
         private void PlaySound(AudioSource sound)
