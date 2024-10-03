@@ -666,6 +666,7 @@ MonoBehaviour:
   playerMovement: {fileID: 179208989}
   playerAttack: {fileID: 179208996}
   playerDefense: {fileID: 179208997}
+  playerSkills: {fileID: 179208999}
 --- !u!114 &179208999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -810,7 +811,7 @@ GameObject:
   - component: {fileID: 226255962}
   - component: {fileID: 226255961}
   m_Layer: 5
-  m_Name: AttackButton (2)
+  m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -882,7 +883,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 179208998}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
-        m_MethodName: AttackInput
+        m_MethodName: OnSkill2Input
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1801,7 +1802,7 @@ GameObject:
   - component: {fileID: 992238430}
   - component: {fileID: 992238429}
   m_Layer: 5
-  m_Name: Attack
+  m_Name: Skill1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1846,7 +1847,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack
+  m_text: Skill1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3114,7 +3115,7 @@ GameObject:
   - component: {fileID: 1966026789}
   - component: {fileID: 1966026788}
   m_Layer: 5
-  m_Name: Attack
+  m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3159,7 +3160,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack
+  m_text: Skill2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3251,7 +3252,7 @@ GameObject:
   - component: {fileID: 1980671878}
   - component: {fileID: 1980671877}
   m_Layer: 5
-  m_Name: AttackButton (1)
+  m_Name: Skill1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3323,7 +3324,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 179208998}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
-        m_MethodName: AttackInput
+        m_MethodName: OnSkill1Input
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3775,7 +3776,7 @@ GameObject:
   - component: {fileID: 2091473126}
   - component: {fileID: 2091473125}
   m_Layer: 5
-  m_Name: Attack
+  m_Name: Skill3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3820,7 +3821,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Attack
+  m_text: Skill3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3912,7 +3913,7 @@ GameObject:
   - component: {fileID: 2097548339}
   - component: {fileID: 2097548338}
   m_Layer: 5
-  m_Name: AttackButton (3)
+  m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3984,7 +3985,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 179208998}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
-        m_MethodName: AttackInput
+        m_MethodName: OnSkill3Input
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
