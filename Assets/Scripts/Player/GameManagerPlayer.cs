@@ -9,6 +9,7 @@ public class GameManagerPlayer : MonoBehaviour
     public PlayerMovement playerMovement;
     public PlayerAttack playerAttack;
     public PlayerDefense playerDefense;
+    public SkillsHolder playerSkills;
 
     // Attack
     public void AttackInput()
@@ -62,5 +63,21 @@ public class GameManagerPlayer : MonoBehaviour
     public void OnJumpInput()
     {
         playerMovement.JumpInput();
+    }
+
+    //skill
+    public void OnSkill1Input ()
+    {
+        playerSkills.ActivateSkill(0); //SKILL 1
+    }
+
+    public void OnSkill2Input ()
+    {
+        playerSkills.ActivateSkill(1); //SKILL 2
+    }
+
+    public void OnSkill3Input ()
+    {
+        playerSkills.ActivateSkill(2); //SKILL 3
     }
 }
