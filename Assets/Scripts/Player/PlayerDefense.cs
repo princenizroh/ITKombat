@@ -104,7 +104,7 @@ public class PlayerDefense : MonoBehaviour
     // Logic for taking damage
     public void TakeDamage(int damageAmount)
     {
-        Health health = GetComponent<Health>();
+        HealthBar health = GetComponent<HealthBar>();
         if (health != null)
         {
             health.TakeDamage(damageAmount);

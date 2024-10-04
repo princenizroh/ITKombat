@@ -151,7 +151,7 @@ public class PlayerAttack : MonoBehaviour
         // Tagnya harus "Player" buat ngasih damage ke player lain
         if (otherPlayer == parentPlayer.transform.parent && otherPlayer.CompareTag("Player"))
         {
-            Health otherHealth = otherPlayer.GetComponentInChildren<Health>();
+            HealthBar otherHealth = otherPlayer.GetComponentInChildren<HealthBar>();
             
             if (otherHealth != null)
             {

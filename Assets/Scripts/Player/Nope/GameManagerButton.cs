@@ -6,30 +6,30 @@ public class GameManagerButton : MonoBehaviour
     [SerializeField] 
     private PlayerAttackTestNope playerAttack;
     [SerializeField] 
-    private PlayerMovementNope playerMovement;
+    private PlayerMovementNope playerMovement; //untuk movement code
     
     public void OnCrouchButtonDown()
     {
         if (playerAttack != null)
         {
+            Debug.Log("Mulai crouch");
             playerAttack.StartCrouch();
         }
     }
-
-    // Menghentikan crouch saat tombol dilepas
     public void OnCrouchButtonUp()
     {
         if (playerAttack != null)
         {
+            Debug.Log("coruch berhenti");
             playerAttack.StopCrouch();
         }
     }
 
-    // Tombol untuk serangan
     public void AttackButton()
     {
         if (playerAttack != null)
         {
+            Debug.Log("Attack");
             playerAttack.PerformAttack();
         }
     }
@@ -38,6 +38,7 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerAttack != null)
         {
+            Debug.Log("Crouh attack");
             playerAttack.PerformCrouchAttack();
         }
     }
