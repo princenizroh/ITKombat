@@ -26,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
     private float dashingPower = 20f;
     private float dashingTime = 0.2f;
     private float dashingCooldown = 1f;
+    private float dashStartTime = 0f;
+    private float dashTime;
+    private float lastDashTime;
+    private Vector2 dashDirection;
 
     [SerializeField] private Animator animator;
     [SerializeField] private LayerMask groundLayer;
@@ -33,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D player;
 
     //inputSystem script
+    public KeyCode key;
     PlayerControls controls;
 
     private void Awake()
@@ -54,10 +59,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (isDashing)
+/*        if (isDashing)
         {
-            return;
-        }
+            if (Time.time >= dashingTime)
+            {
+                EndDash();
+            }
+        }*/
         // Add directional velocity
         if (moveLeft)
         {
@@ -77,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Masih on-going
 
-        controls.Player.Move.performed += ctx =>
+/*        controls.Player.Move.performed += ctx =>
         {
             if (ctx.interaction is MultiTapInteraction multiTap && canDash)
             {
@@ -91,7 +99,13 @@ public class PlayerMovement : MonoBehaviour
                     Debug.Log("Double-tap is not successfull");
                 }
             }
-        };
+        };*/
+/*
+        if (Input.GetKey(key) && canDash)
+        {
+            Debug.Log("Dash!");
+            StartDash();
+        }*/
 
         // Check if player in ground or not to prevent spam
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
@@ -100,29 +114,39 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDashing)
-        {
-            return;
-        }
-
         player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
     }
 
     // Mekanik dash (tinggal dicoba aja pake key keyboard dulu)
-    private IEnumerator Dash()
+/*    private void StartDash()
     {
-        canDash = false;
         isDashing = true;
-        animator.SetTrigger("isDashing");
-        float originalGravity = player.gravityScale;
-        player.gravityScale = 0f;
-        player.linearVelocity = new Vector2(transform.localScale.x * dashingPower, 0f);
-        yield return new WaitForSeconds(dashingTime);
-        player.gravityScale = originalGravity;
-        isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
+        canDash = false;
+
+        dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+    
+        if (dashDirection ==  Vector2.zero)
+        {
+            dashDirection = new Vector2(transform.localScale.x, 0);
+        }
+
+        player.linearVelocity = dashDirection * dashingPower;
+        dashTime = Time.time + dashingTime;
+        lastDashTime = Time.time;
     }
+
+    private void EndDash()
+    {
+        isDashing = false;
+        player.linearVelocity = Vector2.zero;
+
+        Invoke(nameof(ResetDash), dashingCooldown);
+    }
+
+    private void ResetDash()
+    {
+        canDash = true;*/
+/*    }*/
 
     // Mekanik jump sudah selesai
     public void JumpInput()
