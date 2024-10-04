@@ -5,8 +5,8 @@ using UnityEngine;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using Firebase;
-using Firebase.Auth;
+// using Firebase;
+// using Firebase.Auth;
 
 namespace ITKombat
 {
@@ -17,8 +17,8 @@ namespace ITKombat
         private float heartbeatTimer;
         private float lobbyUpdateTimer;
         private string playerName;
-        private FirebaseUser user;
-        private FirebaseAuth auth;
+        // private FirebaseUser user;
+        // private FirebaseAuth auth;
 
         private async void Start() 
         {
