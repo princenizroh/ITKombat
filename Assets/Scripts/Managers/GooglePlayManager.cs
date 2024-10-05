@@ -1,0 +1,43 @@
+using UnityEngine;
+using GooglePlayGames;
+using Google;
+using GooglePlayGames.BasicApi;
+using TMPro;
+namespace ITKombat
+{
+    public class GooglePlayManager : MonoBehaviour
+    {
+        public TextMeshProUGUI DetailsText;
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
+        {
+            SignIn();
+        
+        }
+
+        public void SignIn()
+        {
+            // PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+        }
+
+        internal void ProcessAuthentication(SignInStatus status)
+        {
+            if (status == SignInStatus.Success)
+            {
+                // string displayName = PlayGamesPlatform.Instance.GetUserDisplayName();
+                // string userId = PlayGamesPlatform.Instance.GetUserId();
+                // string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
+                //
+                // DetailsText.text = "Signed in" + displayName;
+
+                Debug.Log("Signed in");
+            }
+            else
+            {
+                DetailsText.text = "Sign in failed";
+                Debug.Log("Sign in failed");
+            }
+        }
+
+    }
+}

@@ -11,7 +11,9 @@ namespace ITKombat
     {
         //Firebase variables
         [Header("Firebase")]
-        // public FirebaseUser User;
+        public FirebaseUser User;
+        public FirebaseAuth auth;
+        public DependencyStatus dependencyStatus;
 
         //Login variables
         [Header("Login")]
