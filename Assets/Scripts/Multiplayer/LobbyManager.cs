@@ -5,8 +5,8 @@ using UnityEngine;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-// using Firebase;
-// using Firebase.Auth;
+using Firebase;
+using Firebase.Auth;
 
 namespace ITKombat
 {
@@ -17,8 +17,8 @@ namespace ITKombat
         private float heartbeatTimer;
         private float lobbyUpdateTimer;
         private string playerName;
-        // private FirebaseUser user;
-        // private FirebaseAuth auth;
+        private FirebaseUser user;
+        private FirebaseAuth auth;
 
         private async void Start() 
         {
@@ -41,23 +41,23 @@ namespace ITKombat
             HandleLobbyPollForUpdates();
             ButtonLobby();
         }
-        // private void InitializeFirebase()
-        // {
-        //     auth = FirebaseAuth.DefaultInstance;
-        //     auth.StateChanged += AuthStateChanged;
-        // }
-        //
-        // private void AuthStateChanged(object sender, System.EventArgs eventArgs)
-        // {
-        //     if (auth.CurrentUser != user)
-        //     {
-        //         user = auth.CurrentUser;
-        //         if (user != null)
-        //         {
-        //             Debug.Log("Firebase User ID: " + user.UserId);
-        //         }
-        //     }
-        // }
+        private void InitializeFirebase()
+        {
+            auth = FirebaseAuth.DefaultInstance;
+            auth.StateChanged += AuthStateChanged;
+        }
+
+        private void AuthStateChanged(object sender, System.EventArgs eventArgs)
+        {
+            if (auth.CurrentUser != user)
+            {
+                user = auth.CurrentUser;
+                if (user != null)
+                {
+                    Debug.Log("Firebase User ID: " + user.UserId);
+                }
+            }
+        }
 
         private async void HandleLobbyHeartbeat()
         {
