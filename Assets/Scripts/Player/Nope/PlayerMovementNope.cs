@@ -134,7 +134,7 @@ namespace ITKombat
             anim.SetBool("isRun", false);
 
 
-            if (Input.GetAxisRaw("Horizontal") < 0)
+            if (moveLeft || Input.GetAxisRaw("Horizontal") < 0)
             {
                 direction = -1;
                 moveVelocity = Vector3.left;
@@ -144,7 +144,7 @@ namespace ITKombat
                     anim.SetBool("isRun", true);
 
             }
-            if (Input.GetAxisRaw("Horizontal") > 0)
+            if (moveRight || Input.GetAxisRaw("Horizontal") > 0)
             {
                 direction = 1;
                 moveVelocity = Vector3.right;
@@ -154,6 +154,31 @@ namespace ITKombat
             }
             transform.position += moveVelocity * movePower * Time.deltaTime;
         }
+
+        // Button Inputs
+        public void MoveLeft()
+        {
+            moveLeft = true;
+            direction = -1;
+        }
+
+        public void StopMoveLeft()
+        {
+            moveLeft = false;
+        }
+
+        public void MoveRight()
+        {
+            moveRight = true;
+            direction = 1;
+        }
+
+        public void StopMoveRight()
+        {
+            moveRight= false;
+        }
+
+        // Dash mechanics
 
 
         private NetworkVariable<MyCustomData> randomNumber = new NetworkVariable<MyCustomData>(
