@@ -23,6 +23,16 @@ public class PlayerAttackTestNope : NetworkBehaviour
     // Animator
     private Animator animator;
 
+    // Audio sources for punch sounds
+    public AudioSource punchSound1;
+    public AudioSource punchSound2;
+    public AudioSource punchSound3;
+    public AudioSource punchSound4;
+
+    // Audio sources for crouch and crouch attack
+    public AudioSource crouchSound;
+    public AudioSource crouchAttackSound;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -43,11 +53,13 @@ public class PlayerAttackTestNope : NetworkBehaviour
     {
         return isCrouching;
     }
+
     public void StartCrouch()
     {
         if (!isCrouching)
         {
             isCrouching = true;
+            PlaySound(crouchSound);  // Play crouch sound
             isCrouchInitiated = true;
             animator.SetTrigger("startCrouch"); 
             Debug.Log("Player started crouching.");
@@ -76,7 +88,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
 
     public void PerformAttack()
     {
-        if (!isCrouching) // debug
+        if (!isCrouching)
         {
             if (Time.time - timeSinceLastAttack <= cooldown && combo < maxCombo)
             {
@@ -102,7 +114,6 @@ public class PlayerAttackTestNope : NetworkBehaviour
             Debug.Log("Player performed attack " + combo);
             TriggerAttackAnimation();
         }
-
     }
 
     public void PerformCrouchAttack()
@@ -110,6 +121,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
         if (isCrouching)
         {
             Debug.Log("Crouch Attack triggered!");
+            PlaySound(crouchAttackSound);  // Play crouch attack sound
             animator.SetTrigger("crouchAttack");
 
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
@@ -143,20 +155,32 @@ public class PlayerAttackTestNope : NetworkBehaviour
         {
             case 1:
                 Debug.Log("Attack 1 triggered");
+                PlaySound(punchSound1);
                 animator.SetTrigger("attack1");
                 break;
             case 2:
                 Debug.Log("Attack 2 triggered");
+                PlaySound(punchSound2);
                 animator.SetTrigger("attack2");
                 break;
             case 3:
                 Debug.Log("Attack 3 triggered");
+                PlaySound(punchSound3);
                 animator.SetTrigger("attack3");
                 break;
             case 4:
                 Debug.Log("Attack 4 triggered");
+                PlaySound(punchSound4);
                 animator.SetTrigger("attack4");
                 break;
+        }
+    }
+
+    private void PlaySound(AudioSource sound)
+    {
+        if (sound != null)
+        {
+            sound.Play();
         }
     }
 
