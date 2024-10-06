@@ -4,9 +4,7 @@ using ITKombat;
 public class GameManagerButton : MonoBehaviour
 {
     [SerializeField] 
-    private PlayerAttackTestNope playerAttack;
-    [SerializeField] 
-    private PlayerMovementNope playerMovement; //untuk movement code
+    private PlayerAttackTestNope playerAttack; 
     
     public void OnCrouchButtonDown()
     {

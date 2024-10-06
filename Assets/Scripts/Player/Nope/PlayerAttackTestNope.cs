@@ -60,8 +60,8 @@ public class PlayerAttackTestNope : NetworkBehaviour
         {
             isCrouching = false;
             isCrouchInitiated = false;
-            animator.SetBool("isCrouching", false); // Hentikan animasi crouch dan kembali ke idle
-            animator.SetTrigger("standUp"); // Memicu animasi berdiri
+            animator.SetBool("isCrouching", false);
+            animator.SetTrigger("standUp"); 
             Debug.Log("Player stopped crouching.");
         }
     }
@@ -70,7 +70,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
     {
         if (isCrouchInitiated)
         {
-            animator.SetBool("isCrouching", true); // Bertahan dalam posisi crouch
+            animator.SetBool("isCrouching", true); 
         }
     }
 
@@ -112,7 +112,6 @@ public class PlayerAttackTestNope : NetworkBehaviour
             Debug.Log("Crouch Attack triggered!");
             animator.SetTrigger("crouchAttack");
 
-            // Lakukan logika crouch attack
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
             foreach (Collider2D enemy in hitEnemies)
             {
