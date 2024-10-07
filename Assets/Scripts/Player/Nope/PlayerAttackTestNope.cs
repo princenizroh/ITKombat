@@ -1,92 +1,96 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class PlayerAttackTestNope : NetworkBehaviour
+namespace ITKombat
 {
-    public Transform attackPoint;
-    public float attackForce = 10f;
-    public float attackRadius = 1f;
-    public float attackCooldown = 0.5f; 
-    public int maxCombo = 4;
-    public LayerMask enemyLayer;
-
-    private int combo = 0;
-    public float cooldown = 0.5f; 
-    private float timeSinceLastAttack;
-
-    // Crouch state
-    private bool isCrouching = false;
-    private bool isCrouchInitiated = false;
-
-    // Animator
-    private Animator animator;
-
-    public AudioSource punchSound1;
-    public AudioSource punchSound2;
-    public AudioSource punchSound3;
-    public AudioSource punchSound4;
-
-    // Audio sources for crouch and crouch attack
-    public AudioSource crouchSound;
-    public AudioSource crouchAttackSound;
-
-    private void Awake()
+    public class PlayerAttackTestNope : NetworkBehaviour
     {
-        animator = GetComponent<Animator>();
-    }
+        public Transform attackPoint;
+        public float attackForce = 10f;
+        public float attackRadius = 1f;
+        public float attackCooldown = 0.5f;
+        public int maxCombo = 4;
+        public LayerMask enemyLayer;
 
-    private void Update()
-    {
-        if (!IsOwner) return;
-        if (Time.time - timeSinceLastAttack > cooldown)
+        private int combo = 0;
+        public float cooldown = 0.5f;
+        private float timeSinceLastAttack;
+
+        // Crouch state
+        private bool isCrouching = false;
+        private bool canCrouch = true; // Flag to control crouch ability
+
+        // Animator
+        private Animator animator;
+
+        public AudioSource punchSound1;
+        public AudioSource punchSound2;
+        public AudioSource punchSound3;
+        public AudioSource punchSound4;
+
+        // Audio source for crouch attack
+        public AudioSource crouchAttackSound;
+
+        private void Awake()
         {
-            combo = 0;
+            animator = GetComponent<Animator>();
         }
 
-        HandleMovementInput();
-    }
+        public void OnAttackButtonPressed()
+        {
+            if (IsOwner)
+            {
+                PerformAttack();
+            }
+        }
 
-    public bool IsCrouching()
-    {
-        return isCrouching;
-    }
+        public void OnCrouchButtonPressed()
+        {
+            if (IsOwner && canCrouch) // Only allow crouching if permitted
+            {
+                ToggleCrouch();
+            }
+        }
 
-    public void StartCrouch()
-    {
-        if (!isCrouching)
+        public void ToggleCrouch()
+        {
+            if (!isCrouching)
+            {
+                StartCrouch(); // Start crouch
+            }
+            else
+            {
+                StopCrouch(); // Stop crouch
+            }
+        }
+
+        private void StartCrouch()
         {
             isCrouching = true;
-            PlaySound(crouchSound); 
-            isCrouchInitiated = true;
-            animator.SetTrigger("CrouchDown"); 
+            animator.SetTrigger("Crouch");
             Debug.Log("Player started crouching.");
         }
-    }
 
-    public void StopCrouch()
-    {
-        if (isCrouching)
+        public void StopCrouch()
         {
             isCrouching = false;
-            isCrouchInitiated = false;
-            animator.SetTrigger("CrouchUp"); 
-            Debug.Log("Player stopped crouching.");
-        }
-    }
+            canCrouch = false;
+            animator.SetTrigger("Idle"); 
+            Debug.Log("Player stopped crouching and transitioned to Idle.");
 
-    public void ContinueCrouch()
-    {
-        if (isCrouchInitiated)
+            StartCoroutine(WaitForCrouchButtonPress());
+        }
+
+        private IEnumerator WaitForCrouchButtonPress()
         {
-            animator.SetTrigger("Crouch"); 
+            while (!canCrouch)
+            {
+                yield return null; // Wait for next frame
+            }
         }
-    }
 
-    public void PerformAttack()
-    {
-        if (!isCrouching)
+        public void PerformAttack()
         {
             if (Time.time - timeSinceLastAttack <= cooldown && combo < maxCombo)
             {
@@ -94,7 +98,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
             }
             else
             {
-                combo = 1; 
+                combo = 1;
             }
 
             timeSinceLastAttack = Time.time;
@@ -108,83 +112,80 @@ public class PlayerAttackTestNope : NetworkBehaviour
                     enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
                 }
             }
-
-            Debug.Log("Player performed attack " + combo);
             TriggerAttackAnimation();
         }
-    }
 
-    public void PerformCrouchAttack()
-    {
-        if (isCrouching)
+        public void PerformCrouchAttack()
         {
-            Debug.Log("Crouch Attack triggered!");
-            PlaySound(crouchAttackSound);
-            animator.SetTrigger("CrouchAttack");
-
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-            foreach (Collider2D enemy in hitEnemies)
+            if (isCrouching)
             {
-                Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                if (enemyRb != null)
+                Debug.Log("Crouch Attack triggered!");
+                PlaySound(crouchAttackSound);
+                animator.SetTrigger("CrouchAttack");
+
+                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
+                foreach (Collider2D enemy in hitEnemies)
                 {
-                    enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
+                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+                    if (enemyRb != null)
+                    {
+                        enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
+                    }
                 }
+                StartCoroutine(ReturnToCrouch());
             }
         }
-        else
+
+        private IEnumerator ReturnToCrouch()
         {
-            Debug.Log("Attack berdiri");
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+            StartCrouch();
         }
-    }
 
-    private void HandleMovementInput()
-    {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        animator.SetFloat("moveSpeed", Mathf.Abs(moveHorizontal)); 
-
-        Vector2 movement = new Vector2(moveHorizontal, 0);
-        transform.Translate(movement * Time.deltaTime);
-    }
-
-    private void TriggerAttackAnimation()
-    {
-        switch (combo)
+        private void TriggerAttackAnimation()
         {
-            case 1:
-                Debug.Log("Attack 1 triggered");
-                PlaySound(punchSound1);
-                animator.SetTrigger("attack1");
-                break;
-            case 2:
-                Debug.Log("Attack 2 triggered");
-                PlaySound(punchSound2);
-                animator.SetTrigger("attack2");
-                break;
-            case 3:
-                Debug.Log("Attack 3 triggered");
-                PlaySound(punchSound3);
-                animator.SetTrigger("attack3");
-                break;
-            case 4:
-                Debug.Log("Attack 4 triggered");
-                PlaySound(punchSound4);
-                animator.SetTrigger("attack4");
-                break;
+            switch (combo)
+            {
+                case 1:
+                    Debug.Log("Attack 1 triggered");
+                    PlaySound(punchSound1);
+                    animator.SetTrigger("attack1");
+                    break;
+                case 2:
+                    Debug.Log("Attack 2 triggered");
+                    PlaySound(punchSound2);
+                    animator.SetTrigger("attack2");
+                    break;
+                case 3:
+                    Debug.Log("Attack 3 triggered");
+                    PlaySound(punchSound3);
+                    animator.SetTrigger("attack3");
+                    break;
+                case 4:
+                    Debug.Log("Attack 4 triggered");
+                    PlaySound(punchSound4);
+                    animator.SetTrigger("attack4");
+                    break;
+            }
         }
-    }
 
-    private void PlaySound(AudioSource sound)
-    {
-        if (sound != null)
+        private void PlaySound(AudioSource sound)
         {
-            sound.Play();
+            if (sound != null)
+            {
+                sound.Play();
+            }
         }
-    }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null) return;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
+        private void OnDrawGizmosSelected()
+        {
+            if (attackPoint == null) return;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
+        }
+
+        public bool IsCrouching()
+        {
+            return isCrouching;
+        }
     }
 }

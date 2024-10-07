@@ -4,16 +4,13 @@ namespace ITKombat
 {
     public class PlayerSkill : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
-        
-        }
+        public new string name;
+        public float cooldownTime;
+        public float activeTime;
 
-        // Update is called once per frame
-        void Update()
-        {
+        public virtual void Activate(GameObject parent) { }
+        public virtual void BeginCooldown(GameObject parent) { }
         
-        }
+        
     }
 }

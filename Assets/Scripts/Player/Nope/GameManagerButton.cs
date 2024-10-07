@@ -11,6 +11,7 @@ public class GameManagerButton : MonoBehaviour
 
     private void Update() // Debug
     {
+        // Handle attack input directly via the 'P' key for debugging
         if (Input.GetKey(KeyCode.P) && playerAttack != null && !playerAttack.IsCrouching())
         {
             playerAttack.PerformAttack();
@@ -18,21 +19,13 @@ public class GameManagerButton : MonoBehaviour
         }
     }
 
-    public void OnCrouchButtonDown()
+    // Method to toggle crouch
+    public void OnCrouchButton()
     {
         if (playerAttack != null)
         {
-            Debug.Log("Mulai crouch");
-            playerAttack.StartCrouch();
-        }
-    }
-
-    public void OnCrouchButtonUp()
-    {
-        if (playerAttack != null)
-        {
-            Debug.Log("Crouch berhenti");
-            playerAttack.StopCrouch();
+            Debug.Log("Toggling crouch");
+            playerAttack.ToggleCrouch(); // Toggle crouch on button press
         }
     }
 
@@ -43,22 +36,26 @@ public class GameManagerButton : MonoBehaviour
             Debug.Log("Attack");
             playerAttack.PerformAttack();
         }
-    }
-
-    public void CrouchAttackButton()
-    {
-        if (playerAttack != null)
-        {
-            Debug.Log("Crouch attack");
-            playerAttack.PerformCrouchAttack();
-        }
         else
         {
             Debug.LogWarning("PlayerAttackTestNope belum diassign!");
         }
     }
 
-    // Button untuk movement
+    public void CrouchAttackButton()
+    {
+        if (playerAttack != null && playerAttack.IsCrouching())
+        {
+            Debug.Log("Crouch attack");
+            playerAttack.PerformCrouchAttack();
+        }
+        else
+        {
+            Debug.LogWarning("Crouch attack not allowed!");
+        }
+    }
+
+    // Movement methods
     public void RightInputButtonDown()
     {
         if (playerMovement != null)

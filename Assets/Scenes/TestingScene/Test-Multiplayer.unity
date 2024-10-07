@@ -5940,18 +5940,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1433186302}
-        m_TargetAssemblyTypeName: PlayerAttackTestNope, Assembly-CSharp
-        m_MethodName: PerformAttack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1912940541}
         m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
         m_MethodName: AttackButton
@@ -5964,9 +5952,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1433186302}
-        m_TargetAssemblyTypeName: PlayerAttackTestNope, Assembly-CSharp
-        m_MethodName: PerformCrouchAttack
+      - m_Target: {fileID: 1912940541}
+        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+        m_MethodName: CrouchAttackButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5976,9 +5964,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: CrouchAttackButton
+      - m_Target: {fileID: 1433186302}
+        m_TargetAssemblyTypeName: PlayerAttackTestNope, Assembly-CSharp
+        m_MethodName: PerformAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1433186302}
+        m_TargetAssemblyTypeName: ITKombat.PlayerAttackTestNope, Assembly-CSharp
+        m_MethodName: PerformCrouchAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11078,19 +11078,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1912940541}
         m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: OnCrouchButtonUp
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: OnCrouchButtonDown
+        m_MethodName: OnCrouchButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11103,30 +11091,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1433186302}
         m_TargetAssemblyTypeName: PlayerAttackTestNope, Assembly-CSharp
         m_MethodName: StartCrouch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1433186302}
-        m_TargetAssemblyTypeName: PlayerAttackTestNope, Assembly-CSharp
-        m_MethodName: PerformCrouchAttack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: CrouchAttackButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13431,7 +13395,7 @@ Transform:
   m_GameObject: {fileID: 1360733415}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.42427766, y: 3.5778048, z: 10.45}
+  m_LocalPosition: {x: 0.42427763, y: 3.5778048, z: 10.45}
   m_LocalScale: {x: 8.1357, y: 11.086518, z: 8.1357}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21122,6 +21086,10 @@ PrefabInstance:
       propertyPath: walkButtonKanan
       value: 
       objectReference: {fileID: 249038115}
+    - target: {fileID: 4500182446757838894, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.8
@@ -21243,6 +21211,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: ground
+      value: 
+      objectReference: {fileID: 1557411955}
+    - target: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: runSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -21257,6 +21229,10 @@ PrefabInstance:
     - target: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: dashSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: jumpPower
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Enabled

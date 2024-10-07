@@ -12,12 +12,18 @@ namespace ITKombat
         [SerializeField] private Transform spawnedObjectPrefab;
         private Transform spawnedObjectTransform;
         [SerializeField] private float movePower = 5f;
+        [SerializeField] private float jumpPower = 5f;  // Added jump power
         public float dashSpeed;
         private bool moveLeft = false; 
         private bool moveRight = false;  
         private int direction = 1; 
+        private bool isJumping = false; 
+        private bool isGrounded = false; 
+        private bool isDashing = false;
         private Animator anim;
         private Rigidbody2D rb;
+
+        [SerializeField] private GameObject ground; 
 
         public static event EventHandler OnAnyPlayerSpawned;
 
@@ -31,11 +37,17 @@ namespace ITKombat
         {
             if (!IsOwner) return;
 
+            HandleInput();
+
             if (IsServer)
             {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             }
+            Run(); 
+        }
 
+        private void HandleInput() // New method to handle input
+        {
             if (Input.GetKeyDown(KeyCode.T))
             {
                 spawnedObjectTransform = Instantiate(spawnedObjectPrefab);
@@ -48,8 +60,6 @@ namespace ITKombat
                 spawnedObjectTransform.GetComponent<NetworkObject>().Despawn(true);
                 Destroy(spawnedObjectTransform.gameObject);
             }
-            
-            Run();
         }
 
         private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
@@ -62,38 +72,51 @@ namespace ITKombat
 
         private void Run()
         {
+            if (isJumping || isDashing) return;  
             Vector3 moveVelocity = Vector3.zero;
             anim.ResetTrigger("Dash"); 
-            anim.ResetTrigger("Jump"); 
-            anim.SetTrigger("Walk"); 
 
             if (moveLeft || Input.GetAxisRaw("Horizontal") < 0)
             {
-                direction = -1;
+                if (direction != -1)
+                {
+                    direction = -1;
+                    Flip();
+                }
                 moveVelocity = Vector3.left;
-
-                transform.localScale = new Vector3(direction, 1, 1);
+                anim.SetTrigger("Walk"); 
             }
 
             if (moveRight || Input.GetAxisRaw("Horizontal") > 0)
             {
-                direction = 1;
+                if (direction != 1)
+                {
+                    direction = 1;
+                    Flip();
+                }
                 moveVelocity = Vector3.right;
-
-                transform.localScale = new Vector3(direction, 1, 1);
+                anim.SetTrigger("Walk");
             }
 
-            // Ensure player moves only when there's velocity
             if (moveVelocity != Vector3.zero)
             {
                 transform.position += moveVelocity * movePower * Time.deltaTime;
             }
+            else if (isGrounded) 
+            {
+                anim.SetTrigger("Idle");
+            }
+        }
+
+        private void Flip()
+        {
+            transform.localScale = new Vector3(direction, 1, 1);
         }
 
         // Button Input Methods for Movement
         public void MoveLeft()
         {
-            anim.SetTrigger("Walk"); 
+            if (!isJumping && !isDashing) anim.SetTrigger("Walk"); 
             moveLeft = true;
             direction = -1;
         }
@@ -101,11 +124,12 @@ namespace ITKombat
         public void StopMoveLeft()
         {
             moveLeft = false;
+            if (!isJumping && !isDashing) anim.SetTrigger("Idle"); 
         }
 
         public void MoveRight()
         {
-            anim.SetTrigger("Walk"); 
+            if (!isJumping && !isDashing) anim.SetTrigger("Walk"); 
             moveRight = true;
             direction = 1;
         }
@@ -113,33 +137,49 @@ namespace ITKombat
         public void StopMoveRight()
         {
             moveRight = false;
+            if (!isJumping && !isDashing) anim.SetTrigger("Idle"); 
         }
 
         public void Dash()
         {
-            Vector3 dashVelocity = new Vector3(direction * dashSpeed, 0, 0);
-            rb.linearVelocity = dashVelocity; // Corrected from linearVelocity to velocity
-            Debug.Log("Player dashed " + (direction == 1 ? "right" : "left"));
-            anim.SetTrigger("Dash"); 
+            if (!isJumping && !isDashing)
+            {
+                isDashing = true;
+                Vector3 dashVelocity = new Vector3(direction * dashSpeed, 0, 0);
+                rb.linearVelocity = dashVelocity; 
+                anim.SetTrigger("Dash"); 
+                Debug.Log("Player dashed " + (direction == 1 ? "right" : "left"));
+                
+                StartCoroutine(EndDash());
+            }
+        }
+
+        private IEnumerator EndDash()
+        {
+            yield return new WaitForSeconds(0.2f); 
+            rb.linearVelocity = Vector2.zero; 
+            isDashing = false;
+            anim.SetTrigger("Idle");
         }
 
         public void JumpInput()
         {
-            bool isGrounded = true; // Placeholder for ground check logic
-            if (isGrounded)
+            if (isGrounded && !isJumping)
             {
                 Debug.Log("Player is jumping");
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f); 
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpPower); 
                 anim.SetTrigger("Jump"); 
+                isJumping = true;
+                isGrounded = false;
             }
         }
 
-        // Check for ground collision
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("Ground"))
+            if (collision.gameObject == ground) 
             {
-                // Player is on the ground, set animation to Idle
+                isGrounded = true;
+                isJumping = false;
                 anim.SetTrigger("Idle");
                 Debug.Log("Player touched the ground, set to Idle");
             }
