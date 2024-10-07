@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class GameManagerButton : MonoBehaviour
 {
-     [SerializeField] 
+    [SerializeField] 
     private PlayerAttackTestNope playerAttack; 
     [SerializeField] 
     private PlayerMovementNope playerMovement; 
 
-    private float lastTapTime = 0f;
-    private const float doubleTapDelay = 0.3f;
-
-    private void Update() //debug
+    private void Update() // Debug
     {
         if (Input.GetKey(KeyCode.P) && playerAttack != null && !playerAttack.IsCrouching())
         {
@@ -68,7 +65,6 @@ public class GameManagerButton : MonoBehaviour
         {
             Debug.Log("Moving right!");
             playerMovement.MoveRight();
-            HandleDash(true); 
         }
         else
         {
@@ -95,7 +91,6 @@ public class GameManagerButton : MonoBehaviour
         {
             Debug.Log("Moving left!");
             playerMovement.MoveLeft();
-            HandleDash(false); 
         }
         else
         {
@@ -116,25 +111,18 @@ public class GameManagerButton : MonoBehaviour
         }
     }
 
-    private void HandleDash(bool isRightButton)
+    // New Dash method
+    public void DashButton()
     {
-        float tapDelay = Time.time - lastTapTime;
-
-        if (tapDelay < doubleTapDelay)
+        if (playerMovement != null)
         {
-            if (isRightButton)
-            {
-                playerMovement.Dash(1); 
-                Debug.Log("Dash right!");
-            }
-            else
-            {
-                playerMovement.Dash(-1); 
-                Debug.Log("Dash left!");
-            }
+            playerMovement.Dash(); // Call the Dash method
+            Debug.Log("Player dashed!");
         }
-
-        lastTapTime = Time.time;
+        else
+        {
+            Debug.LogWarning("PlayerMovement belum diassign!");
+        }
     }
 
     public void OnJumpInput()

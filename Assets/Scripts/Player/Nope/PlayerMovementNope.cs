@@ -24,7 +24,7 @@ namespace ITKombat
         private void Start()
         {
             rb = GetComponent<Rigidbody2D>();
-            anim = GetComponent<Animator>(); // Initialize the animator
+            anim = GetComponent<Animator>(); 
         }
 
         void Update()
@@ -84,7 +84,12 @@ namespace ITKombat
                 if (!anim.GetBool("isJump"))
                     anim.SetBool("isRun", true);
             }
-            transform.position += moveVelocity * movePower * Time.deltaTime;
+
+            // Ensure player moves only when there's velocity
+            if (moveVelocity != Vector3.zero)
+            {
+                transform.position += moveVelocity * movePower * Time.deltaTime;
+            }
         }
 
         // Button Input Methods for Movement
@@ -110,24 +115,23 @@ namespace ITKombat
             moveRight = false;
         }
 
-        // Dash mechanics: use direction for dashing
-        [Obsolete]
-        public void Dash(int direction)
+        // New Dash method that uses current direction
+        public void Dash()
         {
             Vector3 dashVelocity = new Vector3(direction * dashSpeed, 0, 0);
-            rb.velocity = dashVelocity; // Use velocity instead of linearVelocity for dashing
+            rb.linearVelocity = dashVelocity; // Use velocity for dashing
             Debug.Log("Player dashed " + (direction == 1 ? "right" : "left"));
             anim.SetTrigger("Dash"); // Set the dash trigger
         }
 
-        [Obsolete]
+        // Jump method (still unchanged)
         public void JumpInput()
         {
             bool isGrounded = true; 
             if (isGrounded)
             {
                 Debug.Log("Player is jumping");
-                rb.velocity = new Vector2(rb.velocity.x, 5f); 
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f); 
                 anim.SetTrigger("Jump"); // Set the jump trigger
             }
         }
