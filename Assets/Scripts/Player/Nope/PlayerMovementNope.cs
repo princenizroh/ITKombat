@@ -45,6 +45,92 @@ namespace ITKombat
                 Debug.Log("Server disconnected");
             }
         }
+        private void TestingKey()
+        { 
+            if (Input.GetKey(KeyCode.Space))
+            {
+                JumpInput();
+                Debug.Log("Jump");
+            }
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                crouch = true;
+                Debug.Log("Crouch");
+            }
+            else
+            {
+                moveLeft = false;
+                moveRight = false;
+                crouch = false;
+            }
+        }
+
+        void Run()
+        {
+            Vector3 moveVelocity = Vector3.zero;
+            anim.SetBool("isRun", false);
+
+
+            if (moveLeft || Input.GetAxisRaw("Horizontal") < 0)
+            {
+                direction = -1;
+                moveVelocity = Vector3.left;
+
+                transform.localScale = new Vector3(direction, 1, 1);
+                if (!anim.GetBool("isJump"))
+                    anim.SetBool("isRun", true);
+
+            }
+            if (moveRight || Input.GetAxisRaw("Horizontal") > 0)
+            {
+                direction = 1;
+                moveVelocity = Vector3.right;
+
+                transform.localScale = new Vector3(direction, 1, 1);
+                if (!anim.GetBool("isJump"))anim.SetBool("isRun", true);
+            }
+            transform.position += moveVelocity * movePower * Time.deltaTime;
+        }
+
+        // Button Inputs
+        public void MoveLeft()
+        {
+            moveLeft = true;
+            direction = -1;
+        }
+
+        public void StopMoveLeft()
+        {
+            moveLeft = false;
+        }
+
+        public void MoveRight()
+        {
+            moveRight = true;
+            direction = 1;
+        }
+
+        public void StopMoveRight()
+        {
+            moveRight= false;
+        }
+
+        // Dash mechanics
+
+
+        private NetworkVariable<MyCustomData> randomNumber = new NetworkVariable<MyCustomData>(
+            new MyCustomData{
+              _int = 56,
+              _bool = true
+            }, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+        public override void OnNetworkSpawn()
+        {
+            randomNumber.OnValueChanged += (MyCustomData previousValue, MyCustomData newValue) =>
+            {
+                Debug.Log(OwnerClientId + "Random number changed from " + newValue._int+ " to " + newValue._bool + ";" + newValue.message);
+            };
+        }
 
         [ServerRpc]
         private void TestServerRpc(ServerRpcParams serverRpcParams)

@@ -21,11 +21,11 @@ public class PlayerMovement : MonoBehaviour
     private bool grounded;
 
     [Header("Dash Options")]
-    private bool canDash = true;
-    private bool isDashing;
-    private float dashingPower = 20f;
-    private float dashingTime = 0.2f;
-    private float dashingCooldown = 1f;
+    private bool isDashing = false;
+    private float dashPower = 20f;
+    private float dashTime = 0.2f;
+    private float lastTapTime = 0f;
+    private float dashTimeWindow = 0.2f;
 
     [SerializeField] private Animator animator;
     [SerializeField] private LayerMask groundLayer;
@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D player;
 
     //inputSystem script
+    public KeyCode key;
     PlayerControls controls;
 
     private void Awake()
@@ -43,6 +44,15 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.performed += info =>
         {
             direction = info.ReadValue<float>();
+
+            if (Mathf.Abs(direction) > 0 && Time.time - lastTapTime < dashTimeWindow && !isDashing)
+            {
+                Dash(new Vector2(direction, 0));
+            }
+            else
+            {
+                lastTapTime = Time.time;
+            }
         };
 
     }
@@ -54,14 +64,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (isDashing)
-        {
-            return;
-        }
         // Add directional velocity
         if (moveLeft)
         {
-
             transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
         }
 
@@ -75,53 +80,30 @@ public class PlayerMovement : MonoBehaviour
             canJump = true;
         }
 
-        // Masih on-going
-
-        controls.Player.Move.performed += ctx =>
-        {
-            if (ctx.interaction is MultiTapInteraction multiTap && canDash)
-            {
-                if (multiTap.tapCount == 2)
-                    {
-                        StartCoroutine(Dash());
-                        Debug.Log("Double-tap successfull");
-                    }
-            else
-                {
-                    Debug.Log("Double-tap is not successfull");
-                }
-            }
-        };
-
         // Check if player in ground or not to prevent spam
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
     }
 
     private void FixedUpdate()
     {
-        if (isDashing)
-        {
-            return;
-        }
-
         player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
     }
 
-    // Mekanik dash (tinggal dicoba aja pake key keyboard dulu)
-    private IEnumerator Dash()
+    void Dash(Vector2 direction)
     {
-        canDash = false;
+        if (!isDashing)
+        {
+            StartCoroutine(PerformDash(direction));
+        }
+    }
+
+    private IEnumerator PerformDash(Vector2 direction)
+    {
         isDashing = true;
-        animator.SetTrigger("isDashing");
-        float originalGravity = player.gravityScale;
-        player.gravityScale = 0f;
-        player.linearVelocity = new Vector2(transform.localScale.x * dashingPower, 0f);
-        yield return new WaitForSeconds(dashingTime);
-        player.gravityScale = originalGravity;
+        player.linearVelocity = direction * dashPower;
+        yield return new WaitForSeconds(1f);
         isDashing = false;
-        yield return new WaitForSeconds(dashingCooldown);
-        canDash = true;
+        player.linearVelocity = Vector2.zero;
     }
 
     // Mekanik jump sudah selesai
@@ -135,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
 
             Debug.Log("JUMPING!");
         }
-
     }
 
     IEnumerator JumpCooldown()
