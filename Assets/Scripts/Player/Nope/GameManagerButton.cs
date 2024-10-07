@@ -1,15 +1,18 @@
 using ITKombat;
 using Unity.VisualScripting;
 using UnityEngine;
-using ITKombat;
 
 public class GameManagerButton : MonoBehaviour
 {
+     [SerializeField] 
+    private PlayerAttackTestNope playerAttack; 
     [SerializeField] 
-    private PlayerAttackTestNope playerAttack;
-    private PlayerMovementNope playerMovement;
+    private PlayerMovementNope playerMovement; 
 
-    private void Update() //debug
+    private float lastTapTime = 0f;
+    private const float doubleTapDelay = 0.3f;
+
+    private void Update() 
     {
         if (Input.GetKey(KeyCode.P) && playerAttack != null && !playerAttack.IsCrouching())
         {
@@ -18,7 +21,6 @@ public class GameManagerButton : MonoBehaviour
         }
     }
 
-    // Memulai crouch saat tombol ditekan
     public void OnCrouchButtonDown()
     {
         if (playerAttack != null)
@@ -27,11 +29,12 @@ public class GameManagerButton : MonoBehaviour
             playerAttack.StartCrouch();
         }
     }
+
     public void OnCrouchButtonUp()
     {
         if (playerAttack != null)
         {
-            Debug.Log("coruch berhenti");
+            Debug.Log("Crouch berhenti");
             playerAttack.StopCrouch();
         }
     }
@@ -49,7 +52,7 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerAttack != null)
         {
-            Debug.Log("Crouh attack");
+            Debug.Log("Crouch attack");
             playerAttack.PerformCrouchAttack();
         }
         else
@@ -65,6 +68,7 @@ public class GameManagerButton : MonoBehaviour
         {
             Debug.Log("Moving right!");
             playerMovement.MoveRight();
+            HandleDash(true); 
         }
         else
         {
@@ -82,7 +86,6 @@ public class GameManagerButton : MonoBehaviour
         else
         {
             Debug.LogWarning("PlayerMovement belum diassign!");
-
         }
     }
 
@@ -92,6 +95,7 @@ public class GameManagerButton : MonoBehaviour
         {
             Debug.Log("Moving left!");
             playerMovement.MoveLeft();
+            HandleDash(false); 
         }
         else
         {
@@ -112,7 +116,27 @@ public class GameManagerButton : MonoBehaviour
         }
     }
 
-    // Button untuk jump
+    private void HandleDash(bool isRightButton)
+    {
+        float tapDelay = Time.time - lastTapTime;
+
+        if (tapDelay < doubleTapDelay)
+        {
+            if (isRightButton)
+            {
+                playerMovement.Dash(1); 
+                Debug.Log("Dash right!");
+            }
+            else
+            {
+                playerMovement.Dash(-1); 
+                Debug.Log("Dash left!");
+            }
+        }
+
+        lastTapTime = Time.time;
+    }
+
     public void OnJumpInput()
     {
         if (playerMovement != null)

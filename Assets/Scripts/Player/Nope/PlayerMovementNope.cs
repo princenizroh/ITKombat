@@ -11,9 +11,19 @@ namespace ITKombat
     {
         [SerializeField] private Transform spawnedObjectPrefab;
         private Transform spawnedObjectTransform;
+        [SerializeField] private float movePower = 5f;
+        private bool moveLeft = false; 
+        private bool moveRight = false;  
+        private int direction = 1; 
+        private Animator anim;
 
         public static event EventHandler OnAnyPlayerSpawned;
 
+        private float dashTime = 0.2f; 
+        public float dashSpeed = 15f; 
+        private bool isDashing = false;
+        private float lastDashTime = 0; 
+        private int dashDirection = 0;
 
         void Update()
         {
@@ -36,6 +46,16 @@ namespace ITKombat
                 spawnedObjectTransform.GetComponent<NetworkObject>().Despawn(true);
                 Destroy(spawnedObjectTransform.gameObject);
             }
+
+            if (!isDashing)
+            {
+                TestingKey();
+                Run();
+            }
+            else
+            {
+                PerformDash();
+            }
         }
 
         private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
@@ -45,31 +65,34 @@ namespace ITKombat
                 Debug.Log("Server disconnected");
             }
         }
+
         private void TestingKey()
-        { 
+        {
             if (Input.GetKey(KeyCode.Space))
             {
                 JumpInput();
                 Debug.Log("Jump");
             }
-            else if (Input.GetKey(KeyCode.LeftControl))
-            {
-                crouch = true;
-                Debug.Log("Crouch");
-            }
             else
             {
                 moveLeft = false;
                 moveRight = false;
-                crouch = false;
             }
         }
 
-        void Run()
+// Update the JumpInput method to be public
+        public void JumpInput()
+        {
+            bool isGrounded = true; 
+            if (isGrounded)
+            {
+                Debug.Log("Player is jumping");
+            }
+        }
+        private void Run()
         {
             Vector3 moveVelocity = Vector3.zero;
             anim.SetBool("isRun", false);
-
 
             if (moveLeft || Input.GetAxisRaw("Horizontal") < 0)
             {
@@ -79,16 +102,18 @@ namespace ITKombat
                 transform.localScale = new Vector3(direction, 1, 1);
                 if (!anim.GetBool("isJump"))
                     anim.SetBool("isRun", true);
-
             }
+
             if (moveRight || Input.GetAxisRaw("Horizontal") > 0)
             {
                 direction = 1;
                 moveVelocity = Vector3.right;
 
                 transform.localScale = new Vector3(direction, 1, 1);
-                if (!anim.GetBool("isJump"))anim.SetBool("isRun", true);
+                if (!anim.GetBool("isJump"))
+                    anim.SetBool("isRun", true);
             }
+
             transform.position += moveVelocity * movePower * Time.deltaTime;
         }
 
@@ -116,7 +141,27 @@ namespace ITKombat
         }
 
         // Dash mechanics
+        public void Dash(int direction)
+        {
+            float dashSpeed = 10f; 
+            Vector3 dashVelocity = new Vector3(direction * dashSpeed, 0, 0);
+            transform.position += dashVelocity * Time.deltaTime;
+            Debug.Log("Player dashed " + (direction == 1 ? "right" : "left"));
+        }
 
+        private void PerformDash()
+        {
+            float dashDuration = Time.time - lastDashTime;
+            if (dashDuration < dashTime)
+            {
+                Vector3 dashVelocity = new Vector3(dashDirection * dashSpeed, 0, 0);
+                transform.position += dashVelocity * Time.deltaTime;
+            }
+            else
+            {
+                isDashing = false; 
+            }
+        }
 
         private NetworkVariable<MyCustomData> randomNumber = new NetworkVariable<MyCustomData>(
             new MyCustomData{
@@ -128,7 +173,7 @@ namespace ITKombat
         {
             randomNumber.OnValueChanged += (MyCustomData previousValue, MyCustomData newValue) =>
             {
-                Debug.Log(OwnerClientId + "Random number changed from " + newValue._int+ " to " + newValue._bool + ";" + newValue.message);
+                Debug.Log(OwnerClientId + "Random number changed from " + newValue._int + " to " + newValue._bool + ";" + newValue.message);
             };
         }
 
