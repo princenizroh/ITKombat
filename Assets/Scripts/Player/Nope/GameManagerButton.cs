@@ -12,7 +12,7 @@ public class GameManagerButton : MonoBehaviour
     private float lastTapTime = 0f;
     private const float doubleTapDelay = 0.3f;
 
-    private void Update() 
+    private void Update() //debug
     {
         if (Input.GetKey(KeyCode.P) && playerAttack != null && !playerAttack.IsCrouching())
         {

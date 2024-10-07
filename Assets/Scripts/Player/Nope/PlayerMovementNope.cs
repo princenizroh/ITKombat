@@ -12,18 +12,20 @@ namespace ITKombat
         [SerializeField] private Transform spawnedObjectPrefab;
         private Transform spawnedObjectTransform;
         [SerializeField] private float movePower = 5f;
+        public float dashSpeed;
         private bool moveLeft = false; 
         private bool moveRight = false;  
         private int direction = 1; 
         private Animator anim;
+        private Rigidbody2D rb;
 
         public static event EventHandler OnAnyPlayerSpawned;
 
-        private float dashTime = 0.2f; 
-        public float dashSpeed = 15f; 
-        private bool isDashing = false;
-        private float lastDashTime = 0; 
-        private int dashDirection = 0;
+        private void Start()
+        {
+            rb = GetComponent<Rigidbody2D>();
+            anim = GetComponent<Animator>(); // Initialize the animator
+        }
 
         void Update()
         {
@@ -46,16 +48,8 @@ namespace ITKombat
                 spawnedObjectTransform.GetComponent<NetworkObject>().Despawn(true);
                 Destroy(spawnedObjectTransform.gameObject);
             }
-
-            if (!isDashing)
-            {
-                TestingKey();
-                Run();
-            }
-            else
-            {
-                PerformDash();
-            }
+            
+            Run();
         }
 
         private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
@@ -66,33 +60,10 @@ namespace ITKombat
             }
         }
 
-        private void TestingKey()
-        {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                JumpInput();
-                Debug.Log("Jump");
-            }
-            else
-            {
-                moveLeft = false;
-                moveRight = false;
-            }
-        }
-
-// Update the JumpInput method to be public
-        public void JumpInput()
-        {
-            bool isGrounded = true; 
-            if (isGrounded)
-            {
-                Debug.Log("Player is jumping");
-            }
-        }
         private void Run()
         {
             Vector3 moveVelocity = Vector3.zero;
-            anim.SetBool("isRun", false);
+            anim.SetBool("isRun", false); // Reset run animation
 
             if (moveLeft || Input.GetAxisRaw("Horizontal") < 0)
             {
@@ -113,11 +84,10 @@ namespace ITKombat
                 if (!anim.GetBool("isJump"))
                     anim.SetBool("isRun", true);
             }
-
             transform.position += moveVelocity * movePower * Time.deltaTime;
         }
 
-        // Button Inputs
+        // Button Input Methods for Movement
         public void MoveLeft()
         {
             moveLeft = true;
@@ -137,32 +107,32 @@ namespace ITKombat
 
         public void StopMoveRight()
         {
-            moveRight= false;
+            moveRight = false;
         }
 
-        // Dash mechanics
+        // Dash mechanics: use direction for dashing
+        [Obsolete]
         public void Dash(int direction)
         {
-            float dashSpeed = 10f; 
             Vector3 dashVelocity = new Vector3(direction * dashSpeed, 0, 0);
-            transform.position += dashVelocity * Time.deltaTime;
+            rb.velocity = dashVelocity; // Use velocity instead of linearVelocity for dashing
             Debug.Log("Player dashed " + (direction == 1 ? "right" : "left"));
+            anim.SetTrigger("Dash"); // Set the dash trigger
         }
 
-        private void PerformDash()
+        [Obsolete]
+        public void JumpInput()
         {
-            float dashDuration = Time.time - lastDashTime;
-            if (dashDuration < dashTime)
+            bool isGrounded = true; 
+            if (isGrounded)
             {
-                Vector3 dashVelocity = new Vector3(dashDirection * dashSpeed, 0, 0);
-                transform.position += dashVelocity * Time.deltaTime;
-            }
-            else
-            {
-                isDashing = false; 
+                Debug.Log("Player is jumping");
+                rb.velocity = new Vector2(rb.velocity.x, 5f); 
+                anim.SetTrigger("Jump"); // Set the jump trigger
             }
         }
 
+        // Network Variables and Events
         private NetworkVariable<MyCustomData> randomNumber = new NetworkVariable<MyCustomData>(
             new MyCustomData{
               _int = 56,
@@ -173,16 +143,16 @@ namespace ITKombat
         {
             randomNumber.OnValueChanged += (MyCustomData previousValue, MyCustomData newValue) =>
             {
-                Debug.Log(OwnerClientId + "Random number changed from " + newValue._int + " to " + newValue._bool + ";" + newValue.message);
+                Debug.Log(OwnerClientId + " Random number changed from " + newValue._int + " to " + newValue._bool + "; " + newValue.message);
             };
         }
 
         [ServerRpc]
         private void TestServerRpc(ServerRpcParams serverRpcParams)
         {
-            Debug.Log("Server RPC called" + OwnerClientId + ";" + serverRpcParams.Receive.SenderClientId);
+            Debug.Log("Server RPC called by client: " + serverRpcParams.Receive.SenderClientId);
         }
-        
+
         [ClientRpc]
         private void TestClientRpc(ClientRpcParams clientRpcParams)
         {
