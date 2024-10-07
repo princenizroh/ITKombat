@@ -23,7 +23,6 @@ public class PlayerAttackTestNope : NetworkBehaviour
     // Animator
     private Animator animator;
 
-    // Audio sources for punch sounds
     public AudioSource punchSound1;
     public AudioSource punchSound2;
     public AudioSource punchSound3;
@@ -59,9 +58,9 @@ public class PlayerAttackTestNope : NetworkBehaviour
         if (!isCrouching)
         {
             isCrouching = true;
-            PlaySound(crouchSound);  // Play crouch sound
+            PlaySound(crouchSound); 
             isCrouchInitiated = true;
-            animator.SetTrigger("startCrouch"); 
+            animator.SetTrigger("CrouchDown"); 
             Debug.Log("Player started crouching.");
         }
     }
@@ -72,8 +71,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
         {
             isCrouching = false;
             isCrouchInitiated = false;
-            animator.SetBool("isCrouching", false);
-            animator.SetTrigger("standUp"); 
+            animator.SetTrigger("CrouchUp"); 
             Debug.Log("Player stopped crouching.");
         }
     }
@@ -82,7 +80,7 @@ public class PlayerAttackTestNope : NetworkBehaviour
     {
         if (isCrouchInitiated)
         {
-            animator.SetBool("isCrouching", true); 
+            animator.SetTrigger("Crouch"); 
         }
     }
 
@@ -121,8 +119,8 @@ public class PlayerAttackTestNope : NetworkBehaviour
         if (isCrouching)
         {
             Debug.Log("Crouch Attack triggered!");
-            PlaySound(crouchAttackSound);  // Play crouch attack sound
-            animator.SetTrigger("crouchAttack");
+            PlaySound(crouchAttackSound);
+            animator.SetTrigger("CrouchAttack");
 
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
             foreach (Collider2D enemy in hitEnemies)

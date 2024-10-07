@@ -63,7 +63,9 @@ namespace ITKombat
         private void Run()
         {
             Vector3 moveVelocity = Vector3.zero;
-            anim.SetBool("isRun", false); // Reset run animation
+            anim.ResetTrigger("Dash"); 
+            anim.ResetTrigger("Jump"); 
+            anim.SetTrigger("Walk"); 
 
             if (moveLeft || Input.GetAxisRaw("Horizontal") < 0)
             {
@@ -71,8 +73,6 @@ namespace ITKombat
                 moveVelocity = Vector3.left;
 
                 transform.localScale = new Vector3(direction, 1, 1);
-                if (!anim.GetBool("isJump"))
-                    anim.SetBool("isRun", true);
             }
 
             if (moveRight || Input.GetAxisRaw("Horizontal") > 0)
@@ -81,8 +81,6 @@ namespace ITKombat
                 moveVelocity = Vector3.right;
 
                 transform.localScale = new Vector3(direction, 1, 1);
-                if (!anim.GetBool("isJump"))
-                    anim.SetBool("isRun", true);
             }
 
             // Ensure player moves only when there's velocity
@@ -95,6 +93,7 @@ namespace ITKombat
         // Button Input Methods for Movement
         public void MoveLeft()
         {
+            anim.SetTrigger("Walk"); 
             moveLeft = true;
             direction = -1;
         }
@@ -106,6 +105,7 @@ namespace ITKombat
 
         public void MoveRight()
         {
+            anim.SetTrigger("Walk"); 
             moveRight = true;
             direction = 1;
         }
@@ -115,28 +115,36 @@ namespace ITKombat
             moveRight = false;
         }
 
-        // New Dash method that uses current direction
         public void Dash()
         {
             Vector3 dashVelocity = new Vector3(direction * dashSpeed, 0, 0);
-            rb.linearVelocity = dashVelocity; // Use velocity for dashing
+            rb.linearVelocity = dashVelocity; // Corrected from linearVelocity to velocity
             Debug.Log("Player dashed " + (direction == 1 ? "right" : "left"));
-            anim.SetTrigger("Dash"); // Set the dash trigger
+            anim.SetTrigger("Dash"); 
         }
 
-        // Jump method (still unchanged)
         public void JumpInput()
         {
-            bool isGrounded = true; 
+            bool isGrounded = true; // Placeholder for ground check logic
             if (isGrounded)
             {
                 Debug.Log("Player is jumping");
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5f); 
-                anim.SetTrigger("Jump"); // Set the jump trigger
+                anim.SetTrigger("Jump"); 
             }
         }
 
-        // Network Variables and Events
+        // Check for ground collision
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Ground"))
+            {
+                // Player is on the ground, set animation to Idle
+                anim.SetTrigger("Idle");
+                Debug.Log("Player touched the ground, set to Idle");
+            }
+        }
+
         private NetworkVariable<MyCustomData> randomNumber = new NetworkVariable<MyCustomData>(
             new MyCustomData{
               _int = 56,
