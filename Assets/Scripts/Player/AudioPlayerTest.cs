@@ -11,9 +11,6 @@ namespace ITKombat
         private AudioSource currentWalkSound;
         public AudioSource jumpSound;
         public AudioSource blockSound;
-        public AudioSource skillSound1;
-        public AudioSource skillSound2;
-        public AudioSource skillSound3;
 
         // Player object dan tracking untuk punch
         public GameObject player;
@@ -60,21 +57,6 @@ namespace ITKombat
         public void PlayBlockSound()
         {
             PlaySound(blockSound);
-        }
-
-        public void PlaySkill1Sound()
-        {
-            PlaySound(skillSound1);
-        }
-
-        public void PlaySkill2Sound()
-        {
-            PlaySound(skillSound2);
-        }
-
-        public void PlaySkill3Sound()
-        {
-            PlaySound(skillSound3);
         }
 
         private void PlaySound(AudioSource sound)

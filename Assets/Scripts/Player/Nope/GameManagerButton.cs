@@ -7,25 +7,29 @@ public class GameManagerButton : MonoBehaviour
     [SerializeField] 
     private PlayerAttackTestNope playerAttack; 
     [SerializeField] 
-    private PlayerMovementNope playerMovement; 
+    private PlayerMovementNope playerMovement;
+    [SerializeField] 
+    private PlayerSkill playerSkill; 
 
-    private void Update() // Debug
-    {
-        // Handle attack input directly via the 'P' key for debugging
-        if (Input.GetKey(KeyCode.P) && playerAttack != null && !playerAttack.IsCrouching())
-        {
-            playerAttack.PerformAttack();
-            Debug.Log("Attack");
-        }
-    }
+    // Track crouch state
+    private bool isCrouching = false;
 
-    // Method to toggle crouch
-    public void OnCrouchButton()
+    public void CrouchButtonPressed()
     {
         if (playerAttack != null)
         {
-            Debug.Log("Toggling crouch");
-            playerAttack.ToggleCrouch(); // Toggle crouch on button press
+            if (isCrouching)
+            {
+                Debug.Log("Stopping crouch");
+                playerAttack.StopCrouch();
+            }
+            else
+            {
+                Debug.Log("Starting crouch");
+                playerAttack.StartCrouch();
+            }
+            // Toggle crouch state
+            isCrouching = !isCrouching;
         }
     }
 
@@ -33,39 +37,17 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerAttack != null)
         {
-            Debug.Log("Attack");
+            Debug.Log("Regular attack");
             playerAttack.PerformAttack();
         }
-        else
-        {
-            Debug.LogWarning("PlayerAttackTestNope belum diassign!");
-        }
     }
 
-    public void CrouchAttackButton()
-    {
-        if (playerAttack != null && playerAttack.IsCrouching())
-        {
-            Debug.Log("Crouch attack");
-            playerAttack.PerformCrouchAttack();
-        }
-        else
-        {
-            Debug.LogWarning("Crouch attack not allowed!");
-        }
-    }
-
-    // Movement methods
     public void RightInputButtonDown()
     {
         if (playerMovement != null)
         {
             Debug.Log("Moving right!");
             playerMovement.MoveRight();
-        }
-        else
-        {
-            Debug.LogWarning("PlayerMovement belum diassign!");
         }
     }
 
@@ -76,10 +58,6 @@ public class GameManagerButton : MonoBehaviour
             Debug.Log("Stop moving right!");
             playerMovement.StopMoveRight();
         }
-        else
-        {
-            Debug.LogWarning("PlayerMovement belum diassign!");
-        }
     }
 
     public void LeftInputButtonDown()
@@ -88,10 +66,6 @@ public class GameManagerButton : MonoBehaviour
         {
             Debug.Log("Moving left!");
             playerMovement.MoveLeft();
-        }
-        else
-        {
-            Debug.LogWarning("PlayerMovement belum diassign!");
         }
     }
 
@@ -102,23 +76,14 @@ public class GameManagerButton : MonoBehaviour
             Debug.Log("Stop moving left!");
             playerMovement.StopMoveLeft();
         }
-        else
-        {
-            Debug.LogWarning("PlayerMovement belum diassign!");
-        }
     }
 
-    // New Dash method
     public void DashButton()
     {
         if (playerMovement != null)
         {
-            playerMovement.Dash(); // Call the Dash method
+            playerMovement.Dash(); 
             Debug.Log("Player dashed!");
-        }
-        else
-        {
-            Debug.LogWarning("PlayerMovement belum diassign!");
         }
     }
 
@@ -129,9 +94,32 @@ public class GameManagerButton : MonoBehaviour
             Debug.Log("Jumping!");
             playerMovement.JumpInput();
         }
-        else
+    }
+
+    public void Skill1Button()
+    {
+        if (playerSkill != null)
         {
-            Debug.LogWarning("PlayerMovement belum diassign!");
+            Debug.Log("Skill 1 triggered");
+            playerSkill.Skill1(); 
+        }
+    }
+
+    public void Skill2Button()
+    {
+        if (playerSkill != null)
+        {
+            Debug.Log("Skill 2 triggered");
+            playerSkill.Skill2(); 
+        }
+    }
+
+    public void Skill3Button()
+    {
+        if (playerSkill != null)
+        {
+            Debug.Log("Skill 3 triggered");
+            playerSkill.Skill3();
         }
     }
 }

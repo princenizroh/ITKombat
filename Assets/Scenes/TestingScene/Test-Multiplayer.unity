@@ -3028,9 +3028,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1662991108}
-        m_TargetAssemblyTypeName: ITKombat.AudioPlayerTest, Assembly-CSharp
-        m_MethodName: PlaySkill2Sound
+      - m_Target: {fileID: 1912940541}
+        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+        m_MethodName: Skill2Button
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5954,7 +5954,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1912940541}
         m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: CrouchAttackButton
+        m_MethodName: CrouchAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11078,7 +11078,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1912940541}
         m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: OnCrouchButton
+        m_MethodName: CrouchButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13236,9 +13236,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1662991108}
-        m_TargetAssemblyTypeName: ITKombat.AudioPlayerTest, Assembly-CSharp
-        m_MethodName: PlaySkill1Sound
+      - m_Target: {fileID: 1912940541}
+        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+        m_MethodName: Skill1Button
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14621,9 +14621,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1662991108}
-        m_TargetAssemblyTypeName: ITKombat.AudioPlayerTest, Assembly-CSharp
-        m_MethodName: PlaySkill3Sound
+      - m_Target: {fileID: 1912940541}
+        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+        m_MethodName: Skill3Button
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16180,9 +16180,6 @@ MonoBehaviour:
   walkSoundScene2: {fileID: 0}
   jumpSound: {fileID: 1338119735}
   blockSound: {fileID: 1338119736}
-  skillSound1: {fileID: 1193784788}
-  skillSound2: {fileID: 1193784790}
-  skillSound3: {fileID: 1193784789}
   player: {fileID: 674444972}
 --- !u!1 &1665327491
 GameObject:
@@ -18644,6 +18641,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAttack: {fileID: 1433186302}
   playerMovement: {fileID: 1433186315}
+  playerSkill: {fileID: 2786425133770990246}
 --- !u!1 &1926056791
 GameObject:
   m_ObjectHideFlags: 0
@@ -21264,12 +21262,30 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1433186314}
+    - targetCorrespondingSourceObject: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2786425133770990246}
   m_SourcePrefab: {fileID: 100100000, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
 --- !u!95 &2786425133770990245 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4500182446757838894, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
   m_PrefabInstance: {fileID: 2786425133770990244}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2786425133770990246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674444972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillSound1: {fileID: 1193784788}
+  skillSound2: {fileID: 1193784790}
+  skillSound3: {fileID: 1193784789}
 --- !u!4 &4138214344174465825 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4138214344127816119, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
