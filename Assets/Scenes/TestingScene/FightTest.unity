@@ -310,7 +310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &114309602
 Transform:
   m_ObjectHideFlags: 0
@@ -378,29 +378,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c188e2d80f05c304c81f97b3d330e690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkButton: {fileID: 0}
-  jumpButton: {fileID: 0}
-  crouchButton: {fileID: 0}
-  blockButton: {fileID: 0}
-  punchButton: {fileID: 0}
-  dashButton: {fileID: 0}
-  skillButton1: {fileID: 0}
-  skillButton2: {fileID: 0}
-  skillButton3: {fileID: 0}
   walkSoundScene1: {fileID: 0}
   walkSoundScene2: {fileID: 0}
   jumpSound: {fileID: 0}
-  crouchSound: {fileID: 0}
-  fallSound: {fileID: 0}
   blockSound: {fileID: 0}
-  punchSound1: {fileID: 0}
-  punchSound2: {fileID: 0}
-  punchSound3: {fileID: 0}
-  punchSound4: {fileID: 0}
   skillSound1: {fileID: 0}
   skillSound2: {fileID: 0}
   skillSound3: {fileID: 0}
-  dashSound: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &114309606
 MonoBehaviour:
@@ -441,17 +425,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   spawnedObjectPrefab: {fileID: 114309602}
-  moveSpeed: 100
-  direction: 0
-  crouch: 0
-  jumpForce: 5
-  jumpCooldown: 0
   movePower: 10
-  boxSize: {x: 0, y: 0}
-  castDistance: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  dashSpeed: 0
 --- !u!61 &114309608
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1667,7 +1642,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &998248397
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4766,29 +4741,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c188e2d80f05c304c81f97b3d330e690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkButton: {fileID: 0}
-  jumpButton: {fileID: 0}
-  crouchButton: {fileID: 0}
-  blockButton: {fileID: 0}
-  punchButton: {fileID: 0}
-  dashButton: {fileID: 0}
-  skillButton1: {fileID: 0}
-  skillButton2: {fileID: 0}
-  skillButton3: {fileID: 0}
   walkSoundScene1: {fileID: 0}
   walkSoundScene2: {fileID: 0}
   jumpSound: {fileID: 0}
-  crouchSound: {fileID: 0}
-  fallSound: {fileID: 0}
   blockSound: {fileID: 0}
-  punchSound1: {fileID: 0}
-  punchSound2: {fileID: 0}
-  punchSound3: {fileID: 0}
-  punchSound4: {fileID: 0}
   skillSound1: {fileID: 0}
   skillSound2: {fileID: 0}
   skillSound3: {fileID: 0}
-  dashSound: {fileID: 0}
   player: {fileID: 0}
 --- !u!114 &7989457576205335399
 MonoBehaviour:
@@ -4802,15 +4761,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad0b754420a3a4140a7e6c1d88e554b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 5
   moveSpeed: 40
   direction: 0
-  jumpCooldown: 2
   crouch: 0
-  dashSpeed: 10
-  dashDuration: 0.2
-  dashCooldown: 1
+  jumpForce: 5
+  jumpCooldown: 2
+  groundCheckRadius: 1
   animator: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheck: {fileID: 0}
+  player: {fileID: 0}
+  key: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
