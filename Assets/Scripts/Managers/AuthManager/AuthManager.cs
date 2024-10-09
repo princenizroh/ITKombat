@@ -11,6 +11,7 @@ namespace ITKombat
 {
     public class AuthManager : MonoBehaviour
     {
+        public static AuthManager instance;
         //Firebase variables
         [Header("Firebase")]
         public FirebaseUser User;
