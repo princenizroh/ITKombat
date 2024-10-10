@@ -1,63 +1,13 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-
-// public class AI_Attack : MonoBehaviour
-// {
-//     public float attackRange = 2.5f;         // Range within which the enemy can attack
-//     // public float attackCooldown = 0.5f;    // Cooldown between attacks
-//     public float attackForce = 20f;
-//     // private float nextAttackTime = 0f;     // Time when the enemy can attack again
-//     public float currentCombo = 0;
-//     private Transform player;
-//     private Rigidbody2D playerRigidbody;
-    
-//     void Start()
-//     {
-//         player = GameObject.FindGameObjectWithTag("Player").transform;
-//         playerRigidbody = player.GetComponent<Rigidbody2D>();
-//     }
-
-//     void Update()
-//     {
-//         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-//         if (distanceToPlayer <= attackRange)
-//         {
-//             Attack();
-//             // nextAttackTime = Time.time + attackCooldown; 
-//         }
-//     }
-
-//     void Attack()
-//     {
-//         // Trigger a random attack
-//         Debug.Log("Enemy performs attack: Attack" + currentCombo);
-//         currentCombo ++;
-//         Knockback();
-//     }
-
-//     void Knockback()
-//     {
-//         if (playerRigidbody != null)
-//         {
-//             Vector2 knockbackDirection = (player.position - transform.position).normalized;
-//             playerRigidbody.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
-//             Debug.Log("Player hit");
-//         }
-//     }
-// }
-
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AI_Attack : MonoBehaviour
 {
-    public float attackRange = 2.5f;         // Range within which the enemy can attack
+    public float attackRange = 3f;         // Range within which the enemy can attack
     public float attackForce = 30f;          // Knockback force
-    public float attackCooldown = 2f;      // Cooldown between each attack
-    public float comboResetTime = 4f;        // Cooldown after completing the combo
+    public float attackCooldown = 1f;      // Cooldown between each attack
+    public float comboResetTime = 1.5f;        // Cooldown after completing the combo
     public int maxCombo = 4;                 // Maximum combo count
     public bool canAttack = true;           // Can the AI attack
 
@@ -84,12 +34,7 @@ public class AI_Attack : MonoBehaviour
         {
             Attack();
         }
-
         // Stop movement if currently attacking
-        if (!canAttack)
-        {
-            aiMovement.StopMovement();
-        }
     }
 
     void Attack()
@@ -111,7 +56,12 @@ public class AI_Attack : MonoBehaviour
             }
             else
             {
-                StartCoroutine(AttackCooldown());
+                if (Vector2.Distance(transform.position, player.position) > attackRange){
+                    StartCoroutine(ComboCooldown());
+                }
+                else{
+                    StartCoroutine(AttackCooldown());
+                }
             }
         }
     }
@@ -121,8 +71,8 @@ public class AI_Attack : MonoBehaviour
         if (playerRigidbody != null)
         {
             Vector2 knockbackDirection = (player.position - transform.position).normalized;
-            playerRigidbody.velocity = Vector2.zero;
-            playerRigidbody.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
+            // playerRigidbody.velocity = Vector2.zero;
+            playerRigidbody.AddForce(knockbackDirection * (50*attackForce), ForceMode2D.Force);
             Debug.Log("Player hit by knockback");
         }
     }

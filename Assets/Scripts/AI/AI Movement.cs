@@ -77,8 +77,10 @@ public class AI_Movement : MonoBehaviour
 
     void Update()
     {
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
         // Check if the AI is within attack range or currently attacking
-        if (Vector2.Distance(transform.position, player.position) > aiAttack.attackRange && aiAttack.canAttack)
+        if (distanceToPlayer > aiAttack.attackRange)
         {
             MoveTowardsPlayer();
         }
@@ -91,7 +93,7 @@ public class AI_Movement : MonoBehaviour
     public void StopMovement()
     {
         // Stop the AI movement
-        myRigidbody.velocity = Vector2.zero;
+        myRigidbody.linearVelocity = Vector2.zero;
     }
 
     void MoveTowardsPlayer()
@@ -103,7 +105,7 @@ public class AI_Movement : MonoBehaviour
             Flip();
         }
 
-        myRigidbody.velocity = new Vector2(direction.x * moveSpeed, myRigidbody.velocity.y);
+        myRigidbody.linearVelocity = new Vector2(direction.x * moveSpeed, myRigidbody.linearVelocity.y);
     }
 
     void Flip()

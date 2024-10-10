@@ -37,7 +37,7 @@ namespace ITKombat
         }
 
         private void HandleMovement(float horizontal){
-            m_RigidBody.velocity = new Vector2(horizontal * movementSpeed, m_RigidBody.velocity.y);
+            m_RigidBody.linearVelocity = new Vector2(horizontal * movementSpeed, m_RigidBody.linearVelocity.y);
         }
         
         private void flip(float horizontal){
