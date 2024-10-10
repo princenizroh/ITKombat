@@ -18,7 +18,7 @@ public class CharacterController2D : MonoBehaviour
     private bool m_Grounded;            // Whether or not the player is grounded.
     const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
     private Rigidbody2D m_Rigidbody2D;
-    private bool m_FacingRight = true;  // For determining which way the player is currently facing.
+    public bool m_FacingRight = true;  // For determining which way the player is currently facing.
     private Vector3 m_Velocity = Vector3.zero;
     private bool m_wasCrouching = false;
 
@@ -61,6 +61,7 @@ public class CharacterController2D : MonoBehaviour
             if (colliders[i].gameObject != gameObject)
             {
                 m_Grounded = true;
+                Debug.Log("The " + gameObject.name + " is grounded");
                 if (!wasGrounded)
                     OnLandEvent.Invoke();
             }
@@ -130,13 +131,13 @@ public class CharacterController2D : MonoBehaviour
             if (move > 0 && !m_FacingRight)
             {
                 // ... flip the player.
-                Flip();
+                Flip(move);
             }
             // Otherwise if the input is moving the player left and the player is facing right...
             else if (move < 0 && m_FacingRight)
             {
                 // ... flip the player.
-                Flip();
+                Flip(move);
             }
         }
     }
@@ -147,19 +148,52 @@ public class CharacterController2D : MonoBehaviour
         if (m_Grounded && jump)
         {
             // Add a vertical force to the player.
+            Debug.Log("The " + gameObject.name + " is jumping");
             m_Grounded = false;
             m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
         }
     }
 
-    private void Flip()
+    private void Flip(float move)
     {
-        // Switch the way the player is labelled as facing.
-        m_FacingRight = !m_FacingRight;
+        if (m_FacingRight && move < 0f || !m_FacingRight && move > 0f)
+        {
+            Debug.Log("Flipping character...");
+            Debug.Log("Current facing direction: " + (m_FacingRight ? "Right" : "Left"));
+            // Switch the way the player is labelled as facing.
 
-        // Multiply the player's x local scale by -1.
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+            m_FacingRight = !m_FacingRight;
+            Debug.Log("New facing direction: " + (m_FacingRight ? "Right" : "Left"));
+
+            // Multiply the player's x local scale by -1.
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
+        }
+    }
+
+    public void Dash(float dashSpeed, float dashDuration)
+    {
+        Debug.Log("Dashing...");
+        Debug.Log("Current facing direction: " + (m_FacingRight ? "Right" : "Left"));
+
+        // Apply dash velocity
+        float dashDirection = m_FacingRight ? 1f : -1f;
+        Debug.Log("Dash direction: " + dashDirection);
+
+        Vector3 dashVelocity = new Vector2(dashSpeed * dashDirection, m_Rigidbody2D.linearVelocity.y);
+        m_Rigidbody2D.linearVelocity = dashVelocity;
+
+        Flip(dashSpeed);
+        // Optionally, stop the dash after a short duration
+        StartCoroutine(StopDashAfterDuration(dashDuration));
+    }
+
+    private IEnumerator StopDashAfterDuration(float duration)
+    {
+        Debug.Log("Dash on cooldown!");
+        yield return new WaitForSeconds(duration);
+        // Stop dash after duration
+        m_Rigidbody2D.linearVelocity = new Vector2(0, m_Rigidbody2D.linearVelocity.y);
     }
 }

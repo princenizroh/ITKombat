@@ -9,7 +9,7 @@ public class GameManagerButtonBastest : MonoBehaviour
     [SerializeField] 
     private PlayerMovementBastest playerMovement;
     [SerializeField] 
-    private PlayerSkill playerSkill; 
+    private SkillsHolder playerSkill; 
 
     // Track crouch state
     private bool isCrouching = false;
@@ -78,30 +78,30 @@ public class GameManagerButtonBastest : MonoBehaviour
         }
     }
 
-/*    public void DashButton()
+    public void DashButton()
     {
         if (playerMovement != null)
         {
-            playerMovement.Dash(); 
+            playerMovement.OnDash();
             Debug.Log("Player dashed!");
         }
-    }*/
+    }
 
-/*    public void OnJumpInput()
+    public void OnJumpInput()
     {
         if (playerMovement != null)
         {
             Debug.Log("Jumping!");
-            playerMovement.JumpInput();
+            playerMovement.OnJump();
         }
-    }*/
+    }
 
     public void Skill1Button()
     {
         if (playerSkill != null)
         {
             Debug.Log("Skill 1 triggered");
-            playerSkill.Skill1(); 
+            playerSkill.ActivateSkill(0); 
         }
     }
 
@@ -110,7 +110,7 @@ public class GameManagerButtonBastest : MonoBehaviour
         if (playerSkill != null)
         {
             Debug.Log("Skill 2 triggered");
-            playerSkill.Skill2(); 
+            playerSkill.ActivateSkill(1); 
         }
     }
 
@@ -119,7 +119,7 @@ public class GameManagerButtonBastest : MonoBehaviour
         if (playerSkill != null)
         {
             Debug.Log("Skill 3 triggered");
-            playerSkill.Skill3();
+            playerSkill.ActivateSkill(2);
         }
     }
 }

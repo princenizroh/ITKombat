@@ -8,15 +8,16 @@ using UnityEngine.InputSystem;
 public class PlayerDefense : MonoBehaviour
 {
     [Header("Defense Settings")]
-    public float parryWindow = 0.2f;
     public float blockCooldown = 1.0f;
-
     private bool isBlocking = false;
-    private bool isParrying = false;
-    private bool canParry = false;
+
 
     [Header("Parry Settings")]
+    public float parryWindow = 0.2f;
     public int parryDamage = 10;
+    private float lastBlockTime = -1f;
+    private bool canParry = false;
+    private bool isParrying = false;
 
     [Header("Colliders")]
     public Transform defensePoint;
@@ -55,12 +56,14 @@ public class PlayerDefense : MonoBehaviour
     public void StartBlocking()
     {
         isBlocking = true;
+        lastBlockTime = Time.time;
         Debug.Log(gameObject.name + " started blocking.");
     }
 
     public void EndBlocking()
     {
         isBlocking = false;
+        isParrying = false; // Reset parry ketika block selesai
         Debug.Log(gameObject.name + " stopped blocking.");
     }
 
@@ -80,6 +83,12 @@ public class PlayerDefense : MonoBehaviour
                     // Block the attack succesfully
                     Debug.Log(gameObject.name + " blocked the attack.");
                     BlockSuccess(collision);
+
+                    // Check jika parry bisa dilakukan saat dalam jangka parry window
+                    if (Time.time - lastBlockTime <= parryWindow)
+                    {
+                        PerformParry(collision);
+                    }
                 }
                 else
                 {
@@ -101,6 +110,26 @@ public class PlayerDefense : MonoBehaviour
         Destroy(attack.gameObject);
     }
     
+    private void PerformParry(Collider2D attack)
+    {
+        isParrying = true;
+        Debug.Log("Perfect parry! PUKULIN!");
+
+        //Memberikan damage saat parry
+        //Note tambahan: Jadi di bagian bawah ini, masih dalam review
+        //Soalnya, variable attack di PlayerAttack.cs belum kedefine
+        PlayerAttack enemyAttack = attack.gameObject.GetComponent<PlayerAttack>();
+        if (enemyAttack != null)
+        {
+            HealthBar enemyHealth = enemyAttack.GetComponent<HealthBar>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.TakeDamage(parryDamage);
+                Debug.Log("Enemy took " + parryDamage + " damage from parry!");
+            }
+        }
+    }
+
     // Logic for taking damage
     public void TakeDamage(int damageAmount)
     {
