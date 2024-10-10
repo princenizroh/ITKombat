@@ -130,8 +130,8 @@ namespace ITKombat
 
         public void SaveDataButton()
         {
-            StartCoroutine(UpdateUsernameAuth(usernameText.text));
-            StartCoroutine(UpdateUsernameDatabase(usernameText.text));
+            // StartCoroutine(UpdateUsernameAuth(usernameText.text));
+            // StartCoroutine(UpdateUsernameDatabase(usernameText.text));
             StartCoroutine(UpdateLevel());
             StartCoroutine(UpdateKtm());
             StartCoroutine(UpdateDanus());
@@ -192,7 +192,8 @@ namespace ITKombat
 
                 yield return new WaitForSeconds(2);
 
-                usernameText.text = User.DisplayName;
+                DatabaseManager.instance.usernameText.text = User.DisplayName;
+                DatabaseManager.instance.playerEmailText.text = User.Email;
                 // LoginPageUIManager.instance.UserDataScreen();
                 confirmLoginText.text = "";
                 ClearLoginFields();

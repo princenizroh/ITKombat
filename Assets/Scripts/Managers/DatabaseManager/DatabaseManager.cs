@@ -16,13 +16,15 @@ namespace ITKombat
         public string level;
         public string ktm;
         public string danus; 
+        public string email;
 
-        public PlayerDatas(string _username, string _level, string _ktm, string _danus)
+        public PlayerDatas(string _username, string _level, string _ktm, string _danus, string _email)
         {
             this.username = _username;
             this.level = _level;
             this.ktm = _ktm;
             this.danus = _danus;
+            this.email = _email;
         }
     }
     public class DatabaseManager : MonoBehaviour
@@ -68,7 +70,7 @@ namespace ITKombat
             InitializeFirebase();
         }
 
-        public void UpdateUIFromInspector()
+        public void UpdateSaveUIFromInspector()
         {
             if (PlayerDatas != null)
             {
@@ -76,13 +78,23 @@ namespace ITKombat
                 levelText.text = PlayerDatas.level;
                 ktmText.text = PlayerDatas.ktm;
                 danusText.text = PlayerDatas.danus;
+                playerEmailText.text = PlayerDatas.email;
+            }
+
+            if (ProfileData != null)
+            {
+                playerExpText.text = ProfileData.playerExp.ToString();
+                playerLevelText.text = ProfileData.playerLevel.ToString();
+                playerRankText.text = ProfileData.playerRank;
+                sk2pmText.text = ProfileData.sk2pm.ToString();
             }
         }
+
 
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            UpdateUIFromInspector();
+            UpdateSaveUIFromInspector();
         }
 #endif
 
@@ -99,21 +111,21 @@ namespace ITKombat
 
         public void SaveDataButton()
         {
-            PlayerDatas = new PlayerDatas(usernameText.text, levelText.text, ktmText.text, danusText.text);
+            PlayerDatas = new PlayerDatas(usernameText.text, levelText.text, ktmText.text, danusText.text, playerEmailText.text);
             // PlayerData = new PlayerData(playerUsernameText.text, playerPasswordText.text, playerEmailText.text);
             ProfileData = new ProfileData(int.Parse(playerExpText.text), int.Parse(playerLevelText.text), playerRankText.text, int.Parse(sk2pmText.text));
-            StartCoroutine(UpdateUserData(usernameText.text, levelText.text, ktmText.text, danusText.text));
+            StartCoroutine(UpdateUserData(usernameText.text, levelText.text, ktmText.text, danusText.text, playerEmailText.text));
             // StartCoroutine(CreatePlayerData(playerUsernameText.text, playerPasswordText.text, playerEmailText.text));
             StartCoroutine(CreateProfileData(AuthManager.instance.User.UserId, int.Parse(playerExpText.text), int.Parse(playerLevelText.text), playerRankText.text, int.Parse(sk2pmText.text)));
         }
 
 #region Send Data
         
-        private IEnumerator UpdateUserData(string username, string level, string ktm, string danus)
+        private IEnumerator UpdateUserData(string username, string level, string ktm, string danus, string email)
         {
             // Get the user id
             string userId = AuthManager.instance.User.UserId;
-            PlayerDatas playerDatas = new PlayerDatas(username, level, ktm, danus);
+            PlayerDatas playerDatas = new PlayerDatas(username, level, ktm, danus, email);
 
             string json = JsonUtility.ToJson(playerDatas);
             Task DBTask = DBreference.Child("players").Child(userId).SetRawJsonValueAsync(json);
@@ -129,27 +141,27 @@ namespace ITKombat
             }
         }
         // Membuat data player saat registrasi
-        public IEnumerator CreatePlayerData(string username, string password, string email)
-        {
-            string playerId = DBreference.Push().Key;
-
-            PlayerData playerData = new PlayerData(username, password, email);
-
-            string json = JsonUtility.ToJson(playerData);
-
-            Task DBTask = DBreference.Child("players").Child(playerId).SetRawJsonValueAsync(json);
-
-            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-            if (DBTask.Exception != null)
-            {
-                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-            }
-            else
-            {
-                Debug.Log("Player data created successfully");
-            }
-        }
+        // public IEnumerator CreatePlayerData(string username, string password, string email)
+        // {
+        //     string playerId = DBreference.Push().Key;
+        //
+        //     PlayerData playerData = new PlayerData(username, password, email);
+        //
+        //     string json = JsonUtility.ToJson(playerData);
+        //
+        //     Task DBTask = DBreference.Child("players").Child(playerId).SetRawJsonValueAsync(json);
+        //
+        //     yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+        //
+        //     if (DBTask.Exception != null)
+        //     {
+        //         Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+        //     }
+        //     else
+        //     {
+        //         Debug.Log("Player data created successfully");
+        //     }
+        // }
 
         // Membuat data profile saat registrasi
         public IEnumerator CreateProfileData(string playerId, int profileExp, int playerLevel, string playerRank, int sk2pm)
@@ -271,6 +283,7 @@ namespace ITKombat
                 levelText.text = "1";
                 ktmText.text = "0";
                 danusText.text = "0";
+                playerEmailText.text = AuthManager.instance.User.Email;
             }
             else
             {
@@ -280,7 +293,9 @@ namespace ITKombat
                 levelText.text = snapshot.Child("level").Value.ToString();
                 ktmText.text = snapshot.Child("ktm").Value.ToString();
                 danusText.text = snapshot.Child("danus").Value.ToString();
+                playerEmailText.text = snapshot.Child("email").Value.ToString();
 
+                Debug.Log("Snapshot" + snapshot.GetRawJsonValue());
             }
         }
 
@@ -311,6 +326,7 @@ namespace ITKombat
                 playerLevelText.text = snapshot.Child("player_level").Value.ToString();
                 playerRankText.text = snapshot.Child("player_rank_sk2pm").Value.ToString();
                 sk2pmText.text = snapshot.Child("sk2pm").Value.ToString();
+                Debug.Log("Snapshot" + snapshot.GetRawJsonValue());
             }
         }
 #endregion
