@@ -7,15 +7,15 @@ namespace ITKombat
     public class PlayerData
     {
         [field: Tooltip("The player's data.")]
-        [field: SerializeField] public string player_id { get; private set; }
-        [field: SerializeField] public string username { get; private set; }
-        [field: SerializeField] public string email{ get; private set; }
+        public string username;
+        public string password;
+        public string email;
         // [field: SerializeField] public int registration_date { get; private set; }
         //
-        public PlayerData(string _player_id, string _username, string _email)
+        public PlayerData(string _username, string _password, string _email)
         {
-            this.player_id = _player_id;
             this.username = _username;
+            this.password = _password;
             this.email = _email;
             // this.registration_date = _registration_date;
         }
