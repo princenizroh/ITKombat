@@ -21,15 +21,11 @@ public class PlayerMovement : MonoBehaviour
     private bool grounded;
 
     [Header("Dash Options")]
-    private bool canDash = true;
-    private bool isDashing;
-    private float dashingPower = 20f;
-    private float dashingTime = 0.2f;
-    private float dashingCooldown = 1f;
-    private float dashStartTime = 0f;
-    private float dashTime;
-    private float lastDashTime;
-    private Vector2 dashDirection;
+    private bool isDashing = false;
+    private float dashPower = 20f;
+    private float dashTime = 0.2f;
+    private float lastTapTime = 0f;
+    private float dashTimeWindow = 0.2f;
 
     [SerializeField] private Animator animator;
     [SerializeField] private LayerMask groundLayer;
@@ -48,6 +44,15 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Move.performed += info =>
         {
             direction = info.ReadValue<float>();
+
+            if (Mathf.Abs(direction) > 0 && Time.time - lastTapTime < dashTimeWindow && !isDashing)
+            {
+                Dash(new Vector2(direction, 0));
+            }
+            else
+            {
+                lastTapTime = Time.time;
+            }
         };
 
     }
@@ -59,17 +64,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-/*        if (isDashing)
-        {
-            if (Time.time >= dashingTime)
-            {
-                EndDash();
-            }
-        }*/
         // Add directional velocity
         if (moveLeft)
         {
-
             transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
         }
 
@@ -83,33 +80,8 @@ public class PlayerMovement : MonoBehaviour
             canJump = true;
         }
 
-        // Masih on-going
-
-/*        controls.Player.Move.performed += ctx =>
-        {
-            if (ctx.interaction is MultiTapInteraction multiTap && canDash)
-            {
-                if (multiTap.tapCount == 2)
-                    {
-                        StartCoroutine(Dash());
-                        Debug.Log("Double-tap successfull");
-                    }
-            else
-                {
-                    Debug.Log("Double-tap is not successfull");
-                }
-            }
-        };*/
-/*
-        if (Input.GetKey(key) && canDash)
-        {
-            Debug.Log("Dash!");
-            StartDash();
-        }*/
-
         // Check if player in ground or not to prevent spam
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
     }
 
     private void FixedUpdate()
@@ -117,36 +89,22 @@ public class PlayerMovement : MonoBehaviour
         player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
     }
 
-    // Mekanik dash (tinggal dicoba aja pake key keyboard dulu)
-/*    private void StartDash()
+    void Dash(Vector2 direction)
+    {
+        if (!isDashing)
+        {
+            StartCoroutine(PerformDash(direction));
+        }
+    }
+
+    private IEnumerator PerformDash(Vector2 direction)
     {
         isDashing = true;
-        canDash = false;
-
-        dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-    
-        if (dashDirection ==  Vector2.zero)
-        {
-            dashDirection = new Vector2(transform.localScale.x, 0);
-        }
-
-        player.linearVelocity = dashDirection * dashingPower;
-        dashTime = Time.time + dashingTime;
-        lastDashTime = Time.time;
-    }
-
-    private void EndDash()
-    {
+        player.linearVelocity = direction * dashPower;
+        yield return new WaitForSeconds(1f);
         isDashing = false;
         player.linearVelocity = Vector2.zero;
-
-        Invoke(nameof(ResetDash), dashingCooldown);
     }
-
-    private void ResetDash()
-    {
-        canDash = true;*/
-/*    }*/
 
     // Mekanik jump sudah selesai
     public void JumpInput()
@@ -159,7 +117,6 @@ public class PlayerMovement : MonoBehaviour
 
             Debug.Log("JUMPING!");
         }
-
     }
 
     IEnumerator JumpCooldown()

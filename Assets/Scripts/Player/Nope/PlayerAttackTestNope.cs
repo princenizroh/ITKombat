@@ -1,169 +1,155 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class PlayerAttackTestNope : NetworkBehaviour
+namespace ITKombat
 {
-    public Transform attackPoint;
-    public float attackForce = 10f;
-    public float attackRadius = 1f;
-    public float attackCooldown = 0.5f; 
-    public int maxCombo = 4;
-    public LayerMask enemyLayer;
-
-    private int combo = 0;
-    public float cooldown = 0.5f; 
-    private float timeSinceLastAttack;
-
-    // Crouch state
-    private bool isCrouching = false;
-    private bool isCrouchInitiated = false;
-
-    // Animator
-    private Animator animator;
-
-    private void Awake()
+    public class PlayerAttackTestNope : NetworkBehaviour
     {
-        animator = GetComponent<Animator>();
-    }
+        public Transform attackPoint;
+        public float attackForce = 10f;
+        public float attackRadius = 1f;
+        public float attackCooldown = 0.5f;
+        public int maxCombo = 4;
+        public LayerMask enemyLayer;
+        private int combo = 0;
+        private float timeSinceLastAttack;
+        private bool isCrouching = false;
 
-    private void Update()
-    {
-        if (!IsOwner) return;
-        if (Time.time - timeSinceLastAttack > cooldown)
+        // Animator
+        private Animator animator;
+
+        // Audio sources for normal attacks
+        public AudioSource punchSound1;
+        public AudioSource punchSound2;
+        public AudioSource punchSound3;
+        public AudioSource punchSound4;
+
+        private void Awake()
         {
-            combo = 0;
+            animator = GetComponent<Animator>();
         }
 
-        HandleMovementInput();
-    }
-
-    public bool IsCrouching()
-    {
-        return isCrouching;
-    }
-    public void StartCrouch()
-    {
-        if (!isCrouching)
+        public void OnAttackButtonPressed()
         {
-            isCrouching = true;
-            isCrouchInitiated = true;
-            animator.SetTrigger("startCrouch"); 
-            Debug.Log("Player started crouching.");
-        }
-    }
-
-    public void StopCrouch()
-    {
-        if (isCrouching)
-        {
-            isCrouching = false;
-            isCrouchInitiated = false;
-            animator.SetBool("isCrouching", false); // Hentikan animasi crouch dan kembali ke idle
-            animator.SetTrigger("standUp"); // Memicu animasi berdiri
-            Debug.Log("Player stopped crouching.");
-        }
-    }
-
-    public void ContinueCrouch()
-    {
-        if (isCrouchInitiated)
-        {
-            animator.SetBool("isCrouching", true); // Bertahan dalam posisi crouch
-        }
-    }
-
-    public void PerformAttack()
-    {
-        if (!isCrouching) // debug
-        {
-            if (Time.time - timeSinceLastAttack <= cooldown && combo < maxCombo)
+            if (IsOwner)
             {
+                PerformAttack();
+            }
+        }
+
+        public void StartCrouch()
+        {
+            if (animator != null && !isCrouching)
+            {
+                animator.SetTrigger("Crouch");
+                isCrouching = true;
+                Debug.Log("Player started crouching.");
+            }
+        }
+
+        public void StopCrouch()
+        {
+            if (animator != null && isCrouching)
+            {
+                isCrouching = false;
+                animator.SetTrigger("Idle");
+                Debug.Log("Player stopped crouching.");
+            }
+        }
+
+        public bool IsCrouching()
+        {
+            return isCrouching;
+        }
+
+        public void PerformAttack()
+        {
+            // Check if cooldown is exceeded
+            if (Time.time - timeSinceLastAttack > attackCooldown)
+            {
+                // Reset combo if cooldown has passed
                 combo++;
+                if (combo > maxCombo)
+                {
+                    combo = 1; // Reset to the first attack if it exceeds maxCombo
+                }
+
+                timeSinceLastAttack = Time.time; // Update the time of the last attack
+
+                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
+                foreach (Collider2D enemy in hitEnemies)
+                {
+                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+                    if (enemyRb != null)
+                    {
+                        enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
+                    }
+                }
+
+                // Call the attack animation based on the current combo
+                AttackAnimation();
+
+                Debug.Log("Performed attack.");
             }
             else
             {
-                combo = 1; 
+                // If cooldown hasn't passed, go idle
+                animator.SetTrigger("Idle");
+                Debug.Log("Cooldown not exceeded, going to idle.");
             }
+        }
 
-            timeSinceLastAttack = Time.time;
-
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-            foreach (Collider2D enemy in hitEnemies)
+        private void AttackAnimation()
+        {
+            switch (combo)
             {
-                Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                if (enemyRb != null)
-                {
-                    enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
-                }
+                case 1:
+                    PlaySound(punchSound1);
+                    animator.SetTrigger("attack1");
+                    StartCoroutine(ResetToIdleAfterTime(1f)); // Durasi 1 detik untuk animasi attack 1
+                    Debug.Log("Attack 1 triggered");
+                    break;
+                case 2:
+                    PlaySound(punchSound2);
+                    animator.SetTrigger("attack2");
+                    StartCoroutine(ResetToIdleAfterTime(1f)); // Durasi 1 detik untuk animasi attack 2
+                    Debug.Log("Attack 2 triggered");
+                    break;
+                case 3:
+                    PlaySound(punchSound3);
+                    animator.SetTrigger("attack3");
+                    StartCoroutine(ResetToIdleAfterTime(1f)); // Durasi 1 detik untuk animasi attack 3
+                    Debug.Log("Attack 3 triggered");
+                    break;
+                case 4:
+                    PlaySound(punchSound4);
+                    animator.SetTrigger("attack4");
+                    StartCoroutine(ResetToIdleAfterTime(1f)); // Durasi 1 detik untuk animasi attack 4
+                    Debug.Log("Attack 4 triggered");
+                    break;
             }
-
-            Debug.Log("Player performed attack " + combo);
-            TriggerAttackAnimation();
         }
 
-    }
-
-    public void PerformCrouchAttack()
-    {
-        if (isCrouching)
+        private IEnumerator ResetToIdleAfterTime(float time)
         {
-            Debug.Log("Crouch Attack triggered!");
-            animator.SetTrigger("crouchAttack");
+            yield return new WaitForSeconds(time); // Tunggu selama waktu yang ditentukan
+            animator.SetTrigger("Idle"); // Kembali ke idle
+            Debug.Log("Reset to Idle after " + time + " seconds.");
+        }
 
-            // Lakukan logika crouch attack
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-            foreach (Collider2D enemy in hitEnemies)
+        private void PlaySound(AudioSource sound)
+        {
+            if (sound != null)
             {
-                Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                if (enemyRb != null)
-                {
-                    enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
-                }
+                sound.Play();
             }
         }
-        else
+
+        private void OnDrawGizmosSelected()
         {
-            Debug.Log("Attack berdiri");
+            if (attackPoint == null) return;
+            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
-    }
-
-    private void HandleMovementInput()
-    {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        animator.SetFloat("moveSpeed", Mathf.Abs(moveHorizontal)); 
-
-        Vector2 movement = new Vector2(moveHorizontal, 0);
-        transform.Translate(movement * Time.deltaTime);
-    }
-
-    private void TriggerAttackAnimation()
-    {
-        switch (combo)
-        {
-            case 1:
-                Debug.Log("Attack 1 triggered");
-                animator.SetTrigger("attack1");
-                break;
-            case 2:
-                Debug.Log("Attack 2 triggered");
-                animator.SetTrigger("attack2");
-                break;
-            case 3:
-                Debug.Log("Attack 3 triggered");
-                animator.SetTrigger("attack3");
-                break;
-            case 4:
-                Debug.Log("Attack 4 triggered");
-                animator.SetTrigger("attack4");
-                break;
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null) return;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
     }
 }
