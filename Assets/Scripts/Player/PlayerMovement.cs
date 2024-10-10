@@ -80,13 +80,9 @@ public class PlayerMovement : MonoBehaviour
             canJump = true;
         }
 
+        player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
         // Check if player in ground or not to prevent spam
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-    }
-
-    private void FixedUpdate()
-    {
-        player.linearVelocity = new Vector2(direction * moveSpeed * Time.deltaTime, player.linearVelocity.y);
     }
 
     void Dash(Vector2 direction)

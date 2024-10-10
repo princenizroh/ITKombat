@@ -78,14 +78,14 @@ public class GameManagerButton : MonoBehaviour
         }
     }
 
-    public void DashButton()
+/*    public void DashButton()
     {
         if (playerMovement != null)
         {
             playerMovement.Dash(); 
             Debug.Log("Player dashed!");
         }
-    }
+    }*/
 
     public void OnJumpInput()
     {
