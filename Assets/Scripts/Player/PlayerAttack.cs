@@ -47,7 +47,7 @@ public class PlayerAttack : MonoBehaviour
     private void Awake()
     {
         // Finding Input Action for the Attack
-        var playerActionMap = inputActionAsset.FindActionMap("Player");
+        InputActionMap playerActionMap = inputActionAsset.FindActionMap("Player");
         playerActionMap.Enable();
         attackAction = playerActionMap.FindAction("Attack");
 
