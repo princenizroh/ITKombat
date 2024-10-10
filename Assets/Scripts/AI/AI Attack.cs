@@ -6,8 +6,8 @@ public class AI_Attack : MonoBehaviour
 {
     public float attackRange = 3f;         // Range within which the enemy can attack
     public float attackForce = 30f;          // Knockback force
-    public float attackCooldown = 1f;      // Cooldown between each attack
-    public float comboResetTime = 1.5f;        // Cooldown after completing the combo
+    public float attackCooldown = 0.5f;      // Cooldown between each attack
+    public float comboResetTime = 1f;        // Cooldown after completing the combo
     public int maxCombo = 4;                 // Maximum combo count
     public bool canAttack = true;           // Can the AI attack
 
@@ -35,16 +35,21 @@ public class AI_Attack : MonoBehaviour
             Attack();
         }
         // Stop movement if currently attacking
+        if (!canAttack){
+            aiMovement.StopMovement();
+        }
+        
     }
 
     void Attack()
     {
-        if (currentCombo < maxCombo)
+        if (currentCombo < maxCombo && canAttack)
         {
             // Attack logic
             Debug.Log("Enemy performs attack: Attack " + (currentCombo + 1));
-            Knockback();
-            
+            if (currentCombo == 3){
+                Knockback();
+            }
             // Increment combo count
             currentCombo++;
             lastAttackTime = Time.time;
@@ -56,12 +61,7 @@ public class AI_Attack : MonoBehaviour
             }
             else
             {
-                if (Vector2.Distance(transform.position, player.position) > attackRange){
-                    StartCoroutine(ComboCooldown());
-                }
-                else{
-                    StartCoroutine(AttackCooldown());
-                }
+                StartCoroutine(AttackCooldown());
             }
         }
     }
@@ -71,8 +71,8 @@ public class AI_Attack : MonoBehaviour
         if (playerRigidbody != null)
         {
             Vector2 knockbackDirection = (player.position - transform.position).normalized;
-            // playerRigidbody.velocity = Vector2.zero;
-            playerRigidbody.AddForce(knockbackDirection * (50*attackForce), ForceMode2D.Force);
+            playerRigidbody.linearVelocity = Vector2.zero;
+            playerRigidbody.AddForce(knockbackDirection * (30*attackForce), ForceMode2D.Force);
             Debug.Log("Player hit by knockback");
         }
     }
