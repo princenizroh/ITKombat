@@ -21,6 +21,9 @@ dependencyResolutionManagement {
         maven {
             url (unityProjectPath + "/Assets/GeneratedLocalRepo/Firebase/m2repository") // Assets/Firebase/Editor/AppDependencies.xml:22, Assets/Firebase/Editor/AuthDependencies.xml:20, Assets/Firebase/Editor/DatabaseDependencies.xml:22
         }
+        maven {
+            url (unityProjectPath + "/Packages/com.google.play.games/Editor/m2repository") // Assets/GooglePlayGames/com.google.play.games/Editor/GooglePlayGamesPluginDependencies.xml:11
+        }
         mavenLocal()
 // Android Resolver Repos End
         flatDir {
