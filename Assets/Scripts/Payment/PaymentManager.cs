@@ -9,7 +9,8 @@ namespace ITKombat
     public class PaymentManager : MonoBehaviour, IDetailedStoreListener
     {
 
-        public TMP_Text purchaseTextStatus;
+        public TMP_Text uktValueTotal;
+        private int uktValue = 0;
 
         private static IStoreController storeController;
         private static IExtensionProvider storeExtensionProvider;
@@ -53,7 +54,6 @@ namespace ITKombat
             if (storeController == null)
             {
                 Debug.LogError("Store is not initialized yet.");
-                purchaseTextStatus.SetText("Purchase failed: Store not initialized.");
                 return;
             }
 
@@ -88,7 +88,6 @@ namespace ITKombat
             if (storeController == null)
             {
                 Debug.LogError("Store is not initialized yet.");
-                purchaseTextStatus.SetText("Purchase failed: Store not initialized.");
                 return;
             }
             InitializePurchase(product_sub);
@@ -105,7 +104,6 @@ namespace ITKombat
             else
             {
                 Debug.LogError($"Product not found or not available for purchase: {productId}");
-                purchaseTextStatus.SetText("Purchase failed: Product not available.");
             }
         }
 
@@ -119,13 +117,11 @@ namespace ITKombat
         public void OnInitializeFailed(InitializationFailureReason error)
         {
             Debug.LogError($"Store initialization failed: {error}");
-            purchaseTextStatus.SetText("Store initialization failed.");
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
             Debug.LogError($"Purchase of product {product.definition.id} failed: {failureReason}");
-            purchaseTextStatus.SetText($"Purchase failed: {failureReason}");
         }
 
         public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
@@ -134,45 +130,37 @@ namespace ITKombat
 
             if (product.definition.id == product_ukt_1)
             {
-                // Update the database with 10 coins
-                purchaseTextStatus.SetText("Purchase successful: 60 UKT");
-
+                uktValue += 60;
+                uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_2)
             {
-                // Update the database with 20 coins
-                purchaseTextStatus.SetText("Purchase successful: 300 UKT");
-
+                uktValue += 300;
+                uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_3)
             {
-                // Update the database with 20 coins
-                purchaseTextStatus.SetText("Purchase successful: 980 UKT");
-
+                uktValue += 980;
+                uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_4)
             {
-                // Update the database with 20 coins
-                purchaseTextStatus.SetText("Purchase successful: 1.980 UKT");
-
+                uktValue += 1980;
+                uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_5)
             {
-                // Update the database with 20 coins
-                purchaseTextStatus.SetText("Purchase successful: 3.280 UKT");
-
+                uktValue += 3280;
+                uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_6)
             {
-                // Update the database with 20 coins
-                purchaseTextStatus.SetText("Purchase successful: 6.480 UKT");
-
+                uktValue += 6480;
+                uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_sub)
             {
-                // Update the database with the subscription
-                purchaseTextStatus.SetText("Purchase successful: VIP pass");
-
+                Debug.Log("Subscribtion is activated");
             }
             else
             {
