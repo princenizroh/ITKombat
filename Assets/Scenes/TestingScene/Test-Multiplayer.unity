@@ -3125,6 +3125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 249038114}
   - component: {fileID: 249038115}
+  - component: {fileID: 249038116}
   m_Layer: 5
   m_Name: RightMoveCont
   m_TagString: Untagged
@@ -3208,30 +3209,51 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: RightInputButtonUp
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: RightInputButtonDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+--- !u!114 &249038116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249038113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1912940541}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+          m_MethodName: RightInputButtonUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1912940541}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+          m_MethodName: RightInputButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &257724089
 GameObject:
   m_ObjectHideFlags: 0
@@ -10981,6 +11003,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1178839122}
   - component: {fileID: 1178839123}
+  - component: {fileID: 1178839124}
   m_Layer: 5
   m_Name: CrouchButton
   m_TagString: Untagged
@@ -11052,9 +11075,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: CrouchButtonPressed
+      - m_Target: {fileID: 1662991108}
+        m_TargetAssemblyTypeName: ITKombat.AudioPlayerTest, Assembly-CSharp
+        m_MethodName: PlayCrouchSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11064,18 +11087,51 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1433186302}
-        m_TargetAssemblyTypeName: PlayerAttackTestNope, Assembly-CSharp
-        m_MethodName: StartCrouch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+--- !u!114 &1178839124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178839121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1912940541}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+          m_MethodName: CrouchButtonUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1912940541}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+          m_MethodName: CrouchButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1184527162
 GameObject:
   m_ObjectHideFlags: 0
@@ -12490,6 +12546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1325530322}
+  - component: {fileID: 1325530323}
   m_Layer: 0
   m_Name: '[Managers]'
   m_TagString: Untagged
@@ -12518,6 +12575,21 @@ Transform:
   - {fileID: 1912940540}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1325530323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325530321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb1c13d3fad1cd429e88a736deec823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAttack: {fileID: 0}
+  playerMovement: {fileID: 0}
+  playerSkill: {fileID: 0}
 --- !u!1 &1325817601
 GameObject:
   m_ObjectHideFlags: 0
@@ -13991,35 +14063,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3327bee03c51724193be5c8b2728d83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1433186314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 674444972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthSlider: {fileID: 756592806}
-  easeHealthSlider: {fileID: 279210144}
-  maxHealth: 100
-  health: 100
-  lerpSpeed: 5
-  enemyTag: Enemy
---- !u!114 &1433186315 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 674444972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05471264b69f9df42996c07b5505ef25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1452110272
@@ -15779,6 +15822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1616151683}
   - component: {fileID: 1616151684}
+  - component: {fileID: 1616151685}
   m_Layer: 5
   m_Name: LeftMoveCont
   m_TagString: Untagged
@@ -15862,30 +15906,51 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: LeftInputButtonUp
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1912940541}
-        m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-        m_MethodName: LeftInputButtonDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+--- !u!114 &1616151685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616151682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1912940541}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+          m_MethodName: LeftInputButtonUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1912940541}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
+          m_MethodName: LeftInputButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1622581586
 GameObject:
   m_ObjectHideFlags: 0
@@ -16156,6 +16221,7 @@ MonoBehaviour:
   walkSoundScene2: {fileID: 0}
   jumpSound: {fileID: 1338119735}
   blockSound: {fileID: 1338119736}
+  CroucSound: {fileID: 1338119737}
   player: {fileID: 674444972}
 --- !u!1 &1665327491
 GameObject:
@@ -18616,8 +18682,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAttack: {fileID: 1433186302}
-  playerMovement: {fileID: 1433186315}
-  playerSkill: {fileID: 2786425133770990246}
+  playerMovement: {fileID: 2786425133770990259}
+  playerSkill: {fileID: 2786425133770990261}
 --- !u!1 &1926056791
 GameObject:
   m_ObjectHideFlags: 0
@@ -21052,6 +21118,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2176880652430277937, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: healthSlider
+      value: 
+      objectReference: {fileID: 756592806}
+    - target: {fileID: 2176880652430277937, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: easeHealthSlider
+      value: 
+      objectReference: {fileID: 279210144}
+    - target: {fileID: 3991399654481516892, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4250450740765162231, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -21061,9 +21139,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 249038115}
     - target: {fileID: 4500182446757838894, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4500182446757838894, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4693945473309378740, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_JumpForce
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 5763976474572506922, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: healthSlider
+      value: 
+      objectReference: {fileID: 756592806}
+    - target: {fileID: 5763976474572506922, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: easeHealthSlider
+      value: 
+      objectReference: {fileID: 279210144}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.8
@@ -21160,6 +21254,10 @@ PrefabInstance:
       propertyPath: crouchAttackSound
       value: 
       objectReference: {fileID: 190996540}
+    - target: {fileID: 6813249475475899441, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6913358028164970780, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Size.y
       value: 1.9983699
@@ -21176,6 +21274,18 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: skillSound1
+      value: 
+      objectReference: {fileID: 1193784788}
+    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: skillSound2
+      value: 
+      objectReference: {fileID: 1193784790}
+    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: skillSound3
+      value: 
+      objectReference: {fileID: 1193784789}
     - target: {fileID: 7150354607801724231, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_CastShadows
       value: 1
@@ -21210,7 +21320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: movePower
@@ -21228,30 +21338,51 @@ PrefabInstance:
       propertyPath: dashDuration
       value: 0.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8497415400144460812, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 2786425133770990246}
+    m_RemovedComponents:
+    - {fileID: 8304534407808230233, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+    - {fileID: 5763976474572506922, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1662991106}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1433186314}
-    - targetCorrespondingSourceObject: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2786425133770990246}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
 --- !u!95 &2786425133770990245 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4500182446757838894, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
   m_PrefabInstance: {fileID: 2786425133770990244}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2786425133770990246
+--- !u!114 &2786425133770990246 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 4693945473309378740, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+  m_PrefabInstance: {fileID: 2786425133770990244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674444972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2786425133770990259 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8497415400144460812, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+  m_PrefabInstance: {fileID: 2786425133770990244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674444972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acc6c4455eb144048bcb9c51a41cba7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2786425133770990261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+  m_PrefabInstance: {fileID: 2786425133770990244}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 674444972}
   m_Enabled: 1
@@ -21259,9 +21390,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillSound1: {fileID: 1193784788}
-  skillSound2: {fileID: 1193784790}
-  skillSound3: {fileID: 1193784789}
 --- !u!4 &4138214344174465825 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4138214344127816119, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}

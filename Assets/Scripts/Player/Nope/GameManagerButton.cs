@@ -7,29 +7,23 @@ public class GameManagerButton : MonoBehaviour
     [SerializeField] 
     private PlayerAttackTestNope playerAttack; 
     [SerializeField] 
-    private PlayerMovementNope playerMovement;
+    private PlayerMovement_2 playerMovement;
     [SerializeField] 
     private PlayerSkill playerSkill; 
 
-    // Track crouch state
-    private bool isCrouching = false;
-
-    public void CrouchButtonPressed()
+    public void CrouchButtonUp()
     {
-        if (playerAttack != null)
+        if (playerMovement != null)
         {
-            if (isCrouching)
-            {
-                Debug.Log("Stopping crouch");
-                playerAttack.StopCrouch();
-            }
-            else
-            {
-                Debug.Log("Starting crouch");
-                playerAttack.StartCrouch();
-            }
-            // Toggle crouch state
-            isCrouching = !isCrouching;
+            playerMovement.OnCrouchUp();
+        }
+    }
+
+    public void CrouchButtonDown()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.OnCrouchDown();
         }
     }
 
@@ -37,26 +31,7 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerAttack != null)
         {
-            Debug.Log("Regular attack");
             playerAttack.PerformAttack();
-        }
-    }
-
-    public void RightInputButtonDown()
-    {
-        if (playerMovement != null)
-        {
-            Debug.Log("Moving right!");
-            playerMovement.MoveRight();
-        }
-    }
-
-    public void RightInputButtonUp()
-    {
-        if (playerMovement != null)
-        {
-            Debug.Log("Stop moving right!");
-            playerMovement.StopMoveRight();
         }
     }
 
@@ -64,8 +39,15 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerMovement != null)
         {
-            Debug.Log("Moving left!");
-            playerMovement.MoveLeft();
+            playerMovement.OnMoveLeft();
+        }
+    }
+
+    public void RightInputButtonDown()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.OnMoveRight();
         }
     }
 
@@ -73,26 +55,32 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerMovement != null)
         {
-            Debug.Log("Stop moving left!");
-            playerMovement.StopMoveLeft();
+            playerMovement.OnStopMoving();
         }
     }
 
-/*    public void DashButton()
+    public void RightInputButtonUp()
     {
         if (playerMovement != null)
         {
-            playerMovement.Dash(); 
-            Debug.Log("Player dashed!");
+            playerMovement.OnStopMoving();
         }
-    }*/
+    }
+
+    [System.Obsolete]
+    public void DashButton()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.OnDash(); 
+        }
+    }
 
     public void OnJumpInput()
     {
         if (playerMovement != null)
         {
-            Debug.Log("Jumping!");
-            playerMovement.JumpInput();
+            playerMovement.OnJump();
         }
     }
 
@@ -100,7 +88,6 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerSkill != null)
         {
-            Debug.Log("Skill 1 triggered");
             playerSkill.Skill1(); 
         }
     }
@@ -109,7 +96,6 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerSkill != null)
         {
-            Debug.Log("Skill 2 triggered");
             playerSkill.Skill2(); 
         }
     }
@@ -118,7 +104,6 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerSkill != null)
         {
-            Debug.Log("Skill 3 triggered");
             playerSkill.Skill3();
         }
     }

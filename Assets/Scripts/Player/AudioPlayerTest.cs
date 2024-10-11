@@ -11,15 +11,10 @@ namespace ITKombat
         private AudioSource currentWalkSound;
         public AudioSource jumpSound;
         public AudioSource blockSound;
+        public AudioSource CroucSound;
 
         // Player object dan tracking untuk punch
         public GameObject player;
-        private bool isCrouching = false;
-        private int punchStage = 0;
-
-        // Cooldown untuk punch
-        private float punchCooldown = 0.5f;
-        private float lastPunchTime = -4f;
 
         private void Start()
         {
@@ -43,15 +38,14 @@ namespace ITKombat
         {
             PlaySound(currentWalkSound);
         }
+        public void PlayCrouchSound()
+        {
+            PlaySound(CroucSound);
+        }
 
         public void PlayJumpSound()
         {
             PlaySound(jumpSound);
-        }
-
-        public void StopCrouchSound()
-        {
-            isCrouching = false;
         }
 
         public void PlayBlockSound()
