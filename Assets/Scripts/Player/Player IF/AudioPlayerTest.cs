@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -59,6 +60,11 @@ namespace ITKombat
             {
                 sound.Play();
             }
+        }
+
+        internal void PlayBackgroundMusic()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -65,7 +65,8 @@ public class HealthBarTest : MonoBehaviour
         UpdateHealthBar();
     }
 
-    private void UpdateHealthBar()
+    // Change the access modifier to public
+    public void UpdateHealthBar()
     {
         healthSlider.value = health;
     }
