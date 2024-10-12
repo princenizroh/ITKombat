@@ -5101,6 +5101,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411287051}
   m_CullTransparentMesh: 1
+--- !u!1 &423612219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 423612220}
+  m_Layer: 0
+  m_Name: Robot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &423612220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423612219}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1433186301}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &431423398
 GameObject:
   m_ObjectHideFlags: 0
@@ -11100,13 +11131,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 3
+  - eventID: 2
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1912940541}
           m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-          m_MethodName: CrouchButtonUp
+          m_MethodName: CrouchButtonDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -11116,13 +11147,13 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - eventID: 2
+  - eventID: 3
     callback:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1912940541}
           m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
-          m_MethodName: CrouchButtonDown
+          m_MethodName: CrouchButtonUp
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -13443,7 +13474,7 @@ Transform:
   m_GameObject: {fileID: 1360733415}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.42427763, y: 3.5778048, z: 10.45}
+  m_LocalPosition: {x: 0.42427775, y: 3.5778048, z: 10.45}
   m_LocalScale: {x: 8.1357, y: 11.086518, z: 8.1357}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21251,6 +21282,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 190996538}
     - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: attackCooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: crouchAttackSound
       value: 
       objectReference: {fileID: 190996540}
@@ -21350,6 +21385,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1662991106}
+    - targetCorrespondingSourceObject: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 423612220}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
 --- !u!95 &2786425133770990245 stripped

@@ -36,17 +36,26 @@ namespace ITKombat
                 PerformAttack();
             }
         }
+
         public void PerformAttack()
         {
             if (Time.time - timeSinceLastAttack > attackCooldown)
             {
-                combo++;
-                if (combo > maxCombo)
+                // Jika cooldown terlampaui sebelum serangan berikutnya, reset combo ke 1
+                if (combo == 0 || Time.time - timeSinceLastAttack > attackCooldown * 2)
                 {
-                    combo = 1;
+                    combo = 1; // Reset ke serangan pertama jika waktu terlalu lama
+                }
+                else
+                {
+                    combo++; // Lanjutkan ke serangan berikutnya jika waktu masih dalam cooldown
+                    if (combo > maxCombo)
+                    {
+                        combo = 1; // Kembali ke serangan pertama jika melebihi maxCombo
+                    }
                 }
 
-                timeSinceLastAttack = Time.time; 
+                timeSinceLastAttack = Time.time; // Simpan waktu serangan terakhir
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
                 foreach (Collider2D enemy in hitEnemies)

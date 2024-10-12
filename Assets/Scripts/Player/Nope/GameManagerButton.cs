@@ -11,14 +11,6 @@ public class GameManagerButton : MonoBehaviour
     [SerializeField] 
     private PlayerSkill playerSkill; 
 
-    public void CrouchButtonUp()
-    {
-        if (playerMovement != null)
-        {
-            playerMovement.OnCrouchUp();
-        }
-    }
-
     public void CrouchButtonDown()
     {
         if (playerMovement != null)
@@ -27,11 +19,22 @@ public class GameManagerButton : MonoBehaviour
         }
     }
 
+    public void CrouchButtonUp()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.OnCrouchUp();
+        }
+    }
     public void AttackButton()
     {
-        if (playerAttack != null)
+        if (playerMovement != null && playerMovement.IsCrouching) // Akses dengan properti
         {
-            playerAttack.PerformAttack();
+            playerMovement.OnCrouchAttack(); // Crouch attack when crouching
+        }
+        else if (playerAttack != null)
+        {
+            playerAttack.PerformAttack(); // Regular attack
         }
     }
 

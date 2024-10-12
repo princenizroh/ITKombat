@@ -16,12 +16,10 @@ namespace ITKombat
 
         public float moveSpeed = 50f;
         float horizontalMove = 0f;
-        private float idleThreshold = 0.1f;
-        private float idleTimer = 0f;
-        private bool isAttacking = false;
-        bool jump = false;
-        bool crouch = false;
+        private bool isCrouching = false;
+        private bool isCrouchAttacking = false;
         bool useKeyboardInput = true;
+        bool jump = false;
 
         private void Start()
         {
@@ -30,65 +28,40 @@ namespace ITKombat
 
         [System.Obsolete]
         private void Update()
-    {
-        if (useKeyboardInput)
         {
-            horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
-
-            if (horizontalMove == 0 && !jump && !crouch && !isDashing)
+            if (useKeyboardInput)
             {
-                idleTimer += Time.deltaTime; 
-                if (idleTimer >= idleThreshold)
+                horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
+
+                if (Input.GetButtonDown("Crouch"))
                 {
-                    anim.SetTrigger("Idle");
+                    OnCrouchDown();
+                }
+                else if (Input.GetButtonUp("Crouch"))
+                {
+                    OnCrouchUp();
                 }
             }
-            else
-            {
-                idleTimer = 0f; 
-            }
 
-            if (Input.GetButtonDown("Jump"))
+            if (isCrouching)
             {
-                jump = true;
+                // Continuously trigger crouch animation while crouching
+                anim.SetTrigger("Crouch");
             }
-            if (Input.GetButtonDown("Crouch"))
+            else if (!isCrouching && horizontalMove == 0 && !jump && !isDashing)
             {
-                crouch = true;
-            }
-            else if (Input.GetButtonUp("Crouch"))
-            {
-                crouch = false;
+                anim.SetTrigger("Idle");
             }
         }
-    }
 
         [System.Obsolete]
         private void FixedUpdate()
         {
             if (!isDashing)
             {
-                controller.Move(horizontalMove * Time.deltaTime, crouch, jump);
+                controller.Move(horizontalMove * Time.deltaTime, isCrouching, jump);
             }
             jump = false;
-        }
-
-        [System.Obsolete]
-        private IEnumerator Dash()
-        {
-            isDashing = true;
-            canDash = false;
-            anim.SetTrigger("Dash");
-
-            float dashDirection = controller.m_FacingRight ? 1f : -1f;
-            controller.Dash(dashSpeed * dashDirection, dashDuration);
-
-            yield return new WaitForSeconds(dashDuration);
-
-            isDashing = false;
-
-            yield return new WaitForSeconds(dashCooldown);
-            canDash = true;
         }
 
         public void OnMoveLeft()
@@ -110,10 +83,9 @@ namespace ITKombat
             useKeyboardInput = false;
             horizontalMove = 0f;
             anim.SetTrigger("Idle");
-            idleTimer = 0f;
         }
 
-        public void OnJump() 
+        public void OnJump()
         {
             jump = true;
             anim.SetTrigger("Jump");
@@ -121,16 +93,36 @@ namespace ITKombat
 
         public void OnCrouchDown()
         {
-            crouch = true;
-            useKeyboardInput = false;
+            isCrouching = true;
             anim.SetTrigger("Crouch");
+            Debug.Log("Player is crouching");
         }
 
         public void OnCrouchUp()
         {
-            crouch = false;
-            useKeyboardInput = false;
+            isCrouching = false;
             anim.SetTrigger("Idle");
+            Debug.Log("Player stopped crouching");
+        }
+
+        public void OnCrouchAttack()
+        {
+            if (isCrouching && !isCrouchAttacking)
+            {
+                Debug.Log("Player is performing a crouch attack");
+                anim.SetTrigger("CrouchAttack");
+                isCrouchAttacking = true;
+
+                StartCoroutine(CrouchAttackCooldown(0.5f));
+            }
+        }
+
+        public bool IsCrouching { get { return isCrouching; } }
+
+        private IEnumerator CrouchAttackCooldown(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            isCrouchAttacking = false;
         }
 
         [System.Obsolete]
@@ -140,6 +132,24 @@ namespace ITKombat
             {
                 StartCoroutine(Dash());
             }
+        }
+
+        [System.Obsolete]
+        private IEnumerator Dash()
+        {
+            isDashing = true;
+            canDash = false;
+            anim.SetTrigger("Dash");
+
+            float dashDirection = controller.m_FacingRight ? 1f : -1f;
+            controller.Dash(dashSpeed * dashDirection, dashDuration);
+
+            yield return new WaitForSeconds(dashDuration);
+
+            isDashing = false;
+
+            yield return new WaitForSeconds(dashCooldown);
+            canDash = true;
         }
     }
 }
