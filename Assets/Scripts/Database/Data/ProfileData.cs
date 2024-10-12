@@ -7,12 +7,17 @@ namespace ITKombat
     public class ProfileData
     {
         [field: Tooltip("The profile of the player.")]
-        [field: SerializeField] public string profile_id { get; set; }
-        [field: SerializeField] public string username { get; set; }
-        [field: SerializeField] public int player_exp { get; set; }
-        [field: SerializeField] public int player_level { get; set; }
-        [field: SerializeField] public int player_rank_sk2pm { get; set; }
-        [field: SerializeField] public int sk2pm { get; set; }
-        [field: SerializeField] public string player_id { get; set; }
+        public int playerExp;
+        public int playerLevel;
+        public string playerRank;
+        public int sk2pm;
+
+        public ProfileData(int _playerExp, int _playerLevel, string _playerRank, int _sk2pm)
+        {
+            this.playerExp = _playerExp;
+            this.playerLevel = _playerLevel;
+            this.playerRank = _playerRank;
+            this.sk2pm = _sk2pm;
+        }
     }
 }

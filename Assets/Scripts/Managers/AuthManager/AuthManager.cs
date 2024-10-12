@@ -45,6 +45,15 @@ namespace ITKombat
 
         void Awake()
         {
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
             //Check that all of the necessary dependencies for Firebase are present on the system
             FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
             {
@@ -121,8 +130,8 @@ namespace ITKombat
 
         public void SaveDataButton()
         {
-            StartCoroutine(UpdateUsernameAuth(usernameText.text));
-            StartCoroutine(UpdateUsernameDatabase(usernameText.text));
+            // StartCoroutine(UpdateUsernameAuth(usernameText.text));
+            // StartCoroutine(UpdateUsernameDatabase(usernameText.text));
             StartCoroutine(UpdateLevel());
             StartCoroutine(UpdateKtm());
             StartCoroutine(UpdateDanus());
@@ -137,6 +146,7 @@ namespace ITKombat
         {
             //Call the Firebase auth signin function passing the email and password
             Task<AuthResult> LoginTask = auth.SignInWithEmailAndPasswordAsync(_email, _password);
+            Debug.Log("LoginTask: " + LoginTask);
             //Wait until the task completes
             yield return new WaitUntil(predicate: () => LoginTask.IsCompleted);
 
@@ -176,11 +186,14 @@ namespace ITKombat
                 Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
                 warningLoginText.text = "";
                 confirmLoginText.text = "Logged In";
-                StartCoroutine(LoadUserData());
+                // StartCoroutine(LoadUserData());
+                StartCoroutine(DatabaseManager.instance.LoadUserData());
+                StartCoroutine(DatabaseManager.instance.LoadProfileData());
 
                 yield return new WaitForSeconds(2);
 
-                usernameText.text = User.DisplayName;
+                DatabaseManager.instance.usernameText.text = User.DisplayName;
+                DatabaseManager.instance.playerEmailText.text = User.Email;
                 // LoginPageUIManager.instance.UserDataScreen();
                 confirmLoginText.text = "";
                 ClearLoginFields();
