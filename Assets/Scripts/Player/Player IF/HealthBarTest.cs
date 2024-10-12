@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +12,19 @@ public class HealthBarTest : MonoBehaviour
     public string enemyTag = "Enemy"; 
     private int currentRound = 1;
 
+    public float knockbackForce = 5f; 
+    public Animator playerAnimator; 
+    public AudioSource[] hitAudioSources; 
+    public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };
+    public string idleAnimationTrigger = "Idle";
+
+    private Rigidbody2D rb;
+
     private void Start()
     {
         healthSlider.maxValue = maxHealth;
         easeHealthSlider.maxValue = maxHealth;
+        rb = GetComponent<Rigidbody2D>(); 
         UpdateHealthBar();
     }
 
@@ -56,6 +66,15 @@ public class HealthBarTest : MonoBehaviour
                 ShowEndGameButton();
             }
         }
+        else
+        {
+            ApplyKnockback();
+
+            StartCoroutine(PlayRandomHitAnimation());
+
+            PlayRandomHitSound();
+        }
+        
         UpdateHealthBar();
     }
 
@@ -65,7 +84,6 @@ public class HealthBarTest : MonoBehaviour
         UpdateHealthBar();
     }
 
-    // Change the access modifier to public
     public void UpdateHealthBar()
     {
         healthSlider.value = health;
@@ -77,6 +95,31 @@ public class HealthBarTest : MonoBehaviour
         if (endGameButton != null)
         {
             endGameButton.SetActive(true);
+        }
+    }
+
+    private void ApplyKnockback()
+    {
+        Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized; // Adjust direction based on your game design
+        rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+    }
+
+    private IEnumerator PlayRandomHitAnimation()
+    {
+        string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
+        playerAnimator.SetTrigger(randomHitAnimation); // Set trigger for random hit animation
+
+        yield return new WaitForSeconds(0.5f); 
+        
+        playerAnimator.SetTrigger(idleAnimationTrigger);
+    }
+
+    private void PlayRandomHitSound()
+    {
+        if (hitAudioSources.Length > 0)
+        {
+            AudioSource randomAudioSource = hitAudioSources[Random.Range(0, hitAudioSources.Length)];
+            randomAudioSource.Play();
         }
     }
 }

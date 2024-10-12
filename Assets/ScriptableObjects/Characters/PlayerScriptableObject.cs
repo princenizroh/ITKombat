@@ -12,9 +12,7 @@ namespace ITKombat
         public HealthBarTest healthBar;
         public PlayerAttackTestNope playerAttack;
         public PlayerMovement_2 playerMovement;
-        public PlayerSkill playerSkill;
 
-        // Kamu juga bisa menambahkan data lain seperti stat, kecepatan, atau atribut lainnya
         public float moveSpeed;
         public int maxHealth;
         public float attackForce;
