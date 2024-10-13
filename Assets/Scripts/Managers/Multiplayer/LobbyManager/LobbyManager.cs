@@ -169,16 +169,16 @@ namespace ITKombat
 
         private void ButtonLobby()
         {
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.K))
             {
                 QuickJoinLobby();
             }
 
-            if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.C))
             {
                 CreateLobby();
             }
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.L))
             {
                 ListLobbies();
             }
