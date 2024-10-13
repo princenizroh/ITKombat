@@ -37,10 +37,12 @@ namespace ITKombat
             if (user != null)
             {
                 playerName = "Player_" + user.UserId;  // Gunakan Firebase User ID untuk player name
+                playerName = "Player_" + UnityEngine.Random.Range(10, 99);  // Default jika Firebase User belum siap
             }
             else
             {
                 playerName = "Player_" + UnityEngine.Random.Range(10, 99);  // Default jika Firebase User belum siap
+                Debug.Log("Firebase User ID not ready yet. Using random player name: " + playerName);
             }
 
             Debug.Log("Player Name: " + playerName);
