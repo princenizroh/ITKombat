@@ -1224,7 +1224,7 @@ Transform:
   m_GameObject: {fileID: 1335950764}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.339527, y: 1.0335232, z: -10.373763}
+  m_LocalPosition: {x: -3.858074, y: 1.0411333, z: -10.373763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1410,6 +1410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerAttack: {fileID: 8304534407607717809}
+  playerMovement: {fileID: 0}
+  playerSkill: {fileID: 0}
 --- !u!1 &1357890971
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,9 +1549,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Lingkungan
-  Objek: {fileID: 1435805196}
-  yourButton: {fileID: 2002281705}
 --- !u!61 &1435805201
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2286,29 +2285,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c188e2d80f05c304c81f97b3d330e690, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkButton: {fileID: 0}
-  jumpButton: {fileID: 0}
-  crouchButton: {fileID: 0}
-  blockButton: {fileID: 0}
-  punchButton: {fileID: 0}
-  dashButton: {fileID: 0}
-  skillButton1: {fileID: 0}
-  skillButton2: {fileID: 0}
-  skillButton3: {fileID: 0}
   walkSoundScene1: {fileID: 0}
   walkSoundScene2: {fileID: 0}
   jumpSound: {fileID: 0}
-  crouchSound: {fileID: 0}
-  fallSound: {fileID: 0}
   blockSound: {fileID: 0}
-  punchSound1: {fileID: 0}
-  punchSound2: {fileID: 0}
-  punchSound3: {fileID: 0}
-  punchSound4: {fileID: 0}
-  skillSound1: {fileID: 0}
-  skillSound2: {fileID: 0}
-  skillSound3: {fileID: 0}
-  dashSound: {fileID: 0}
   player: {fileID: 0}
 --- !u!4 &5860330647146647817
 Transform:
@@ -2459,7 +2439,7 @@ Transform:
   m_GameObject: {fileID: 251888723046745409}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.53, y: 0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2479,17 +2459,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   spawnedObjectPrefab: {fileID: 5860330647146647817}
-  moveSpeed: 100
-  direction: 0
-  crouch: 0
-  jumpForce: 5
-  jumpCooldown: 0
   movePower: 10
-  boxSize: {x: 2.23, y: 0.26}
-  castDistance: 1.75
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
+  jumpPower: 5
+  dashSpeed: 0
+  ground: {fileID: 0}
 --- !u!114 &8304534407607717809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2511,7 +2484,10 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
-  cooldown: 0.5
+  punchSound1: {fileID: 0}
+  punchSound2: {fileID: 0}
+  punchSound3: {fileID: 0}
+  punchSound4: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -210,9 +210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingFriendly
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 1133727212}
 --- !u!212 &22662634
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -743,15 +740,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad0b754420a3a4140a7e6c1d88e554b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 7
   moveSpeed: 10
   direction: 0
-  jumpCooldown: 2
   crouch: 0
-  dashSpeed: 10
-  dashDuration: 0.2
-  dashCooldown: 1
+  jumpForce: 7
+  jumpCooldown: 2
+  groundCheckRadius: 1
   animator: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheck: {fileID: 0}
+  player: {fileID: 0}
+  key: 0
 --- !u!4 &179208991
 Transform:
   m_ObjectHideFlags: 0
@@ -761,7 +762,7 @@ Transform:
   m_GameObject: {fileID: 179208988}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.71, y: -1.899, z: 0}
+  m_LocalPosition: {x: -5.71, y: -1.51, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1125,9 +1126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingRanked
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 1133727212}
 --- !u!212 &431128226
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2268,9 +2266,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingDeathmatch
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 1133727212}
 --- !u!212 &1433498565
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2427,9 +2422,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingUnranked
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 1133727212}
 --- !u!61 &1435805201
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2600,9 +2592,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingChampion
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 1133727212}
 --- !u!212 &1513028684
 SpriteRenderer:
   m_ObjectHideFlags: 0
