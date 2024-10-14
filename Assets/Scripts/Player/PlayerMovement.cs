@@ -68,11 +68,13 @@ public class PlayerMovement : MonoBehaviour
         if (moveLeft)
         {
             transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
+            Debug.Log("Moving Left");
         }
 
         if (moveRight)
         {
             transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
+            Debug.Log("Moving Right");
         }
 
         if (Mathf.Abs(player.linearVelocity.y) < 0.1f)
