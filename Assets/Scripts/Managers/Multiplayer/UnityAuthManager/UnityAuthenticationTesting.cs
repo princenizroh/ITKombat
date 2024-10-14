@@ -12,6 +12,7 @@ namespace ITKombat
 {
     public class UnityAuthenticationTesting : MonoBehaviour
     {
+        public static UnityAuthenticationTesting Instance;
         [Header("Firebase")]
         public FirebaseUser User;
         public FirebaseAuth auth;
@@ -19,6 +20,15 @@ namespace ITKombat
 
         private void Awake()
         {
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
             // Pindahkan inisialisasi Firebase ke coroutine
             StartCoroutine(InitializeFirebaseCoroutine());
         }
@@ -58,7 +68,7 @@ namespace ITKombat
             }
         }
 
-        private IEnumerator Login(string _email, string _password)
+        public IEnumerator Login(string _email, string _password)
         {
             Debug.Log("Starting Firebase login process...");
 

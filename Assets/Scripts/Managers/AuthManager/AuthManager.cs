@@ -35,10 +35,6 @@ namespace ITKombat
         public TMP_Text warningRegisterText;
 
         [Header("UserData")]
-        public TMP_Text usernameText;
-        public TMP_Text levelText;
-        public TMP_Text ktmText;
-        public TMP_Text danusText;
         public GameObject scoreElement;
         public Transform scoreboardContent;
         
@@ -129,14 +125,6 @@ namespace ITKombat
             ClearRegisterFields();
         }
 
-        public void SaveDataButton()
-        {
-            // StartCoroutine(UpdateUsernameAuth(usernameText.text));
-            // StartCoroutine(UpdateUsernameDatabase(usernameText.text));
-            StartCoroutine(UpdateLevel());
-            StartCoroutine(UpdateKtm());
-            StartCoroutine(UpdateDanus());
-        }
 
         public void ScoreboardButton()
         {
@@ -329,92 +317,6 @@ namespace ITKombat
             }
         }
 
-        private IEnumerator UpdateLevel()
-        {
-            Task DBTask = DBreference.Child("users").Child(User.UserId).Child("level").SetValueAsync(levelText.text);
-
-            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-            if (DBTask.Exception != null)
-            { 
-                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-            }
-            else
-            {
-                // Username is now set
-                // Now return to login screen
-                // LoginPageUIManager.instance.LoginScreen();
-                // warningRegisterText.text = "";
-            }
-        }
-
-        private IEnumerator UpdateKtm()
-        {
-            Task DBTask = DBreference.Child("users").Child(User.UserId).Child("ktm").SetValueAsync(ktmText.text);
-
-            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-            if (DBTask.Exception != null)
-            { 
-                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-            }
-            else
-            {
-                // Username is now set
-                // Now return to login screen
-                // LoginPageUIManager.instance.LoginScreen();
-                // warningRegisterText.text = "";
-            }
-        }
-
-        private IEnumerator UpdateDanus()
-        {
-            Task DBTask = DBreference.Child("users").Child(User.UserId).Child("danus").SetValueAsync(danusText.text);
-
-            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-            if (DBTask.Exception != null)
-            { 
-                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-            }
-            else
-            {
-                // Username is now set
-                // Now return to login screen
-                // LoginPageUIManager.instance.LoginScreen();
-                // warningRegisterText.text = "";
-            }
-        }
-
-        private IEnumerator LoadUserData()
-        {
-            // Get the data from the Database
-            Task<DataSnapshot> DBTask = DBreference.Child("users").Child(User.UserId).GetValueAsync();
-
-            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-
-            if (DBTask.Exception != null)
-            {
-                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-            }
-            else if (DBTask.Result.Value == null)
-            {
-                // No data exists
-                usernameText.text = User.DisplayName;
-                levelText.text = "1";
-                ktmText.text = "0";
-                danusText.text = "0";
-            }
-            else
-            {
-                // Data has been retrieved
-                DataSnapshot snapshot = DBTask.Result;
-                usernameText.text = snapshot.Child("username").Value.ToString();
-                levelText.text = snapshot.Child("level").Value.ToString();
-                ktmText.text = snapshot.Child("ktm").Value.ToString();
-                danusText.text = snapshot.Child("danus").Value.ToString();
-            }
-        }
         
         private IEnumerator LoadScoreboardData()
         {

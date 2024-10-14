@@ -174,7 +174,7 @@ namespace ITKombat
         [ClientRpc]
         private void TestClientRpc(ClientRpcParams clientRpcParams)
         {
-            Debug.Log("s");
+            Debug.Log("Client RPC called" + OwnerClientId + ";" + clientRpcParams.Receive);
         }
 
         public struct MyCustomData : INetworkSerializable
