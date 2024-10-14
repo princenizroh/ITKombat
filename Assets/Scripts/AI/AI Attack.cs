@@ -11,8 +11,8 @@ public class AI_Attack : MonoBehaviour
     public int maxCombo = 4;                 // Maximum combo count
     public bool canAttack = true;           // Can the AI attack
 
-    private int currentCombo = 0;            // Tracks the current combo
-    private float lastAttackTime = 0f;       // Time of the last attack
+    public int currentCombo = 0;            // Tracks the current combo
+    public float lastAttackTime = 0f;       // Time of the last attack
 
     private Transform player;
     private Rigidbody2D playerRigidbody;
@@ -38,31 +38,34 @@ public class AI_Attack : MonoBehaviour
         if (!canAttack){
             aiMovement.StopMovement();
         }
-        
     }
 
-    void Attack()
+    public void Attack()
     {
-        if (currentCombo < maxCombo && canAttack)
+        if (canAttack && Time.time - lastAttackTime > attackCooldown)
         {
-            // Attack logic
-            Debug.Log("Enemy performs attack: Attack " + (currentCombo + 1));
-            if (currentCombo == 3){
-                Knockback();
-            }
-            // Increment combo count
-            currentCombo++;
-            lastAttackTime = Time.time;
-
-            // Check if the combo is complete
-            if (currentCombo == maxCombo)
+            if (currentCombo == 0 || Time.time - lastAttackTime > attackCooldown*2)
             {
-                StartCoroutine(ComboCooldown());
+                currentCombo = 1;
             }
             else
             {
+                Debug.Log("Enemy performs attack : Attack" + (currentCombo));
                 StartCoroutine(AttackCooldown());
+                currentCombo ++;
+
+                if (currentCombo == maxCombo +1)
+                {
+                    Knockback();
+                }
+
+                if (currentCombo == maxCombo)
+                {
+                    StartCoroutine(ComboCooldown());
+                }
             }
+
+            lastAttackTime = Time.time;
         }
     }
 
@@ -88,10 +91,9 @@ public class AI_Attack : MonoBehaviour
     {
         canAttack = false;
         yield return new WaitForSeconds(comboResetTime);
-
+        Debug.Log("Combo Reset");
         // Reset the combo counter after cooldown
         currentCombo = 0;
         canAttack = true;
-        Debug.Log("Combo reset after completing full sequence");
     }
 }

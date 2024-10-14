@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Variabel untuk mengatur kecepatan gerakan dan kekuatan lompatan
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
-
-    // Variabel untuk pengecekan apakah pemain di tanah
-    
-    // Reference ke komponen Rigidbody2D
     private Rigidbody2D rb;
-
-    // Layer yang dianggap sebagai tanah (ground)
-
-    // Start adalah fungsi yang dipanggil saat awal game
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
