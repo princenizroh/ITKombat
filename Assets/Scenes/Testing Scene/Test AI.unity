@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 784066582}
   - component: {fileID: 784066583}
   - component: {fileID: 784066584}
+  - component: {fileID: 784066585}
   m_Layer: 0
   m_Name: AI_Test
   m_TagString: Untagged
@@ -582,9 +583,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   movementStep: 0
+  maxStep: 50
   facingPlayer: 1
+  canMove: 1
   canJump: 1
-  isDashing: 0
+  aiAttack: {fileID: 0}
 --- !u!114 &784066583
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -598,7 +601,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRange: 3
-  attackForce: 30
+  attackForce: 50
   attackCooldown: 0.5
   comboResetTime: 1
   maxCombo: 4
@@ -618,6 +621,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+--- !u!114 &784066585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784066575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4ae807d776dcb4d8f14fa42077f9a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimovement: {fileID: 0}
+  aiAttack: {fileID: 0}
+  player: {fileID: 0}
+  waitingTime: 0.5
 --- !u!1 &938771900
 GameObject:
   m_ObjectHideFlags: 0

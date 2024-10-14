@@ -5,7 +5,7 @@ using UnityEngine;
 public class AI_Attack : MonoBehaviour
 {
     public float attackRange = 3f;         // Range within which the enemy can attack
-    public float attackForce = 30f;          // Knockback force
+    public float attackForce = 50f;          // Knockback force
     public float attackCooldown = 0.5f;      // Cooldown between each attack
     public float comboResetTime = 1f;        // Cooldown after completing the combo
     public int maxCombo = 4;                 // Maximum combo count
@@ -75,7 +75,7 @@ public class AI_Attack : MonoBehaviour
         {
             Vector2 knockbackDirection = (player.position - transform.position).normalized;
             playerRigidbody.linearVelocity = Vector2.zero;
-            playerRigidbody.AddForce(knockbackDirection * (30*attackForce), ForceMode2D.Force);
+            playerRigidbody.AddForce(knockbackDirection * (50*attackForce), ForceMode2D.Force);
             Debug.Log("Player hit by knockback");
         }
     }
