@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class GameManagerButton : MonoBehaviour
 {
-    [SerializeField] 
-    private PlayerAttackTestNope playerAttack; 
-    [SerializeField] 
+    [SerializeField]
+    private PlayerAttackTestNope playerAttack;
+    [SerializeField]
     private PlayerMovement_2 playerMovement;
-    [SerializeField] 
-    private PlayerSkill playerSkill; 
+    [SerializeField]
+    private PlayerSkill playerSkill;
+
+    private void Start()
+    {
+        playerAttack = GetComponent<PlayerAttackTestNope>();
+        playerMovement = GetComponent<PlayerMovement_2>();
+        playerSkill = GetComponent<PlayerSkill>();
+    }
 
     public void CrouchButtonDown()
     {

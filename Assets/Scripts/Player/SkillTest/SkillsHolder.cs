@@ -1,4 +1,5 @@
 using NUnit.Framework.Constraints;
+using System.Collections;
 using System.Runtime.CompilerServices;
 using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
@@ -37,7 +38,7 @@ namespace ITKombat
             states = new SkillState[skills.Length];
             skillsAction = new InputAction[skills.Length];
 
-        if (skillsSounds.Length != skills.Length)
+        if (skillSounds.Length != skills.Length)
             {
                 Debug.LogError("The number of skill sounds does not match the number of skills");
                 return;
@@ -61,17 +62,40 @@ namespace ITKombat
                 states[index] = SkillState.active;
                 activeTime[index] = skills[index].activeTime;
 
+                if (anim != null)
+                {
+                    anim.SetTrigger("skill" + (index + 1));
+                }
+
                 if (skillSounds[index] != null)
                 {
-                    skillSounds[index].Play();
+                    PlaySound(skillSounds[index]);
                 }
-                else
-                {
-                    Debug.LogWarning($"No audio source assigned for skill {index}");
-                }
+                StartCoroutine(ResetToIdleAfterTime(index, skills[index].activeTime));
             }
         }
 
+        private IEnumerator ResetToIdleAfterTime(int index, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            if (anim != null)
+            {
+                anim.SetTrigger("idle");
+            }
+
+            // Reset the state of the skill
+            states[index] = SkillState.cooldown;
+            cooldownTime[index] = skills[index].cooldownTime;
+        }
+
+        private void PlaySound(AudioSource sound)
+        {
+            if (sound != null && !sound.isPlaying)
+            {
+                sound.Play();
+            }
+        }
 
         // Update is called once per frame
         void Update()

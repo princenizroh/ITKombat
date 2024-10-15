@@ -1,3 +1,4 @@
+using ITKombat;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -133,10 +134,11 @@ public class PlayerDefense : MonoBehaviour
     // Logic for taking damage
     public void TakeDamage(int damageAmount)
     {
-        HealthBar health = GetComponent<HealthBar>();
+        Health health = GetComponent<Health>();
         if (health != null)
         {
-            health.TakeDamage(damageAmount);
+/*            health.TakeDamage(damageAmount);*/
+            Debug.Log($"{gameObject.name} took {damageAmount} damage!");
         }
     }
 

@@ -11,11 +11,19 @@ public class StateManager : MonoBehaviour
     private enum AIState { Approach, Retreat, Jump, Attack, Attacked, Idle }
     private AIState currentState = AIState.Idle;
 
+    [System.Obsolete]
     void Start()
     {
         aiAttack = GetComponent<AI_Attack>();
         aimovement = GetComponent<AI_Movement>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        /*        int playerLayer = LayerMask.NameToLayer("Player");
+                player = FindObjectOfType<CharacterController2D1>().transform;
+
+                if (player.gameObject.layer != playerLayer)
+                {
+                    Debug.LogWarning("Found object is not the player.");
+                }*/
     }
 
     void Update()

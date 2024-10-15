@@ -145,7 +145,7 @@ public class CharacterController2D1 : MonoBehaviour
     public void Dash(float dashSpeed, float dashDuration)
     {
         float dashDirection = m_FacingRight ? 1f : -1f;
-        Vector2 dashVelocity = new Vector2(dashSpeed * dashDirection, m_Rigidbody2D.linearVelocity.y);
+        Vector2 dashVelocity = new(dashSpeed * dashDirection, m_Rigidbody2D.linearVelocity.y);
         m_Rigidbody2D.linearVelocity = dashVelocity;
 
         StartCoroutine(StopDashAfterDuration(dashDuration));

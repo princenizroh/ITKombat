@@ -29,12 +29,14 @@ public class AI_Movement : MonoBehaviour
     private Rigidbody2D myRigidbody;
     // private GameObject Ground;
     public AI_Attack aiAttack;
+    private Animator anim;
 
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         aiAttack = GetComponent<AI_Attack>();
+        anim = GetComponent<Animator>();
     }
 
     // void Update()
@@ -68,6 +70,7 @@ public class AI_Movement : MonoBehaviour
     {
         // Debug.Log("Idle State Called");
         myRigidbody.linearVelocity = Vector2.zero;
+        anim.SetTrigger("Idle");
     }
 
     public void Approach()
@@ -82,6 +85,7 @@ public class AI_Movement : MonoBehaviour
 
         myRigidbody.linearVelocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
         movementStep ++;
+        anim.SetTrigger("Walk");
     }
 
     public void Retreat()
@@ -91,6 +95,7 @@ public class AI_Movement : MonoBehaviour
 
         myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
         movementStep ++;
+        anim.SetTrigger("Walk");
     }
 
     void Flip()
@@ -108,6 +113,7 @@ public class AI_Movement : MonoBehaviour
             // Tambahkan gaya ke atas (lompatan)
             myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, jumpForce);
             StartCoroutine(JumpCooldown());
+            anim.SetTrigger("Jump");
         }
     }
 

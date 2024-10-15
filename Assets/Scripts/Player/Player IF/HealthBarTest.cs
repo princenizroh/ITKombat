@@ -14,7 +14,7 @@ namespace ITKombat
         public string attackTag = "Attack"; 
         private int currentRound = 1;
 
-        public float knockbackForce = 5f; 
+        public float knockbackForce = 1f; 
         public Animator playerAnimator; 
         public AudioSource[] hitAudioSources; 
         public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };

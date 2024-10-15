@@ -7,7 +7,7 @@ namespace ITKombat
     public class PlayerAttackTestNope : NetworkBehaviour
     {
         public Transform attackPoint;
-        public float attackForce = 10f;
+        public float attackForce = 5f;
         public float attackRadius = 1f;
         public float attackCooldown = 0.5f;
         public float attackPower = 25f;

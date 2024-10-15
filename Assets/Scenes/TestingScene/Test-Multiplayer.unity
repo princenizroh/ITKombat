@@ -2617,6 +2617,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2786425133770990261}
+        m_TargetAssemblyTypeName: ITKombat.PlayerSkill, Assembly-CSharp
+        m_MethodName: Skill2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &232716536
 GameObject:
   m_ObjectHideFlags: 0
@@ -2815,6 +2827,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 2786425133770990259}
+          m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+          m_MethodName: OnStopMoving
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -2822,6 +2846,18 @@ MonoBehaviour:
         - m_Target: {fileID: 1912940541}
           m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
           m_MethodName: RightInputButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2786425133770990259}
+          m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+          m_MethodName: OnMoveRight
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4678,11 +4714,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411287051}
   m_CullTransparentMesh: 1
---- !u!4 &423612220 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 487769001229983141, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &431423398
 GameObject:
   m_ObjectHideFlags: 0
@@ -5557,7 +5588,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1433186302}
-        m_TargetAssemblyTypeName: PlayerAttackTestNope, Assembly-CSharp
+        m_TargetAssemblyTypeName: ITKombat.PlayerAttackTestNope, Assembly-CSharp
         m_MethodName: PerformAttack
         m_Mode: 1
         m_Arguments:
@@ -8228,116 +8259,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952038658}
   m_CullTransparentMesh: 1
---- !u!1 &955878743
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 955878745}
-  - component: {fileID: 955878744}
-  - component: {fileID: 955878746}
-  m_Layer: 0
-  m_Name: IF Drone-Sheet_0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!212 &955878744
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955878743}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -911367517
-  m_SortingLayer: 4
-  m_SortingOrder: 150
-  m_Sprite: {fileID: -8324933959567046524, guid: 8235c3f4d0ffa294093eaa9af87838b4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.21, y: 0.24}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!4 &955878745
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955878743}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.145, y: 1.3169633, z: -0.014004162}
-  m_LocalScale: {x: 2.222222, y: 2.222222, z: 2.222222}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 423612220}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &955878746
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955878743}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5c13aad9744c58f47908673ea0df3ba2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &957820327
 GameObject:
   m_ObjectHideFlags: 0
@@ -10863,6 +10784,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 2786425133770990259}
+          m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+          m_MethodName: OnCrouchDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 3
     callback:
       m_PersistentCalls:
@@ -10870,6 +10803,18 @@ MonoBehaviour:
         - m_Target: {fileID: 1912940541}
           m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
           m_MethodName: CrouchButtonUp
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2786425133770990259}
+          m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+          m_MethodName: OnCrouchUp
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -11047,21 +10992,6 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
---- !u!82 &1193784788 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 5365466274610412425, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1193784789 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8210727134751375575, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1193784790 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8151378584869225897, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1196004701
 GameObject:
   m_ObjectHideFlags: 0
@@ -12302,6 +12232,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1912940541}
         m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
         m_MethodName: Skill1Button
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2786425133770990261}
+        m_TargetAssemblyTypeName: ITKombat.PlayerSkill, Assembly-CSharp
+        m_MethodName: Skill1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13667,6 +13609,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2786425133770990261}
+        m_TargetAssemblyTypeName: ITKombat.PlayerSkill, Assembly-CSharp
+        m_MethodName: Skill3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1556944943
 GameObject:
   m_ObjectHideFlags: 0
@@ -14950,6 +14904,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 2786425133770990259}
+          m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+          m_MethodName: OnStopMoving
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -14957,6 +14923,18 @@ MonoBehaviour:
         - m_Target: {fileID: 1912940541}
           m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
           m_MethodName: LeftInputButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2786425133770990259}
+          m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+          m_MethodName: OnMoveLeft
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -15110,11 +15088,6 @@ Transform:
   - {fileID: 1868038358}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1646713900 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2417947227579106396, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1647226185
 GameObject:
   m_ObjectHideFlags: 0
@@ -17206,6 +17179,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2786425133770990259}
+        m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1865268903
 GameObject:
   m_ObjectHideFlags: 0
@@ -17844,6 +17829,7 @@ GameObject:
   - component: {fileID: 1938394558}
   - component: {fileID: 1938394557}
   - component: {fileID: 1938394556}
+  - component: {fileID: 1938394560}
   - component: {fileID: 1938394555}
   - component: {fileID: 1938394554}
   m_Layer: 7
@@ -18051,6 +18037,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1938394560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938394552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSlider: {fileID: 1136117067}
+  easeHealthSlider: {fileID: 532417379}
+  maxHealth: 100
+  health: 100
+  lerpSpeed: 5
+  attackTag: Attack
+  knockbackForce: 5
+  playerAnimator: {fileID: 0}
+  hitAudioSources: []
+  hitAnimationTriggers:
+  - Hit1
+  - Hit2
+  - Hit3
+  idleAnimationTrigger: Idle
 --- !u!1 &1943544699
 GameObject:
   m_ObjectHideFlags: 0
@@ -19308,6 +19320,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2786425133770990259}
+        m_TargetAssemblyTypeName: ITKombat.PlayerMovement_2, Assembly-CSharp
+        m_MethodName: OnDash
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2068541931
 GameObject:
   m_ObjectHideFlags: 0
@@ -20072,7 +20096,7 @@ MonoBehaviour:
     NetworkMessageMetrics: 1
     NetworkProfilingMetrics: 1
     OldPrefabList: []
-  RunInBackground: 1
+  RunInBackground: 0
   LogLevel: 0
 --- !u!1 &2098332742
 GameObject:
@@ -20353,18 +20377,6 @@ PrefabInstance:
       propertyPath: easeHealthSlider
       value: 
       objectReference: {fileID: 279210144}
-    - target: {fileID: 4500182446757838894, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4693945473309378740, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_JumpForce
-      value: 300
-      objectReference: {fileID: 0}
-    - target: {fileID: 4810395427450485930, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_TagString
-      value: Attack
-      objectReference: {fileID: 0}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -20410,56 +20422,18 @@ PrefabInstance:
       value: PlayerIF
       objectReference: {fileID: 0}
     - target: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_TagString
-      value: Player
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: attackPoint
-      value: 
-      objectReference: {fileID: 1646713900}
-    - target: {fileID: 6913358028164970780, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_Size.y
-      value: 1.9983699
+      propertyPath: enemyLayer.m_Bits
+      value: 128
       objectReference: {fileID: 0}
-    - target: {fileID: 6913358028164970780, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.0065325797
-      objectReference: {fileID: 0}
-    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: skillSound1
-      value: 
-      objectReference: {fileID: 1193784788}
-    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: skillSound2
-      value: 
-      objectReference: {fileID: 1193784790}
-    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: skillSound3
-      value: 
-      objectReference: {fileID: 1193784789}
-    - target: {fileID: 8497415400144460812, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: controller
-      value: 
-      objectReference: {fileID: 2786425133770990246}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 487769001229983141, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 955878745}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
---- !u!114 &2786425133770990246 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4693945473309378740, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2786425133770990259 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8497415400144460812, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
