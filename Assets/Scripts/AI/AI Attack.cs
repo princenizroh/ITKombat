@@ -6,13 +6,13 @@ public class AI_Attack : MonoBehaviour
 {
     public float attackRange = 3f;         // Range within which the enemy can attack
     public float attackForce = 30f;          // Knockback force
-    public float attackCooldown = 1f;      // Cooldown between each attack
-    public float comboResetTime = 1.5f;        // Cooldown after completing the combo
+    public float attackCooldown = 0.5f;      // Cooldown between each attack
+    public float comboResetTime = 1f;        // Cooldown after completing the combo
     public int maxCombo = 4;                 // Maximum combo count
     public bool canAttack = true;           // Can the AI attack
 
-    private int currentCombo = 0;            // Tracks the current combo
-    private float lastAttackTime = 0f;       // Time of the last attack
+    public int currentCombo = 0;            // Tracks the current combo
+    public float lastAttackTime = 0f;       // Time of the last attack
 
     private Transform player;
     private Rigidbody2D playerRigidbody;
@@ -35,34 +35,37 @@ public class AI_Attack : MonoBehaviour
             Attack();
         }
         // Stop movement if currently attacking
+        if (!canAttack){
+            aiMovement.StopMovement();
+        }
     }
 
-    void Attack()
+    public void Attack()
     {
-        if (currentCombo < maxCombo)
+        if (canAttack && Time.time - lastAttackTime > attackCooldown)
         {
-            // Attack logic
-            Debug.Log("Enemy performs attack: Attack " + (currentCombo + 1));
-            Knockback();
-            
-            // Increment combo count
-            currentCombo++;
-            lastAttackTime = Time.time;
-
-            // Check if the combo is complete
-            if (currentCombo == maxCombo)
+            if (currentCombo == 0 || Time.time - lastAttackTime > attackCooldown*2)
             {
-                StartCoroutine(ComboCooldown());
+                currentCombo = 1;
             }
             else
             {
-                if (Vector2.Distance(transform.position, player.position) > attackRange){
+                Debug.Log("Enemy performs attack : Attack" + (currentCombo));
+                StartCoroutine(AttackCooldown());
+                currentCombo ++;
+
+                if (currentCombo == maxCombo +1)
+                {
+                    Knockback();
+                }
+
+                if (currentCombo == maxCombo)
+                {
                     StartCoroutine(ComboCooldown());
                 }
-                else{
-                    StartCoroutine(AttackCooldown());
-                }
             }
+
+            lastAttackTime = Time.time;
         }
     }
 
@@ -71,8 +74,8 @@ public class AI_Attack : MonoBehaviour
         if (playerRigidbody != null)
         {
             Vector2 knockbackDirection = (player.position - transform.position).normalized;
-            // playerRigidbody.velocity = Vector2.zero;
-            playerRigidbody.AddForce(knockbackDirection * (50*attackForce), ForceMode2D.Force);
+            playerRigidbody.linearVelocity = Vector2.zero;
+            playerRigidbody.AddForce(knockbackDirection * (30*attackForce), ForceMode2D.Force);
             Debug.Log("Player hit by knockback");
         }
     }
@@ -88,10 +91,9 @@ public class AI_Attack : MonoBehaviour
     {
         canAttack = false;
         yield return new WaitForSeconds(comboResetTime);
-
+        Debug.Log("Combo Reset");
         // Reset the combo counter after cooldown
         currentCombo = 0;
         canAttack = true;
-        Debug.Log("Combo reset after completing full sequence");
     }
 }
