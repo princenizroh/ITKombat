@@ -1634,15 +1634,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad0b754420a3a4140a7e6c1d88e554b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 7
   moveSpeed: 10
   direction: 0
-  jumpCooldown: 50
   crouch: 0
-  dashSpeed: 10
-  dashDuration: 0.2
-  dashCooldown: 1
+  jumpForce: 7
+  jumpCooldown: 50
+  groundCheckRadius: 1
   animator: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheck: {fileID: 0}
+  player: {fileID: 0}
+  key: 0
 --- !u!4 &179208991
 Transform:
   m_ObjectHideFlags: 0
@@ -1727,7 +1731,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -911367517
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 200
   m_Sprite: {fileID: 7913422118098038337, guid: 92d057c00b506fb4089c3e655de60f6c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2099,9 +2103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: MainMenu
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 0}
 --- !u!212 &216094786
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3020,9 +3021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: BattleMode
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 0}
 --- !u!212 &383398255
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3462,9 +3460,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: MainMenu
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 0}
 --- !u!212 &431128226
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8213,9 +8208,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingFriendly
-  Objek: {fileID: 0}
-  yourButton: {fileID: 0}
 --- !u!212 &1032094658
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8394,9 +8386,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingUnranked
-  Objek: {fileID: 0}
-  yourButton: {fileID: 0}
 --- !u!212 &1033750800
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8897,9 +8886,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingChampion
-  Objek: {fileID: 0}
-  yourButton: {fileID: 0}
 --- !u!212 &1066052177
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11626,9 +11612,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: MainMenu
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 0}
 --- !u!212 &1433498565
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14067,9 +14050,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingRanked
-  Objek: {fileID: 0}
-  yourButton: {fileID: 0}
 --- !u!212 &1648051096
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -18368,9 +18348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: WaitingDeathmatch
-  Objek: {fileID: 0}
-  yourButton: {fileID: 0}
 --- !u!212 &2080669604
 SpriteRenderer:
   m_ObjectHideFlags: 0
