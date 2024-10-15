@@ -399,15 +399,17 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 179208991}
-  - component: {fileID: 179208989}
   - component: {fileID: 179208996}
   - component: {fileID: 179208997}
-  - component: {fileID: 179208998}
   - component: {fileID: 179208999}
   - component: {fileID: 179208993}
   - component: {fileID: 179208992}
   - component: {fileID: 179208994}
   - component: {fileID: 179208995}
+  - component: {fileID: 179209001}
+  - component: {fileID: 179209002}
+  - component: {fileID: 179209004}
+  - component: {fileID: 179209003}
   m_Layer: 0
   m_Name: Player_Test
   m_TagString: Player
@@ -415,31 +417,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &179208989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 179208988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad0b754420a3a4140a7e6c1d88e554b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 10
-  direction: 0
-  crouch: 1
-  jumpForce: 7
-  jumpCooldown: 1
-  groundCheckRadius: 1
-  animator: {fileID: 179208995}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  groundCheck: {fileID: 1301951235}
-  player: {fileID: 179208992}
-  key: 32
 --- !u!4 &179208991
 Transform:
   m_ObjectHideFlags: 0
@@ -643,30 +620,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e6dd2f3ae58c84a814478767f9de62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parryWindow: 0.2
   blockCooldown: 1
+  parryWindow: 0.2
   parryDamage: 10
   defensePoint: {fileID: 1325220340}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 192
   defenseRadius: 1
---- !u!114 &179208998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 179208988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ec298dcc137fcd40a5ed4ff91b4bda4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMovement: {fileID: 179208989}
-  playerAttack: {fileID: 179208996}
-  playerDefense: {fileID: 179208997}
-  playerSkills: {fileID: 179208999}
 --- !u!114 &179208999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -688,6 +649,92 @@ MonoBehaviour:
   - Skill1
   - Skill2
   - Skill3
+--- !u!114 &179209001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179208988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 455071407
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &179209002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179208988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83e768fd05d8a8b479f49c0016b4489b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAttack: {fileID: 0}
+  playerMovement: {fileID: 0}
+  playerSkill: {fileID: 0}
+--- !u!114 &179209003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179208988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80e6d933bc2803409d4b9dffa5e2d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_JumpForce: 500
+  m_CrouchSpeed: 0.36
+  m_MovementSmoothing: 0.05
+  m_AirControl: 1
+  m_WhatIsGround:
+    serializedVersion: 2
+    m_Bits: 8
+  m_GroundCheck: {fileID: 1557411957}
+  m_CeilingCheck: {fileID: 1557411957}
+  m_CrouchDisableCollider: {fileID: 0}
+  m_FacingRight: 1
+  OnLandEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCrouchEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &179209004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179208988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c36e11243fb46f4cae10fe2cfe7799d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 179209003}
+  dashSpeed: 5
+  dashDuration: 0.2
+  dashCooldown: 1
+  moveSpeed: 50
 --- !u!1 &189556967
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,13 +831,13 @@ RectTransform:
   m_Children:
   - {fileID: 705754147}
   - {fileID: 1997431715}
+  - {fileID: 1203595605}
   - {fileID: 1184655502}
   - {fileID: 1296735877}
   - {fileID: 1989766397}
   - {fileID: 1980671876}
   - {fileID: 226255960}
   - {fileID: 2097548337}
-  - {fileID: 1203595605}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -881,7 +928,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 179208998}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
         m_MethodName: OnSkill2Input
         m_Mode: 1
@@ -931,6 +978,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 226255959}
   m_CullTransparentMesh: 1
+--- !u!1 &353365054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 353365055}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &353365055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 353365054}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 239.52464, y: 61.682877, z: -0.7932205}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &365985766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1651,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 179208998}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
         m_MethodName: OnJumpInput
         m_Mode: 1
@@ -2144,7 +2222,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
           m_MethodName: CrouchInputButtonUp
           m_Mode: 1
@@ -2160,7 +2238,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
           m_MethodName: CrouchInputButtonDown
           m_Mode: 1
@@ -2304,8 +2382,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
-          m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
+        - m_Target: {fileID: 179209002}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
           m_MethodName: RightInputButtonUp
           m_Mode: 1
           m_Arguments:
@@ -2320,8 +2398,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
-          m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
+        - m_Target: {fileID: 179209002}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
           m_MethodName: RightInputButtonDown
           m_Mode: 1
           m_Arguments:
@@ -2388,7 +2466,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
           m_MethodName: DefenseInputButtonUp
           m_Mode: 1
@@ -2404,7 +2482,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
           m_MethodName: DefenseInputButtonDown
           m_Mode: 1
@@ -2617,9 +2695,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1dfa055fc90c514d8a6face1203997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: MainMenu
-  Objek: {fileID: 179208988}
-  yourButton: {fileID: 0}
 --- !u!61 &1435805201
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3322,7 +3397,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 179208998}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
         m_MethodName: OnSkill1Input
         m_Mode: 1
@@ -3455,7 +3530,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 179208998}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
         m_MethodName: AttackInput
         m_Mode: 1
@@ -3599,8 +3674,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
-          m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
+        - m_Target: {fileID: 179209002}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
           m_MethodName: LeftInputButtonUp
           m_Mode: 1
           m_Arguments:
@@ -3615,8 +3690,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 179208998}
-          m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
+        - m_Target: {fileID: 179209002}
+          m_TargetAssemblyTypeName: GameManagerButton, Assembly-CSharp
           m_MethodName: LeftInputButtonDown
           m_Mode: 1
           m_Arguments:
@@ -3983,7 +4058,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 179208998}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManagerPlayer, Assembly-CSharp
         m_MethodName: OnSkill3Input
         m_Mode: 1
@@ -4046,3 +4121,4 @@ SceneRoots:
   - {fileID: 1450653501}
   - {fileID: 604062728}
   - {fileID: 1435805199}
+  - {fileID: 353365055}
