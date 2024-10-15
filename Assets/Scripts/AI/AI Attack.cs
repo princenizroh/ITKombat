@@ -5,7 +5,7 @@ using UnityEngine;
 public class AI_Attack : MonoBehaviour
 {
     public float attackRange = 3f;         // Range within which the enemy can attack
-    public float attackForce = 30f;          // Knockback force
+    public float attackForce = 50f;          // Knockback force
     public float attackCooldown = 0.5f;      // Cooldown between each attack
     public float comboResetTime = 1f;        // Cooldown after completing the combo
     public int maxCombo = 4;                 // Maximum combo count
@@ -27,17 +27,7 @@ public class AI_Attack : MonoBehaviour
 
     void Update()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         
-        // Check if AI can attack and if within attack range
-        if (canAttack && distanceToPlayer <= attackRange)
-        {
-            Attack();
-        }
-        // Stop movement if currently attacking
-        if (!canAttack){
-            aiMovement.StopMovement();
-        }
     }
 
     public void Attack()
@@ -50,22 +40,20 @@ public class AI_Attack : MonoBehaviour
             }
             else
             {
-                Debug.Log("Enemy performs attack : Attack" + (currentCombo));
-                StartCoroutine(AttackCooldown());
                 currentCombo ++;
-
-                if (currentCombo == maxCombo +1)
-                {
-                    Knockback();
-                }
-
-                if (currentCombo == maxCombo)
-                {
-                    StartCoroutine(ComboCooldown());
-                }
             }
 
             lastAttackTime = Time.time;
+            
+            Debug.Log("Enemy performs attack : Attack" + (currentCombo));
+            StartCoroutine(AttackCooldown());
+
+            if (currentCombo == maxCombo)
+                {
+                    Knockback();
+                    currentCombo = 0;
+                    StartCoroutine(ComboCooldown());
+                }
         }
     }
 
@@ -75,7 +63,7 @@ public class AI_Attack : MonoBehaviour
         {
             Vector2 knockbackDirection = (player.position - transform.position).normalized;
             playerRigidbody.linearVelocity = Vector2.zero;
-            playerRigidbody.AddForce(knockbackDirection * (30*attackForce), ForceMode2D.Force);
+            playerRigidbody.AddForce(knockbackDirection * (50*attackForce), ForceMode2D.Force);
             Debug.Log("Player hit by knockback");
         }
     }
@@ -93,7 +81,7 @@ public class AI_Attack : MonoBehaviour
         yield return new WaitForSeconds(comboResetTime);
         Debug.Log("Combo Reset");
         // Reset the combo counter after cooldown
-        currentCombo = 0;
+        // currentCombo = 0;
         canAttack = true;
     }
 }
