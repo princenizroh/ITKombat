@@ -2147,26 +2147,6 @@ RectTransform:
   m_AnchoredPosition: {x: 87.849976, y: 58.3}
   m_SizeDelta: {x: 175.51001, y: 175.16}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!82 &190996538 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 8269704693274392262, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &190996539 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 962472313072437377, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &190996540 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 79581733360117097, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &190996541 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 1501202048632422092, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 2786425133770990244}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &192894287
 GameObject:
   m_ObjectHideFlags: 0
@@ -6201,7 +6181,8 @@ GameObject:
   m_Component:
   - component: {fileID: 653582214}
   - component: {fileID: 653582215}
-  m_Layer: 0
+  - component: {fileID: 653582216}
+  m_Layer: 7
   m_Name: Musuh
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -6261,6 +6242,32 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.5, y: 1}
   m_Direction: 0
+--- !u!114 &653582216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653582213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSlider: {fileID: 1136117067}
+  easeHealthSlider: {fileID: 532417379}
+  maxHealth: 100
+  health: 100
+  lerpSpeed: 5
+  attackTag: Attack
+  knockbackForce: 5
+  playerAnimator: {fileID: 0}
+  hitAudioSources: []
+  hitAnimationTriggers:
+  - Hit1
+  - Hit2
+  - Hit3
+  idleAnimationTrigger: Idle
 --- !u!1 &681317459
 GameObject:
   m_ObjectHideFlags: 0
@@ -15070,6 +15077,11 @@ Transform:
   - {fileID: 1868038358}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1646713900 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2417947227579106396, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+  m_PrefabInstance: {fileID: 2786425133770990244}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1647226185
 GameObject:
   m_ObjectHideFlags: 0
@@ -16979,7 +16991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1850984722}
   - component: {fileID: 1850984723}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20096,6 +20108,10 @@ PrefabInstance:
       propertyPath: m_JumpForce
       value: 300
       objectReference: {fileID: 0}
+    - target: {fileID: 4810395427450485930, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_TagString
+      value: Attack
+      objectReference: {fileID: 0}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -20145,25 +20161,9 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: punchSound1
+      propertyPath: attackPoint
       value: 
-      objectReference: {fileID: 190996541}
-    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: punchSound2
-      value: 
-      objectReference: {fileID: 190996540}
-    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: punchSound3
-      value: 
-      objectReference: {fileID: 190996539}
-    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: punchSound4
-      value: 
-      objectReference: {fileID: 190996538}
-    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: attackCooldown
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1646713900}
     - target: {fileID: 6913358028164970780, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Size.y
       value: 1.9983699
