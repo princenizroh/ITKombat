@@ -27,17 +27,7 @@ public class AI_Attack : MonoBehaviour
 
     void Update()
     {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         
-        // Check if AI can attack and if within attack range
-        if (canAttack && distanceToPlayer <= attackRange)
-        {
-            Attack();
-        }
-        // Stop movement if currently attacking
-        if (!canAttack){
-            aiMovement.StopMovement();
-        }
     }
 
     public void Attack()
@@ -50,22 +40,20 @@ public class AI_Attack : MonoBehaviour
             }
             else
             {
-                Debug.Log("Enemy performs attack : Attack" + (currentCombo));
-                StartCoroutine(AttackCooldown());
                 currentCombo ++;
-
-                if (currentCombo == maxCombo +1)
-                {
-                    Knockback();
-                }
-
-                if (currentCombo == maxCombo)
-                {
-                    StartCoroutine(ComboCooldown());
-                }
             }
 
             lastAttackTime = Time.time;
+            
+            Debug.Log("Enemy performs attack : Attack" + (currentCombo));
+            StartCoroutine(AttackCooldown());
+
+            if (currentCombo == maxCombo)
+                {
+                    Knockback();
+                    currentCombo = 0;
+                    StartCoroutine(ComboCooldown());
+                }
         }
     }
 
@@ -93,7 +81,7 @@ public class AI_Attack : MonoBehaviour
         yield return new WaitForSeconds(comboResetTime);
         Debug.Log("Combo Reset");
         // Reset the combo counter after cooldown
-        currentCombo = 0;
+        // currentCombo = 0;
         canAttack = true;
     }
 }

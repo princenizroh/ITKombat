@@ -49,7 +49,7 @@ public class StateManager : MonoBehaviour
                 break;
 
             case AIState.Attack:
-                aiAttack.Attack();
+                if (aiAttack.canAttack) aiAttack.Attack();
                 if (aiAttack.currentCombo >= aiAttack.maxCombo || distanceToPlayer > aiAttack.attackRange)
                 {
                     NextAttackDecision();
@@ -96,7 +96,7 @@ public class StateManager : MonoBehaviour
     {
         float decision = Random.value;
 
-        if (decision < 0.3f)
+        if (decision < 0.5f)
         {
             aimovement.movementStep = 0f;
             StartCoroutine(ChangeStateWithDelay(AIState.Approach)); // Delay before Approaching
