@@ -5836,7 +5836,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1745364055}
   m_HandleRect: {fileID: 1745364054}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6706,7 +6706,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &380833207
 Transform:
   m_ObjectHideFlags: 0
@@ -6731,9 +6731,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 380833206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: deb7e8111a222ff4f9e483b05f9511d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4858060fc70f8454b8c56ae4249ca0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loginButton: {fileID: 1697844835}
+  userIdText: {fileID: 994484783}
 --- !u!1 &388019939
 GameObject:
   m_ObjectHideFlags: 0
@@ -8579,8 +8581,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 943102436}
   m_HandleRect: {fileID: 943102435}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.9999998
+  m_Value: 0
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17076,7 +17078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1125971989
 Transform:
   m_ObjectHideFlags: 0
@@ -24940,19 +24942,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 380833208}
-        m_TargetAssemblyTypeName: ITKombat.GooglePlayManager, Assembly-CSharp
-        m_MethodName: SignIn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1704112481
 GameObject:
   m_ObjectHideFlags: 0
@@ -26192,7 +26182,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1801817305}
-  - component: {fileID: 1801817304}
+  - component: {fileID: 1801817306}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -26200,18 +26190,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &1801817304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1801817303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5279eef58080e8c4bae62dea3d779a29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1801817305
 Transform:
   m_ObjectHideFlags: 0
@@ -26227,6 +26205,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1325530322}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1801817306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801817303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e53d17f6ec216c8469af9f7b2e3ba6f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1809190106
 GameObject:
   m_ObjectHideFlags: 0

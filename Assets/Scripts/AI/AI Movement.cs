@@ -7,8 +7,9 @@ public class AI_Movement : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 3f;
     public float movementStep = 0f;
-    public float maxStep = 3f;
+    public float maxStep = 50f;
     public bool facingPlayer = true;
+    public bool canMove = true;
 
 
     [Header("Jump")]
@@ -27,7 +28,7 @@ public class AI_Movement : MonoBehaviour
     private Transform player;
     private Rigidbody2D myRigidbody;
     // private GameObject Ground;
-    private AI_Attack aiAttack;
+    public AI_Attack aiAttack;
 
     void Start()
     {
@@ -65,13 +66,13 @@ public class AI_Movement : MonoBehaviour
 
     public void StopMovement()
     {
-        Debug.Log("Idle State Called");
+        // Debug.Log("Idle State Called");
         myRigidbody.linearVelocity = Vector2.zero;
     }
 
     public void Approach()
     {
-        Debug.Log("Approach State Called");
+        // Debug.Log("Approach State Called");
         Vector2 ApproachDirection = (player.position - transform.position).normalized;
 
         if ((ApproachDirection.x > 0 && facingPlayer) || (ApproachDirection.x < 0 && !facingPlayer))
@@ -85,7 +86,7 @@ public class AI_Movement : MonoBehaviour
 
     public void Retreat()
     {
-        Debug.Log("Retreat State Called");
+        // Debug.Log("Retreat State Called");
         Vector2 RetreatDirection = (transform.position - player.position).normalized;
 
         myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
