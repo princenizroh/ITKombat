@@ -26,7 +26,6 @@ namespace ITKombat
             anim = GetComponent<Animator>();
         }
 
-        [System.Obsolete]
         private void Update()
         {
             if (useKeyboardInput)
@@ -41,6 +40,11 @@ namespace ITKombat
                 {
                     OnCrouchUp();
                 }
+                // Handle dash input (e.g., double-tap right or press a dash key)
+                if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+                {
+                    StartCoroutine(Dash());
+                }
             }
 
             if (isCrouching)
@@ -54,7 +58,6 @@ namespace ITKombat
             }
         }
 
-        [System.Obsolete]
         private void FixedUpdate()
         {
             if (!isDashing)
@@ -125,7 +128,6 @@ namespace ITKombat
             isCrouchAttacking = false;
         }
 
-        [System.Obsolete]
         public void OnDash()
         {
             if (canDash)
@@ -134,7 +136,6 @@ namespace ITKombat
             }
         }
 
-        [System.Obsolete]
         private IEnumerator Dash()
         {
             isDashing = true;

@@ -2,7 +2,7 @@ using ITKombat;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class ContohSkill : Skills 
+public class Skill1 : Skills 
 {   
     public override void Activate(GameObject parent)
     {

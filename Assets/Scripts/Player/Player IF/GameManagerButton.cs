@@ -70,7 +70,6 @@ public class GameManagerButton : MonoBehaviour
         }
     }
 
-    [System.Obsolete]
     public void DashButton()
     {
         if (playerMovement != null)

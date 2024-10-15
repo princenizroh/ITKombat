@@ -10,6 +10,7 @@ namespace ITKombat
     public class SkillsHolder : MonoBehaviour
     {
         public Skills[] skills;
+        public AudioSource[] skillSounds;
         float[] cooldownTime;
         float[] activeTime;
 
@@ -18,6 +19,7 @@ namespace ITKombat
 
         public InputActionAsset inputActionAsset;
         public string[] skillActionNames;
+        private Animator anim;
 
         enum SkillState
         {
@@ -29,10 +31,17 @@ namespace ITKombat
 
         private void Start()
         {
+            anim = GetComponent<Animator>();
             cooldownTime = new float[skills.Length];
             activeTime = new float[skills.Length];
             states = new SkillState[skills.Length];
             skillsAction = new InputAction[skills.Length];
+
+        if (skillsSounds.Length != skills.Length)
+            {
+                Debug.LogError("The number of skill sounds does not match the number of skills");
+                return;
+            }
 
         for (int i = 0; i < skills.Length; i++)
             {
@@ -51,6 +60,15 @@ namespace ITKombat
                 skills[index].Activate(gameObject);
                 states[index] = SkillState.active;
                 activeTime[index] = skills[index].activeTime;
+
+                if (skillSounds[index] != null)
+                {
+                    skillSounds[index].Play();
+                }
+                else
+                {
+                    Debug.LogWarning($"No audio source assigned for skill {index}");
+                }
             }
         }
 
