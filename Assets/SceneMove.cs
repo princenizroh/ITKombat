@@ -1,47 +1,54 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class DoorInteraction : MonoBehaviour
+public class FinishPoint : MonoBehaviour
 {
-    public string sceneName;  // Assign the name of the scene for each door in the Inspector
-    private bool playerInFrontOfDoor = false;
-    private float timeSpentInFrontOfDoor = 0f;
-    public float timeToEnter = 2f;  // Time required to enter the door (2 seconds)
+    private float timer = 0f;
+    private bool playerInZone = false;
+    private bool levelLoaded = false;
 
-    void Update()
+    [SerializeField] private string targetSceneName; // The name of the target scene
+    [SerializeField] private Slider progressBar; // Reference to the UI Slider
+
+    // Method called at the start of the game
+    private void Start()
     {
-        if (playerInFrontOfDoor)
-        {
-            timeSpentInFrontOfDoor += Time.deltaTime;
+        progressBar.gameObject.SetActive(false); // Hide progress bar at the start
+    }
 
-            if (timeSpentInFrontOfDoor >= timeToEnter)
-            {
-                // Load the scene assigned to this door
-                SceneManager.LoadScene(sceneName);
-            }
-        }
-        else
+    private void Update()
+    {
+        if (playerInZone && !levelLoaded)
         {
-            // Reset the timer if the player leaves the door
-            timeSpentInFrontOfDoor = 0f;
+            timer += Time.deltaTime;
+            progressBar.value = timer / 2f; // Fill progress bar over 2 seconds
+
+            if (timer >= 2f)
+            {
+                levelLoaded = true;
+                SceneController.instance.LoadSceneByName(targetSceneName);
+            }
         }
     }
 
-    // Detect when the player enters the trigger area in front of the door
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            playerInFrontOfDoor = true;
+            playerInZone = true; // Player has entered the trigger zone
+            progressBar.gameObject.SetActive(true); // Show progress bar
         }
     }
 
-    // Detect when the player leaves the trigger area in front of the door
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            playerInFrontOfDoor = false;
+            playerInZone = false; // Player has exited the trigger zone
+            timer = 0f; // Reset the timer
+            levelLoaded = false; // Reset the level loaded flag
+            progressBar.gameObject.SetActive(false); // Hide progress bar
+            progressBar.value = 0f; // Reset progress bar value
         }
     }
 }
