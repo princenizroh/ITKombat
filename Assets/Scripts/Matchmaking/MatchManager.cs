@@ -31,7 +31,7 @@ namespace ITKombat
             if (matchTimer.GetStageTimeInSecond() == 0 && !timeoutTriggered) 
             {
 
-                if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true) {
+                if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true ) {
                     
                     TimeoutNotif.SetActive(true);
                     timeoutToTimer.text = "Draw";
@@ -57,6 +57,7 @@ namespace ITKombat
             }
         }
 
+        
         IEnumerator MatchTimeout() 
         {
             Debug.Log("Match is timeout");
@@ -66,19 +67,19 @@ namespace ITKombat
             // game timeout screen is activated
             TimeoutNotif.SetActive(true);
 
-            // if (healthBar.health < 50) {
+            if (healthBar.health < 50) {
 
-            //     enemyVictoryPoint += 1;
+                enemyVictoryPoint += 1;
 
-            //     timeoutToTimer.text = "You Won 1 Point";
+                timeoutToTimer.text = "You Won 1 Point";
                 
-            // } else {
+            } else {
 
-            //     playerVictoryPoint += 1;
+                playerVictoryPoint += 1;
 
-            //     timeoutToTimer.text = "Enemy Won";
+                timeoutToTimer.text = "Enemy Won";
 
-            // }
+            }
 
             yield return new WaitForSeconds(5f);
 

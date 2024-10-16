@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace ITKombat
@@ -35,6 +36,17 @@ namespace ITKombat
             if (healthSlider.value != easeHealthSlider.value)
             {
                 easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, healthSlider.value, lerpSpeed * Time.deltaTime);
+            }
+
+            DebugKey();
+        }
+
+        private void DebugKey()
+        {
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                float attackPower = GetDamageFromPlayer();
+                TakeDamage(attackPower); 
             }
         }
 
