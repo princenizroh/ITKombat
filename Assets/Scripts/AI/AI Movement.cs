@@ -16,55 +16,18 @@ public class AI_Movement : MonoBehaviour
     private float jumpForce = 5f;
     private float jumpCooldown = 2f;
     [SerializeField] private bool canJump = true;
-    
-    [Header("Dash")]
-    // [SerializeField] private bool isDashing = false;  
-    // private float dashPower = 20f;
-    // private float dashTime = 0.2f;
-    // private float lastTapTime = 0f;
-    // private float dashTimeWindow = 0.2f;
 
 
-    private Transform player;
+    [SerializeField] private Transform player;
     private Rigidbody2D myRigidbody;
-    // private GameObject Ground;
-    public AI_Attack aiAttack;
     private Animator anim;
 
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        aiAttack = GetComponent<AI_Attack>();
         anim = GetComponent<Animator>();
     }
-
-    // void Update()
-    // {
-    //     float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-    //     // Check if the AI is within attack range or currently attacking
-    //     if (distanceToPlayer > aiAttack.attackRange)
-    //     {
-    //         if(aiAttack.currentCombo == aiAttack.maxCombo)
-    //         {
-    //             Retreat();  // Ensure movement stops when attacking
-    //         }
-    //         else 
-    //         {
-    //             Approach();
-    //         }
-    //     }
-    //     else
-    //     {
-    //         StopMovement();
-    //     }
-
-        
-    //     if (canJump){
-    //         Jump();
-    //     }
-    // }
 
     public void StopMovement()
     {
@@ -75,7 +38,7 @@ public class AI_Movement : MonoBehaviour
 
     public void Approach()
     {
-        // Debug.Log("Approach State Called");
+        //Debug.Log("Approach State Called");
         Vector2 ApproachDirection = (player.position - transform.position).normalized;
 
         if ((ApproachDirection.x > 0 && facingPlayer) || (ApproachDirection.x < 0 && !facingPlayer))
@@ -83,18 +46,19 @@ public class AI_Movement : MonoBehaviour
             Flip();
         }
 
-        myRigidbody.linearVelocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
-        movementStep ++;
+        myRigidbody.velocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.velocity.y);
+        Debug.Log("test" + myRigidbody.linearVelocity);
+        movementStep++;
         anim.SetTrigger("Walk");
     }
 
     public void Retreat()
     {
-        // Debug.Log("Retreat State Called");
+        Debug.Log("Retreat State Called");
         Vector2 RetreatDirection = (transform.position - player.position).normalized;
 
         myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
-        movementStep ++;
+        movementStep++;
         anim.SetTrigger("Walk");
     }
 
@@ -102,7 +66,7 @@ public class AI_Movement : MonoBehaviour
     {
         facingPlayer = !facingPlayer;
         Vector2 localScale = transform.localScale;
-        localScale.x *= -1; 
+        localScale.x *= -1;
         transform.localScale = localScale;
     }
 

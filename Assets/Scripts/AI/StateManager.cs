@@ -86,7 +86,7 @@ public class StateManager : MonoBehaviour
     {
         float decision = Random.value;
 
-        if (decision < 0.7f)
+        if (decision < 0.8f)
         {
             aimovement.movementStep = 0f;
             StartCoroutine(ChangeStateWithDelay(AIState.Approach)); // Delay before Approaching
@@ -104,7 +104,7 @@ public class StateManager : MonoBehaviour
     {
         float decision = Random.value;
 
-        if (decision < 0.5f)
+        if (decision < 0.3f)
         {
             aimovement.movementStep = 0f;
             StartCoroutine(ChangeStateWithDelay(AIState.Approach)); // Delay before Approaching
