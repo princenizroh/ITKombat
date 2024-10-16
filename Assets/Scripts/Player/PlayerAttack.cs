@@ -1,3 +1,4 @@
+using ITKombat;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -148,20 +149,16 @@ public class PlayerAttack : MonoBehaviour
         GameObject otherPlayer = collision.transform.root.gameObject;
 
         // Ensure the collided object is a different player and not the player themselves
-        // Tagnya harus "Player" buat ngasih damage ke player lain
-        if (otherPlayer == parentPlayer.transform.parent && otherPlayer.CompareTag("Player"))
+        if (otherPlayer != parentPlayer.transform.parent && otherPlayer.CompareTag("Player"))
         {
-            HealthBar otherHealth = otherPlayer.GetComponentInChildren<HealthBar>();
-            
+            Health otherHealth = otherPlayer.GetComponentInChildren<Health>();
+
             if (otherHealth != null)
             {
                 // Deal damage to the other player
-                otherHealth.TakeDamage(damageAmount);
-                Debug.Log($"{gameObject.name} has been hit!");
+/*                otherHealth.TakeDamage(damageAmount);*/
+                Debug.Log($"{gameObject.name} has hit {otherPlayer.name} and dealt {damageAmount} damage!");
             }
         }
-
     }
-
-
 }

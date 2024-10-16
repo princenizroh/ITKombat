@@ -7,14 +7,14 @@ using UnityEngine.InputSystem;
 public class GameManagerPlayer : MonoBehaviour
 {
     public PlayerMovement playerMovement;
-    public PlayerAttack playerAttack;
+    public PlayerAttackTestNope playerAttack;
     public PlayerDefense playerDefense;
     public SkillsHolder playerSkills;
 
     // Attack
     public void AttackInput()
     {
-        playerAttack.OnAttackInput();
+        playerAttack.PerformAttack();
     }
 
     // Defense

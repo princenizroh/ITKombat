@@ -7,9 +7,10 @@ namespace ITKombat
     public class PlayerAttackTestNope : NetworkBehaviour
     {
         public Transform attackPoint;
-        public float attackForce = 10f;
+        public float attackForce = 5f;
         public float attackRadius = 1f;
         public float attackCooldown = 0.5f;
+        public float attackPower = 25f;
         public int maxCombo = 4;
         public LayerMask enemyLayer;
         private int combo = 0;
@@ -64,6 +65,11 @@ namespace ITKombat
                     if (enemyRb != null)
                     {
                         enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
+                        HealthBarTest enemyHealth = enemy.GetComponent<HealthBarTest>();
+                        if (enemyHealth != null)
+                        {
+                            enemyHealth.TakeDamage(attackPower);
+                        }
                     }
                 }
                 AttackAnimation();

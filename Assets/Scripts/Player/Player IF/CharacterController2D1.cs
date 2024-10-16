@@ -63,7 +63,6 @@ public class CharacterController2D1 : MonoBehaviour
         }
     }
 
-    [System.Obsolete]
     public void Move(float move, bool crouch, bool jump)
     {
         HandleCrouching(crouch);
@@ -107,13 +106,12 @@ public class CharacterController2D1 : MonoBehaviour
         }
     }
 
-    [System.Obsolete]
     private void HandleMovement(float move)
     {
         if (m_Grounded || m_AirControl)
         {
-            Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
-            m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+            Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.linearVelocity.y);
+            m_Rigidbody2D.linearVelocity = Vector3.SmoothDamp(m_Rigidbody2D.linearVelocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
             if (move > 0 && !m_FacingRight)
             {
@@ -144,20 +142,18 @@ public class CharacterController2D1 : MonoBehaviour
         transform.localScale = theScale;
     }
 
-    [System.Obsolete]
     public void Dash(float dashSpeed, float dashDuration)
     {
         float dashDirection = m_FacingRight ? 1f : -1f;
-        Vector2 dashVelocity = new Vector2(dashSpeed * dashDirection, m_Rigidbody2D.velocity.y);
-        m_Rigidbody2D.velocity = dashVelocity;
+        Vector2 dashVelocity = new(dashSpeed * dashDirection, m_Rigidbody2D.linearVelocity.y);
+        m_Rigidbody2D.linearVelocity = dashVelocity;
 
         StartCoroutine(StopDashAfterDuration(dashDuration));
     }
 
-    [System.Obsolete]
     private IEnumerator StopDashAfterDuration(float duration)
     {
         yield return new WaitForSeconds(duration);
-        m_Rigidbody2D.velocity = new Vector2(0, m_Rigidbody2D.velocity.y);
+        m_Rigidbody2D.linearVelocity = new Vector2(0, m_Rigidbody2D.linearVelocity.y);
     }
 }
