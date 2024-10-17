@@ -6,7 +6,8 @@ namespace ITKombat
 {
     public class MatchManager : MonoBehaviour
     {
-        public GameObject ReadyNotif, Round1Notif, Round2Notif, FinalRoundNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
+        public static MatchManager Instance;
+        public GameObject ReadyNotif, Round1Notif, Round2Notif, FinalRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
         public int playerVictoryPoint;
         public int enemyVictoryPoint;
         public MatchTimer matchTimer;
@@ -17,8 +18,14 @@ namespace ITKombat
         private bool timeoutTimer = false;
         private bool finalRound = false;
 
-        void Start() {
+        void Start() 
+        {
+            StartCoroutine(ShowRoundStartNotification(1));
+        }
 
+        private void Awake()
+        {
+            Instance = this;
         }
 
         void Update()
@@ -38,9 +45,10 @@ namespace ITKombat
 
                 } else {
 
-                    // StartCoroutine(MatchTimeout());
+                    StartCoroutine(MatchTimeout());
                     PlayerVictory();
                     timeoutTriggered = true;
+                    Debug.Log("health : "+ healthBar.health );
 
                 }
 
@@ -57,7 +65,52 @@ namespace ITKombat
             }
         }
 
+        public IEnumerator ShowRoundStartNotification(int roundNumber)
+        {
+            switch (roundNumber)
+            {
+                case 1:
+                    Round1Notif.SetActive(true);
+                    break;
+                case 2:
+                    Round2Notif.SetActive(true);
+                    break;
+                case 3:
+                    FinalRoundNotif.SetActive(true);
+                    break;
+            }
+
+            yield return new WaitForSeconds(2f);
+
+            Round1Notif.SetActive(false);
+            Round2Notif.SetActive(false);
+            FinalRoundNotif.SetActive(false);
+
+            FightNotif.SetActive(true);
+            yield return new WaitForSeconds(1.5f);
+            FightNotif.SetActive(false);
+        }
         
+        public void ShowVictoryNotif(bool isPlayerVictory)
+        {
+            if(isPlayerVictory)
+            {
+                VictoryNotif.SetActive(true);
+            }
+            else
+            {
+                DefeatNotif.SetActive(true);
+            }
+        }
+
+        public void ShowEndGameButton()
+        {
+            GameObject endGameButton = GameObject.Find("EndGameButton");
+            if (endGameButton != null)
+            {
+                endGameButton.SetActive(true);
+            }
+        }
         IEnumerator MatchTimeout() 
         {
             Debug.Log("Match is timeout");
@@ -72,12 +125,14 @@ namespace ITKombat
                 enemyVictoryPoint += 1;
 
                 timeoutToTimer.text = "You Won 1 Point";
+                Debug.Log("You Won 1 Point");
                 
             } else {
 
                 playerVictoryPoint += 1;
 
                 timeoutToTimer.text = "Enemy Won";
+                Debug.Log("Enemy Won");
 
             }
 

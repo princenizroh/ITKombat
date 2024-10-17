@@ -6,6 +6,7 @@ namespace ITKombat
 {
     public class PlayerAttackTestNope : NetworkBehaviour
     {
+        public static PlayerAttackTestNope Instance;
         public Transform attackPoint;
         public float attackForce = 5f;
         public float attackRadius = 1f;
@@ -28,6 +29,16 @@ namespace ITKombat
         private void Awake()
         {
             animator = GetComponent<Animator>();
+
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+
         }
 
         public void OnAttackButtonPressed()
@@ -40,6 +51,7 @@ namespace ITKombat
 
         public void PerformAttack()
         {
+            Debug.Log("Performing attack...");
             if (Time.time - timeSinceLastAttack > attackCooldown)
             {
                 // Jika cooldown terlampaui sebelum serangan berikutnya, reset combo ke 1
@@ -57,18 +69,31 @@ namespace ITKombat
                 }
 
                 timeSinceLastAttack = Time.time; // Simpan waktu serangan terakhir
+                Debug.Log("Combo: " + combo);
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
+                Debug.Log("Hit " + hitEnemies.Length + " enemies.");
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
                     if (enemyRb != null)
                     {
                         enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
-                        HealthBarTest enemyHealth = enemy.GetComponent<HealthBarTest>();
-                        if (enemyHealth != null)
+
+                        GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
+
+                        if (enemyStateObject != null)
                         {
-                            enemyHealth.TakeDamage(attackPower);
+                            EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
+                            if (enemyState != null)
+                            {
+                                enemyState.TakeDamage(attackPower);
+                            }
+                        }
+
+                        else
+                        {
+                            Debug.Log("EnemyState not found.");
                         }
                     }
                 }

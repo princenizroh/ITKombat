@@ -53,12 +53,11 @@ namespace ITKombat
                 }
                 lastAttackTime = Time.time;
 
-                HealthBarTest playerHealth = player.GetComponent<HealthBarTest>();
-                if (playerHealth != null)
+                GameObject playerState = GameObject.FindGameObjectWithTag("PlayerState");
+                if (playerState != null)
                 {
-                    playerHealth.TakeDamage(attackPower);
+                    playerState.GetComponent<PlayerState>().TakeDamage(attackPower);
                 }
-
                 // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
                 StartCoroutine(AttackCooldown());
                 if (currentCombo > maxCombo)
