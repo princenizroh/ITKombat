@@ -5,11 +5,16 @@ namespace ITKombat
 {
     public class MatchTimer : MonoBehaviour
     {
+        public static MatchTimer Instance;
         public float timerSet = 0.5f;
         public float timerStart = 120;
         public float normalTimerSet = 0.5f;
         public float normalTimerStart;
 
+        private void Awake()
+        {
+            Instance = this;
+        }
         void Update()
         {
             if (timerStart >= timerSet)
