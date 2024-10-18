@@ -89,7 +89,8 @@ namespace ITKombat
             Round2Notif.SetActive(false);
             FinalRoundNotif.SetActive(false);
 
-            FightNotif.SetActive(true);
+            matchTimer.ChangeMatchStatus(true);
+            FightNotif.SetActive(true); 
             yield return new WaitForSeconds(1.5f);
             FightNotif.SetActive(false);
         }
@@ -158,6 +159,7 @@ namespace ITKombat
 
         public void PlayerVictory() 
         {
+            matchTimer.ChangeMatchStatus(false);
             if (playerVictoryPoint < 2) // Change to ensure gradual round victory
             {
                 StartCoroutine(StartRound("Player Victory"));
@@ -179,6 +181,7 @@ namespace ITKombat
 
         public void EnemyVictory() 
         {
+            matchTimer.ChangeMatchStatus(false);
             if (enemyVictoryPoint <= 1) // Change to ensure gradual round victory
             {
                 StartCoroutine(StartRound("Enemy Victory"));
@@ -212,7 +215,8 @@ namespace ITKombat
 
             TimeoutNotif.SetActive(false);
             timeoutTimer = false;
-
+            matchTimer.ChangeMatchStatus(true);
+            
             // reset time
             matchTimer.timerStart = 120;
             timeoutTriggered = false;
