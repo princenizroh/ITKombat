@@ -23,6 +23,7 @@ namespace ITKombat
 
         private Rigidbody2D rb;
 
+        [SerializeField] private ParticleSystem HittedParticle = null;
         private void Start()
         {
             healthSlider.maxValue = maxHealth;
@@ -93,6 +94,8 @@ namespace ITKombat
             }
             else
             {
+                HittedParticle.Play();
+
                 ApplyKnockback();
 
                 StartCoroutine(PlayRandomHitAnimation());

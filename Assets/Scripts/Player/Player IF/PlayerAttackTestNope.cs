@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.VFX;
 
 namespace ITKombat
 {
@@ -18,6 +19,12 @@ namespace ITKombat
 
         // Animator
         private Animator animator;
+
+        // VFX
+        [SerializeField] private ParticleSystem CollectParticle1 = null;
+        [SerializeField] private ParticleSystem CollectParticle2 = null;
+        [SerializeField] private ParticleSystem CollectParticle3 = null;
+        [SerializeField] private ParticleSystem CollectParticle4 = null;
 
         // Audio sources for normal attacks
         public AudioSource punchSound1;
@@ -88,24 +95,28 @@ namespace ITKombat
             switch (combo)
             {
                 case 1:
+                    CollectParticle1.Play();
                     PlaySound(punchSound1);
                     animator.SetTrigger("attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
+                    CollectParticle2.Play();
                     PlaySound(punchSound2);
                     animator.SetTrigger("attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
+                    CollectParticle3.Play();
                     PlaySound(punchSound3);
                     animator.SetTrigger("attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
+                    CollectParticle4.Play();
                     PlaySound(punchSound4);
                     animator.SetTrigger("attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
