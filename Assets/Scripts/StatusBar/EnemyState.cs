@@ -57,7 +57,8 @@ namespace ITKombat
                 {
                     Debug.Log("Round 1 berakhir");
                     currentRound++;
-                    StartNewRound();
+                    // StartNewRound();
+                    MatchManager.Instance.PlayerVictory();
                 }
                 else
                 {
@@ -78,6 +79,8 @@ namespace ITKombat
             currentHealth = maxHealth;
             healthBar.UpdateHealth(currentHealth, maxHealth);
             MatchManager.Instance.ShowRoundStartNotification(currentRound);
+            
+
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

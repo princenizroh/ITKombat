@@ -66,9 +66,10 @@ namespace ITKombat
                 Debug.Log("Player mati!");
                 if (currentRound == 1)
                 {
+                    MatchManager.Instance.EnemyVictory();
                     Debug.Log("Round 1 berakhir");
                     currentRound++;
-                    StartNewRound();
+                    // StartNewRound();
                 }
                 else
                 {

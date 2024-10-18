@@ -162,6 +162,7 @@ namespace ITKombat
             matchTimer.ChangeMatchStatus(false);
             if (playerVictoryPoint < 2) // Change to ensure gradual round victory
             {
+                playerVictoryPoint += 1;
                 StartCoroutine(StartRound("Player Victory"));
             } 
             else 
@@ -184,6 +185,7 @@ namespace ITKombat
             matchTimer.ChangeMatchStatus(false);
             if (enemyVictoryPoint <= 1) // Change to ensure gradual round victory
             {
+                enemyVictoryPoint += 1;
                 StartCoroutine(StartRound("Enemy Victory"));
             } 
             else 
