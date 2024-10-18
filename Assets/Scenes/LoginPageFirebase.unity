@@ -2872,9 +2872,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: UserDataScreen
+      - m_Target: {fileID: 1125971991}
+        m_TargetAssemblyTypeName: ITKombat.GameFirebase, Assembly-CSharp
+        m_MethodName: CompareId
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6736,6 +6736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loginButton: {fileID: 1697844835}
   userIdText: {fileID: 994484783}
+  firebase: {fileID: 1125971991}
 --- !u!1 &388019939
 GameObject:
   m_ObjectHideFlags: 0
@@ -8581,8 +8582,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 943102436}
   m_HandleRect: {fileID: 943102435}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.99999976
+  m_Value: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -17072,6 +17073,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1125971989}
   - component: {fileID: 1125971990}
+  - component: {fileID: 1125971991}
   m_Layer: 0
   m_Name: DatabaseManager
   m_TagString: Untagged
@@ -17132,6 +17134,19 @@ MonoBehaviour:
   playerLevelText: {fileID: 1353742924}
   playerRankText: {fileID: 279363122}
   sk2pmText: {fileID: 103151427}
+--- !u!114 &1125971991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125971988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ebc1ec62da012e4894719bda1f63fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dependencyStatus: 0
 --- !u!1 &1131491302
 GameObject:
   m_ObjectHideFlags: 0
