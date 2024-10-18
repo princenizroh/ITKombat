@@ -7,7 +7,7 @@ namespace ITKombat
 {
     public class HealthBarTest : MonoBehaviour
     {
-        public Slider healthSlider;
+        public Slider playerHealthSlider;
         public Slider easeHealthSlider;
         public int maxHealth = 100;
         public float health = 100f;
@@ -26,7 +26,7 @@ namespace ITKombat
         [SerializeField] private ParticleSystem HittedParticle = null;
         private void Start()
         {
-            healthSlider.maxValue = maxHealth;
+            playerHealthSlider.maxValue = maxHealth;
             easeHealthSlider.maxValue = maxHealth;
             rb = GetComponent<Rigidbody2D>(); 
             UpdateHealthBar();
@@ -34,9 +34,9 @@ namespace ITKombat
 
         private void Update()
         {
-            if (healthSlider.value != easeHealthSlider.value)
+            if (playerHealthSlider.value != easeHealthSlider.value)
             {
-                easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, healthSlider.value, lerpSpeed * Time.deltaTime);
+                easeHealthSlider.value = Mathf.Lerp(easeHealthSlider.value, playerHealthSlider.value, lerpSpeed * Time.deltaTime);
             }
 
             DebugKey();
@@ -58,6 +58,7 @@ namespace ITKombat
             {
                 Debug.Log("Player attack the enemy: " + collision.gameObject.name);
                 float attackPower = GetDamageFromPlayer();
+                Debug.Log("Attack power: " + attackPower);
                 TakeDamage(attackPower); 
             }
         }
@@ -84,7 +85,7 @@ namespace ITKombat
                 {
                     Debug.Log("Round 2");
                     currentRound++;
-                    ResetHealth();
+                    StartNewRound();
                 }
                 else
                 {
@@ -106,15 +107,17 @@ namespace ITKombat
             UpdateHealthBar();
         }
 
-        private void ResetHealth()
+        private void StartNewRound()
         {
             health = maxHealth;
             UpdateHealthBar();
+
+            MatchManager.Instance.ShowRoundStartNotification(currentRound);
         }
 
         public void UpdateHealthBar()
         {
-            healthSlider.value = health;
+            playerHealthSlider.value = health;
         }
 
         private void ShowEndGameButton()

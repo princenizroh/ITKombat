@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using ITKombat;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Authentication.PlayerAccounts;
@@ -18,6 +19,7 @@ public class LoginController : MonoBehaviour
 
     public event Action<PlayerProfile> OnSignedIn;
     public event Action<PlayerProfile> OnAvatarUpdate;
+    public GameFirebase firebase;
 
     private PlayerInfo playerInfo;
 
@@ -105,7 +107,6 @@ public class LoginController : MonoBehaviour
             // Invoke the OnSignedIn event
             OnSignedIn?.Invoke(playerProfile);
 
-            // Update UI elements with player information
             DatabaseSync(playerProfile);
         }
         catch (AuthenticationException ex)
@@ -118,11 +119,18 @@ public class LoginController : MonoBehaviour
         }
     }
 
-    private void DatabaseSync(PlayerProfile player_profile) {
-        // jika id belum ada di database maka profile akan dibuat, jika id sudah ada didalam database maka profile akan dicocokan.
-        // jika match dengan database maka akan di push ke ui
+    private async void DatabaseSync(PlayerProfile profile) {
+        string player_id = profile.playerInfo.Id.ToString();
 
-        UpdateUI(player_profile);
+        var authentication_validation = await firebase.CompareId(player_id);
+
+        if (authentication_validation == true) {
+            StartCoroutine(firebase.firebaseAuhenticationLogin(player_id, player_id));
+        } else {
+            StartCoroutine(firebase.GoogleRegister(player_id));
+        }
+
+        UpdateUI(profile);
     }
 
     // Update UI with player profile details
