@@ -17,10 +17,10 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Move Speed: " + playerData.moveSpeed);
 
             // Menginisialisasi komponen player dengan script yang berbeda
-            // playerData.audioPlayerTest.PlayBackgroundMusic();
-            // playerData.characterController.Move(playerData.moveSpeed, false, false);
-            // playerData.healthBar.UpdateHealthBar();
-            // playerData.playerAttack.PerformAttack();
+            playerData.audioPlayerTest.PlayBackgroundMusic();
+            playerData.characterController.Move(playerData.moveSpeed, false, false);
+            playerData.healthBar.UpdateHealthBar();
+            playerData.playerAttack.PerformAttack();
         }
     }
 }
