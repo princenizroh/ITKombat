@@ -139,5 +139,11 @@ namespace ITKombat
                 randomAudioSource.Play();
             }
         }
+
+        // Reset health to maxHealth
+        public void ResetHealth()
+        {
+            currentHealth = maxHealth;
+        }
     }
 }

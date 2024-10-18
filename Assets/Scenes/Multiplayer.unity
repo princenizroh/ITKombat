@@ -6648,17 +6648,6 @@ Transform:
   - {fileID: 1941562277}
   m_Father: {fileID: 1366414810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &725945242 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2176880652430277937, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 147469101}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &729097611
 GameObject:
   m_ObjectHideFlags: 0
@@ -14948,7 +14937,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1410365015
 Transform:
   m_ObjectHideFlags: 0
@@ -14987,11 +14976,12 @@ MonoBehaviour:
   playerVictoryPoint: 0
   enemyVictoryPoint: 0
   matchTimer: {fileID: 1410365017}
-  healthBar: {fileID: 725945242}
   timerText: {fileID: 754093968}
   timeoutToTimer: {fileID: 122789153}
   vpPlayer: {fileID: 780139377}
   vpEnemy: {fileID: 1826572314}
+  playerState: {fileID: 0}
+  enemyState: {fileID: 0}
 --- !u!114 &1410365017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15005,7 +14995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerSet: 0.5
-  timerStart: 5
+  timerStart: 100
   normalTimerSet: 0.5
   normalTimerStart: 5
 --- !u!1 &1420209371

@@ -11,12 +11,14 @@ namespace ITKombat
         public int playerVictoryPoint;
         public int enemyVictoryPoint;
         public MatchTimer matchTimer;
-        public HealthBarTest healthBar;
-        // public EnemyStats enemyStats;
         public TMP_Text timerText, timeoutToTimer, vpPlayer, vpEnemy;
         private bool timeoutTriggered = false;
         private bool timeoutTimer = false;
         private bool finalRound = false;
+
+        // Reference to PlayerState and EnemyState
+        public PlayerState playerState;
+        public EnemyState enemyState;
 
         void Start() 
         {
@@ -26,6 +28,10 @@ namespace ITKombat
         private void Awake()
         {
             Instance = this;
+
+            // Ensure PlayerState and EnemyState are correctly set up
+            playerState = FindObjectOfType<PlayerState>();
+            enemyState = FindObjectOfType<EnemyState>();
         }
 
         void Update()
@@ -37,31 +43,28 @@ namespace ITKombat
             
             if (matchTimer.GetStageTimeInSecond() == 0 && !timeoutTriggered) 
             {
-
-                if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true ) {
-                    
+                // Handle timeout logic
+                if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true) 
+                {
                     TimeoutNotif.SetActive(true);
                     timeoutToTimer.text = "Draw";
-
-                } else {
-
+                } 
+                else 
+                {
                     StartCoroutine(MatchTimeout());
                     PlayerVictory();
+                    EnemyVictory();
                     timeoutTriggered = true;
-                    Debug.Log("health : "+ healthBar.health );
-
                 }
-
-            } else if (timeoutTimer == true) {
-
+            } 
+            else if (timeoutTimer == true) 
+            {
                 timeoutToTimer.text = matchTimer.GetNormalTimeInSecond().ToString();
 
-                if (matchTimer.normalTimerStart <= 1f) {
-
+                if (matchTimer.normalTimerStart <= 1f) 
+                {
                     timeoutToTimer.text = "Fight";
-
                 }
-
             }
         }
 
@@ -93,7 +96,7 @@ namespace ITKombat
         
         public void ShowVictoryNotif(bool isPlayerVictory)
         {
-            if(isPlayerVictory)
+            if (isPlayerVictory)
             {
                 VictoryNotif.SetActive(true);
             }
@@ -111,130 +114,112 @@ namespace ITKombat
                 endGameButton.SetActive(true);
             }
         }
+
         IEnumerator MatchTimeout() 
         {
-            Debug.Log("Match is timeout");
-
-            timeoutToTimer.text = "Timeout";
-            
-            // game timeout screen is activated
+            Debug.Log("Match Timeout");
             TimeoutNotif.SetActive(true);
 
-            if (healthBar.health < 50) {
-
-                enemyVictoryPoint += 1;
-
-                timeoutToTimer.text = "You Won 1 Point";
-                Debug.Log("You Won 1 Point");
-                
-            } else {
-
-                playerVictoryPoint += 1;
-
-                timeoutToTimer.text = "Enemy Won";
-                Debug.Log("Enemy Won");
-
+            // Check health via PlayerState and EnemyState
+            if (playerState != null && enemyState != null)
+            {
+                if (playerState.currentHealth < enemyState.currentHealth) 
+                {
+                    enemyVictoryPoint += 1;
+                    timeoutToTimer.text = "Enemy Won";
+                    Debug.Log("enemy won"+enemyVictoryPoint);
+                } 
+                else 
+                {
+                    playerVictoryPoint += 1;
+                    timeoutToTimer.text = "Player Won";
+                    Debug.Log("player won"+playerVictoryPoint);
+                }
             }
 
             yield return new WaitForSeconds(5f);
 
             matchTimer.normalTimerStart = 6;
-
             timeoutTimer = true;
 
             yield return new WaitForSeconds(8f);
 
             TimeoutNotif.SetActive(false);
-
             timeoutTimer = false;
 
             // reset time
             matchTimer.timerStart = 120;
             timeoutTriggered = false;
 
-            // spawn
-            healthBar.health = 100;
-
+            // Reset health for next round
+            playerState.ResetHealth();
+            enemyState.ResetHealth();
         }
 
-        public void PlayerVictory() {
-
-            if (playerVictoryPoint <= 1) {
-
-                playerVictoryPoint += 1;
-
+        public void PlayerVictory() 
+        {
+            if (playerVictoryPoint < 2) // Change to ensure gradual round victory
+            {
                 StartCoroutine(StartRound("Player Victory"));
-
-            } else {
-
-                if (enemyVictoryPoint == 2 && finalRound == false) {
-
+            } 
+            else 
+            {
+                if (enemyVictoryPoint == 2 && !finalRound) 
+                {
                     finalRound = true;
                     StartCoroutine(StartRound("Final Round"));
-
-                } else {
-
+                } 
+                else 
+                {
                     TimeoutNotif.SetActive(true);
                     timeoutToTimer.text = "End Game - Player Win";
-
-                }     
-
+                }
             }
-
         }
 
-        public void EnemyVictory() {
-
-            if (enemyVictoryPoint <= 1) {
-
-                enemyVictoryPoint += 1;
-
+        public void EnemyVictory() 
+        {
+            if (enemyVictoryPoint <= 1) // Change to ensure gradual round victory
+            {
                 StartCoroutine(StartRound("Enemy Victory"));
-
-            } else {
-
-                if (playerVictoryPoint == 2 && finalRound == false) {
-
+            } 
+            else 
+            {
+                if (playerVictoryPoint == 2 && !finalRound) 
+                {
                     finalRound = true;
                     StartCoroutine(StartRound("Final Round"));
-
-                } else {
-
+                } 
+                else 
+                {
                     TimeoutNotif.SetActive(true);
                     timeoutToTimer.text = "End Game - Enemy Win";
-
                 }
-
             }
-
         }
 
-        IEnumerator StartRound(string victory_status) {
-
+        IEnumerator StartRound(string victory_status) 
+        {
             TimeoutNotif.SetActive(true);
             timeoutToTimer.text = victory_status;
 
             yield return new WaitForSeconds(5f);
 
             matchTimer.normalTimerStart = 6;
-
             timeoutTimer = true;
 
             yield return new WaitForSeconds(8f);
 
             TimeoutNotif.SetActive(false);
-
             timeoutTimer = false;
 
             // reset time
             matchTimer.timerStart = 120;
             timeoutTriggered = false;
 
-            // spawn
-            healthBar.health = 100;
-
-
+            // Reset health for next round
+            playerState.ResetHealth();
+            enemyState.ResetHealth();
         }
-
     }
 }
