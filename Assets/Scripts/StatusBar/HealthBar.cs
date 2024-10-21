@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,7 @@ namespace ITKombat
 {
     public class HealthBar : MonoBehaviour
     {
+        public static HealthBar Instance;
         public Slider healthSlider;
         public Slider easeSlider;
         public float lerpSpeed = 5f;
@@ -14,6 +16,12 @@ namespace ITKombat
             easeSlider.value = Mathf.Lerp(easeSlider.value, healthSlider.value, lerpSpeed * Time.deltaTime);
         }
 
+
+        void Awake() {
+
+            Instance = this;
+
+        }
 
         public void UpdateHealth(float currentHealth, float maxHealth)
         {

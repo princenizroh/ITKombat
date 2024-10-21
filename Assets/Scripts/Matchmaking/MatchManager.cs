@@ -7,7 +7,8 @@ namespace ITKombat
     public class MatchManager : MonoBehaviour
     {
         public static MatchManager Instance;
-        public GameObject ReadyNotif, Round1Notif, Round2Notif, FinalRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
+        public GameObject ReadyNotif, Round1Notif, Round2Notif, FinalRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif, healthbarplayer, healthbarenemy;
+        public HealthBar healthBar;
         public int playerVictoryPoint;
         public int enemyVictoryPoint;
         public MatchTimer matchTimer;
@@ -52,17 +53,17 @@ namespace ITKombat
                 else 
                 {
                     StartCoroutine(MatchTimeout());
-                    PlayerVictory();
-                    EnemyVictory();
                     timeoutTriggered = true;
                 }
             } 
             else if (timeoutTimer == true) 
-            {
+            {   
+                matchTimer.ChangeMatchStatus(false);
                 timeoutToTimer.text = matchTimer.GetNormalTimeInSecond().ToString();
 
                 if (matchTimer.normalTimerStart <= 1f) 
                 {
+                    matchTimer.ChangeMatchStatus(true);
                     timeoutToTimer.text = "Fight";
                 }
             }
@@ -126,15 +127,11 @@ namespace ITKombat
             {
                 if (playerState.currentHealth < enemyState.currentHealth) 
                 {
-                    enemyVictoryPoint += 1;
-                    timeoutToTimer.text = "Enemy Won";
-                    Debug.Log("enemy won"+enemyVictoryPoint);
+                    EnemyVictory();
                 } 
                 else 
                 {
-                    playerVictoryPoint += 1;
-                    timeoutToTimer.text = "Player Won";
-                    Debug.Log("player won"+playerVictoryPoint);
+                    PlayerVictory();
                 }
             }
 
@@ -153,6 +150,8 @@ namespace ITKombat
             timeoutTriggered = false;
 
             // Reset health for next round
+            // HealthBar.Instance.SetMaxHealth(100);
+            HealthBar.Instance.UpdateHealth(100f, 100f);
             playerState.ResetHealth();
             enemyState.ResetHealth();
         }
@@ -160,7 +159,7 @@ namespace ITKombat
         public void PlayerVictory() 
         {
             matchTimer.ChangeMatchStatus(false);
-            if (playerVictoryPoint < 2) // Change to ensure gradual round victory
+            if (playerVictoryPoint <= 2) // Change to ensure gradual round victory
             {
                 playerVictoryPoint += 1;
                 StartCoroutine(StartRound("Player Victory"));
@@ -183,7 +182,7 @@ namespace ITKombat
         public void EnemyVictory() 
         {
             matchTimer.ChangeMatchStatus(false);
-            if (enemyVictoryPoint <= 1) // Change to ensure gradual round victory
+            if (enemyVictoryPoint <= 2) // Change to ensure gradual round victory
             {
                 enemyVictoryPoint += 1;
                 StartCoroutine(StartRound("Enemy Victory"));
@@ -224,6 +223,8 @@ namespace ITKombat
             timeoutTriggered = false;
 
             // Reset health for next round
+            // HealthBar.Instance.SetMaxHealth(100);
+            HealthBar.Instance.UpdateHealth(100f, 100f);
             playerState.ResetHealth();
             enemyState.ResetHealth();
         }
