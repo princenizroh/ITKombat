@@ -8,6 +8,8 @@ public class MoveFelix : MonoBehaviour
     private Animator animator;
 
     private Vector2 movement;
+    private bool moveLeft = false; // Menyimpan apakah tombol kiri ditekan
+    private bool moveRight = false; // Menyimpan apakah tombol kanan ditekan
 
     void Start()
     {
@@ -18,8 +20,19 @@ public class MoveFelix : MonoBehaviour
 
     void Update()
     {
-        // Input dari keyboard (A dan D atau panah kiri/kanan)
-        movement.x = Input.GetAxisRaw("Horizontal");
+        // Reset movement setiap frame
+        movement.x = 0;
+
+        // Jika tombol kiri ditekan, bergerak ke kiri
+        if (moveLeft)
+        {
+            movement.x = -1;
+        }
+        // Jika tombol kanan ditekan, bergerak ke kanan
+        else if (moveRight)
+        {
+            movement.x = 1;
+        }
 
         // Kirim nilai ke Blend Tree melalui parameter 'Speed'
         animator.SetFloat("Speed", Mathf.Abs(movement.x));
@@ -40,4 +53,30 @@ public class MoveFelix : MonoBehaviour
         // Menggerakkan karakter
         rb.linearVelocity = new Vector2(movement.x * speed, rb.linearVelocity.y);
     }
+
+    // Method untuk UI Button - Dipanggil saat tombol kiri ditekan
+    public void OnMoveLeftDown()
+{
+    Debug.Log("Move Left Down");
+    moveLeft = true;
+}
+
+public void OnMoveLeftUp()
+{
+    Debug.Log("Move Left Up");
+    moveLeft = false;
+}
+
+public void OnMoveRightDown()
+{
+    Debug.Log("Move Right Down");
+    moveRight = true;
+}
+
+public void OnMoveRightUp()
+{
+    Debug.Log("Move Right Up");
+    moveRight = false;
+}
+
 }
