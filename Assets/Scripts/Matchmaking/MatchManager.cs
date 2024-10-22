@@ -20,6 +20,18 @@ namespace ITKombat
         public PlayerState playerState;
         public EnemyState enemyState;
 
+        // Audio sources round manager
+        public AudioSource soundRound1;
+        public AudioSource soundRound2;
+        public AudioSource soundRound3;
+        public AudioSource soundRound4;
+        public AudioSource soundFinalRound;
+        public AudioSource soundFight;
+        public AudioSource soundDefead;
+        public AudioSource soundVictory;
+        public AudioSource soundTimeOut;
+        
+
         void Start() 
         {
             StartCoroutine(ShowRoundStartNotification(1));
@@ -74,12 +86,15 @@ namespace ITKombat
             {
                 case 1:
                     Round1Notif.SetActive(true);
+                    soundRound1.Play();
                     break;
                 case 2:
                     Round2Notif.SetActive(true);
+                    // soundRound2.Play();
                     break;
                 case 3:
                     FinalRoundNotif.SetActive(true);
+                    // soundRound3.Play();
                     break;
             }
 
@@ -91,6 +106,7 @@ namespace ITKombat
 
             matchTimer.ChangeMatchStatus(true);
             FightNotif.SetActive(true); 
+            // soundFight.Play();
             yield return new WaitForSeconds(1.5f);
             FightNotif.SetActive(false);
         }
@@ -100,10 +116,12 @@ namespace ITKombat
             if (isPlayerVictory)
             {
                 VictoryNotif.SetActive(true);
+                soundVictory.Play();
             }
             else
             {
                 DefeatNotif.SetActive(true);
+                // soundDefead.Play();
             }
         }
 
@@ -161,7 +179,9 @@ namespace ITKombat
             if (playerVictoryPoint <= 2) // Change to ensure gradual round victory
             {
                 playerVictoryPoint += 1;
+                soundVictory.Play();
                 StartCoroutine(StartRound("Player Victory"));
+                
             } 
             else 
             {
@@ -174,6 +194,7 @@ namespace ITKombat
                 {
                     TimeoutNotif.SetActive(true);
                     timeoutToTimer.text = "End Game - Player Win";
+                    soundVictory.Play();
                 }
             }
         }
@@ -184,7 +205,9 @@ namespace ITKombat
             if (enemyVictoryPoint <= 2) // Change to ensure gradual round victory
             {
                 enemyVictoryPoint += 1;
+                // soundDefead.Play();
                 StartCoroutine(StartRound("Enemy Victory"));
+                
             } 
             else 
             {
@@ -197,6 +220,7 @@ namespace ITKombat
                 {
                     TimeoutNotif.SetActive(true);
                     timeoutToTimer.text = "End Game - Enemy Win";
+                    soundDefead.Play();
                 }
             }
         }
