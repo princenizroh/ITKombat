@@ -14,6 +14,8 @@ namespace ITKombat
         private bool isSkill2Active = false;
         private bool isSkill3Active = false;
 
+        [SerializeField] private ParticleSystem Skill2_VFX = null;
+
         private void Start()
         {
             anim = GetComponent<Animator>();
@@ -36,6 +38,7 @@ namespace ITKombat
             {
                 anim.SetTrigger("skill2");
                 PlaySound(skillSound2);
+                PlayVFX(Skill2_VFX);
                 isSkill2Active = true;
                 StartCoroutine(ResetToIdleAfterTime(1.2f)); 
             }
@@ -71,6 +74,13 @@ namespace ITKombat
             if (sound != null && !sound.isPlaying)
             {
                 sound.Play();
+            }
+        }
+        private void PlayVFX(ParticleSystem vfx)
+        {
+            if (vfx != null && !vfx.isPlaying)
+            {
+                vfx.Play();
             }
         }
     }
