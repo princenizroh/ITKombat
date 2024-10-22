@@ -11,7 +11,7 @@ namespace ITKombat
 
         public TMP_Text uktValueTotal;
         private int uktValue = 0;
-
+        private GameFirebase gameFirebase;
         private static IStoreController storeController;
         private static IExtensionProvider storeExtensionProvider;
 
@@ -23,9 +23,14 @@ namespace ITKombat
         public static string product_ukt_6 = "6480ukt";
         public static string product_sub = "vip_pass";
 
-        void Start()
+        async void Start()
         {
             InitializePurchasing();
+
+            var ukt_data = await gameFirebase.GetBalanceData(gameFirebase.GetPlayerId(), "ukt");
+            var danus_data = await gameFirebase.GetBalanceData(gameFirebase.GetPlayerId(), "danus");
+
+            uktValue += ukt_data ?? 0;
         }
 
         public void InitializePurchasing()
@@ -131,31 +136,37 @@ namespace ITKombat
             if (product.definition.id == product_ukt_1)
             {
                 uktValue += 60;
+                StartCoroutine(gameFirebase.TopUp(gameFirebase.GetPlayerId(), "ukt", 60));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_2)
             {
                 uktValue += 300;
+                StartCoroutine(gameFirebase.TopUp(gameFirebase.GetPlayerId(), "ukt", 300));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_3)
             {
                 uktValue += 980;
+                StartCoroutine(gameFirebase.TopUp(gameFirebase.GetPlayerId(), "ukt", 980));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_4)
             {
                 uktValue += 1980;
+                StartCoroutine(gameFirebase.TopUp(gameFirebase.GetPlayerId(), "ukt", 1980));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_5)
             {
                 uktValue += 3280;
+                StartCoroutine(gameFirebase.TopUp(gameFirebase.GetPlayerId(), "ukt", 3280));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_6)
             {
                 uktValue += 6480;
+                StartCoroutine(gameFirebase.TopUp(gameFirebase.GetPlayerId(), "ukt", 6480));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_sub)

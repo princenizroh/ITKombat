@@ -7,8 +7,7 @@ namespace ITKombat
     public class MatchManager : MonoBehaviour
     {
         public static MatchManager Instance;
-        public GameObject ReadyNotif, Round1Notif, Round2Notif, FinalRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif, healthbarplayer, healthbarenemy;
-        public HealthBar healthBar;
+        public GameObject ReadyNotif, Round1Notif, Round2Notif, FinalRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
         public int playerVictoryPoint;
         public int enemyVictoryPoint;
         public MatchTimer matchTimer;
