@@ -36,6 +36,7 @@ namespace ITKombat
         [field: SerializeField] public PlayerData PlayerData{ get; private set; }
         [field: SerializeField] public PlayerDatas PlayerDatas { get; private set; }
         [field: SerializeField] public ProfileData ProfileData { get; private set; }
+        [field: SerializeField] public BalanceData BalanceData { get; private set; }
 
         [Header("User Data UI")]
         public TMP_Text usernameText;
@@ -53,6 +54,11 @@ namespace ITKombat
         public TMP_Text playerLevelText;
         public TMP_Text playerRankText;
         public TMP_Text sk2pmText;
+
+        [Header("Balance Data UI")]
+        public TMP_Text ktmBalanceText;
+        public TMP_Text danusBalanceText;
+        
 
         void Awake()
         {
@@ -88,6 +94,12 @@ namespace ITKombat
                 playerRankText.text = ProfileData.playerRank;
                 sk2pmText.text = ProfileData.sk2pm.ToString();
             }
+
+            if (BalanceData != null)
+            {
+                ktmBalanceText.text = BalanceData.KTM.ToString();
+                danusBalanceText.text = BalanceData.danus.ToString();
+            }
         }
 
 
@@ -114,9 +126,12 @@ namespace ITKombat
             PlayerDatas = new PlayerDatas(usernameText.text, levelText.text, ktmText.text, danusText.text, playerEmailText.text);
             // PlayerData = new PlayerData(playerUsernameText.text, playerPasswordText.text, playerEmailText.text);
             ProfileData = new ProfileData(int.Parse(playerExpText.text), int.Parse(playerLevelText.text), playerRankText.text, int.Parse(sk2pmText.text));
+            BalanceData = new BalanceData(int.Parse(ktmBalanceText.text), int.Parse(danusBalanceText.text));
             StartCoroutine(UpdateUserData(usernameText.text, levelText.text, ktmText.text, danusText.text, playerEmailText.text));
             // StartCoroutine(CreatePlayerData(playerUsernameText.text, playerPasswordText.text, playerEmailText.text));
             StartCoroutine(CreateProfileData(AuthManager.instance.User.UserId, int.Parse(playerExpText.text), int.Parse(playerLevelText.text), playerRankText.text, int.Parse(sk2pmText.text)));
+            StartCoroutine(CreateBalanceData(AuthManager.instance.User.UserId, int.Parse(ktmBalanceText.text), int.Parse(danusBalanceText.text)));
+            
         }
 
 #region Send Data
@@ -185,6 +200,24 @@ namespace ITKombat
             }
         }
 
+        public IEnumerator CreateBalanceData(string playerId, int _KTM, int _DANUS)
+        {
+            BalanceData balanceData = new BalanceData(_KTM, _DANUS);
+
+            string json = JsonUtility.ToJson(balanceData);
+            Task DBTask = DBreference.Child("balance").Child(playerId).SetRawJsonValueAsync(json);
+            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+            if (DBTask.Exception != null)
+            { 
+                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+            }
+            else
+            {
+                Debug.Log("Balance data created successfully");
+            }
+        }
+
 
         // public IEnumerator CreateProfileData(string _profileId, string _playerId)
         // {
@@ -229,19 +262,6 @@ namespace ITKombat
         //     }
         // }
 
-        // public IEnumerator CreateBalanceData(string _playerId, string _balanceId, int _KTM, int _DANUS)
-        // {
-        //     BalanceData balanceData = new BalanceData(_balanceId, _KTM, _DANUS, _playerId);
-        //
-        //     string json = JsonUtility.ToJson(balanceData);
-        //     Task DBTask = DBreference.Child("balance").Child(AuthManager.instance.User.UserId).SetRawJsonValueAsync(json);
-        //     yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
-        //
-        //     if (DBTask.Exception != null)
-        //     { 
-        //         Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
-        //     }
-        // }
 #endregion
 
 #region Get Data
