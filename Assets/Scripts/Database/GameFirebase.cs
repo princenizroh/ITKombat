@@ -5,8 +5,8 @@ using Firebase.Database;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
-using Unity.Android.Gradle.Manifest;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace ITKombat
 {
@@ -16,6 +16,7 @@ namespace ITKombat
         public DependencyStatus dependencyStatus;
         public FirebaseUser User;
         public FirebaseAuth auth;
+        private string player_id;
         public DatabaseReference DBreference;
         void Awake()
         {
@@ -62,6 +63,7 @@ namespace ITKombat
                     string playerId = childSnapshot.Key;
 
                     if (id_compared == playerId) {
+                        player_id = playerId;
                         return true;
                     }
                 }
@@ -153,6 +155,37 @@ namespace ITKombat
             }
 
         }
+
+        public IEnumerator TopUp(string player_id, string topup_type, int ammount) {
+            Task DBTask = DBreference.Child("balance").Child(player_id).Child(topup_type).SetValueAsync(ammount);
+            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+            
+            if (DBTask.Exception != null) {
+                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+            } else {
+                Debug.Log("data changed succesfuly");
+            }
+
+        }
+
+        public async Task<int?> GetBalanceData(string player_id, string type_data)
+        {
+            var DBTask = await DBreference.Child("balance").Child(player_id).Child(type_data).GetValueAsync();
+
+            if (DBTask.Exists) {
+                // Try to convert the value to an integer
+                if (int.TryParse(DBTask.Value.ToString(), out int balanceValue)) {
+                    return balanceValue; // Return the integer value
+                }
+            }
+
+            return null; // Return null if no data exists or the value is not an integer
+        }
+
+        public string GetPlayerId() {
+            return player_id;
+        }
+
 
     }
 }
