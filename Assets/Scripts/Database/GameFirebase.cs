@@ -90,12 +90,13 @@ namespace ITKombat
             yield return new WaitUntil(predicate: () => register.IsCompleted);
 
             if (register.Exception != null) {
+                Debug.Log("Account creation failed");
                 
+            } else {
+                playerData.player_id = id;
                 Debug.Log("Account created");
                 InitializeNewAccount(id);
                 StartCoroutine(firebaseAuhenticationLogin(id, id));
-            } else {
-                Debug.Log("Account creation failed");
             }
         }
 
