@@ -144,6 +144,8 @@ namespace ITKombat
         public void ResetHealth()
         {
             currentHealth = maxHealth;
+            healthBar.UpdateHealth(currentHealth,maxHealth);
+            Debug.Log("" + currentHealth);
         }
     }
 }

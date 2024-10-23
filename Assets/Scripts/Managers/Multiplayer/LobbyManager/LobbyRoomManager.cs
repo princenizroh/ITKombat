@@ -9,13 +9,12 @@ using Unity.Services.Lobbies.Models;
 using Firebase;
 using Firebase.Auth;
 using System.Threading.Tasks;
-
 namespace ITKombat
 {
     public class LobbyRoomManager : MonoBehaviour
     {
         public static LobbyRoomManager Instance { get; private set; }
-
+        
         public const string KEY_PLAYER_NAME = "PlayerName";
         public const string KEY_PLAYER_CHARACTER = "Character";
         public const string KEY_GAME_MODE = "GameMode";
