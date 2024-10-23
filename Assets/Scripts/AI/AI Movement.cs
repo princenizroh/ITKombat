@@ -9,7 +9,7 @@ namespace ITKombat
         [Header("Movement")]
         public float moveSpeed = 3f;
         public float movementStep = 0f;
-        public float maxStep = 50f;
+        public float maxStep = 100f;
         public bool facingPlayer = true;
         public bool canMove = true;
 
