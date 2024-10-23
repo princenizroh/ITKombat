@@ -6,10 +6,10 @@ namespace ITKombat
 {
     public class AI_Attack : MonoBehaviour
     {
-        public float attackRange = 3f;         // Range within which the enemy can attack
+        public float attackRange = 2.5f;         // Range within which the enemy can attack
         public float attackForce = 5f;          // Knockback force
         public float attackPower = 5f;
-        public float attackCooldown = 0.5f;      // Cooldown between each attack
+        public float attackCooldown = 0.7f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
