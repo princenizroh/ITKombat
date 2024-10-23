@@ -6,10 +6,11 @@ namespace ITKombat{
     {
         public AI_Movement aimovement;
         public AI_Attack aiAttack;
+        public AI_Defense aiDefense;
         public Transform player;
-        public float waitingTime = 0.5f; // Delay time before next state
+        public float waitingTime = 1f; // Delay time before next state
 
-        private enum AIState { Approach, Retreat, Jump, Attack, Attacked, Idle }
+        private enum AIState { Approach, Retreat, Attack, Idle, Blocking }
         private AIState currentState = AIState.Idle;
 
         [System.Obsolete]
@@ -17,6 +18,7 @@ namespace ITKombat{
         {
             aiAttack = GetComponent<AI_Attack>();
             aimovement = GetComponent<AI_Movement>();
+            aiDefense = GetComponent<AI_Defense>();
             player = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
@@ -44,7 +46,11 @@ namespace ITKombat{
                         StartCoroutine(ChangeStateWithDelay(AIState.Idle)); // Delay before moving to Idle
                     }
 
-                    if (aiAttack.canAttack && distanceToPlayer <= aiAttack.attackRange)
+                    if (distanceToPlayer <= aiDefense.criticalProximity && Random.value < aiDefense.blockChance)
+                    {
+                        currentState = AIState.Blocking;
+                    }
+                    else if (aiAttack.canAttack && distanceToPlayer <= aiAttack.attackRange)
                     {
                         currentState = AIState.Attack;
                     }
@@ -59,15 +65,27 @@ namespace ITKombat{
                     break;
 
                 case AIState.Retreat:
-                    aimovement.Retreat();
-                    if (aiAttack.canAttack && distanceToPlayer <= aiAttack.attackRange)
+                    if (aimovement.canMove && aimovement.movementStep < aimovement.maxStep)
+                    {
+                        aimovement.Retreat();
+                    }
+                    else
+                    {
+                        StartCoroutine(ChangeStateWithDelay(AIState.Idle)); // Delay before moving to Idle
+                    }
+
+                    if (distanceToPlayer <= aiDefense.criticalProximity && Random.value < aiDefense.blockChance)
+                    {
+                        currentState = AIState.Blocking;
+                    }
+                    else if (aiAttack.canAttack && distanceToPlayer <= aiAttack.attackRange)
                     {
                         currentState = AIState.Attack;
                     }
-                    else if (aimovement.movementStep > aimovement.maxStep)
-                    {
-                        StartCoroutine(ChangeStateWithDelay(AIState.Idle)); // Delay before Idle
-                    }
+                    break;
+                
+                case AIState.Blocking :
+                    StartCoroutine(ActivateBlock());
                     break;
                 case AIState.Idle :
                     NextDecision();
@@ -111,11 +129,24 @@ namespace ITKombat{
             }
         }
 
+        IEnumerator ActivateBlock()
+        {
+            aiDefense.isBlocking = true;
+            Debug.Log("AI is blocking");
+
+            yield return new WaitForSeconds(aiDefense.blockDuration);
+
+            aiDefense.isBlocking = false;
+            Debug.Log("Ai stop blocking");
+
+            NextDecision();
+        }
+
         // Coroutine to handle state change with a delay
         IEnumerator ChangeStateWithDelay(AIState nextState)
         {
-            aimovement.canMove = false; // Set waiting flag to true
             aimovement.StopMovement();
+            aimovement.canMove = false; // Set waiting flag to true
             yield return new WaitForSeconds(waitingTime); // Wait for the defined delay
             currentState = nextState; // Change to the next state
             aimovement.canMove = true; // Reset waiting flag

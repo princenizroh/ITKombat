@@ -83,7 +83,8 @@ namespace ITKombat
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                    if (enemyRb != null)
+                    AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
+                    if (enemyRb != null && !enemyDefense.isBlocking)
                     {
                         enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
 
