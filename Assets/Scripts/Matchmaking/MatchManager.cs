@@ -7,7 +7,7 @@ namespace ITKombat
     public class MatchManager : MonoBehaviour
     {
         public static MatchManager Instance;
-        public GameObject ReadyNotif, Round1Notif, Round2Notif, Round3Notif, Round4Notif, FinalRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
+        public GameObject ReadyNotif, Round1Notif, Round2Notif, Round3Notif, Round4Notif, FinalRoundNotif, DrawRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
         public int playerVictoryPoint;
         public int enemyVictoryPoint;
         public MatchTimer matchTimer;
@@ -52,18 +52,10 @@ namespace ITKombat
         }
 
         private void HandleTimeout()
-        {
-            // Handle timeout logic
-            if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true) 
-            {
-                TimeoutNotif.SetActive(true);
-                timeoutToTimer.text = "Draw";
-            } 
-            else 
-            {
-                MatchTimeout();
+        {            
+                StartCoroutine(MatchTimeout());
                 timeoutTriggered = true;
-            }
+
         }
 
         private void HandleTimeoutTimer()
@@ -74,7 +66,7 @@ namespace ITKombat
             if (matchTimer.normalTimerStart <= 1f) 
             {
                 matchTimer.ChangeMatchStatus(true);
-                timeoutToTimer.text = "Fight";
+                timeoutToTimer.text = "FIGHT";
             }
         }
 
@@ -89,6 +81,7 @@ namespace ITKombat
                 case 3: currentRoundNotif = Round3Notif; break;
                 case 4: currentRoundNotif = Round4Notif; break;
                 case 5: currentRoundNotif = FinalRoundNotif; break;
+                case 6: currentRoundNotif = DrawRoundNotif; break;
             }
 
             if (currentRoundNotif != null)
@@ -128,50 +121,58 @@ namespace ITKombat
             }
         }
 
-        void MatchTimeout() 
+        private IEnumerator MatchTimeout() 
         {
             Debug.Log("Match Timeout");
             TimeoutNotif.SetActive(true);
-            Debug.Log("TimeOutNotif match timeout");
+            timeoutToTimer.text = "TIME OUT";
+            yield return new WaitForSeconds(3f);
+
+            TimeoutNotif.SetActive(false);
 
             // Check health via PlayerState and EnemyState
             if (playerState != null && enemyState != null)
             {
                 if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true) 
                 {
-                    // Logika untuk mengecek siapa yang memiliki health lebih banyak
-                    if (playerState.currentHealth == enemyState.currentHealth) 
+                    if (playerState.currentHealth > enemyState.currentHealth) 
                     {
-                        timeoutToTimer.text = "Draw";
-                    } 
-                    else if (playerState.currentHealth > enemyState.currentHealth) 
-                    {
-                        PlayerVictory();
-                        timeoutToTimer.text = "Player Victory";
+                        PlayerVictory();  // Player menang di final round
+                        timeoutToTimer.text = "PLAYER WON FINAL ROUND";
+                        Debug.Log("Player won the final round by health.");
                     } 
                     else 
                     {
-                        EnemyVictory();
-                        timeoutToTimer.text = "Enemy Victory";
+                        EnemyVictory();  // Enemy menang di final round
+                        timeoutToTimer.text = "ENEMY WON FINAL ROUND";
+                        Debug.Log("Enemy won the final round by health.");
                     }
                 }
                 else 
                 {
-                    // Jika bukan final round, tetap cek pemenang berdasarkan health
+                    // Jika bukan final round, cek pemenang biasa berdasarkan health
                     if (playerState.currentHealth == enemyState.currentHealth) 
                     {
-                        timeoutToTimer.text = "Draw";
+                        DrawRound();  // Tambahkan poin draw untuk kedua pihak
                     }
                     else if (playerState.currentHealth > enemyState.currentHealth) 
                     {
-                        PlayerVictory();
+                        PlayerVictory();  // Player menang jika health lebih besar
                     }
                     else 
                     {
-                        EnemyVictory();
+                        EnemyVictory();  // Enemy menang jika health lebih besar
                     }
                 }
             }
+        }
+
+
+        public void DrawRound()
+        {
+            playerVictoryPoint += 1;
+            enemyVictoryPoint += 1;
+            StartCoroutine(HandleDrawTransition());
         }
         public void PlayerVictory() 
         {
@@ -185,130 +186,59 @@ namespace ITKombat
             StartCoroutine(HandleRoundTransition());
         }
 
+        private IEnumerator HandleDrawTransition()
+        {
+
+            if (playerState.currentHealth == enemyState.currentHealth) 
+            {   
+                yield return StartCoroutine(ShowRoundStartNotification(6)); // Final round
+            }
+
+            StartNormalTimer();
+        }
         private IEnumerator HandleRoundTransition()
         {
             TimeoutNotif.SetActive(true);
-            timeoutToTimer.text = playerVictoryPoint > enemyVictoryPoint ? "Player Victory" : "Enemy Victory";
+            // Kondisi untuk menentukan siapa yang memenangkan ronde terakhir
+    if (playerState.currentHealth > enemyState.currentHealth)
+    {
+        timeoutToTimer.text = "PLAYER WON";
+    }
+    else if (playerState.currentHealth < enemyState.currentHealth)
+    {
+        timeoutToTimer.text = "ENEMY WON";
+    }
 
             yield return new WaitForSeconds(3f);
 
             TimeoutNotif.SetActive(false);
 
-            if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
+            // Cek apakah salah satu sudah mencapai 3 poin (kondisi kemenangan)
+            if (playerVictoryPoint == 3) 
+            {
+                ShowVictoryNotif(true);
+                yield return new WaitForSeconds(2f);
+                ShowEndGameButton();
+            }
+            else if (enemyVictoryPoint == 3) 
+            {
+                ShowVictoryNotif(false);
+                yield return new WaitForSeconds(2f);
+                ShowEndGameButton();
+            }
+            else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
             {
                 finalRound = true;
                 yield return StartCoroutine(ShowRoundStartNotification(5)); // Final round
             }
-            else if (playerVictoryPoint < 3 && enemyVictoryPoint < 3)
+
+            else
             {
                 int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
                 
                 yield return StartCoroutine(ShowRoundStartNotification(nextRound));
             }
-            else
-            {
-                timeoutToTimer.text = playerVictoryPoint > enemyVictoryPoint ? "End Game - Player Wins" : "End Game - Enemy Wins";
-            }
 
-            StartNormalTimer();
-        }
-        // public void PlayerVictory() 
-        // {
-        //     matchTimer.ChangeMatchStatus(false);
-        //     Debug.Log("Player Victory Detected");
-        //      // Kode untuk kemenangan player...
-        //     Debug.Log($"Updated Scores - Player: {playerVictoryPoint}, Enemy: {enemyVictoryPoint}");
-        //     // Jika player menang dan skor belum 2
-        //     if (playerVictoryPoint < 2) 
-        //     {
-        //         playerVictoryPoint += 1;
-        //         StartCoroutine(StartRound("Player Victory"));
-        //         int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
-        //         StartCoroutine(ShowRoundStartNotification(nextRound));
-        //         Debug.Log($" 1 Updated Scores - Player: {playerVictoryPoint}, Enemy: {enemyVictoryPoint}");
-        //     } 
-        //     else if (playerVictoryPoint < 2 && enemyVictoryPoint == 1) 
-        //     {
-        //         enemyVictoryPoint += 1;
-        //         StartCoroutine(StartRound("Player Victory"));
-        //         Debug.Log($"1 Updated Scores - Player: {playerVictoryPoint}, Enemy: {enemyVictoryPoint}");
-        //     } 
-        //     else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound) 
-        //     {
-        //         // Jika skor 2-2, tampilkan final round
-        //         finalRound = true;
-        //         Debug.Log("kedudukan sama");
-        //         StartCoroutine(StartRound("Final Round"));
-        //     } 
-        //     else if (playerVictoryPoint == 3)
-        //     {
-        //         // Jika player sudah menang dengan skor 2
-        //         TimeoutNotif.SetActive(true);
-        //         timeoutToTimer.text = "End Game - Player Win";
-        //     }
-        // }
-
-        // public void EnemyVictory() 
-        // {
-        //     matchTimer.ChangeMatchStatus(false);
-        //     Debug.Log("Enemy Victory Detected");
-        //     Debug.Log($"Updated Scores - Player: {playerVictoryPoint}, Enemy: {enemyVictoryPoint}");
-        //     // Jika enemy menang dan skor belum 2
-        //     if (enemyVictoryPoint < 2) 
-        //     {
-        //         enemyVictoryPoint += 1;
-        //         StartCoroutine(StartRound("Enemy Victory"));
-        //         int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
-        //         StartCoroutine(ShowRoundStartNotification(nextRound));
-        //         Debug.Log($"1 Updated Scores - Player: {playerVictoryPoint}, Enemy: {enemyVictoryPoint}");
-        //     } 
-        //     else if (enemyVictoryPoint < 2 && playerVictoryPoint == 1) 
-        //     {
-        //         enemyVictoryPoint += 1;
-        //         StartCoroutine(StartRound("Enemy Victory"));
-        //         Debug.Log($"1 Updated Scores - Player: {playerVictoryPoint}, Enemy: {enemyVictoryPoint}");
-        //     } 
-        //     else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound) 
-        //     {
-        //         // Jika skor 2-2, tampilkan final round
-        //         finalRound = true;
-        //         Debug.Log("kedudukan sama");
-        //         StartCoroutine(StartRound("Final Round"));
-
-        //     } 
-        //     else if (enemyVictoryPoint == 3)
-        //     {
-        //         // Jika enemy sudah menang dengan skor 2
-        //         TimeoutNotif.SetActive(true);
-        //         timeoutToTimer.text = "End Game - Enemy Win";
-        //     }
-        // }
-
-        IEnumerator StartRound(string victory_status) 
-        {
-            Debug.Log($"Starting Round: PlayerSkor = {playerVictoryPoint}, EnemySkor = {enemyVictoryPoint}");
-            TimeoutNotif.SetActive(true);
-            timeoutToTimer.text = victory_status;
-
-            yield return new WaitForSeconds(3f);
-
-            // Sembunyikan notifikasi kemenangan
-            TimeoutNotif.SetActive(false);
-            
-            // if (victory_status == "Player Victory")
-            // {
-            //     yield return StartCoroutine(RoundPlayerVictory());
-            // }
-            // if (victory_status == "Enemy Victory")
-            // {
-            //     yield return StartCoroutine(RoundEnemyVictory());
-            // }
-
-            // if (victory_status == "Final Round")
-            // {
-            //     yield return StartCoroutine(DrawRound());
-            // }
-            
             StartNormalTimer();
         }
 
@@ -337,88 +267,5 @@ namespace ITKombat
             enemyState.ResetHealth();
         }
 
-        IEnumerator RoundPlayerVictory()
-        {
-            // Tampilkan notifikasi round baru sesuai dengan skor
-            if (playerVictoryPoint == 1 && enemyVictoryPoint == 0)
-            {
-                StartCoroutine(ShowRoundStartNotification(2));  // Tampilkan Round 2
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 2");
-                TimeoutNotif.SetActive(true);
-            }
-            else if (playerVictoryPoint == 2 && enemyVictoryPoint == 0)
-            {
-                StartCoroutine(ShowRoundStartNotification(3));  // Tampilkan Round 3
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 3");
-                TimeoutNotif.SetActive(true);
-            }
-
-            else if (playerVictoryPoint == 2 && enemyVictoryPoint == 1)
-            {
-                StartCoroutine(ShowRoundStartNotification(4));  // Tampilkan Round 4
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 4");
-                TimeoutNotif.SetActive(true);
-            }
-
-            // Tampilkan notifikasi round baru sesuai dengan skor
-            else if (playerVictoryPoint == 1 && enemyVictoryPoint == 1)
-            {
-                StartCoroutine(ShowRoundStartNotification(3));  // Tampilkan Round 3
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 3");
-                TimeoutNotif.SetActive(true);
-            }
-        }
-
-        IEnumerator RoundEnemyVictory()
-        {
-            
-            // Tampilkan notifikasi round baru sesuai dengan skor
-            if (enemyVictoryPoint == 1 && playerVictoryPoint == 0)
-            {
-                StartCoroutine(ShowRoundStartNotification(2));  // Tampilkan Round 2
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 2");
-                TimeoutNotif.SetActive(true);
-            }
-            else if (enemyVictoryPoint == 2 && playerVictoryPoint == 0)
-            {
-                StartCoroutine(ShowRoundStartNotification(3));  // Tampilkan Round 3
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 3");
-                TimeoutNotif.SetActive(true);
-            }
-
-            else if (enemyVictoryPoint == 2 && playerVictoryPoint == 1)
-            {
-                StartCoroutine(ShowRoundStartNotification(4));  // Tampilkan Round 4
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 4");
-                TimeoutNotif.SetActive(true);
-            }
-
-            // Tampilkan notifikasi round baru sesuai dengan skor
-            else if (playerVictoryPoint == 1 && enemyVictoryPoint == 1)
-            {
-                StartCoroutine(ShowRoundStartNotification(3));  // Tampilkan Round 3
-                yield return new WaitForSeconds(2);
-                Debug.Log("Round 3");
-                TimeoutNotif.SetActive(true);
-            }
-        }
-
-        IEnumerator DrawRound()
-        {
-            if (playerVictoryPoint == 2 && enemyVictoryPoint == 2)
-            {
-                StartCoroutine(ShowRoundStartNotification(5));  // Tampilkan Final Round
-                yield return new WaitForSeconds(2);
-                Debug.Log("Final Round");
-                TimeoutNotif.SetActive(true);
-            }
-        }
     }
 }

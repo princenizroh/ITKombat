@@ -1766,7 +1766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3065311019
+  GlobalObjectIdHash: 3529594370
   InScenePlacedSourceGlobalObjectIdHash: 791524057
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1813,6 +1813,10 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  CollectParticle1: {fileID: 0}
+  CollectParticle2: {fileID: 0}
+  CollectParticle3: {fileID: 0}
+  CollectParticle4: {fileID: 0}
   punchSound1: {fileID: 5990747188347324554}
   punchSound2: {fileID: 5843959914472328641}
   punchSound3: {fileID: 1662764039873823205}
@@ -1832,6 +1836,7 @@ MonoBehaviour:
   skillSound1: {fileID: 2825705460425610146}
   skillSound2: {fileID: 6968146453526242756}
   skillSound3: {fileID: 5265813040410142284}
+  Skill2_VFX: {fileID: 0}
 --- !u!114 &8858504446600390903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1844,7 +1849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
+  playerHealthSlider: {fileID: 0}
   easeHealthSlider: {fileID: 0}
   maxHealth: 100
   health: 100
@@ -1858,6 +1863,7 @@ MonoBehaviour:
   - Hit2
   - Hit3
   idleAnimationTrigger: Idle
+  HittedParticle: {fileID: 0}
 --- !u!114 &683958348253199683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1872,6 +1878,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimovement: {fileID: 0}
   aiAttack: {fileID: 0}
+  aiDefense: {fileID: 0}
   player: {fileID: 0}
   waitingTime: 0.5
 --- !u!114 &8319573875072863445
