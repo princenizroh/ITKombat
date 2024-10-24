@@ -20,7 +20,7 @@ namespace ITKombat
         private bool isCrouchAttacking = false;
         bool useKeyboardInput = true;
         bool jump = false;
-
+        public bool canMove = true;
         private void Start()
         {
             anim = GetComponent<Animator>();
@@ -28,7 +28,7 @@ namespace ITKombat
 
         private void Update()
         {
-            if (useKeyboardInput)
+            if (canMove && useKeyboardInput)
             {
                 horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
 
@@ -47,6 +47,12 @@ namespace ITKombat
                 }
             }
 
+            if (!canMove)
+            {
+                horizontalMove = 0f;  // Player can't move if canMove is false
+                return;
+            }
+
             if (isCrouching)
             {
                 // Continuously trigger crouch animation while crouching
@@ -57,28 +63,31 @@ namespace ITKombat
                 anim.SetTrigger("Idle");
             }
         }
-
+        
         private void FixedUpdate()
         {
-            if (!isDashing)
+            if (canMove && !isDashing)
             {
                 controller.Move(horizontalMove * Time.deltaTime, isCrouching, jump);
             }
             jump = false;
         }
 
+
         public void OnMoveLeft()
         {
-            useKeyboardInput = false;
-            horizontalMove = -moveSpeed;
-            anim.SetTrigger("Walk");
+            if (canMove)
+                useKeyboardInput = false;
+                horizontalMove = -moveSpeed;
+                anim.SetTrigger("Walk");
         }
 
         public void OnMoveRight()
         {
-            useKeyboardInput = false;
-            horizontalMove = moveSpeed;
-            anim.SetTrigger("Walk");
+            if (canMove)
+                useKeyboardInput = false;
+                horizontalMove = moveSpeed;
+                anim.SetTrigger("Walk");
         }
 
         public void OnStopMoving()

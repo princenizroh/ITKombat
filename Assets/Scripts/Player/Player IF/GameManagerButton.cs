@@ -10,6 +10,7 @@ public class GameManagerButton : MonoBehaviour
     private PlayerMovement_2 playerMovement;
     [SerializeField]
     private PlayerSkill playerSkill;
+    public bool canMove = true; 
 
     private void Start()
     {
@@ -49,7 +50,8 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerMovement != null)
         {
-            playerMovement.OnMoveLeft();
+            if (canMove)
+                playerMovement.OnMoveLeft();
         }
     }
 

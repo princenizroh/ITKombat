@@ -9,6 +9,7 @@ namespace ITKombat
         public float currentHealth;
         public string attackTag = "Attack";
         public HealthBar healthBar;
+        public MatchManager matchManager;
         private Animator enemyAnimator;
         public AudioSource[] hitAudioSources;
         public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };
@@ -16,71 +17,47 @@ namespace ITKombat
         public Rigidbody2D rb;
         public float knockbackForce = 1f;
 
-        private int currentRound = 1;
-
         private void Start()
         {
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(maxHealth);
-            Debug.Log("Enemy health: " + currentHealth);
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.B))
+            
+            // Dapatkan referensi ke MatchManager
+            if (matchManager == null)
             {
-                float attackPower = GetDamageFromPlayer();
-                if (attackPower > 0)
-                {
-                    TakeDamage(attackPower);
-                    Debug.Log("Player attacked with power: " + attackPower);
-                    Debug.Log(healthBar.healthSlider.value);
-                }
-                else
-                {
-                    Debug.LogWarning("Attack power is zero or negative!");
-                }
+                matchManager = MatchManager.Instance;
             }
         }
 
         public void TakeDamage(float damage)
         {
-            Debug.Log("TakeDamage called. Current health: " + currentHealth + ", Damage: " + damage);
             currentHealth -= damage;
             healthBar.UpdateHealth(currentHealth, maxHealth);
-            Debug.Log($"Enemy taking {damage} damage. Current health: {currentHealth}");
 
             if (currentHealth <= 0)
             {
-                Debug.Log("Player mati!");
-                if (currentRound == 1)
-                {
-                    Debug.Log("Round 1 berakhir");
-                    currentRound++;
-                    // StartNewRound();
-                    MatchManager.Instance.PlayerVictory();
-                }
-                else
-                {
-                    Debug.Log("Game berakhir");
-                    EndGame();
-                }
+                HandleDeath();
             }
             else
             {
                 ApplyKnockback();
-                // StartCoroutine(PlayRandomHitAnimation());
                 PlayRandomHitSound();
             }
         }
 
-        private void StartNewRound()
+        private void HandleDeath()
         {
-            currentHealth = maxHealth;
-            healthBar.UpdateHealth(currentHealth, maxHealth);
-            MatchManager.Instance.ShowRoundStartNotification(currentRound);
-            
+            Debug.Log("Player mati!");
 
+            // Call the match manager to check the current state of the match
+            if (matchManager != null)
+            {
+                matchManager.EnemyDied();
+            }
+            else
+            {
+                Debug.LogWarning("MatchManager not assigned in PlayerState!");
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

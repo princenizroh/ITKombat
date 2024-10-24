@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
 
 namespace ITKombat
 {
@@ -8,6 +10,7 @@ namespace ITKombat
     {
         public static MatchManager Instance;
         public GameObject ReadyNotif, Round1Notif, Round2Notif, Round3Notif, Round4Notif, FinalRoundNotif, DrawRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
+        public GameObject Reward;
         public int playerVictoryPoint;
         public int enemyVictoryPoint;
         public MatchTimer matchTimer;
@@ -16,6 +19,8 @@ namespace ITKombat
         public bool timeoutTimer = false;
         private bool finalRound = false;
 
+        private PlayerMovement_2 playerMovement;
+
         // Reference to PlayerState and EnemyState
         private PlayerState playerState;
         private EnemyState enemyState;
@@ -23,6 +28,7 @@ namespace ITKombat
         void Start() 
         {
             StartCoroutine(ShowRoundStartNotification(1));
+            playerMovement.canMove = false;
         }
 
         private void Awake()
@@ -32,6 +38,7 @@ namespace ITKombat
             // Ensure PlayerState and EnemyState are correctly set up
             playerState = FindObjectOfType<PlayerState>();
             enemyState = FindObjectOfType<EnemyState>();
+            playerMovement = FindObjectOfType<PlayerMovement_2>();
         }
 
         void Update()
@@ -53,9 +60,8 @@ namespace ITKombat
 
         private void HandleTimeout()
         {            
-                StartCoroutine(MatchTimeout());
-                timeoutTriggered = true;
-
+            StartCoroutine(MatchTimeout());
+            timeoutTriggered = true;
         }
 
         private void HandleTimeoutTimer()
@@ -89,6 +95,7 @@ namespace ITKombat
                 currentRoundNotif.SetActive(true);
                 yield return new WaitForSeconds(2f);
                 currentRoundNotif.SetActive(false);
+                playerMovement.canMove = false;
                 matchTimer.ChangeMatchStatus(true);
 
                 if (roundNumber == 1)
@@ -96,7 +103,36 @@ namespace ITKombat
                     FightNotif.SetActive(true);
                     yield return new WaitForSeconds(1.5f);
                     FightNotif.SetActive(false);
+                    playerMovement.canMove = true;
                 }
+            }
+        }
+
+        public void PlayerDied()
+        {
+            // Logika untuk ketika player mati
+            if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound)
+            {
+                // Kondisi final round
+                EnemyVictory();
+            }
+            else
+            {
+                EnemyVictory();
+            }
+        }
+
+        public void EnemyDied()
+        {
+            // Logika untuk ketika enemy mati
+            if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound)
+            {
+                // Kondisi final round
+                PlayerVictory();
+            }
+            else
+            {
+                PlayerVictory();
             }
         }
         
@@ -105,6 +141,8 @@ namespace ITKombat
             if (isPlayerVictory)
             {
                 VictoryNotif.SetActive(true);
+                TimeoutNotif.SetActive(false);
+                timeoutToTimer.text = "";
             }
             else
             {
@@ -112,12 +150,14 @@ namespace ITKombat
             }
         }
 
-        public void ShowEndGameButton()
+        public IEnumerator ShowEndGameButton()
         {
-            GameObject endGameButton = GameObject.Find("EndGameButton");
-            if (endGameButton != null)
+            matchTimer.ChangeMatchStatus(false);  // Stop the timer when match ends
+            if (Reward != null)
             {
-                endGameButton.SetActive(true);
+                Reward.SetActive(true);
+                yield return new WaitForSeconds(1.5f);
+                SceneManager.LoadScene("Asrama");
             }
         }
 
@@ -198,16 +238,17 @@ namespace ITKombat
         }
         private IEnumerator HandleRoundTransition()
         {
+            playerMovement.canMove = false;
             TimeoutNotif.SetActive(true);
             // Kondisi untuk menentukan siapa yang memenangkan ronde terakhir
-    if (playerState.currentHealth > enemyState.currentHealth)
-    {
-        timeoutToTimer.text = "PLAYER WON";
-    }
-    else if (playerState.currentHealth < enemyState.currentHealth)
-    {
-        timeoutToTimer.text = "ENEMY WON";
-    }
+            if (playerState.currentHealth > enemyState.currentHealth)
+            {
+                timeoutToTimer.text = "PLAYER WON";
+            }
+            else if (playerState.currentHealth < enemyState.currentHealth)
+            {
+                timeoutToTimer.text = "ENEMY WON";
+            }
 
             yield return new WaitForSeconds(3f);
 
@@ -218,13 +259,15 @@ namespace ITKombat
             {
                 ShowVictoryNotif(true);
                 yield return new WaitForSeconds(2f);
-                ShowEndGameButton();
+                VictoryNotif.SetActive(false);
+                yield return StartCoroutine(ShowEndGameButton());
             }
             else if (enemyVictoryPoint == 3) 
             {
                 ShowVictoryNotif(false);
-                yield return new WaitForSeconds(2f);
-                ShowEndGameButton();
+                yield return new WaitForSeconds(1f);
+                DefeatNotif.SetActive(false);
+                yield return StartCoroutine(ShowEndGameButton());
             }
             else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
             {
@@ -234,12 +277,17 @@ namespace ITKombat
 
             else
             {
+                yield return StartCoroutine(NextRound());
+            }
+            playerMovement.canMove = true;
+            StartNormalTimer();
+        }
+
+        public IEnumerator NextRound()
+        {
                 int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
                 
                 yield return StartCoroutine(ShowRoundStartNotification(nextRound));
-            }
-
-            StartNormalTimer();
         }
 
         void StartNormalTimer()
