@@ -27,6 +27,12 @@ public class CharacterController2D1 : MonoBehaviour
     public UnityEvent OnLandEvent;
     public BoolEvent OnCrouchEvent;
 
+    // VFX
+    [SerializeField] private ParticleSystem CollectParticle1 = null;
+    [SerializeField] private ParticleSystem CollectParticle2 = null;
+    [SerializeField] private ParticleSystem CollectParticle3 = null;
+    [SerializeField] private ParticleSystem CollectParticle4 = null;
+
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
 
@@ -140,6 +146,10 @@ public class CharacterController2D1 : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+        CollectParticle1.transform.localScale = theScale;
+        CollectParticle2.transform.localScale = theScale;
+        CollectParticle3.transform.localScale = theScale;
+        CollectParticle4.transform.localScale = theScale;
     }
 
     public void Dash(float dashSpeed, float dashDuration)

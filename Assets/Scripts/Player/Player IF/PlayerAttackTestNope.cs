@@ -7,6 +7,7 @@ namespace ITKombat
 {
     public class PlayerAttackTestNope : NetworkBehaviour
     {
+
         public static PlayerAttackTestNope Instance;
         public Transform attackPoint;
         public float attackForce = 5f;
@@ -17,7 +18,7 @@ namespace ITKombat
         public LayerMask enemyLayer;
         private int combo = 0;
         private float timeSinceLastAttack;
-
+        private bool isFlipped = false;
         // Animator
         private Animator animator;
 

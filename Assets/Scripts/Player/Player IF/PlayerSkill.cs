@@ -15,6 +15,7 @@ namespace ITKombat
         private bool isSkill3Active = false;
 
         [SerializeField] private ParticleSystem Skill2_VFX = null;
+        [SerializeField] private ParticleSystem Skill1_VFX = null;
 
         private void Start()
         {
@@ -27,6 +28,7 @@ namespace ITKombat
             {
                 anim.SetTrigger("skill1");
                 PlaySound(skillSound1);
+                PlayVFX(Skill1_VFX);
                 isSkill1Active = true;
                 StartCoroutine(ResetToIdleAfterTime(1f)); 
             }
