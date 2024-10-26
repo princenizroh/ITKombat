@@ -280,6 +280,7 @@ namespace ITKombat
                 VictoryNotif.SetActive(false);
                 yield return StartCoroutine(ShowEndGameButton());
             }
+            
             else if (enemyVictoryPoint == 3) 
             {
                 ShowVictoryNotif(false);
