@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TrophyClickHandler : MonoBehaviour
+public class ObjectClickHandler : MonoBehaviour
 {
     [SerializeField] private GameObject leaderboardCanvas; // Reference to the leaderboard canvas
 
