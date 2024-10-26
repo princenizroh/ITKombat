@@ -14,8 +14,11 @@ namespace ITKombat
         private bool isSkill2Active = false;
         private bool isSkill3Active = false;
 
-        [SerializeField] private ParticleSystem Skill2_VFX = null;
-        [SerializeField] private ParticleSystem Skill1_VFX = null;
+        [SerializeField] private ParticleSystem Skill1_VFX_Right = null;
+        [SerializeField] private ParticleSystem Skill2_VFX_Right = null;
+
+        [SerializeField] private ParticleSystem Skill1_VFX_Left = null;
+        [SerializeField] private ParticleSystem Skill2_VFX_Left = null;
 
         private void Start()
         {
@@ -24,11 +27,20 @@ namespace ITKombat
 
         public void Skill1()
         {
+            CharacterController2D1 character = GetComponent<CharacterController2D1>();
+            if (character == null) return;
             if (anim != null && !isSkill1Active)
             {
+                if (character.IsFacingRight)
+                {
+                    PlayVFX(Skill1_VFX_Right);
+                }
+                else
+                {
+                    PlayVFX(Skill1_VFX_Left);
+                }
                 anim.SetTrigger("skill1");
                 PlaySound(skillSound1);
-                PlayVFX(Skill1_VFX);
                 isSkill1Active = true;
                 StartCoroutine(ResetToIdleAfterTime(1f)); 
             }
@@ -36,11 +48,20 @@ namespace ITKombat
 
         public void Skill2()
         {
+            CharacterController2D1 character = GetComponent<CharacterController2D1>();
+            if (character == null) return;
             if (anim != null && !isSkill2Active)
             {
+                if (character.IsFacingRight)
+                {
+                    PlayVFX(Skill2_VFX_Right);
+                }
+                else
+                {
+                    PlayVFX(Skill2_VFX_Left);
+                }
                 anim.SetTrigger("skill2");
                 PlaySound(skillSound2);
-                PlayVFX(Skill2_VFX);
                 isSkill2Active = true;
                 StartCoroutine(ResetToIdleAfterTime(1.2f)); 
             }

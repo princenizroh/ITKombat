@@ -17,7 +17,7 @@ public class CharacterController2D1 : MonoBehaviour
     private bool m_Grounded;         
     const float k_CeilingRadius = .2f; 
     private Rigidbody2D m_Rigidbody2D;
-    public bool m_FacingRight = true; 
+    public bool m_FacingRight = true;
     private Vector3 m_Velocity = Vector3.zero;
     private bool m_wasCrouching = false;
 
@@ -26,12 +26,7 @@ public class CharacterController2D1 : MonoBehaviour
 
     public UnityEvent OnLandEvent;
     public BoolEvent OnCrouchEvent;
-
-    // VFX
-    [SerializeField] private ParticleSystem CollectParticle1 = null;
-    [SerializeField] private ParticleSystem CollectParticle2 = null;
-    [SerializeField] private ParticleSystem CollectParticle3 = null;
-    [SerializeField] private ParticleSystem CollectParticle4 = null;
+    public bool IsFacingRight => m_FacingRight;
 
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
@@ -146,10 +141,6 @@ public class CharacterController2D1 : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
-        CollectParticle1.transform.localScale = theScale;
-        CollectParticle2.transform.localScale = theScale;
-        CollectParticle3.transform.localScale = theScale;
-        CollectParticle4.transform.localScale = theScale;
     }
 
     public void Dash(float dashSpeed, float dashDuration)

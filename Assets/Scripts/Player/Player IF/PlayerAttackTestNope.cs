@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.VFX;
+using System.Runtime.CompilerServices;
 
 namespace ITKombat
 {
@@ -18,15 +19,20 @@ namespace ITKombat
         public LayerMask enemyLayer;
         private int combo = 0;
         private float timeSinceLastAttack;
-        private bool isFlipped = false;
         // Animator
         private Animator animator;
 
-        // VFX
-        [SerializeField] private ParticleSystem CollectParticle1 = null;
-        [SerializeField] private ParticleSystem CollectParticle2 = null;
-        [SerializeField] private ParticleSystem CollectParticle3 = null;
-        [SerializeField] private ParticleSystem CollectParticle4 = null;
+        // VFX Right
+        [SerializeField] private ParticleSystem Attack1_Right = null;
+        [SerializeField] private ParticleSystem Attack2_Right = null;
+        [SerializeField] private ParticleSystem Attack3_Right = null;
+        [SerializeField] private ParticleSystem Attack4_Right = null;
+
+        // VFX Left
+        [SerializeField] private ParticleSystem Attack1_Left = null;
+        [SerializeField] private ParticleSystem Attack2_Left = null;
+        [SerializeField] private ParticleSystem Attack3_Left = null;
+        [SerializeField] private ParticleSystem Attack4_Left = null;
 
         // Audio sources for normal attacks
         public AudioSource punchSound1;
@@ -118,31 +124,61 @@ namespace ITKombat
 
         private void AttackAnimation()
         {
+            CharacterController2D1 character = GetComponent<CharacterController2D1>();
+            if (character == null) return;
             switch (combo)
             {
                 case 1:
-                    CollectParticle1.Play();
+                    if (character.IsFacingRight)
+                    {
+                        Attack1_Right.Play();
+                    }
+                    else
+                    {
+                        Attack1_Left.Play();
+                    }
                     PlaySound(punchSound1);
                     animator.SetTrigger("attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
-                    CollectParticle2.Play();
+                    if (character.IsFacingRight)
+                    {
+                        Attack2_Right.Play();
+                    }
+                    else
+                    {
+                        Attack2_Left.Play();
+                    }
                     PlaySound(punchSound2);
                     animator.SetTrigger("attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
-                    CollectParticle3.Play();
+                    if (character.IsFacingRight)
+                    {
+                        Attack3_Right.Play();
+                    }
+                    else
+                    {
+                        Attack3_Left.Play();
+                    }
                     PlaySound(punchSound3);
                     animator.SetTrigger("attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
-                    CollectParticle4.Play();
+                    if (character.IsFacingRight)
+                    {
+                        Attack4_Right.Play();
+                    }
+                    else
+                    {
+                        Attack4_Left.Play();
+                    }
                     PlaySound(punchSound4);
                     animator.SetTrigger("attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
