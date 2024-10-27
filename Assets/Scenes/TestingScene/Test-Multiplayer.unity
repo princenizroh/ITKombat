@@ -6285,7 +6285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 1136117067}
+  playerHealthSlider: {fileID: 0}
   easeHealthSlider: {fileID: 532417379}
   maxHealth: 100
   health: 100
@@ -10192,7 +10192,7 @@ MonoBehaviour:
     m_Value: 10
   OutputChannel: 1
   StandbyUpdate: 2
-  m_StreamingVersion: 20230301
+  m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
     TrackingTarget: {fileID: 1433186301}
@@ -10236,6 +10236,7 @@ MonoBehaviour:
   OversizeWindow:
     Enabled: 0
     MaxWindowSize: 0
+    Padding: 0
   m_LegacyMaxWindowSize: -2
 --- !u!1 &1114869548
 GameObject:
@@ -16806,7 +16807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1830214280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17606,12 +17607,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRange: 2
   attackForce: 50
+  attackPower: 5
   attackCooldown: 0.5
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
   currentCombo: 0
   lastAttackTime: 0
+  punchSound1: {fileID: 0}
+  punchSound2: {fileID: 0}
+  punchSound3: {fileID: 0}
+  punchSound4: {fileID: 0}
 --- !u!114 &1875736782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18232,12 +18238,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRange: 3
   attackForce: 50
+  attackPower: 5
   attackCooldown: 0.5
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
   currentCombo: 0
   lastAttackTime: 0
+  punchSound1: {fileID: 0}
+  punchSound2: {fileID: 0}
+  punchSound3: {fileID: 0}
+  punchSound4: {fileID: 0}
 --- !u!114 &1938394557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18340,7 +18351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 1136117067}
+  playerHealthSlider: {fileID: 0}
   easeHealthSlider: {fileID: 532417379}
   maxHealth: 100
   health: 100
@@ -20676,6 +20687,10 @@ PrefabInstance:
       propertyPath: m_CrouchDisableCollider
       value: 
       objectReference: {fileID: 2786425133770990268}
+    - target: {fileID: 4810395427450485930, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
