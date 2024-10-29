@@ -9,13 +9,13 @@ public class GameManagerButton : MonoBehaviour
     [SerializeField]
     private PlayerMovement_2 playerMovement;
     [SerializeField]
-    private PlayerSkill playerSkill;
+    private SkillsHolder playerSkill;
 
     private void Start()
     {
         playerAttack = GetComponent<PlayerAttackTestNope>();
         playerMovement = GetComponent<PlayerMovement_2>();
-        playerSkill = GetComponent<PlayerSkill>();
+        playerSkill = GetComponent<SkillsHolder>();
     }
 
     public void CrouchButtonDown()
@@ -97,7 +97,7 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerSkill != null)
         {
-            playerSkill.Skill1(); 
+            playerSkill.ActivateSkill1(); 
         }
     }
 
@@ -105,7 +105,7 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerSkill != null)
         {
-            playerSkill.Skill2(); 
+            playerSkill.ActivateSkill2(); 
         }
     }
 
@@ -113,7 +113,7 @@ public class GameManagerButton : MonoBehaviour
     {
         if (playerSkill != null)
         {
-            playerSkill.Skill3();
+            playerSkill.ActivateSkill3();
         }
     }
 }

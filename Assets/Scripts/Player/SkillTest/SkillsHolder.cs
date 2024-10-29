@@ -74,6 +74,21 @@ namespace ITKombat
                 StartCoroutine(ResetToIdleAfterTime(index, skills[index].activeTime));
             }
         }
+        
+        public void ActivateSkill1()
+        {
+            ActivateSkill(0);
+        }
+
+        public void ActivateSkill2()
+        {
+            ActivateSkill(1);
+        }
+
+        public void ActivateSkill3()
+        {
+            ActivateSkill(2);
+        }
 
         private IEnumerator ResetToIdleAfterTime(int index, float delay)
         {

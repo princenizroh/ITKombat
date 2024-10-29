@@ -46,7 +46,7 @@ public class AI_Movement : MonoBehaviour
             Flip();
         }
 
-        myRigidbody.velocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.velocity.y);
+        myRigidbody.linearVelocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
         Debug.Log("test" + myRigidbody.linearVelocity);
         movementStep++;
         anim.SetTrigger("Walk");

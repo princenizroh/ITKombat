@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,6 +24,8 @@ namespace ITKombat
 
         private Rigidbody2D rb;
 
+        //Event yang dipanggil ketika terkena damage
+        public event Action<GameObject> OnTakeDamage;
         private void Start()
         {
             healthSlider.maxValue = maxHealth;
@@ -131,7 +134,7 @@ namespace ITKombat
 
         private IEnumerator PlayRandomHitAnimation()
         {
-            string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
+            string randomHitAnimation = hitAnimationTriggers[UnityEngine.Random.Range(0, hitAnimationTriggers.Length)];
             playerAnimator.SetTrigger(randomHitAnimation); // Set trigger for random hit animation
 
             yield return new WaitForSeconds(0.5f); 
@@ -143,7 +146,7 @@ namespace ITKombat
         {
             if (hitAudioSources.Length > 0)
             {
-                AudioSource randomAudioSource = hitAudioSources[Random.Range(0, hitAudioSources.Length)];
+                AudioSource randomAudioSource = hitAudioSources[UnityEngine.Random.Range(0, hitAudioSources.Length)];
                 randomAudioSource.Play();
             }
         }
