@@ -17,7 +17,7 @@ public class CharacterController2D1 : MonoBehaviour
     private bool m_Grounded;         
     const float k_CeilingRadius = .2f; 
     private Rigidbody2D m_Rigidbody2D;
-    public bool m_FacingRight = true; 
+    public bool m_FacingRight = true;
     private Vector3 m_Velocity = Vector3.zero;
     private bool m_wasCrouching = false;
 
@@ -26,6 +26,7 @@ public class CharacterController2D1 : MonoBehaviour
 
     public UnityEvent OnLandEvent;
     public BoolEvent OnCrouchEvent;
+    public bool IsFacingRight => m_FacingRight;
 
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
