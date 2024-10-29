@@ -27,11 +27,17 @@ public class MoveFelix : MonoBehaviour
         if (moveLeft)
         {
             movement.x = -1;
+            animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
         }
         // Jika tombol kanan ditekan, bergerak ke kanan
         else if (moveRight)
         {
             movement.x = 1;
+            animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false); // Set IsMoving ke false jika tidak bergerak
         }
 
         // Kirim nilai ke Blend Tree melalui parameter 'Speed'
@@ -56,27 +62,26 @@ public class MoveFelix : MonoBehaviour
 
     // Method untuk UI Button - Dipanggil saat tombol kiri ditekan
     public void OnMoveLeftDown()
-{
-    Debug.Log("Move Left Down");
-    moveLeft = true;
-}
+    {
+        Debug.Log("Move Left Down");
+        moveLeft = true;
+    }
 
-public void OnMoveLeftUp()
-{
-    Debug.Log("Move Left Up");
-    moveLeft = false;
-}
+    public void OnMoveLeftUp()
+    {
+        Debug.Log("Move Left Up");
+        moveLeft = false;
+    }
 
-public void OnMoveRightDown()
-{
-    Debug.Log("Move Right Down");
-    moveRight = true;
-}
+    public void OnMoveRightDown()
+    {
+        Debug.Log("Move Right Down");
+        moveRight = true;
+    }
 
-public void OnMoveRightUp()
-{
-    Debug.Log("Move Right Up");
-    moveRight = false;
-}
-
+    public void OnMoveRightUp()
+    {
+        Debug.Log("Move Right Up");
+        moveRight = false;
+    }
 }
