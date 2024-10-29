@@ -34,6 +34,24 @@ public class GameManagerButton : MonoBehaviour
             playerMovement.OnCrouchUp();
         }
     }
+
+    // Tambahkan metode untuk block
+    public void BlockButtonDown()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.OnBlockDown();
+        }
+    }
+
+    public void BlockButtonUp()
+    {
+        if (playerMovement != null)
+        {
+            playerMovement.OnBlockUp();
+        }
+    }
+
     public void AttackButton()
     {
         if (playerMovement != null && playerMovement.IsCrouching) // Akses dengan properti

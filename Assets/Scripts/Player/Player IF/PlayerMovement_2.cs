@@ -16,6 +16,7 @@ namespace ITKombat
 
         public float moveSpeed = 50f;
         float horizontalMove = 0f;
+        private bool isBlocking = false;
         private bool isCrouching = false;
         private bool isCrouchAttacking = false;
         bool useKeyboardInput = true;
@@ -58,9 +59,16 @@ namespace ITKombat
                 // Continuously trigger crouch animation while crouching
                 anim.SetTrigger("Crouch");
             }
+            
             else if (!isCrouching && horizontalMove == 0 && !jump && !isDashing)
             {
                 anim.SetTrigger("Idle");
+            }
+            
+            if (isBlocking)
+            {
+                // Continuously trigger block animation while blocking
+                anim.SetTrigger("Block");
             }
         }
         
@@ -115,6 +123,20 @@ namespace ITKombat
             isCrouching = false;
             anim.SetTrigger("Idle");
             Debug.Log("Player stopped crouching");
+        }
+        // Metode untuk mulai block
+        public void OnBlockDown()
+        {
+            isBlocking = true;
+            anim.SetTrigger("Block"); // Memicu animasi Block
+            Debug.Log("Player is blocking");
+        }
+
+        public void OnBlockUp()
+        {
+            isBlocking = false;
+            anim.SetTrigger("Idle"); // Kembali ke animasi Idle setelah block selesai
+            Debug.Log("Player stopped blocking");
         }
 
         public void OnCrouchAttack()
