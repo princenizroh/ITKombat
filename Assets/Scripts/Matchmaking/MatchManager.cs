@@ -35,6 +35,9 @@ namespace ITKombat
         public AudioSource soundDefead;
         public AudioSource soundVictory;
         public AudioSource soundTimeOut;
+        public AudioSource soundPlayerWon;
+        public AudioSource soundEnemyWon;
+        public AudioSource soundDraw;
 
 
         void Start() 
@@ -228,19 +231,20 @@ namespace ITKombat
         {
             playerVictoryPoint += 1;
             enemyVictoryPoint += 1;
+            soundDraw.Play();
             StartCoroutine(HandleDrawTransition());
         }
         public void PlayerVictory() 
         {
             playerVictoryPoint += 1;
-            soundVictory.Play();
+            soundPlayerWon.Play();
             StartCoroutine(HandleRoundTransition());
         }
 
         public void EnemyVictory() 
         {
             enemyVictoryPoint += 1;
-            soundDefead.Play();
+            soundEnemyWon.Play();
             StartCoroutine(HandleRoundTransition());
         }
 
@@ -278,6 +282,7 @@ namespace ITKombat
                 ShowVictoryNotif(true);
                 yield return new WaitForSeconds(2f);
                 VictoryNotif.SetActive(false);
+                soundVictory.Play();
                 yield return StartCoroutine(ShowEndGameButton());
             }
             
@@ -286,6 +291,7 @@ namespace ITKombat
                 ShowVictoryNotif(false);
                 yield return new WaitForSeconds(1f);
                 DefeatNotif.SetActive(false);
+                soundDefead.Play();
                 yield return StartCoroutine(ShowEndGameButton());
             }
             else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
