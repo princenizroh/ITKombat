@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 namespace ITKombat
 {
@@ -73,27 +74,28 @@ namespace ITKombat
                     string playerId = childSnapshot.Key;
 
                     if (id_compared == playerId) {
-
                         player_id = playerId;
-                        Debug.Log("player id successfuly tagged");
+                        Debug.Log("player id successfully tagged");
                         playerData.player_id = playerId;
-                        Debug.Log("player id inserted into playerdata");
+                        Debug.Log("player id inserted into playerData");
 
                         var DatabaseCompareName = await DBreference.Child("players").Child(playerId).Child("username").GetValueAsync();
+                        var DatabaseUkt = await DBreference.Child("balances").Child(playerId).Child("ukt").GetValueAsync();
+                        var DatabaseDanus = await DBreference.Child("balances").Child(playerId).Child("danus").GetValueAsync();
 
                         if (DatabaseCompareName.Exists) {
+                            playerData.playerName = DatabaseCompareName.Value.ToString();
+                            Debug.Log("player name successfully tagged");
+                        }
 
-                            foreach (var childSnapshotName in DatabaseCompareTask.Children) {
-                                string playerUsername = childSnapshotName.Key;
+                        if (DatabaseUkt.Exists) {
+                            playerData.playerUkt = int.Parse(DatabaseUkt.Value.ToString());
+                            Debug.Log("player ukt successfully tagged");
+                        }
 
-                                playerData.playerName = playerUsername;
-                                Debug.Log("player name successfuly tagged");
-                            }
-                        } else {
-
-                            Debug.Log("failed to tag, will using player id");
-                            playerData.playerName = playerId;
-
+                        if (DatabaseDanus.Exists) {
+                            playerData.playerDanus = int.Parse(DatabaseDanus.Value.ToString());
+                            Debug.Log("player danus successfully tagged");
                         }
                         
                         return true;
