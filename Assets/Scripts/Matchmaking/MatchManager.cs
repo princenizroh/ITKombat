@@ -37,18 +37,6 @@ namespace ITKombat
         public AudioSource soundTimeOut;
 
 
-        // Audio sources round manager
-        public AudioSource soundRound1;
-        public AudioSource soundRound2;
-        public AudioSource soundRound3;
-        public AudioSource soundRound4;
-        public AudioSource soundFinalRound;
-        public AudioSource soundFight;
-        public AudioSource soundDefead;
-        public AudioSource soundVictory;
-        public AudioSource soundTimeOut;
-        
-
         void Start() 
         {
             StartCoroutine(ShowRoundStartNotification(1));
@@ -168,16 +156,12 @@ namespace ITKombat
             if (isPlayerVictory)
             {
                 VictoryNotif.SetActive(true);
-                //efek suara victrory disini
-                soundVictory.Play();
                 TimeoutNotif.SetActive(false);
                 timeoutToTimer.text = "";
             }
             else
             {
                 DefeatNotif.SetActive(true);
-                //suara deafeat
-                soundDefead.Play();
             }
         }
 
@@ -195,7 +179,7 @@ namespace ITKombat
         private IEnumerator MatchTimeout() 
         {
             Debug.Log("Match Timeout");
-            soundTimeOut.Play(); 
+            soundTimeOut.Play();
             TimeoutNotif.SetActive(true);
             timeoutToTimer.text = "TIME OUT";
             yield return new WaitForSeconds(3f);
@@ -244,13 +228,11 @@ namespace ITKombat
         {
             playerVictoryPoint += 1;
             enemyVictoryPoint += 1;
-            //suaraDraw disini
             StartCoroutine(HandleDrawTransition());
         }
         public void PlayerVictory() 
         {
             playerVictoryPoint += 1;
-            //ini suara playerWon
             soundVictory.Play();
             StartCoroutine(HandleRoundTransition());
         }
@@ -258,7 +240,6 @@ namespace ITKombat
         public void EnemyVictory() 
         {
             enemyVictoryPoint += 1;
-            //ini suara enemyWon
             soundDefead.Play();
             StartCoroutine(HandleRoundTransition());
         }
