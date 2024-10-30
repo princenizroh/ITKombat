@@ -10,7 +10,7 @@ namespace ITKombat
         public float attackRange = 2.5f;         // Range within which the enemy can attack
         public float attackForce = 5f;          // Knockback force
         public float attackPower = 5f;
-        public float attackCooldown = 0.7f;      // Cooldown between each attack
+        public float attackCooldown = 1f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
@@ -134,11 +134,11 @@ namespace ITKombat
                 case 2:
                     if (character.IsFacingRight)
                     {
-                        Attack1_Right.Play();
+                        Attack2_Right.Play();
                     }
                     else
                     {
-                        Attack1_Left.Play();
+                        Attack2_Left.Play();
                     }
                     PlaySound(punchSound2);
                     anim.SetTrigger("attack2");
@@ -147,11 +147,11 @@ namespace ITKombat
                 case 3:
                     if (character.IsFacingRight)
                     {
-                        Attack1_Right.Play();
+                        Attack3_Right.Play();
                     }
                     else
                     {
-                        Attack1_Left.Play();
+                        Attack3_Left.Play();
                     }
                     PlaySound(punchSound3);
                     anim.SetTrigger("attack3");
@@ -160,11 +160,11 @@ namespace ITKombat
                 case 4:
                     if (character.IsFacingRight)
                     {
-                        Attack1_Right.Play();
+                        Attack4_Right.Play();
                     }
                     else
                     {
-                        Attack1_Left.Play();
+                        Attack4_Left.Play();
                     }
                     PlaySound(punchSound4);
                     anim.SetTrigger("attack4");
