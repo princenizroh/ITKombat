@@ -37,6 +37,18 @@ namespace ITKombat
         public AudioSource soundTimeOut;
 
 
+        // Audio sources round manager
+        public AudioSource soundRound1;
+        public AudioSource soundRound2;
+        public AudioSource soundRound3;
+        public AudioSource soundRound4;
+        public AudioSource soundFinalRound;
+        public AudioSource soundFight;
+        public AudioSource soundDefead;
+        public AudioSource soundVictory;
+        public AudioSource soundTimeOut;
+        
+
         void Start() 
         {
             StartCoroutine(ShowRoundStartNotification(1));
