@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace ITKombat
 {
-    public class CustomSceneManager
+    public class CustomSceneManager : MonoBehaviour
     {
 
         public void LoadSceneByName(string sceneName)

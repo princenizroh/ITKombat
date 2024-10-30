@@ -21,6 +21,7 @@ namespace ITKombat
         private CustomSceneManager customSceneManager;
         private string player_id;
         public DatabaseReference DBreference;
+        public LoginPageUIManager loginPageUIManager;
         void Awake()
         {
             if (instance == null)
@@ -72,10 +73,29 @@ namespace ITKombat
                     string playerId = childSnapshot.Key;
 
                     if (id_compared == playerId) {
+
                         player_id = playerId;
                         Debug.Log("player id successfuly tagged");
                         playerData.player_id = playerId;
                         Debug.Log("player id inserted into playerdata");
+
+                        var DatabaseCompareName = await DBreference.Child("players").Child(playerId).Child("username").GetValueAsync();
+
+                        if (DatabaseCompareName.Exists) {
+
+                            foreach (var childSnapshotName in DatabaseCompareTask.Children) {
+                                string playerUsername = childSnapshotName.Key;
+
+                                playerData.playerName = playerUsername;
+                                Debug.Log("player name successfuly tagged");
+                            }
+                        } else {
+
+                            Debug.Log("failed to tag, will using player id");
+                            playerData.playerName = playerId;
+
+                        }
+                        
                         return true;
                     }
                 }
@@ -96,6 +116,7 @@ namespace ITKombat
                 playerData.player_id = id;
                 Debug.Log("Account created");
                 InitializeNewAccount(id);
+                _ = CompareId(id);
                 StartCoroutine(firebaseAuhenticationLogin(id, id));
             }
         }
@@ -164,7 +185,7 @@ namespace ITKombat
 
             if (Login.Exception != null) {
                 Debug.Log("Login sucessfuly");
-                customSceneManager.LoadSceneByName("TopUp");
+                loginPageUIManager.StartScreen();
             } else {
                 Debug.Log("Login failed");
             }
@@ -240,7 +261,11 @@ namespace ITKombat
         }
 
         public string GetPlayerId() {
-            return player_id;
+            return playerData.player_id;
+        }
+
+        public string GetPlayerName() {
+            return playerData.playerName;
         }
 
     }
