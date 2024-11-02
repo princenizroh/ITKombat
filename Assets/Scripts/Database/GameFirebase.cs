@@ -5,8 +5,10 @@ using Firebase.Database;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
-using Unity.Android.Gradle.Manifest;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
+using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 namespace ITKombat
 {
@@ -16,7 +18,11 @@ namespace ITKombat
         public DependencyStatus dependencyStatus;
         public FirebaseUser User;
         public FirebaseAuth auth;
+        public PlayerScriptableObject playerData;
+        private CustomSceneManager customSceneManager;
+        private string player_id;
         public DatabaseReference DBreference;
+        public LoginPageUIManager loginPageUIManager;
         void Awake()
         {
             if (instance == null)
@@ -44,6 +50,12 @@ namespace ITKombat
             });
         }
 
+        void Start()
+        {
+            // Initialize the CustomSceneManager
+            customSceneManager = new CustomSceneManager();
+        }
+
         private void InitializeFirebase()
         {
             Debug.Log("Setting up Firebase Auth");
@@ -62,6 +74,30 @@ namespace ITKombat
                     string playerId = childSnapshot.Key;
 
                     if (id_compared == playerId) {
+                        player_id = playerId;
+                        Debug.Log("player id successfully tagged");
+                        playerData.player_id = playerId;
+                        Debug.Log("player id inserted into playerData");
+
+                        var DatabaseCompareName = await DBreference.Child("players").Child(playerId).Child("username").GetValueAsync();
+                        var DatabaseUkt = await DBreference.Child("balances").Child(playerId).Child("ukt").GetValueAsync();
+                        var DatabaseDanus = await DBreference.Child("balances").Child(playerId).Child("danus").GetValueAsync();
+
+                        if (DatabaseCompareName.Exists) {
+                            playerData.playerName = DatabaseCompareName.Value.ToString();
+                            Debug.Log("player name successfully tagged");
+                        }
+
+                        if (DatabaseUkt.Exists) {
+                            playerData.playerUkt = int.Parse(DatabaseUkt.Value.ToString());
+                            Debug.Log("player ukt successfully tagged");
+                        }
+
+                        if (DatabaseDanus.Exists) {
+                            playerData.playerDanus = int.Parse(DatabaseDanus.Value.ToString());
+                            Debug.Log("player danus successfully tagged");
+                        }
+                        
                         return true;
                     }
                 }
@@ -77,9 +113,12 @@ namespace ITKombat
 
             if (register.Exception != null) {
                 Debug.Log("Account creation failed");
+                
             } else {
+                playerData.player_id = id;
                 Debug.Log("Account created");
                 InitializeNewAccount(id);
+                _ = CompareId(id);
                 StartCoroutine(firebaseAuhenticationLogin(id, id));
             }
         }
@@ -148,10 +187,87 @@ namespace ITKombat
 
             if (Login.Exception != null) {
                 Debug.Log("Login sucessfuly");
+                loginPageUIManager.StartScreen();
             } else {
                 Debug.Log("Login failed");
             }
 
+        }
+
+        public IEnumerator TopUp(string player_id, string topup_type, int amount)
+        {
+            // Check for null or empty player_id and topup_type
+            if (string.IsNullOrEmpty(player_id) || string.IsNullOrEmpty(topup_type))
+            {
+                Debug.LogError("player_id or topup_type is null or empty.");
+                yield break; // Exit the coroutine
+            }
+
+            if (DBreference == null)
+            {
+                Debug.LogError("DBreference is not initialized. Ensure Firebase is set up correctly.");
+                yield break; // Exit the coroutine
+            }
+
+            // Update the correct path
+            Task DBTask = DBreference.Child("balances").Child(player_id).Child(topup_type).SetValueAsync(amount);
+            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+            if (DBTask.Exception != null)
+            {
+                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+            }
+            else
+            {
+                Debug.Log("Data changed successfully.");
+            }
+        }
+
+        public async Task<int?> GetBalanceData(string player_id, string type_data)
+        {
+            // Check for null or empty player_id and type_data
+            if (string.IsNullOrEmpty(player_id) || string.IsNullOrEmpty(type_data))
+            {
+                Debug.LogError("player_id or type_data is null or empty.");
+                return null;
+            }
+
+            if (DBreference == null)
+            {
+                Debug.LogError("DBreference is not initialized. Ensure Firebase is set up correctly.");
+                return null;
+            }
+
+            // Log the path for debugging
+            string path = $"balances/{player_id}/{type_data}";
+            Debug.Log($"Accessing path: {path}");
+
+            // Try to get the data from the database
+            var DBTask = await DBreference.Child(path).GetValueAsync();
+
+            if (DBTask != null && DBTask.Exists)
+            {
+                Debug.Log("data not null");
+                // Try to convert the value to an integer
+                if (int.TryParse(DBTask.Value.ToString(), out int balanceValue))
+                {
+                    return balanceValue; // Return the integer value
+                }
+            }
+            else
+            {
+                Debug.LogError($"Data does not exist at path: {path}");
+            }
+
+            return 0;
+        }
+
+        public string GetPlayerId() {
+            return playerData.player_id;
+        }
+
+        public string GetPlayerName() {
+            return playerData.playerName;
         }
 
     }

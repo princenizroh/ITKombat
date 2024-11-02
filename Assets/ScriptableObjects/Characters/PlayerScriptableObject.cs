@@ -6,6 +6,9 @@ namespace ITKombat
     public class PlayerScriptableObject : ScriptableObject
     {
         public string playerName;
+        public string player_id;
+        public int playerUkt;
+        public int playerDanus;
         public AudioPlayerTest audioPlayerTest;
         public CharacterController2D1 characterController;
         public GameManagerButton gameManagerButton;

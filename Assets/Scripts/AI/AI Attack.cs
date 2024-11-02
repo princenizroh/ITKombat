@@ -6,10 +6,11 @@ namespace ITKombat
 {
     public class AI_Attack : MonoBehaviour
     {
-        public float attackRange = 3f;         // Range within which the enemy can attack
+        public static AI_Attack Instance;
+        public float attackRange = 2.5f;         // Range within which the enemy can attack
         public float attackForce = 5f;          // Knockback force
         public float attackPower = 5f;
-        public float attackCooldown = 0.5f;      // Cooldown between each attack
+        public float attackCooldown = 1f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
@@ -22,10 +23,37 @@ namespace ITKombat
         private AI_Movement aiMovement;
         private Animator anim;
 
+        // VFX Right
+        [SerializeField] private ParticleSystem Attack1_Right = null;
+        [SerializeField] private ParticleSystem Attack2_Right = null;
+        [SerializeField] private ParticleSystem Attack3_Right = null;
+        [SerializeField] private ParticleSystem Attack4_Right = null;
+
+        // VFX Left
+        [SerializeField] private ParticleSystem Attack1_Left = null;
+        [SerializeField] private ParticleSystem Attack2_Left = null;
+        [SerializeField] private ParticleSystem Attack3_Left = null;
+        [SerializeField] private ParticleSystem Attack4_Left = null;
+
         public AudioSource punchSound1;
         public AudioSource punchSound2;
         public AudioSource punchSound3;
         public AudioSource punchSound4;
+
+        private void Awake()
+        {
+            anim = GetComponent<Animator>();
+
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+
+        }
 
         void Start()
         {
@@ -67,6 +95,8 @@ namespace ITKombat
                     }
 
                 AttackAnimation();
+                Debug.Log("Performed attack.");
+
             }
         }
 
@@ -84,24 +114,58 @@ namespace ITKombat
 
         private void AttackAnimation()
         {
+            CharacterController2D1 character = GetComponent<CharacterController2D1>();
+            if (character == null) return;
             switch (currentCombo)
             {
                 case 1:
+                    if (character.IsFacingRight)
+                    {
+                        Attack1_Right.Play();
+                    }
+                    else
+                    {
+                        Attack1_Left.Play();
+                    }
                     PlaySound(punchSound1);
                     anim.SetTrigger("attack1");
                     Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
+                    if (character.IsFacingRight)
+                    {
+                        Attack2_Right.Play();
+                    }
+                    else
+                    {
+                        Attack2_Left.Play();
+                    }
                     PlaySound(punchSound2);
                     anim.SetTrigger("attack2");
                     Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
+                    if (character.IsFacingRight)
+                    {
+                        Attack3_Right.Play();
+                    }
+                    else
+                    {
+                        Attack3_Left.Play();
+                    }
                     PlaySound(punchSound3);
                     anim.SetTrigger("attack3");
                     Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
+                    if (character.IsFacingRight)
+                    {
+                        Attack4_Right.Play();
+                    }
+                    else
+                    {
+                        Attack4_Left.Play();
+                    }
                     PlaySound(punchSound4);
                     anim.SetTrigger("attack4");
                     Debug.Log("Attack 4 triggered");

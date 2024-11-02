@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,8 @@ namespace ITKombat
         public GameObject loginPanel;
         public GameObject registerPanel;
         public GameObject startPanel;
+        public TMP_Text nameUnderStart;
+        public PlayerScriptableObject playerScriptableObject;
 
         private void Awake()
         {
@@ -42,6 +45,7 @@ namespace ITKombat
             loginPanel.SetActive(false);
             registerPanel.SetActive(false);
             startPanel.SetActive(true);
+            changeNameToUser();
         }
 
         // public void UserDataScreen()
@@ -52,6 +56,12 @@ namespace ITKombat
         public void LobbyScreen()
         {
             SceneManager.LoadScene("Multiplayer");
+        }
+
+        public void changeNameToUser() {
+
+            nameUnderStart.text = "Welcome " + playerScriptableObject.playerName;
+
         }
     }
 }

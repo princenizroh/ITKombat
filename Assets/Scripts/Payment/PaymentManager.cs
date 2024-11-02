@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
@@ -11,10 +12,10 @@ namespace ITKombat
 
         public TMP_Text uktValueTotal;
         private int uktValue = 0;
-
+        private GameFirebase gameFirebase;
         private static IStoreController storeController;
         private static IExtensionProvider storeExtensionProvider;
-
+        public PlayerScriptableObject playerdata;
         public static string product_ukt_1 = "60ukt";
         public static string product_ukt_2 = "300ukt";
         public static string product_ukt_3 = "980ukt";
@@ -23,9 +24,19 @@ namespace ITKombat
         public static string product_ukt_6 = "6480ukt";
         public static string product_sub = "vip_pass";
 
-        void Start()
+        async void Start()
         {
             InitializePurchasing();
+
+            gameFirebase = GameFirebase.instance; // Get the persistent instance
+
+            Debug.Log(playerdata.player_id);
+
+            var ukt_data = await gameFirebase.GetBalanceData(playerdata.player_id, "ukt");
+            var danus_data = await gameFirebase.GetBalanceData(playerdata.player_id, "danus");
+
+            uktValue += ukt_data ?? 0;
+            Debug.Log(ukt_data);
         }
 
         public void InitializePurchasing()
@@ -131,31 +142,37 @@ namespace ITKombat
             if (product.definition.id == product_ukt_1)
             {
                 uktValue += 60;
+                StartCoroutine(gameFirebase.TopUp(playerdata.player_id, "ukt", uktValue));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_2)
             {
                 uktValue += 300;
+                StartCoroutine(gameFirebase.TopUp(playerdata.player_id, "ukt", uktValue));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_3)
             {
                 uktValue += 980;
+                StartCoroutine(gameFirebase.TopUp(playerdata.player_id, "ukt", uktValue));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_4)
             {
                 uktValue += 1980;
+                StartCoroutine(gameFirebase.TopUp(playerdata.player_id, "ukt", uktValue));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_5)
             {
                 uktValue += 3280;
+                StartCoroutine(gameFirebase.TopUp(playerdata.player_id, "ukt", uktValue));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_ukt_6)
             {
                 uktValue += 6480;
+                StartCoroutine(gameFirebase.TopUp(playerdata.player_id, "ukt", uktValue));
                 uktValueTotal.SetText(uktValue.ToString());
             }
             else if (product.definition.id == product_sub)
