@@ -1,12 +1,31 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FinishPoint : MonoBehaviour
 {
     private float timer = 0f;
     private bool playerInZone = false;
     private bool levelLoaded = false;
+    private Vector2 playerPosition;
+    
+    [SerializeField] private string targetSceneName; // Nama scene tujuan
 
-    [SerializeField] private string targetSceneName; // The name of the target scene
+    private void Start()
+    {
+        // Cek jika ada data posisi terakhir pemain
+        if (PlayerPrefs.HasKey("PlayerPositionX") && PlayerPrefs.HasKey("PlayerPositionY"))
+        {
+            float x = PlayerPrefs.GetFloat("PlayerPositionX");
+            float y = PlayerPrefs.GetFloat("PlayerPositionY");
+
+            // Set posisi pemain sesuai data terakhir di scene sebelumnya
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                player.transform.position = new Vector2(x, y);
+            }
+        }
+    }
 
     private void Update()
     {
@@ -17,49 +36,49 @@ public class FinishPoint : MonoBehaviour
             if (timer >= 2f)
             {
                 levelLoaded = true;
-                SceneController.instance.LoadSceneByName(targetSceneName); // Load target scene
+
+                // Simpan posisi pemain sebelum pindah scene
+                PlayerPrefs.SetFloat("PlayerPositionX", playerPosition.x);
+                PlayerPrefs.SetFloat("PlayerPositionY", playerPosition.y);
+
+                // Pindah ke scene tujuan
+                SceneController.instance.LoadSceneByName(targetSceneName);
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-{
-    if (collision.CompareTag("Player"))
     {
-        playerInZone = true; // Player has entered the trigger zone
-        PlayerSliderController playerSlider = collision.GetComponent<PlayerSliderController>();
-        if (playerSlider != null)
+        if (collision.CompareTag("Player"))
         {
-            playerSlider.SetFinishPoint(this); // Set the reference to this FinishPoint
+            playerInZone = true; // Pemain masuk zona trigger
+            playerPosition = collision.transform.position; // Simpan posisi pemain saat memasuki zona
+
+            PlayerSliderController playerSlider = collision.GetComponent<PlayerSliderController>();
+            if (playerSlider != null)
+            {
+                playerSlider.SetFinishPoint(this); // Referensi ke FinishPoint
+            }
         }
     }
-}
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            playerInZone = false; // Player has exited the trigger zone
-            timer = 0f; // Reset the timer
-            levelLoaded = false; // Reset the level loaded flag
+            playerInZone = false; // Pemain keluar dari zona trigger
+            timer = 0f; // Reset timer
+            levelLoaded = false; // Reset flag level
 
             PlayerSliderController playerSlider = collision.GetComponent<PlayerSliderController>();
             if (playerSlider != null)
             {
-                playerSlider.ClearFinishPoint(); // Clear the reference to this FinishPoint
+                playerSlider.ClearFinishPoint(); // Bersihkan referensi ke FinishPoint
             }
         }
     }
 
-    // Add helper methods to allow PlayerSliderController to access the timer and player status
-    public bool IsPlayerInZone()
-    {
-        return playerInZone;
-    }
-
-    public float GetTimer()
-    {
-        return timer;
-    }
-
+    // Tambahkan metode untuk mengakses status pemain
+    public bool IsPlayerInZone() => playerInZone;
+    public float GetTimer() => timer;
 }
