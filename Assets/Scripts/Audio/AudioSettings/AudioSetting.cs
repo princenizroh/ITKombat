@@ -15,42 +15,39 @@ public class AudioSetting : MonoBehaviour
     void Start()
     {
         LoadVolume();
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene == "SoundMultiplayer")
+        {
+            MusicManager.Instance.PlayMusic("Battle_1");
+        }
+        else if (currentScene == "Asrama")
+        {
+            MusicManager.Instance.PlayMusic("MarsITKombat");
+        }
     }
 
     public void UpdateMusicVolume(float volume)
     {
-        audioMixer.SetFloat("MusicVolume", volume);
+        audioMixer.SetFloat("MusicScript", volume);
     }
  
     public void UpdateSoundVolume(float volume)
     {
-        audioMixer.SetFloat("SFXVolume", volume);
+        audioMixer.SetFloat("AudioScript", volume);
     }
  
     public void SaveVolume()
     {
-        audioMixer.GetFloat("MusicVolume", out float musicVolume);
+        audioMixer.GetFloat("MusicScript", out float musicVolume);
         PlayerPrefs.SetFloat("MusicVolume", musicVolume);
  
-        audioMixer.GetFloat("SFXVolume", out float sfxVolume);
+        audioMixer.GetFloat("AudioScript", out float sfxVolume);
         PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
  
     public void LoadVolume()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-    }
-    public void MusicScene()
-    {
-        string currentScene = SceneManager.GetActiveScene().name;
-            if (currentScene == "Test-Multiplayer")
-            {
-                MusicManager.Instance.PlayMusic("Music 4");
-            }
-            else if (currentScene == "..")
-            {
-               MusicManager.Instance.PlayMusic("Music 4");
-            }
+        musicSlider.value = PlayerPrefs.GetFloat("MusicScript");
+        sfxSlider.value = PlayerPrefs.GetFloat("AudioScript");
     }
 }
