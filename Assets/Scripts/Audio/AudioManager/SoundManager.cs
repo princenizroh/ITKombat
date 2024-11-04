@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -61,5 +62,10 @@ public class SoundManager : MonoBehaviour
     public void PlaySound2D(string soundName)
     {
         sfx2DSource.PlayOneShot(sfxLibrary.GetClipFromName(soundName));
+    }
+
+    internal void PlaySound3D(object position)
+    {
+        throw new NotImplementedException();
     }
 }
