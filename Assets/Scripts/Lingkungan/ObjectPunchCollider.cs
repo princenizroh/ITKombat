@@ -3,6 +3,7 @@ using UnityEngine;
 public class BuildingPunchCollider : MonoBehaviour
 {
     public GameObject targetCanvas;
+    public GameObject canvasDead;
     [HideInInspector] public bool playerInRange = false; // Dapat diakses dari PlayerCombat
 
     void OnTriggerEnter2D(Collider2D other)
@@ -34,6 +35,7 @@ public class BuildingPunchCollider : MonoBehaviour
         if (targetCanvas != null)
         {
             targetCanvas.SetActive(true);
+            canvasDead.SetActive(false);
             Debug.Log("Canvas diaktifkan");
         }
     }
