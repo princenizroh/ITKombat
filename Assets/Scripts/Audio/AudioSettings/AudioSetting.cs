@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Unity.Services.Lobbies.Models;
 
 public class AudioSetting : MonoBehaviour
 {
@@ -13,8 +15,6 @@ public class AudioSetting : MonoBehaviour
     void Start()
     {
         LoadVolume();
-        MusicManager.Instance.PlayMusic("Music 4");
-
     }
 
     public void UpdateMusicVolume(float volume)
@@ -40,5 +40,17 @@ public class AudioSetting : MonoBehaviour
     {
         musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
         sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+    }
+    public void MusicScene()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+            if (currentScene == "Test-Multiplayer")
+            {
+                MusicManager.Instance.PlayMusic("Music 4");
+            }
+            else if (currentScene == "..")
+            {
+               MusicManager.Instance.PlayMusic("Music 4");
+            }
     }
 }

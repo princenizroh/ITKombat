@@ -27,7 +27,6 @@ namespace ITKombat
 
         //Audio Source Sound Manager
         private bool isSoundFight = false;
-        private bool isSoundDraw = false;
 
         void Start() 
         {
@@ -226,15 +225,7 @@ namespace ITKombat
         {
             playerVictoryPoint += 1;
             enemyVictoryPoint += 1;
-            if(!isSoundDraw)
-            {
-                SoundManager.Instance.PlaySound3D("Draw", transform.position);
-                isSoundDraw = true;
-            }
-            else
-            {
-                isSoundDraw = false;
-            }
+            SoundManager.Instance.PlaySound3D("Draw", transform.position);
             StartCoroutine(HandleDrawTransition());
         }
         public void PlayerVictory() 
@@ -253,16 +244,27 @@ namespace ITKombat
 
 private IEnumerator HandleDrawTransition()
 {
+    // Cek apakah ada draw
     if (playerState.currentHealth == enemyState.currentHealth) 
     {   
-        yield return StartCoroutine(ShowRoundStartNotification(6)); // Show Draw Notification
+        yield return StartCoroutine(ShowRoundStartNotification(6)); // Tampilkan Notifikasi Draw
     }
 
-    // Immediately show Round 2 notification
-    yield return StartCoroutine(ShowRoundStartNotification(2)); // Show Round 2 Notification
+    // Cek apakah kedua pemain mendapatkan poin kemenangan
+    if (playerVictoryPoint == 1 && enemyVictoryPoint == 1)
+    {
+        yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint)); // Tampilkan Notifikasi Ronde 2
+    }
+    // Jika hanya musuh yang mencapai 4 poin, lanjutkan ke ronde berikutnya
+    else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2)
+    {
+        yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint - 1)); // Tampilkan Notifikasi Ronde 2
+    }
 
-    StartNormalTimer();
+    StartNormalTimer(); // Mulai timer untuk ronde baru
 }
+
+
 
         private IEnumerator HandleRoundTransition()
         {
