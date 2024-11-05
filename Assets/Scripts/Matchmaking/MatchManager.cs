@@ -2,7 +2,6 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-using UnityEditor.SearchService;
 
 namespace ITKombat
 {

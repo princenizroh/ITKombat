@@ -43,6 +43,7 @@ public class FinishPoint : MonoBehaviour
 
                 // Pindah ke scene tujuan
                 SceneController.instance.LoadSceneByName(targetSceneName);
+                
             }
         }
     }
