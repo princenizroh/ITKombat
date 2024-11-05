@@ -64,6 +64,7 @@ namespace ITKombat
 
         }
 
+
         public void OnAttackButtonPressed()
         {
             if (IsOwner)
@@ -275,6 +276,7 @@ namespace ITKombat
             //     }
             // }
         }
+
 
         private void OnDrawGizmosSelected()
         {

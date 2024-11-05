@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace ITKombat
@@ -7,32 +8,48 @@ namespace ITKombat
     {
         // Masukin sound dan anim disini
 
-        private float attackRadius = 1f;
+        [SerializeField] private Transform attackPoint;
         private float damage = 30f;
         private float force = 5f;
+        private float radius = 1f;
 
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
+        public LayerMask enemy;
 
         public override void Activate(GameObject parent)
         {
             // Masukin sound dan anim disini
 
-            Vector3 skillPosition = parent.transform.position;
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemy);
+            foreach (Collider2D enemy in hitEnemies)
             {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
+                Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+                AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
+                if (enemyRb != null && !enemyDefense.isBlocking)
                 {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
+                    enemyRb.AddForce(parent.transform.right * force, ForceMode2D.Impulse);
+
+                    GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
+
+                    if (enemyStateObject != null)
+                    {
+                        EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
+                        if (enemyState != null)
+                        {
+                            enemyState.TakeDamage(damage);
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("EnemyState not found.");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Skill 1 masih cooldown.");
                 }
             }
         }
+
 
         public override void BeginCooldown(GameObject parent)
         {

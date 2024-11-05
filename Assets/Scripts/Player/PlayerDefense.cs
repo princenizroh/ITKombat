@@ -93,10 +93,9 @@ namespace ITKombat
             PlayerIFAttack enemyAttack = attack.GetComponent<PlayerIFAttack>();
             if (enemyAttack != null)
             {
+                 attack.enabled = false;
                 // enemyAttack.OnBlocked();
             }
-
-            attack.enabled = false;
         }
 
         private void PerformParry(Collider2D attack)

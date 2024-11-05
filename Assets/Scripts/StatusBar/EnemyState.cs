@@ -71,9 +71,10 @@ namespace ITKombat
             }
         }
 
+        [System.Obsolete]
         public float GetDamageFromPlayer()
         {
-            Player IF_Attack playerAttack = FindObjectOfType<Player IF_Attack>(); // Mengambil dari objek pemain secara global
+            PlayerIFAttack playerAttack = FindObjectOfType<PlayerIFAttack>(); // Mengambil dari objek pemain secara global
             if (playerAttack != null)
             {
                 float damage = playerAttack.attackPower;
