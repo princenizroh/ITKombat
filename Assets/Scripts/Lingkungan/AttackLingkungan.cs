@@ -10,6 +10,8 @@ public class PlayerCombat : MonoBehaviour
     private bool isAttacking = false;
     private BuildingPunchCollider buildingCollider; // Referensi ke collider bangunan
 
+    private DoorPunch doorCollider;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -57,6 +59,13 @@ public class PlayerCombat : MonoBehaviour
             Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
             buildingCollider.ActivateCanvas();
         }
+
+        // Cek apakah player sedang memukul dan berkolisi dengan bangunan
+        else if (doorCollider != null && doorCollider.CanActivateScene()) // Pastikan menggunakan doorCollider di sini
+        {
+        Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
+        doorCollider.ActivateScene(); // Pindahkan ke scene yang dituju
+        }
     }
 
     private IEnumerator ResetPunchTrigger()
@@ -82,4 +91,10 @@ public class PlayerCombat : MonoBehaviour
     {
         buildingCollider = collider;
     }
+
+    public void SetPunchCollider(DoorPunch collider)
+    {
+        doorCollider = collider;
+    }
+
 }

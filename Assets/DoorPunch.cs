@@ -1,11 +1,8 @@
 using UnityEngine;
 
-public class BuildingPunchCollider : MonoBehaviour
+public class DoorPunch : MonoBehaviour
 {
-    public GameObject targetCanvas;
-
-    
-    public GameObject canvasDead;
+    public string targetSceneName; // Nama scene tujuan yang ingin dituju saat memukul
     [HideInInspector] public bool playerInRange = false; // Dapat diakses dari PlayerCombat
 
     void OnTriggerEnter2D(Collider2D other)
@@ -13,7 +10,7 @@ public class BuildingPunchCollider : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            other.GetComponent<PlayerCombat>().SetBuildingCollider(this); // Mengatur referensi collider
+            other.GetComponent<PlayerCombat>().SetPunchCollider(this); // Mengatur referensi collider
             Debug.Log("Player memasuki area bangunan");
         }
     }
@@ -27,18 +24,17 @@ public class BuildingPunchCollider : MonoBehaviour
         }
     }
 
-    public bool CanActivateCanvas()
+    public bool CanActivateScene()
     {
         return playerInRange; // Mengembalikan true jika player berada di area
     }
 
-    public void ActivateCanvas()
+    public void ActivateScene()
     {
-        if (targetCanvas != null)
+        if (CanActivateScene() && !string.IsNullOrEmpty(targetSceneName)) // Pastikan player di range dan scene tujuan tidak kosong
         {
-            targetCanvas.SetActive(true);
-            canvasDead.SetActive(false);
-            Debug.Log("Canvas diaktifkan");
+            SceneController.instance.LoadSceneByName(targetSceneName); // Pindah ke scene yang dituju
+            Debug.Log("Beralih ke scene: " + targetSceneName);
         }
     }
 }
