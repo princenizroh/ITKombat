@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.UI;
+using static ITKombat.GameFirebase;
 
 namespace ITKombat
 {
@@ -50,6 +50,7 @@ namespace ITKombat
         public IntgearStats intGear;
         public AtkgearStats atkGear;
         public DefgearStats defGear;
+        public int gearId;
         public GearStats gearStats;
         public TMP_Text gearLevelText;
         public TMP_Text gearExpStatusText;
@@ -65,29 +66,48 @@ namespace ITKombat
         public int gearExpMax;
         public int gearExpStatus;
         private bool gearAscendStatus = false;
+        private GameFirebase gameFirebase;
+        public PlayerScriptableObject playerData;
 
-        void Start() {
-
+        void Start()
+        {
+            gameFirebase = GameFirebase.instance;
             ascendGearButton.enabled = false;
-            gearExpMax = 100;
 
+            StartCoroutine(GetPlayerGearDataCoroutine(playerData.player_id, 21));
         }
 
-        void Update() {
+        void Update()
+        {
+            gearLevelText.SetText("Gear Level " + gearLevel + "/15");
+            gearExpStatusText.SetText("Gear Exp Status: " + gearExpStatus + "/" + gearExpMax);
+            gearStats1.SetText(gearStats.statsCode_1 + ":" + gearStats.statsValue_1);
+            gearStats2.SetText(gearStats.statsCode_2 + ":" + gearStats.statsValue_2);
+        }
 
-            gearLevelText.SetText("Gear Level " + gearLevel+"/15");
-            gearExpStatusText.SetText("Gear Exp Status: "+ gearExpStatus+"/"+gearExpMax);
+        private IEnumerator GetPlayerGearDataCoroutine(string player_id, int gear_id)
+        {
+            // SingleDataOnly
+            Task<List<InventoryItem>> task = gameFirebase.GetPlayerGearData(player_id, gear_id);
+            yield return new WaitUntil(() => task.IsCompleted);
 
-            gearStats1.SetText(gearStats.statsCode_1+":"+gearStats.statsValue_1);
-            gearStats2.SetText(gearStats.statsCode_2+":"+gearStats.statsValue_2);
-
+            List<InventoryItem> playerGearData = task.Result;
+            foreach (var item in playerGearData)
+            {
+                gearExpStatus = item.item_current_exp;
+                gearExpMax = item.item_exp_max;
+                gearLevel = item.item_level;
+                gearStats.statsCode_1 = item.item_id_type_1;
+                gearStats.statsCode_2 = item.item_id_type_2;
+                gearStats.statsValue_1 = item.item_value_type_1;
+                gearStats.statsValue_2 = item.item_value_type_2;
+            }
         }
 
         public void upgradeGear(int exp) {
 
             gearExpStatus += exp;
-
-            Debug.Log("added " + exp + " exps to the gear");
+            StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_current_exp", gearExpStatus));
 
             if (gearLevel == 15) {
 
@@ -126,10 +146,14 @@ namespace ITKombat
                 int gearCalculation = gearExpStatus - gearExpMax;
 
                 gearLevel += 1;
-                gearExpMax *= 2;
-                gearExpStatus = 0;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_level", gearLevel));
 
-                Debug.Log("gear upgraded");
+                gearExpMax *= 2;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_exp_max", gearExpMax));
+
+                gearExpStatus = 0;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_current_exp", gearExpStatus));
+
                 gearAscendStatus = false;
 
                 if (gearCalculation > 0) {
@@ -188,17 +212,23 @@ namespace ITKombat
         void AscendStat(int newCode, int statCode, ref int code1, ref int value1, ref int code2, ref int value2) {
             if (code1 == statCode) {
                 value1 *= 2;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_value_type_1", value1));
                 Debug.Log("Succesfully upgraded stat 1");
             } else if (code2 == statCode) {
                 value2 *= 2;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_value_type_2", value2));
                 Debug.Log("Succesfully upgraded stat 2");
             } else if (code1 == 0) {
                 code1 = newCode;
-                value1 = UnityEngine.Random.Range(10, 20);
+                value1 = UnityEngine.Random.Range(10, 21);
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_id_type_1", code1));
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_value_type_1", value1));
                 Debug.Log("Added new stat 1: code " + code1 + ", value " + value1);
             } else if (code2 == 0) {
                 code2 = newCode;
-                value2 = UnityEngine.Random.Range(10, 20);
+                value2 = UnityEngine.Random.Range(10, 21);
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_id_type_2", code2));
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 21, "item_value_type_2", value2));
                 Debug.Log("Added new stat 2: code " + code2 + ", value " + value2);
             } else {
                 Debug.Log("All stats are filled.");

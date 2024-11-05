@@ -9,8 +9,6 @@ namespace ITKombat
     {
         public string gear_name;
         public int gear_stat_id;
-        public int gear_stat;
-        public int gear_group_id;
         public int gear_type_id;
         public Sprite gear_sprite;
         [TextArea(3, 10)]
