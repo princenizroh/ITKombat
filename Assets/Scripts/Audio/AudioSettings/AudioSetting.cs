@@ -15,6 +15,22 @@ public class AudioSetting : MonoBehaviour
     void Start()
     {
         LoadVolume();
+        // Mendapatkan nama scene saat ini
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        Debug.Log(currentSceneName + "adalah scene sekarang");
+        if (currentSceneName == "SoundMultiplayer")
+        {
+            MusicManager.Instance.PlayMusic("Battle_1");
+        }
+        else if (currentSceneName == "Asrama")
+        {
+            MusicManager.Instance.PlayMusic("MarsITKombat");
+        }
+        // Menampilkan nama scene di console
+        Debug.Log("Nama scene saat ini: " + currentSceneName);
+
+        //Nanti tambahkan else StopMusic()
+    
     }
 
     public void UpdateMusicVolume(float volume)
@@ -30,10 +46,10 @@ public class AudioSetting : MonoBehaviour
     public void SaveVolume()
     {
         audioMixer.GetFloat("MusicScript", out float musicVolume);
-        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+        PlayerPrefs.SetFloat("MusicScript", musicVolume);
  
         audioMixer.GetFloat("AudioScript", out float sfxVolume);
-        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+        PlayerPrefs.SetFloat("AudioScript", sfxVolume);
     }
  
     public void LoadVolume()
