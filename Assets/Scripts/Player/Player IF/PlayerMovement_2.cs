@@ -88,6 +88,7 @@ namespace ITKombat
                 useKeyboardInput = false;
                 horizontalMove = -moveSpeed;
                 anim.SetTrigger("Walk");
+                SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
         }
 
         public void OnMoveRight()
@@ -96,6 +97,7 @@ namespace ITKombat
                 useKeyboardInput = false;
                 horizontalMove = moveSpeed;
                 anim.SetTrigger("Walk");
+                SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
         }
 
         public void OnStopMoving()
