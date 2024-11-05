@@ -1,25 +1,17 @@
-using NUnit.Framework.Constraints;
 using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace ITKombat
 {
     public class SkillsHolder : MonoBehaviour
     {
-        public Skills[] skills;
-        public AudioSource[] skillSounds;
+        public Skills[] currentSkills;
+
+        private SkillState[] states;
         float[] cooldownTime;
         float[] activeTime;
 
-        private InputAction[] skillsAction;
-        private SkillState[] states;
-
-        public InputActionAsset inputActionAsset;
-        public string[] skillActionNames;
         private Animator anim;
 
         enum SkillState
@@ -29,49 +21,41 @@ namespace ITKombat
             cooldown
         }
 
-
         private void Start()
         {
             anim = GetComponent<Animator>();
-            cooldownTime = new float[skills.Length];
-            activeTime = new float[skills.Length];
-            states = new SkillState[skills.Length];
-            skillsAction = new InputAction[skills.Length];
+            cooldownTime = new float[currentSkills.Length];
+            activeTime = new float[currentSkills.Length];
+            states = new SkillState[currentSkills.Length];
 
-        if (skillSounds.Length != skills.Length)
-            {
-                Debug.LogError("The number of skill sounds does not match the number of skills");
-                return;
-            }
-
-        for (int i = 0; i < skills.Length; i++)
+        for (int i = 0; i < currentSkills.Length; i++)
             {
                 states[i] = SkillState.ready;
-
-                skillsAction[i] = inputActionAsset.FindAction(skillActionNames[i]);
-                skillsAction[i].performed += ctx => ActivateSkill(i);
-                skillsAction[i].Enable(); // Enable the input action
             }
         }
 
         public void ActivateSkill(int index)
         {
+            if (currentSkills == null || index < 0 || index >= currentSkills.Length)
+            {
+                Debug.LogError("Invalid skill index or no skills assigned.");
+                return;
+            }
+
             if (states[index] == SkillState.ready)
             {
-                skills[index].Activate(gameObject);
-                states[index] = SkillState.active;
-                activeTime[index] = skills[index].activeTime;
+                currentSkills[index].Activate(gameObject); // Call the Activate method of the skill
 
+                // Trigger animation
                 if (anim != null)
                 {
                     anim.SetTrigger("skill" + (index + 1));
                 }
 
-                if (skillSounds[index] != null)
-                {
-                    PlaySound(skillSounds[index]);
-                }
-                StartCoroutine(ResetToIdleAfterTime(index, skills[index].activeTime));
+                states[index] = SkillState.active;
+                activeTime[index] = currentSkills[index].activeTime;
+
+                StartCoroutine(ResetToIdleAfterTime(index, currentSkills[index].activeTime));
             }
         }
         
@@ -101,21 +85,13 @@ namespace ITKombat
 
             // Reset the state of the skill
             states[index] = SkillState.cooldown;
-            cooldownTime[index] = skills[index].cooldownTime;
-        }
-
-        private void PlaySound(AudioSource sound)
-        {
-            if (sound != null && !sound.isPlaying)
-            {
-                sound.Play();
-            }
+            cooldownTime[index] = currentSkills[index].cooldownTime;
         }
 
         // Update is called once per frame
         void Update()
         {
-            for (int i = 0; i < skills.Length;i++)
+            for (int i = 0; i < currentSkills.Length;i++)
             {
                 switch (states[i])
                 {
@@ -126,9 +102,9 @@ namespace ITKombat
                         }
                         else
                         {
-                            skills[i].BeginCooldown(gameObject);
+                            currentSkills[i].BeginCooldown(gameObject);
                             states[i] = SkillState.cooldown;
-                            cooldownTime[i] = skills[i].cooldownTime;
+                            cooldownTime[i] = currentSkills[i].cooldownTime;
                         }
                         break;
                     case SkillState.cooldown:
@@ -142,14 +118,6 @@ namespace ITKombat
                         }
                         break;
                 }
-            }
-        }
-
-        private void OnDisable()
-        {
-            for (int i = 0; i < skillsAction.Length;i++)
-            {
-                skillsAction[i].Disable();
             }
         }
     }
