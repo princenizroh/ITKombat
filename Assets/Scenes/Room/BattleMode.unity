@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 103325868}
   - component: {fileID: 103325867}
   - component: {fileID: 103325866}
-  - component: {fileID: 103325869}
+  - component: {fileID: 103325870}
   m_Layer: 3
   m_Name: FriendlyMode
   m_TagString: Untagged
@@ -377,7 +377,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &103325869
+--- !u!114 &103325870
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -386,10 +386,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 103325864}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6218b5c761ead54d940249a885ba97f, type: 3}
+  m_Script: {fileID: 11500000, guid: 494f8c68ba64f034d958880947fcacc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: WaitingFriendly
+  playerInRange: 0
 --- !u!1 &203540617
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +890,7 @@ GameObject:
   - component: {fileID: 431128226}
   - component: {fileID: 431128225}
   - component: {fileID: 431128224}
-  - component: {fileID: 431128227}
+  - component: {fileID: 431128228}
   m_Layer: 3
   m_Name: RankedMode
   m_TagString: Untagged
@@ -1025,7 +1026,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &431128227
+--- !u!114 &431128228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1034,10 +1035,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 431128222}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6218b5c761ead54d940249a885ba97f, type: 3}
+  m_Script: {fileID: 11500000, guid: 494f8c68ba64f034d958880947fcacc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetSceneName: Test-Multiplayer
+  targetSceneName: SoundMultiplayer
+  playerInRange: 0
 --- !u!1 &650625592
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1090,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.015686275, g: 0.6862745, b: 0.18431373, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2204,7 +2206,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1306848551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6218b5c761ead54d940249a885ba97f, type: 3}
+  m_Script: {fileID: 11500000, guid: 494f8c68ba64f034d958880947fcacc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: WaitingChampion
@@ -2674,10 +2676,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1435805196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6218b5c761ead54d940249a885ba97f, type: 3}
+  m_Script: {fileID: 11500000, guid: 494f8c68ba64f034d958880947fcacc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: WaitingUnranked
+  playerInRange: 0
 --- !u!1 &1471800651
 GameObject:
   m_ObjectHideFlags: 0
@@ -3281,10 +3284,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1759422728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6218b5c761ead54d940249a885ba97f, type: 3}
+  m_Script: {fileID: 11500000, guid: 494f8c68ba64f034d958880947fcacc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   targetSceneName: WaitingDeathmatch
+  playerInRange: 0
 --- !u!1 &1775257484
 GameObject:
   m_ObjectHideFlags: 0
