@@ -562,6 +562,7 @@ MonoBehaviour:
   currentHealth: 0
   attackTag: Attack
   healthBar: {fileID: 540476401}
+  matchManager: {fileID: 0}
   hitAudioSources: []
   hitAnimationTriggers:
   - Hit1
@@ -2104,7 +2105,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3166383912
+      value: 1566186095
       objectReference: {fileID: 0}
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -2472,7 +2473,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 528613808056271421, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3295979206
+      value: 3405269365
       objectReference: {fileID: 0}
     - target: {fileID: 2176880652430277937, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Enabled
@@ -2698,17 +2699,6 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 1501202048632422092, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
   m_PrefabInstance: {fileID: 147469101}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &147469112 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-  m_PrefabInstance: {fileID: 147469101}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &147469113 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
@@ -9688,6 +9678,7 @@ MonoBehaviour:
   currentHealth: 0
   attackTag: Attack
   healthBar: {fileID: 917799101}
+  matchManager: {fileID: 0}
   hitAudioSources: []
   hitAnimationTriggers:
   - Hit1
@@ -13078,7 +13069,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1084095963
+      value: 3945744200
       objectReference: {fileID: 0}
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -19391,7 +19382,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 528613808056271421, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2875766802
+      value: 1132448320
       objectReference: {fileID: 0}
     - target: {fileID: 1047193776112069441, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Enabled
@@ -19554,12 +19545,68 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: attackForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: attackPoint
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: punchSound1
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: punchSound2
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: punchSound3
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: punchSound4
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: attackCooldown
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: CollectParticle1
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: CollectParticle2
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: CollectParticle3
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: CollectParticle4
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: enemyLayer.m_Bits
-      value: 128
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: skillSound1
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: skillSound2
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: skillSound3
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8135688871999238110, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Layer
@@ -19577,18 +19624,23 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8497415400144460812, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+    - {fileID: 4693945473309378740, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+    - {fileID: 8964277854256121370, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+    - {fileID: 6706362090273060671, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+    - {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      insertIndex: 11
+      insertIndex: -1
       addedObject: {fileID: 950944037}
     - targetCorrespondingSourceObject: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      insertIndex: 12
+      insertIndex: -1
       addedObject: {fileID: 950944036}
     - targetCorrespondingSourceObject: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      insertIndex: 13
+      insertIndex: -1
       addedObject: {fileID: 950944035}
   m_SourcePrefab: {fileID: 100100000, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
 --- !u!1 &950944031 stripped
@@ -19632,6 +19684,14 @@ MonoBehaviour:
   canAttack: 1
   currentCombo: 0
   lastAttackTime: 0
+  Attack1_Right: {fileID: 0}
+  Attack2_Right: {fileID: 0}
+  Attack3_Right: {fileID: 0}
+  Attack4_Right: {fileID: 0}
+  Attack1_Left: {fileID: 0}
+  Attack2_Left: {fileID: 0}
+  Attack3_Left: {fileID: 0}
+  Attack4_Left: {fileID: 0}
   punchSound1: {fileID: 950944032}
   punchSound2: {fileID: 950944032}
   punchSound3: {fileID: 950944032}
@@ -19669,6 +19729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aimovement: {fileID: 0}
   aiAttack: {fileID: 0}
+  aiDefense: {fileID: 0}
   player: {fileID: 0}
   waitingTime: 0.5
 --- !u!4 &950944038 stripped
@@ -21441,6 +21502,7 @@ MonoBehaviour:
   OversizeWindow:
     Enabled: 0
     MaxWindowSize: 0
+    Padding: 0
   m_LegacyMaxWindowSize: -2
 --- !u!114 &1098780582
 MonoBehaviour:
@@ -21503,7 +21565,7 @@ MonoBehaviour:
     m_Value: 10
   OutputChannel: 1
   StandbyUpdate: 2
-  m_StreamingVersion: 20230301
+  m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   Target:
     TrackingTarget: {fileID: 0}
@@ -34560,11 +34622,15 @@ MonoBehaviour:
   ReadyNotif: {fileID: 2022132896}
   Round1Notif: {fileID: 2022132896}
   Round2Notif: {fileID: 1106191134}
+  Round3Notif: {fileID: 0}
+  Round4Notif: {fileID: 0}
   FinalRoundNotif: {fileID: 497327797}
+  DrawRoundNotif: {fileID: 0}
   FightNotif: {fileID: 378949661}
   DefeatNotif: {fileID: 421828061}
   VictoryNotif: {fileID: 732013257}
   TimeoutNotif: {fileID: 72048564}
+  Reward: {fileID: 0}
   playerVictoryPoint: 0
   enemyVictoryPoint: 0
   matchTimer: {fileID: 1410365017}
@@ -34572,8 +34638,20 @@ MonoBehaviour:
   timeoutToTimer: {fileID: 122789153}
   vpPlayer: {fileID: 780139377}
   vpEnemy: {fileID: 1826572314}
-  playerState: {fileID: 0}
-  enemyState: {fileID: 0}
+  timeoutTriggered: 0
+  timeoutTimer: 0
+  soundRound1: {fileID: 0}
+  soundRound2: {fileID: 0}
+  soundRound3: {fileID: 0}
+  soundRound4: {fileID: 0}
+  soundFinalRound: {fileID: 0}
+  soundFight: {fileID: 0}
+  soundDefead: {fileID: 0}
+  soundVictory: {fileID: 0}
+  soundTimeOut: {fileID: 0}
+  soundPlayerWon: {fileID: 0}
+  soundEnemyWon: {fileID: 0}
+  soundDraw: {fileID: 0}
 --- !u!114 &1410365017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39149,7 +39227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAttack: {fileID: 147469113}
   playerMovement: {fileID: 147469103}
-  playerSkill: {fileID: 147469112}
+  playerSkill: {fileID: 0}
 --- !u!4 &1848154952
 Transform:
   m_ObjectHideFlags: 0

@@ -96,7 +96,6 @@ namespace ITKombat
 
                 AttackAnimation();
                 Debug.Log("Performed attack.");
-
             }
         }
 

@@ -7,8 +7,8 @@ namespace ITKombat
 
         public bool isBlocking = false;
         public float criticalProximity = 2.5f;
-        public float blockChance = 0.2f;
-        public float blockDuration = 2f;
+        public float blockChance = 0.35f;
+        public float blockDuration = 0.7f;
         
         private AI_Movement aiMovement;
         private AI_Attack aiAttack;
@@ -27,14 +27,11 @@ namespace ITKombat
                 animation.SetTrigger("Block");
                 aiMovement.canMove = false;
                 aiAttack.canAttack = false;
-                
-                // Debug.Log("asjjjjjjjjj");
             }
             else
             {
                 aiAttack.canAttack = true;
                 aiMovement.canMove = true;
-                // Debug.Log("sallllll");
             }
         }
     }

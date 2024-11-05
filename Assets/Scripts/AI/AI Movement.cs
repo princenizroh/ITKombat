@@ -9,7 +9,8 @@ namespace ITKombat
         [Header("Movement")]
         public float moveSpeed = 3f;
         public float movementStep = 0f;
-        public float maxStep = 100f;
+        public float maxStep = 3f;
+        public float maxDistance = 16f;
         public bool facingPlayer = true;
         public bool canMove = true;
 
@@ -49,8 +50,8 @@ namespace ITKombat
             }
 
             myRigidbody.linearVelocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
-            movementStep++;
             anim.SetTrigger("Walk");
+            movementStep += Time.deltaTime;
         }
 
         public void Retreat()
@@ -58,8 +59,8 @@ namespace ITKombat
             Vector2 RetreatDirection = (transform.position - player.position).normalized;
 
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
-            movementStep++;
             anim.SetTrigger("Walk");
+            movementStep += Time.deltaTime;
         }
 
         void Flip()
