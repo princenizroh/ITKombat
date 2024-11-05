@@ -15,6 +15,15 @@ public class AudioSetting : MonoBehaviour
     void Start()
     {
         LoadVolume();
+        string currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene == "SoundMultiplayer")
+        {
+            MusicManager.Instance.PlayMusic("Battle_1");
+        }
+        else if (currentScene == "Asrama")
+        {
+            MusicManager.Instance.PlayMusic("MarsITKombat");
+        }
     }
 
     public void UpdateMusicVolume(float volume)

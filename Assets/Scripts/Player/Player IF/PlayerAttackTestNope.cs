@@ -34,11 +34,20 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack3_Left = null;
         [SerializeField] private ParticleSystem Attack4_Left = null;
 
+        // Nanti ini taruh audiosource buat masing-masing soundnya
+        // AudioSource buat weapon hit
+        // AudioSource buat weapon miss
+        // AudioSource buat non-weapon hit
+        // AudioSource buat non-weapon miss
+
         // Audio sources for normal attacks
         public AudioSource punchSound1;
         public AudioSource punchSound2;
         public AudioSource punchSound3;
         public AudioSource punchSound4;
+
+        // Weapon state
+        public bool isUsingWeapon; // Buat toggle manual di masing-masing prefab menggunakan weapon atau tidak
 
         private void Awake()
         {
@@ -112,7 +121,7 @@ namespace ITKombat
                         }
                     }
                 }
-                AttackAnimation();
+                AttackAnimation(hitEnemies);
 
                 Debug.Log("Performed attack.");
             }
@@ -123,7 +132,7 @@ namespace ITKombat
             }
         }
 
-        private void AttackAnimation()
+        private void AttackAnimation(Collider2D[] hitEnemies)
         {
             CharacterController2D1 character = GetComponent<CharacterController2D1>();
             if (character == null) return;
@@ -138,7 +147,7 @@ namespace ITKombat
                     {
                         Attack1_Left.Play();
                     }
-                    PlaySound(punchSound1);
+                    // PlayAttackSound(1, hitEnemies.Length > 0);
                     animator.SetTrigger("attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 1 triggered");
@@ -152,7 +161,7 @@ namespace ITKombat
                     {
                         Attack2_Left.Play();
                     }
-                    PlaySound(punchSound2);
+                    // PlayAttackSound(2, hitEnemies.Length > 0);
                     animator.SetTrigger("attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     Debug.Log("Attack 2 triggered");
@@ -166,7 +175,7 @@ namespace ITKombat
                     {
                         Attack3_Left.Play();
                     }
-                    PlaySound(punchSound3);
+                    // PlayAttackSound(3, hitEnemies.Length > 0);
                     animator.SetTrigger("attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 3 triggered");
@@ -180,7 +189,7 @@ namespace ITKombat
                     {
                         Attack4_Left.Play();
                     }
-                    PlaySound(punchSound4);
+                    // PlayAttackSound(4, hitEnemies.Length > 0);
                     animator.SetTrigger("attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     Debug.Log("Attack 4 triggered");
@@ -195,13 +204,83 @@ namespace ITKombat
             Debug.Log("Reset to Idle after " + time + " seconds.");
         }
 
-        private void PlaySound(AudioSource sound)
+        // Untuk determinasi apakah attacknya kena atau tidak
+
+/*        private void PlayAttackSound(int comboNumber, bool hitEnemies)
+        {
+            if (hitEnemies)
+            {
+                PlayHitSound(comboNumber);
+            }
+            else
+            {
+                PlayMissSound(comboNumber);
+            }
+        }*/
+
+
+        // Taruh hit dan miss soundnya disini
+
+/*        private void PlayHitSound(int comboNumber)
+        {
+            if (isUsingWeapon)
+            {
+                // Play weapon hit sound based on combo number
+                switch (comboNumber)
+                {
+                    case 1: weaponHitSound1.Play(); break;
+                    case 2: weaponHitSound2.Play(); break;
+                    case 3: weaponHitSound3.Play(); break;
+                    case 4: weaponHitSound4.Play(); break;
+                }
+            }
+            else
+            {
+                // Play punch hit sound based on combo number
+                switch (comboNumber)
+                {
+                    case 1: punchSound1.Play(); break;
+                    case 2: punchSound2.Play(); break;
+                    case 3: punchSound3.Play(); break;
+                    case 4: punchSound4.Play(); break;
+                }
+            }
+        }
+
+        private void PlayMissSound(int comboNumber)
+        {
+            if (isUsingWeapon)
+            {
+                // Play weapon miss sound based on combo number
+                switch (comboNumber)
+                {
+                    case 1: weaponMissSound1.Play(); break;
+                    case 2: weaponMissSound2.Play(); break;
+                    case 3: weaponMissSound3.Play(); break;
+                    case 4: weaponMissSound4.Play(); break;
+                }
+            }
+            else
+            {
+                // Play punch miss sound based on combo number
+                switch (comboNumber)
+                {
+                    case 1: punchMissSound1.Play(); break;
+                    case 2: punchMissSound2.Play(); break;
+                    case 3: punchMissSound3.Play(); break;
+                    case 4: punchMissSound4.Play(); break;
+                }
+            }
+        }*/
+
+        // yang ini sudah gak digunain lagi karena langsung dipanggil dari atas
+/*        private void PlaySound(AudioSource sound)
         {
             if (sound != null)
             {
                 sound.Play();
             }
-        }
+        }*/
 
         private void OnDrawGizmosSelected()
         {
