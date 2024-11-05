@@ -68,7 +68,7 @@ namespace ITKombat
 
         public float GetDamageFromPlayer()
         {
-            PlayerAttackTestNope playerAttack = GetComponent<PlayerAttackTestNope>();
+            Player IF_Attack playerAttack = GetComponent<Player IF_Attack>();
             if (playerAttack != null)
             {
                 return playerAttack.attackPower;

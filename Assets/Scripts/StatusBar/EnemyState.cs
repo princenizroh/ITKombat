@@ -73,7 +73,7 @@ namespace ITKombat
 
         public float GetDamageFromPlayer()
         {
-            PlayerAttackTestNope playerAttack = FindObjectOfType<PlayerAttackTestNope>(); // Mengambil dari objek pemain secara global
+            Player IF_Attack playerAttack = FindObjectOfType<Player IF_Attack>(); // Mengambil dari objek pemain secara global
             if (playerAttack != null)
             {
                 float damage = playerAttack.attackPower;

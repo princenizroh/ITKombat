@@ -27,29 +27,8 @@ namespace ITKombat
         public LayerMask enemyLayer;
         public float defenseRadius = 1f;
 
-        [Header("Input Actions")]
-        private InputActionAsset inputActionAsset;
-        private InputAction defenseAction;
-
         Animator anim;
-        PlayerControls controls;
         private GameObject parentPlayer;
-
-        private void Awake()
-        {
-            // Finding Input Action for the Attack
-            var playerActionMap = inputActionAsset.FindActionMap("Player");
-            playerActionMap.Enable();
-            defenseAction = playerActionMap.FindAction("Defense");
-
-            // Input Action Scripts
-            controls = new PlayerControls();
-            controls.Enable();
-            defenseAction = controls.Player.Defense;
-
-            defenseAction.performed += ctx => StartBlocking();
-            defenseAction.canceled += ctx => EndBlocking();
-        }
 
         private void Start()
         {
@@ -80,7 +59,7 @@ namespace ITKombat
                 // Ensure the attack is from a different player
                 GameObject otherParent = collision.transform.root.gameObject;
 
-                if (otherParent != parentPlayer && otherParent.CompareTag("Player"))
+                if (otherParent != parentPlayer && otherParent.CompareTag("Enemy"))
                 {
                     // Check if the player is blocking
                     if (isBlocking)
@@ -99,7 +78,7 @@ namespace ITKombat
                     {
                         // Player is not blocking, take damage
                         Debug.Log(gameObject.name + " was hit by " + otherParent.name);
-                        TakeDamage(collision.gameObject.GetComponent<PlayerAttack>().damageAmount);
+                        TakeDamage(collision.gameObject.GetComponent<PlayerIFAttack>().attackPower);
                     }
                 }
             }
@@ -111,8 +90,13 @@ namespace ITKombat
             // Masih bisa naruh block anim/sound
             Debug.Log("Attack blocked!");
 
-            // Destroy the attack or disable
-            Destroy(attack.gameObject);
+            PlayerIFAttack enemyAttack = attack.GetComponent<PlayerIFAttack>();
+            if (enemyAttack != null)
+            {
+                // enemyAttack.OnBlocked();
+            }
+
+            attack.enabled = false;
         }
 
         private void PerformParry(Collider2D attack)
@@ -123,10 +107,10 @@ namespace ITKombat
             //Memberikan damage saat parry
             //Note tambahan: Jadi di bagian bawah ini, masih dalam review
             //Soalnya, variable attack di PlayerAttack.cs belum kedefine
-            PlayerAttack enemyAttack = attack.gameObject.GetComponent<PlayerAttack>();
+            PlayerIFAttack enemyAttack = attack.gameObject.GetComponent<PlayerIFAttack>();
             if (enemyAttack != null)
             {
-                HealthBar enemyHealth = enemyAttack.GetComponent<HealthBar>();
+                HealthBarTest enemyHealth = enemyAttack.GetComponent<HealthBarTest>();
                 if (enemyHealth != null)
                 {
                     // enemyHealth.TakeDamage(parryDamage);
@@ -136,13 +120,13 @@ namespace ITKombat
         }
 
         // Logic for taking damage
-        public void TakeDamage(int damageAmount)
+        public void TakeDamage (float attackPower)
         {
-            Health health = GetComponent<Health>();
+            HealthBarTest health = GetComponent<HealthBarTest>();
             if (health != null)
             {
                 /*            health.TakeDamage(damageAmount);*/
-                Debug.Log($"{gameObject.name} took {damageAmount} damage!");
+                Debug.Log($"{gameObject.name} took damage!");
             }
         }
 

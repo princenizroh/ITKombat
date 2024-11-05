@@ -6,10 +6,10 @@ using System.Runtime.CompilerServices;
 
 namespace ITKombat
 {
-    public class PlayerAttackTestNope : NetworkBehaviour
+    public class PlayerIFAttack : NetworkBehaviour
     {
 
-        public static PlayerAttackTestNope Instance;
+        public static PlayerIFAttack Instance;
         public Transform attackPoint;
         public float attackForce = 5f;
         public float attackRadius = 1f;
