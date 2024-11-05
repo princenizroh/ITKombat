@@ -169,7 +169,7 @@ namespace ITKombat
             {
                 Reward.SetActive(true);
                 yield return new WaitForSeconds(1.5f);
-                SceneManager.LoadScene("Asrama");
+                SceneController.instance.LoadSceneByName("Asrama");
             }
         }
 
