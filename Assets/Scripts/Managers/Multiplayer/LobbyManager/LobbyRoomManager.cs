@@ -172,8 +172,8 @@ namespace ITKombat
             ushort port = serverConfig.Port;
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port, "0.0.0.0");
 
-            // KitchenGameMultiplayer.Instance.StartServer();
-            // Loader.LoadNetwork(Loader.Scene.CharacterSelectScene);
+            MultiplayerManager.Instance.StartServer();
+            Loader.LoadNetwork(Loader.Scene.Multiplayer);
         }
     #endif
         private async Task WaitForFirebaseUser()
