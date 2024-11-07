@@ -59,9 +59,15 @@ namespace ITKombat
         private FirebaseUser user;
         private FirebaseAuth auth;
 
-        private IServerQueryHandler serverQueryHandler;
-
-        private bool alreadyAutoAllocated = false;
+    #if DEDICATED_SERVER
+        private float autoAllocateTimer = 9999999f;
+        private bool alreadyAutoAllocated;
+        private static IServerQueryHandler serverQueryHandler; // static so it doesn't get destroyed when this object is destroyed
+        private string backfillTicketId;
+        private float acceptBackfillTicketsTimer;
+        private float acceptBackfillTicketsTimerMax = 1.1f;
+        private PayloadAllocation payloadAllocation;
+    #endif
         private void Awake()
         {
             Instance = this;
@@ -69,12 +75,12 @@ namespace ITKombat
             DontDestroyOnLoad(gameObject);
 
             // Uncomment ini jika sudah  tidak memerlukan BUTTON Authentication
-            // Authenticate(GetFirebaseUser());
+            Authenticate(GetFirebaseUser());
         }
 
         private void Start() 
         {
-            // DebugAuth();
+            
         }
 
         public string GetFirebaseUser()
@@ -130,16 +136,32 @@ namespace ITKombat
                     multiplayEventCallbacks.Deallocate += MultiplayEventCallbacks_Deallocate;
                     multiplayEventCallbacks.Error += MultiplayEventCallbacks_Error;
                     multiplayEventCallbacks.SubscriptionStateChanged += MultiplayEventCallbacks_SubscriptionStateChanged;
+                    Debug.Log("Berlangganan ke server event...");
                     IServerEvents serverEvents = await MultiplayService.Instance.SubscribeToServerEventsAsync(multiplayEventCallbacks);
-
+                    Debug.Log("Langganan server event berhasil.");
                     serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(2, "MyServerName", "ITKombat", "1.0", "Default");
 
                     var serverConfig = MultiplayService.Instance.ServerConfig;
+                    Debug.Log($"Server ID[{serverConfig.ServerId}]");
+                    Debug.Log($"AllocationID[{serverConfig.AllocationId}]");
+                    Debug.Log($"Port[{serverConfig.Port}]");
+                    Debug.Log($"QueryPort[{serverConfig.QueryPort}]");
+                    Debug.Log($"LogDirectory[{serverConfig.ServerLogDirectory}]");
                     if (serverConfig.AllocationId != "") {
                         // Already Allocated
                         MultiplayEventCallbacks_Allocate(new MultiplayAllocation("", serverConfig.ServerId, serverConfig.AllocationId));
                     }
                 #endif
+            }  else {
+        #if DEDICATED_SERVER
+                Debug.Log("DEDICATED_SERVER LOBBY - ALREADY INIT");
+
+                var serverConfig = MultiplayService.Instance.ServerConfig;
+                if (serverConfig.AllocationId != "") {
+                    // Already Allocated
+                    MultiplayEventCallbacks_Allocate(new MultiplayAllocation("", serverConfig.ServerId, serverConfig.AllocationId));
+                }
+        #endif
             }
             
         }
@@ -181,6 +203,26 @@ namespace ITKombat
 
             MultiplayerManager.Instance.StartServer();
             Loader.LoadNetwork(Loader.Scene.Multiplayer);
+        }
+        private async void SetupBackfillTickets() {
+            Debug.Log("SetupBackfillTickets");
+            payloadAllocation = await MultiplayService.Instance.GetPayloadAllocationFromJsonAs<PayloadAllocation>();
+
+            backfillTicketId = payloadAllocation.BackfillTicketId;
+            Debug.Log("backfillTicketId: " + backfillTicketId);
+
+            acceptBackfillTicketsTimer = acceptBackfillTicketsTimerMax;
+        }
+         [Serializable]
+        public class PayloadAllocation {
+            public Unity.Services.Matchmaker.Models.MatchProperties MatchProperties;
+            public string GeneratorName;
+            public string QueueName;
+            public string PoolName;
+            public string EnvironmentId;
+            public string BackfillTicketId;
+            public string MatchId;
+            public string PoolId;
         }
     #endif
         private async Task WaitForFirebaseUser()
