@@ -3,9 +3,9 @@ using UnityEngine;
 public class BuildingPunchCollider : MonoBehaviour
 {
     public GameObject targetCanvas;
-
-    
     public GameObject canvasDead;
+
+    public GameObject outline;
     [HideInInspector] public bool playerInRange = false; // Dapat diakses dari PlayerCombat
 
     void OnTriggerEnter2D(Collider2D other)
@@ -13,6 +13,7 @@ public class BuildingPunchCollider : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            outline.SetActive(true);
             other.GetComponent<PlayerCombat>().SetBuildingCollider(this); // Mengatur referensi collider
             Debug.Log("Player memasuki area bangunan");
         }
@@ -23,6 +24,7 @@ public class BuildingPunchCollider : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            outline.SetActive(false);
             Debug.Log("Player meninggalkan area bangunan");
         }
     }

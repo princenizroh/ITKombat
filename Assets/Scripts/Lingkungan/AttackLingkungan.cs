@@ -63,8 +63,8 @@ public class PlayerCombat : MonoBehaviour
         // Cek apakah player sedang memukul dan berkolisi dengan bangunan
         else if (doorCollider != null && doorCollider.CanActivateScene()) // Pastikan menggunakan doorCollider di sini
         {
-        Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
-        doorCollider.ActivateScene(); // Pindahkan ke scene yang dituju
+            Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
+            doorCollider.TransitionToScene(); // Pindahkan ke scene yang dituju
         }
     }
 
