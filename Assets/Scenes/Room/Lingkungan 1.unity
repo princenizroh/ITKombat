@@ -2808,7 +2808,7 @@ GameObject:
   - component: {fileID: 208629348}
   m_Layer: 0
   m_Name: PintuMode
-  m_TagString: Untagged
+  m_TagString: Pintu
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3833,7 +3833,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &324354165
 Transform:
   m_ObjectHideFlags: 0
@@ -6570,7 +6570,7 @@ GameObject:
   - component: {fileID: 542526657}
   m_Layer: 0
   m_Name: Koperasi
-  m_TagString: Untagged
+  m_TagString: ShopItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14263,7 +14263,7 @@ GameObject:
   - component: {fileID: 1015753942}
   m_Layer: 0
   m_Name: PintuLabter
-  m_TagString: Untagged
+  m_TagString: Pintu
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16638,7 +16638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1162659506
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26426,6 +26426,7 @@ GameObject:
   - component: {fileID: 1788049570}
   - component: {fileID: 1788049572}
   - component: {fileID: 1788049571}
+  - component: {fileID: 1788049578}
   m_Layer: 0
   m_Name: Fisika
   m_TagString: Player
@@ -26639,6 +26640,23 @@ Transform:
   - {fileID: 1482733347}
   m_Father: {fileID: 1051343054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1788049578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1788049569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d6b76c2ffef0334eafa38e4a1d54580, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actionButtonImage: {fileID: 367789689}
+  attackSprite: {fileID: 21300000, guid: a5affd36eac5a544f8db9094456b0505, type: 3}
+  doorSprite: {fileID: 8792170677195614851, guid: b4ec7301ac998b74caa54c6196ea615b, type: 3}
+  shopSprite: {fileID: 0}
+  topUpSprite: {fileID: 0}
 --- !u!1 &1799366751
 GameObject:
   m_ObjectHideFlags: 0
@@ -29268,7 +29286,7 @@ GameObject:
   - component: {fileID: 1939650356}
   m_Layer: 0
   m_Name: Pintu Asrama
-  m_TagString: Untagged
+  m_TagString: Pintu
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
