@@ -38,10 +38,10 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack3_Left = null;
         [SerializeField] private ParticleSystem Attack4_Left = null;
 
-        public AudioSource punchSound1;
-        public AudioSource punchSound2;
-        public AudioSource punchSound3;
-        public AudioSource punchSound4;
+        // public AudioSource punchSound1;
+        // public AudioSource punchSound2;
+        // public AudioSource punchSound3;
+        // public AudioSource punchSound4;
 
         private void Awake()
         {
@@ -147,7 +147,7 @@ namespace ITKombat
                     {
                         Attack1_Left.Play();
                     }
-                    PlaySound(punchSound1);
+                    SoundManager.Instance.PlaySound3D("CharIF_Attack1", transform.position);
                     anim.SetTrigger("attack1");
                     Debug.Log("Attack 1 triggered");
                     break;
@@ -160,7 +160,7 @@ namespace ITKombat
                     {
                         Attack2_Left.Play();
                     }
-                    PlaySound(punchSound2);
+                    SoundManager.Instance.PlaySound3D("CharIF_Attack2", transform.position);
                     anim.SetTrigger("attack2");
                     Debug.Log("Attack 2 triggered");
                     break;
@@ -173,7 +173,7 @@ namespace ITKombat
                     {
                         Attack3_Left.Play();
                     }
-                    PlaySound(punchSound3);
+                    SoundManager.Instance.PlaySound3D("CharIF_Attack3", transform.position);
                     anim.SetTrigger("attack3");
                     Debug.Log("Attack 3 triggered");
                     break;
@@ -186,7 +186,7 @@ namespace ITKombat
                     {
                         Attack4_Left.Play();
                     }
-                    PlaySound(punchSound4);
+                    SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position);
                     anim.SetTrigger("attack4");
                     Debug.Log("Attack 4 triggered");
                     Knockback();
@@ -194,13 +194,13 @@ namespace ITKombat
             }
         }
 
-        private void PlaySound(AudioSource sound)
-            {
-                if (sound != null)
-                {
-                    sound.Play();
-                }
-            }
+        // private void PlaySound(AudioSource sound)
+        //     {
+        //         if (sound != null)
+        //         {
+        //             sound.Play();
+        //         }
+        //     }
 
         private IEnumerator AttackCooldown()
         {

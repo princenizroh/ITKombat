@@ -13,7 +13,7 @@ namespace ITKombat
         public CharacterController2D1 characterController;
         public GameManagerButton gameManagerButton;
         public HealthBarTest healthBar;
-        public PlayerAttackTestNope playerAttack;
+        public PlayerIFAttack playerAttack;
         public PlayerMovement_2 playerMovement;
 
         public float moveSpeed;
