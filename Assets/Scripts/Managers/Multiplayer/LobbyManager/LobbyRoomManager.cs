@@ -9,6 +9,10 @@ using Unity.Services.Lobbies.Models;
 using Firebase;
 using Firebase.Auth;
 using System.Threading.Tasks;
+using Unity.Netcode; // Tambahkan ini
+using Unity.Netcode.Transports.UTP; 
+using Unity.Services.Multiplay;
+
 namespace ITKombat
 {
     public class LobbyRoomManager : MonoBehaviour
@@ -55,6 +59,9 @@ namespace ITKombat
         private FirebaseUser user;
         private FirebaseAuth auth;
 
+        private IServerQueryHandler serverQueryHandler;
+
+        private bool alreadyAutoAllocated = false;
         private void Awake()
         {
             Instance = this;
