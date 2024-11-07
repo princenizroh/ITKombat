@@ -10,7 +10,7 @@ namespace ITKombat{
         public Transform player;
         public float waitingTime = 1f; // Delay time before next state
 
-        private enum AIState { Approach, Retreat, Attack, Idle, Blocking }
+        private enum AIState {Approach, Retreat, Attack, Idle, Blocking}
         private AIState currentState = AIState.Idle;
 
         [System.Obsolete]
@@ -33,71 +33,84 @@ namespace ITKombat{
         void StateHandle()
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
             switch (currentState)
             {
                 case AIState.Approach:
-                    if (aimovement.canMove && aimovement.movementStep < aimovement.maxStep)
-                    {
-                        aimovement.Approach();
-                    }
-                    else
-                    {
-                        StartCoroutine(ChangeStateWithDelay(AIState.Idle)); // Delay before moving to Idle
-                    }
-
-                    if (distanceToPlayer <= aiDefense.criticalProximity && Random.value < aiDefense.blockChance)
-                    {
-                        currentState = AIState.Blocking;
-                    }
-                    else if (aiAttack.canAttack && distanceToPlayer <= aiAttack.attackRange)
-                    {
-                        currentState = AIState.Attack;
-                    }
+                    ApproachStateHandler(distanceToPlayer);
                     break;
 
                 case AIState.Attack:
-                    if (aiAttack.canAttack) aiAttack.Attack();
-                    if (aiAttack.currentCombo >= aiAttack.maxCombo || distanceToPlayer > aiAttack.attackRange)
-                    {
-                        NextAttackDecision();
-                    }
+                    AttackStateHandler(distanceToPlayer);
                     break;
 
                 case AIState.Retreat:
-                    if (aimovement.canMove && aimovement.movementStep < aimovement.maxStep)
-                    {
-                        aimovement.Retreat();
-                    }
-                    else
-                    {
-                        StartCoroutine(ChangeStateWithDelay(AIState.Idle)); // Delay before moving to Idle
-                    }
-
-                    if (distanceToPlayer <= aiDefense.criticalProximity && Random.value < aiDefense.blockChance)
-                    {
-                        currentState = AIState.Blocking;
-                    }
-                    else if (aiAttack.canAttack && distanceToPlayer <= aiAttack.attackRange)
-                    {
-                        currentState = AIState.Attack;
-                    }
+                    RetreatStateHandler(distanceToPlayer);
                     break;
                 
                 case AIState.Blocking :
                     StartCoroutine(ActivateBlock());
                     break;
                 case AIState.Idle :
-                    NextDecision();
+                    NextMovementDecision();
                     break;
             }
         }
 
+        void ApproachStateHandler(float distance)
+        {
+            if (aimovement.canMove && aimovement.movementStep <= aimovement.maxStep)
+            {
+                aimovement.Approach();
+            }
+            else
+            {
+                StartCoroutine(ChangeStateWithDelay(AIState.Idle)); // Delay before moving to Idle
+            }
+
+            if (distance <= aiDefense.criticalProximity && Random.value < aiDefense.blockChance)
+            {
+                currentState = AIState.Blocking;
+            }
+            else if (aiAttack.canAttack && distance <= aiAttack.attackRange)
+            {
+                currentState = AIState.Attack;
+            }
+        }
+
+        void RetreatStateHandler(float distance)
+        {
+            if (aimovement.canMove && aimovement.movementStep <= aimovement.maxStep && distance <= aimovement.maxDistance)
+            {
+                aimovement.Retreat();
+            }
+            else
+            {
+                StartCoroutine(ChangeStateWithDelay(AIState.Idle)); // Delay before moving to Idle
+            }
+
+            if (distance <= aiDefense.criticalProximity && Random.value < aiDefense.blockChance)
+            {
+                currentState = AIState.Blocking;
+            }
+            else if (aiAttack.canAttack && distance <= aiAttack.attackRange)
+            {
+                currentState = AIState.Attack;
+            }
+        }
+
+        void AttackStateHandler(float distance)
+        {
+            if (aiAttack.canAttack) aiAttack.Attack();
+            if (aiAttack.currentCombo >= aiAttack.maxCombo || distance > aiAttack.attackRange)
+            {
+                NextAttackDecision();
+            }
+        }
+
         // Handle the next state decision
-        void NextDecision()
+        void NextMovementDecision()
         {
             float decision = Random.value;
-
             if (decision < 0.8f)
             {
                 aimovement.movementStep = 0f;
@@ -139,14 +152,14 @@ namespace ITKombat{
             aiDefense.isBlocking = false;
             Debug.Log("Ai stop blocking");
 
-            NextDecision();
+            NextMovementDecision();
         }
 
         // Coroutine to handle state change with a delay
         IEnumerator ChangeStateWithDelay(AIState nextState)
         {
-            aimovement.StopMovement();
             aimovement.canMove = false; // Set waiting flag to true
+            aimovement.StopMovement();
             yield return new WaitForSeconds(waitingTime); // Wait for the defined delay
             currentState = nextState; // Change to the next state
             aimovement.canMove = true; // Reset waiting flag

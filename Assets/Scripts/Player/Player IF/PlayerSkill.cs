@@ -202,7 +202,7 @@ namespace ITKombat
 
             if (anim != null)
             {
-                anim.SetTrigger("idle");
+                anim.SetTrigger("Idle");
             }
 
             isSkill1Active = false;

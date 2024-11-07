@@ -12,7 +12,7 @@ namespace ITKombat
     {
         [Header("Defense Settings")]
         public float blockCooldown = 1.0f;
-        private bool isBlocking = false;
+        public bool isBlocking = false;
 
 
         [Header("Parry Settings")]
