@@ -4,7 +4,7 @@ namespace ITKombat
 {
     public class AllPlayerClasses : MonoBehaviour
     {
-        public PlayerAttackTestNope playerAttack;
+        public PlayerIFAttack playerAttack;
         public PlayerDefense playerDefense;
         public PlayerMovement_2 playerMovement;
         public PlayerSkill playerSkill;

@@ -6,24 +6,14 @@ public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
     [SerializeField] Animator transitionAnim;
+    private Vector2 playerPosition;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    // Load next level based on build index
-    public void NextLevel()
-    {
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex + 1));
     }
 
     // Load specific scene by name
@@ -33,26 +23,24 @@ public class SceneController : MonoBehaviour
     }
 
     // Coroutine for handling scene transition
-    IEnumerator LoadLevel(int buildIndex)
+    // Metode untuk mengatur posisi pemain
+    IEnumerator LoadLevel(string sceneName)
     {
+        Debug.Log("Starting scene transition to: " + sceneName);  // Log the scene name
         transitionAnim.SetTrigger("End");
         yield return new WaitForSeconds(1);
-        SceneManager.LoadSceneAsync(buildIndex);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        
+        // Wait until the scene is loaded
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+        
         transitionAnim.SetTrigger("Start");
+        
+        Debug.Log("Scene transition to: " + sceneName + " completed");
+        
     }
-
-    IEnumerator LoadLevel(string sceneName)
-{
-    Debug.Log("Starting scene transition to: " + sceneName);  // Log the scene name
-    transitionAnim.SetTrigger("End");
-    yield return new WaitForSeconds(1);
-    AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-    while (!asyncLoad.isDone)
-    {
-        yield return null;
-    }
-    transitionAnim.SetTrigger("Start");
-    Debug.Log("Scene transition to: " + sceneName + " completed");
-}
 
 }

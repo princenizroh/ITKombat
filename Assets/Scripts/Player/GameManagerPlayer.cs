@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class GameManagerPlayer : MonoBehaviour
 {
     public PlayerMovement playerMovement;
-    public PlayerAttackTestNope playerAttack;
+    public PlayerIFAttack playerAttack;
     public PlayerDefense playerDefense;
     public SkillsHolder playerSkills;
 
