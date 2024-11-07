@@ -10,6 +10,8 @@ namespace ITKombat
         public float attackRange = 2.5f;         // Range within which the enemy can attack
         public float attackForce = 5f;          // Knockback force
         public float attackPower = 5f;
+        public float attackRadius = 1f;
+        public Transform attackPoint;
         public float attackCooldown = 1f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
@@ -18,6 +20,7 @@ namespace ITKombat
         public int currentCombo = 0;            // Tracks the current combo
         public float lastAttackTime = 0f;       // Time of the last attack
 
+        public LayerMask playerlayer;
         private Transform player;
         private Rigidbody2D playerRigidbody;
         private AI_Movement aiMovement;
@@ -58,6 +61,7 @@ namespace ITKombat
         void Start()
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
+            // playerlayer = LayerMask.FindGameObjectWithTag("Player").transform;
             aiMovement = GetComponent<AI_Movement>();  // Reference to AI_Movement
             anim = GetComponent<Animator>();
         }
@@ -81,21 +85,38 @@ namespace ITKombat
                 }
                 lastAttackTime = Time.time;
 
-                GameObject playerState = GameObject.FindGameObjectWithTag("PlayerState");
-                if (playerState != null)
+                // Apply damage to player
+                Collider2D[] hitplayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, playerlayer);
+                foreach (Collider2D player in hitplayer)
                 {
-                    playerState.GetComponent<PlayerState>().TakeDamage(attackPower);
-                }
-                // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
-                StartCoroutine(AttackCooldown());
-                if (currentCombo > maxCombo)
-                    {
-                        currentCombo = 0;
-                        StartCoroutine(ComboCooldown());
+                    Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
+                    // PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
+                    if (playerRB != null) //&& !playerDefense.isBlocking)
+                    {   
+                        GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
+                        if (playerStateObject != null)
+                        {
+                            PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
+                            if (playerState != null)
+                            {
+                                playerState.TakeDamage(attackPower);
+                            }
+                        }
+                        // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
+                        StartCoroutine(AttackCooldown());
+                        if (currentCombo > maxCombo)
+                            {
+                                currentCombo = 0;
+                                StartCoroutine(ComboCooldown());
+                            }
+                        else
+                        {
+                            Debug.Log("PlayerState not found.");
+                        }
                     }
-
+                }
                 AttackAnimation();
-                Debug.Log("Performed attack.");
+
             }
         }
 
@@ -106,7 +127,7 @@ namespace ITKombat
             {
                 Vector2 knockbackDirection = (player.position - transform.position).normalized;
                 // playerRigidbody.linearVelocity = Vector2.zero;
-                playerRigidbody.AddForce(knockbackDirection * (attackForce*500), ForceMode2D.Force);
+                playerRigidbody.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
                 Debug.Log("Player hit by knockback");
             }
         }
@@ -196,6 +217,12 @@ namespace ITKombat
             // Reset the combo counter after cooldown
             // currentCombo = 0;
             canAttack = true;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (attackPoint == null) Debug.Log("gaada jir");
+            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }
 }
