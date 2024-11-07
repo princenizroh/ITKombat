@@ -3,12 +3,12 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.VFX;
 using System.Runtime.CompilerServices;
+using UnityEngine.Audio;
 
 namespace ITKombat
 {
     public class PlayerIFAttack : NetworkBehaviour
     {
-
         public static PlayerIFAttack Instance;
         public Transform attackPoint;
         public float attackForce = 5f;
@@ -33,18 +33,6 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack2_Left = null;
         [SerializeField] private ParticleSystem Attack3_Left = null;
         [SerializeField] private ParticleSystem Attack4_Left = null;
-
-        // Nanti ini taruh audiosource buat masing-masing soundnya
-        // AudioSource buat weapon hit
-        // AudioSource buat weapon miss
-        // AudioSource buat non-weapon hit
-        // AudioSource buat non-weapon miss
-
-        // Audio sources for normal attacks
-        // public AudioSource punchSound1;
-        // public AudioSource punchSound2;
-        // public AudioSource punchSound3;
-        // public AudioSource punchSound4;
 
         // Weapon state
         public bool isUsingWeapon; // Buat toggle manual di masing-masing prefab karakter menggunakan weapon atau tidak
@@ -221,7 +209,7 @@ namespace ITKombat
 
 
         // Taruh hit dan miss soundnya disini
-
+        
         private void PlayHitSound(int comboNumber)
         {
             switch (comboNumber)
@@ -231,23 +219,6 @@ namespace ITKombat
                 case 3: SoundManager.Instance.PlaySound3D("CharIF_Attack3", transform.position); break;
                 case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
             }
-
-            // if (isUsingWeapon)
-            // {
-            //     // Play weapon hit sound based on combo number
-                
-            // }
-            // else
-            // {
-            //     // Play punch hit sound based on combo number
-            //     switch (comboNumber)
-            //     {
-            //         case 1: punchSound1.Play(); break;
-            //         case 2: punchSound2.Play(); break;
-            //         case 3: punchSound3.Play(); break;
-            //         case 4: punchSound4.Play(); break;
-            //     }
-            // }
         }
 
         private void PlayMissSound(int comboNumber)
@@ -258,23 +229,8 @@ namespace ITKombat
                 case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                
             }
-
-            // if (isUsingWeapon)
-            // {
-            //     // Play weapon miss sound based on combo number
-            // }
-            // else
-            // {
-            //     // Play punch miss sound based on combo number
-            //     switch (comboNumber)
-            //     {
-            //         case 1: punchMissSound1.Play(); break;
-            //         case 2: punchMissSound2.Play(); break;
-            //         case 3: punchMissSound3.Play(); break;
-            //         case 4: punchMissSound4.Play(); break;
-            //     }
-            // }
         }
 
 
