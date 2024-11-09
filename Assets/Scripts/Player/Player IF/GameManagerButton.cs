@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class GameManagerButton : MonoBehaviour
 {
-    [SerializeField]
+    
     private PlayerIFAttack playerAttack;
-    [SerializeField]
     private PlayerMovement_2 playerMovement;
-    [SerializeField]
     private SkillsHolder playerSkill;
 
     private void Start()

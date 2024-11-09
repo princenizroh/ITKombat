@@ -66,7 +66,7 @@ namespace ITKombat
             NetworkManager.Singleton.StartClient();
             Debug.Log("StartClient");
             Debug.Log("NetworkManager.Singleton.ConnectedClientsIds.Count " + NetworkManager.Singleton.ConnectedClientsIds.Count);
-            Loader.Load(Loader.Scene.Multiplayer);
+            Loader.Load(Loader.Scene.ClientTest);
         }
         private void NetworkManager_ConnectionApprovalCallback(NetworkManager.ConnectionApprovalRequest connectionApprovalRequest, NetworkManager.ConnectionApprovalResponse connectionApprovalResponse) {
             if (SceneManager.GetActiveScene().name != Loader.Scene.CharacterSelectScene.ToString()) {

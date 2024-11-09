@@ -43,7 +43,7 @@ namespace ITKombat
         }
 
         private void CreateLobbyButtonClick() {
-            LobbyCreateUI.Instance.Show();
+            // LobbyCreateUI.Instance.Show();
         }
 
     }

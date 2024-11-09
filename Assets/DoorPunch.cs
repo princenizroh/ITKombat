@@ -1,5 +1,7 @@
 using UnityEngine;
 
+namespace ITKombat
+{
 public class DoorPunch : MonoBehaviour
 {
     public string targetSceneName; // Nama scene tujuan yang ingin dituju saat memukul
@@ -38,4 +40,5 @@ public class DoorPunch : MonoBehaviour
             Debug.Log("Beralih ke scene: " + targetSceneName);
         }
     }
+}
 }

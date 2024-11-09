@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Unity.Services.Lobbies.Models;
 
+namespace ITKombat
+{
 public class AudioSetting : MonoBehaviour
 {
     public AudioMixer audioMixer;
@@ -57,4 +59,5 @@ public class AudioSetting : MonoBehaviour
         musicSlider.value = PlayerPrefs.GetFloat("MusicScript");
         sfxSlider.value = PlayerPrefs.GetFloat("AudioScript");
     }
+}
 }

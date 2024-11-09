@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
+namespace ITKombat
+{
 public class PlayerCombat : MonoBehaviour
 {
     private Animator animator;
@@ -97,4 +99,5 @@ public class PlayerCombat : MonoBehaviour
         doorCollider = collider;
     }
 
+}
 }

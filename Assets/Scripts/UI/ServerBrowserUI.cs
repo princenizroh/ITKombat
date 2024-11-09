@@ -26,7 +26,7 @@ namespace ITKombat
             string ipv4Address = ipInputField.text;
             ushort port = ushort.Parse(portInputField.text);
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port);
-            MultiplayerManager.Instance.StartClient();
+            KitchenGameMultiplayer.Instance.StartClient();
         });
 
         createServerButton.onClick.AddListener(() => {

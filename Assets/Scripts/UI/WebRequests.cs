@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
+namespace ITKombat {
+
 public static class WebRequests {
 
     private class WebRequestsMonoBehaviour : MonoBehaviour { }
@@ -161,4 +163,5 @@ public static class WebRequests {
         }
     }
 
+}
 }

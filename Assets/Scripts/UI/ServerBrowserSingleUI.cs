@@ -10,26 +10,36 @@ namespace ITKombat
 {
     public class ServerBrowserSingleUI : MonoBehaviour
     {
-
         [SerializeField] private TextMeshProUGUI ipText; 
         [SerializeField] private TextMeshProUGUI portText;
 
-
         private void Awake() {
-            GetComponent<Button>().onClick.AddListener(() => {
-                string ipv4Address = ipText.text;
-                ushort port = ushort.Parse(portText.text);
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port);
+            Button button = GetComponent<Button>();
+            if (button != null) {
+                button.onClick.AddListener(() => {
+                    if (ipText != null && portText != null) {
+                        string ipv4Address = ipText.text;
+                        ushort port = ushort.Parse(portText.text);
+                        NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port);
 
-                MultiplayerManager.Instance.StartClient();
-            });
+                        MultiplayerManager.Instance.StartClient();
+                    } else {
+                        Debug.LogError("ipText or portText is not set.");
+                    }
+                });
+            } else {
+                Debug.LogError("Button component is not found.");
+            }
         }
 
         public void SetServer(string ip, ushort port) {
-            ipText.text = ip;
-            portText.text = port.ToString();
+            if (ipText != null && portText != null) {
+                ipText.text = ip;
+                portText.text = port.ToString();
+            } else {
+                Debug.LogError("ipText or portText is not set.");
+            }
         }
     }
 }
-
 

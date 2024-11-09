@@ -1,5 +1,6 @@
 using UnityEngine;
 
+namespace ITKombat{
 public class BuildingPunchCollider : MonoBehaviour
 {
     public GameObject targetCanvas;
@@ -41,4 +42,5 @@ public class BuildingPunchCollider : MonoBehaviour
             Debug.Log("Canvas diaktifkan");
         }
     }
+}
 }

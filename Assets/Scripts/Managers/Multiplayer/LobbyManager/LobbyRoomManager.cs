@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Unity.Netcode; // Tambahkan ini
 using Unity.Netcode.Transports.UTP; 
 using Unity.Services.Multiplay;
+using TMPro;
 
 namespace ITKombat
 {
@@ -104,6 +105,7 @@ namespace ITKombat
                     Debug.Log("Firebase UserID already " + playerId);
                     Debug.Log("Firebase Email already " + playerEmail);
                     Debug.Log("Firebase Display Name already " + playerUser);
+                   
                 }
                 else
                 {
@@ -111,6 +113,7 @@ namespace ITKombat
                     Debug.Log("Firebase User ID not ready yet. Using random player name: " + playerId);
                 }
 
+                
                 Debug.Log("Player Name: " + playerId);
 
                 // Inisialisasi Unity Services dengan profile playerUser
@@ -118,7 +121,7 @@ namespace ITKombat
                 initializationOptions.SetProfile(playerUser ?? playerId);
                 await UnityServices.InitializeAsync(initializationOptions);
 
-                
+                Debug.Log("Authentication Service " + AuthenticationService.Instance.PlayerId);
                 Debug.Log("Player Name: " + playerId);
                 Debug.Log("Player Email: " + playerEmail);
                 Debug.Log("Player User: " + playerUser);
@@ -139,18 +142,18 @@ namespace ITKombat
                     Debug.Log("Berlangganan ke server event...");
                     IServerEvents serverEvents = await MultiplayService.Instance.SubscribeToServerEventsAsync(multiplayEventCallbacks);
                     Debug.Log("Langganan server event berhasil.");
-                    serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(2, "MyServerName", "ITKombat", "1.0", "Default");
+                    // serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(2, "MyServerName", "ITKombat", "1.0", "Default");
 
-                    var serverConfig = MultiplayService.Instance.ServerConfig;
-                    Debug.Log($"Server ID[{serverConfig.ServerId}]");
-                    Debug.Log($"AllocationID[{serverConfig.AllocationId}]");
-                    Debug.Log($"Port[{serverConfig.Port}]");
-                    Debug.Log($"QueryPort[{serverConfig.QueryPort}]");
-                    Debug.Log($"LogDirectory[{serverConfig.ServerLogDirectory}]");
-                    if (serverConfig.AllocationId != "") {
-                        // Already Allocated
-                        MultiplayEventCallbacks_Allocate(new MultiplayAllocation("", serverConfig.ServerId, serverConfig.AllocationId));
-                    }
+                    // var serverConfig = MultiplayService.Instance.ServerConfig;
+                    // Debug.Log($"Server ID[{serverConfig.ServerId}]");
+                    // Debug.Log($"AllocationID[{serverConfig.AllocationId}]");
+                    // Debug.Log($"Port[{serverConfig.Port}]");
+                    // Debug.Log($"QueryPort[{serverConfig.QueryPort}]");
+                    // Debug.Log($"LogDirectory[{serverConfig.ServerLogDirectory}]");
+                    // if (serverConfig.AllocationId != "") {
+                    //     // Already Allocated
+                    //     MultiplayEventCallbacks_Allocate(new MultiplayAllocation("", serverConfig.ServerId, serverConfig.AllocationId));
+                    // }
                 #endif
             }  else {
         #if DEDICATED_SERVER
@@ -307,12 +310,12 @@ namespace ITKombat
         }
         private bool IsPlayerInLobby() {
             if (joinedLobby != null && joinedLobby.Players != null) {
-                foreach (Player player in joinedLobby.Players) {
-                    if (player.Id == user.UserId) {
-                        // This player is in this lobby
-                        return true;
-                    }
-                }
+                // foreach (Player player in joinedLobby.Players) {
+                //     if (player.Id == user.UserId) {
+                //         // This player is in this lobby
+                //         return true;
+                //     }
+                // }
             }
             return false;
         }
@@ -320,10 +323,10 @@ namespace ITKombat
         {
             try
             {
-                Player player = GetPlayer();
+                // Player player = GetPlayer();
                 CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
                 {
-                    Player = GetPlayer(),
+                    // Player = GetPlayer(),
                     IsPrivate = isPrivate,
                     Data = new Dictionary<string, DataObject>
                     {
@@ -405,7 +408,7 @@ namespace ITKombat
             {
                 JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
                 {
-                    Player = GetPlayer()
+                    // Player = GetPlayer()
                 };
                 Lobby lobby = await Lobbies.Instance.JoinLobbyByCodeAsync(lobbyCode, joinLobbyByCodeOptions);
                 joinedLobby = lobby;
@@ -433,18 +436,18 @@ namespace ITKombat
             }
         }
 
-        private Player GetPlayer()
-        {
-            return new Player(user.UserId, null, new Dictionary<string, PlayerDataObject>
-            {
-                { 
-                    KEY_PLAYER_NAME, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, playerUser) 
-                },
-                { 
-                    KEY_PLAYER_CHARACTER, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, PlayerCharacter.Informatics.ToString())  // Menyimpan Firebase User ID di sini
-                }
-            });
-        }
+        // private Player GetPlayer()
+        // {
+        //     return new Player(user.UserId, null, new Dictionary<string, PlayerDataObject>
+        //     {
+        //         { 
+        //             KEY_PLAYER_NAME, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, playerUser) 
+        //         },
+        //         { 
+        //             KEY_PLAYER_CHARACTER, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, PlayerCharacter.Informatics.ToString())  // Menyimpan Firebase User ID di sini
+        //         }
+        //     });
+        // }
 
         private void PrintPlayers()
         {
@@ -453,11 +456,11 @@ namespace ITKombat
 
         private void PrintPlayers(Lobby lobby)
         {
-            Debug.Log("Players in lobby: " + lobby.Name + " " + lobby.Data["GameMode"].Value + "" + lobby.Data["Map"].Value);
-            foreach (Player player in lobby.Players)
-            {
-                Debug.Log("Player: " + player.Id + " " + player.Data["PlayerName"].Value);
-            }
+            // Debug.Log("Players in lobby: " + lobby.Name + " " + lobby.Data["GameMode"].Value + "" + lobby.Data["Map"].Value);
+            // foreach (Player player in lobby.Players)
+            // {
+            //     Debug.Log("Player: " + player.Id + " " + player.Data["PlayerName"].Value);
+            // }
         }
 
         private async void UpdateLobbyGameMode(string gameMode)
@@ -595,6 +598,15 @@ namespace ITKombat
             Debug.Log("Player Email: " + playerEmail);
         }
         //
+        void LogConnectionEvent(NetworkManager manager, ConnectionEventData data)
+        {
+            switch (data.EventType)
+            {
+                case ConnectionEvent.ClientConnected:
+                    FindFirstObjectByType<TMP_Text>().SetText("Client Connected" + data.ClientId + "Count: " + NetworkManager.Singleton.ConnectedClientsIds.Count + " Port:" + (manager.NetworkConfig.NetworkTransport as UnityTransport)?.ConnectionData.Port);
+                    break;
+            }
+            
+        }
     }
-
 }
