@@ -13,7 +13,7 @@ public class SoundManager : MonoBehaviour
     public AudioMixerGroup sfxMixerGroup; // Tambahkan ini
 
     private AudioSource currentAudioSource;
-    private bool isPlaying = false;
+    // private bool isPlaying = false;
 
     private void Awake()
     {
@@ -36,20 +36,18 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySound3D(string soundName, Vector3 pos)
     {
-        if (!isPlaying)
+        
+        AudioClip clip = sfxLibrary.GetClipFromName(soundName);
+        if (clip != null)
         {
-            AudioClip clip = sfxLibrary.GetClipFromName(soundName);
-            if (clip != null)
-            {
-                isPlaying = true;
-                GameObject audioSourceObject = new GameObject("TempAudio");
-                currentAudioSource = audioSourceObject.AddComponent<AudioSource>();
-                currentAudioSource.clip = clip;
-                currentAudioSource.outputAudioMixerGroup = sfxMixerGroup; // Atur group mixer
-                currentAudioSource.transform.position = pos;
-                currentAudioSource.Play();
-                StartCoroutine(WaitForSoundToFinish(currentAudioSource));
-            }
+            // isPlaying = true;
+            GameObject audioSourceObject = new GameObject("TempAudio");
+            currentAudioSource = audioSourceObject.AddComponent<AudioSource>();
+            currentAudioSource.clip = clip;
+            currentAudioSource.outputAudioMixerGroup = sfxMixerGroup; // Atur group mixer
+            currentAudioSource.transform.position = pos;
+            currentAudioSource.Play();
+            StartCoroutine(WaitForSoundToFinish(currentAudioSource));
         }
     }
 
@@ -60,7 +58,7 @@ public class SoundManager : MonoBehaviour
             yield return null;
         }
 
-        isPlaying = false;
+        // isPlaying = false;
         Destroy(audioSource.gameObject);
     }
 

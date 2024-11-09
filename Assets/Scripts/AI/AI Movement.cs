@@ -52,6 +52,7 @@ namespace ITKombat
             myRigidbody.linearVelocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;
+            // SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
         }
 
         public void Retreat()
@@ -61,6 +62,7 @@ namespace ITKombat
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;
+            // SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
         }
 
         void Flip()
@@ -79,6 +81,7 @@ namespace ITKombat
                 myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, jumpForce);
                 StartCoroutine(JumpCooldown());
                 anim.SetTrigger("Jump");
+                SoundManager.Instance.PlaySound3D("Jump", transform.position);
             }
         }
 
