@@ -924,9 +924,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1581959343}
+      - m_Target: {fileID: 1581959344}
         m_TargetAssemblyTypeName: PlayerCombat, Assembly-CSharp
-        m_MethodName: OnAttackButtonDown
+        m_MethodName: OnAttackButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7099,7 +7099,7 @@ GameObject:
   - component: {fileID: 1581959338}
   - component: {fileID: 1581959337}
   - component: {fileID: 1581959342}
-  - component: {fileID: 1581959343}
+  - component: {fileID: 1581959344}
   m_Layer: 0
   m_Name: Fisika
   m_TagString: Player
@@ -7300,7 +7300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressBar: {fileID: 652457401}
---- !u!114 &1581959343
+--- !u!114 &1581959344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7309,10 +7309,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1581959335}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e235cfbe2ea4e774ab09b45c3020b859, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cfc719fbabd20748b53d866ee340146, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  comboDelay: 1
+  animator: {fileID: 1581959340}
+  isAttacking: 0
 --- !u!1 &1590963727
 GameObject:
   m_ObjectHideFlags: 0
