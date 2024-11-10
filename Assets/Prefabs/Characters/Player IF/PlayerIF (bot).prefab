@@ -44,7 +44,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6fb78c0b37204a540a32e3db59fde5dd, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 6fb78c0b37204a540a32e3db59fde5dd, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -141,7 +141,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 63966f09a9733a34fae6a93f5309720e, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 63966f09a9733a34fae6a93f5309720e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -401,7 +401,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2d55a2f69a384c648b6d31fe4746fd15, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 2d55a2f69a384c648b6d31fe4746fd15, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -498,7 +498,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 44405cd43535c124b85aa381c0f6bc83, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 44405cd43535c124b85aa381c0f6bc83, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -595,7 +595,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d2947ecd978e0ef4d89f1b9f6afe9edf, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d2947ecd978e0ef4d89f1b9f6afe9edf, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -692,7 +692,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -6515397452185506000, guid: c7d92fdfd47a72d4bbc0dbd6b2af9340, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 8dc6cf0e82c1faf479ecdaf68585ced6, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 8dc6cf0e82c1faf479ecdaf68585ced6, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -6005,7 +6005,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 69cee60f3ad809449b41d87dea9e74ff, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 69cee60f3ad809449b41d87dea9e74ff, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -6102,7 +6102,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b8d855ecc4d867447b68283479c79992, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: b8d855ecc4d867447b68283479c79992, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -6199,7 +6199,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 69cee60f3ad809449b41d87dea9e74ff, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 69cee60f3ad809449b41d87dea9e74ff, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -6296,7 +6296,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6fb78c0b37204a540a32e3db59fde5dd, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 6fb78c0b37204a540a32e3db59fde5dd, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -6725,10 +6725,7 @@ MonoBehaviour:
   Attack2_Left: {fileID: 0}
   Attack3_Left: {fileID: 0}
   Attack4_Left: {fileID: 0}
-  punchSound1: {fileID: 5990747188347324554}
-  punchSound2: {fileID: 5843959914472328641}
-  punchSound3: {fileID: 1662764039873823205}
-  punchSound4: {fileID: 4263240357859492069}
+  isUsingWeapon: 0
 --- !u!114 &7317811103347845085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6812,6 +6809,7 @@ MonoBehaviour:
   moveSpeed: 3
   movementStep: 0
   maxStep: 50
+  maxDistance: 16
   facingPlayer: 1
   canMove: 1
   canJump: 1
@@ -6831,16 +6829,25 @@ MonoBehaviour:
   attackRange: 3
   attackForce: 5
   attackPower: 5
+  attackRadius: 1
+  attackPoint: {fileID: 0}
   attackCooldown: 0.5
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
   currentCombo: 0
   lastAttackTime: 0
-  punchSound1: {fileID: 5990747188347324554}
-  punchSound2: {fileID: 5990747188347324554}
-  punchSound3: {fileID: 5990747188347324554}
-  punchSound4: {fileID: 5990747188347324554}
+  playerlayer:
+    serializedVersion: 2
+    m_Bits: 0
+  Attack1_Right: {fileID: 0}
+  Attack2_Right: {fileID: 0}
+  Attack3_Right: {fileID: 0}
+  Attack4_Right: {fileID: 0}
+  Attack1_Left: {fileID: 0}
+  Attack2_Left: {fileID: 0}
+  Attack3_Left: {fileID: 0}
+  Attack4_Left: {fileID: 0}
 --- !u!114 &5813272537536854646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6900,19 +6907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 777159a8662bd3d4eab28c8899b67c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skills:
-  - {fileID: 11400000, guid: 115baaa092984bd4db7ea282bb83e0e7, type: 2}
-  - {fileID: 11400000, guid: 220cd3b82b1fb9340b3731226383345b, type: 2}
-  - {fileID: 11400000, guid: 01c78f0f7b91c1841b1c349090eb3d66, type: 2}
-  skillSounds:
-  - {fileID: 2825705460425610146}
-  - {fileID: 2825705460425610146}
-  - {fileID: 2825705460425610146}
-  inputActionAsset: {fileID: -944628639613478452, guid: 9b55207794d3f654e97238da2338aa6b, type: 3}
-  skillActionNames:
-  - Skill1
-  - Skill2
-  - Skill3
+  currentSkills: []
 --- !u!114 &3760739159761122319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6945,6 +6940,7 @@ MonoBehaviour:
   moveSpeed: 3
   movementStep: 0
   maxStep: 50
+  maxDistance: 16
   facingPlayer: 1
   canMove: 1
   canJump: 1
@@ -6964,16 +6960,25 @@ MonoBehaviour:
   attackRange: 2
   attackForce: 50
   attackPower: 5
+  attackRadius: 1
+  attackPoint: {fileID: 0}
   attackCooldown: 0.5
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
   currentCombo: 0
   lastAttackTime: 0
-  punchSound1: {fileID: 0}
-  punchSound2: {fileID: 0}
-  punchSound3: {fileID: 0}
-  punchSound4: {fileID: 0}
+  playerlayer:
+    serializedVersion: 2
+    m_Bits: 0
+  Attack1_Right: {fileID: 0}
+  Attack2_Right: {fileID: 0}
+  Attack3_Right: {fileID: 0}
+  Attack4_Right: {fileID: 0}
+  Attack1_Left: {fileID: 0}
+  Attack2_Left: {fileID: 0}
+  Attack3_Left: {fileID: 0}
+  Attack4_Left: {fileID: 0}
 --- !u!1 &9182596835446888487
 GameObject:
   m_ObjectHideFlags: 0
