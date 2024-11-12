@@ -42,6 +42,7 @@ public class MoveFelix : MonoBehaviour
             animator.SetBool("IsMoving", false); // Set IsMoving ke false jika tidak bergerak
         }
 
+
         // Kirim nilai ke Blend Tree melalui parameter 'Speed'
         animator.SetFloat("Speed", Mathf.Abs(movement.x));
 
