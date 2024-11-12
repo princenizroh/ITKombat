@@ -90,7 +90,7 @@ namespace ITKombat
     
     private void OnDestroy()
     {
-        if (IsOwner)
+        if (IsOwner) 
         {
             isFacingRight.OnValueChanged -= OnFacingDirectionChanged;
         }
