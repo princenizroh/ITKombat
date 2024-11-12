@@ -2885,6 +2885,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 835865081}
+        m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
+        m_MethodName: soundButtonPause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &661594567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3600,6 +3612,54 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6d56a1eab5bb6d4995a119222397b5f, type: 3}
+--- !u!1 &835865079
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 835865080}
+  - component: {fileID: 835865081}
+  m_Layer: 0
+  m_Name: SoundButtonClick
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &835865080
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835865079}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1086309020}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &835865081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835865079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4610904894653642a7d3f1ac7046972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &836545956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3659,15 +3719,15 @@ PrefabInstance:
     - target: {fileID: 7168614801341081884, guid: f5506f94e4f8baa4ab2d60cf5929be44, type: 3}
       propertyPath: tracks.Array.data[0].clip
       value: 
-      objectReference: {fileID: 8300000, guid: 4dcd5c5ffed561747898c264964e7635, type: 3}
+      objectReference: {fileID: 8300000, guid: 2aebf5fe3100e4944a621ead363c7fea, type: 3}
     - target: {fileID: 7168614801341081884, guid: f5506f94e4f8baa4ab2d60cf5929be44, type: 3}
       propertyPath: tracks.Array.data[1].clip
       value: 
-      objectReference: {fileID: 8300000, guid: c10d088c0bdfdb946abbd4eb9cb39027, type: 3}
+      objectReference: {fileID: 8300000, guid: ea0574b34a6e17047b4f285d719dd8a3, type: 3}
     - target: {fileID: 7168614801341081884, guid: f5506f94e4f8baa4ab2d60cf5929be44, type: 3}
       propertyPath: tracks.Array.data[2].clip
       value: 
-      objectReference: {fileID: 8300000, guid: b390ff7f955701847b0a3ec182ffe640, type: 3}
+      objectReference: {fileID: 8300000, guid: 856769606b2be7244af775eb77f79041, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4732,6 +4792,7 @@ RectTransform:
   m_Children:
   - {fileID: 661594565}
   - {fileID: 1828397635}
+  - {fileID: 835865080}
   m_Father: {fileID: 1590963731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5545,7 +5606,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
       propertyPath: soundEffects.Array.size
-      value: 43
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
       propertyPath: soundEffects.Array.data[0].groupID
@@ -5720,6 +5781,18 @@ PrefabInstance:
       value: Time_Out
       objectReference: {fileID: 0}
     - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: soundEffects.Array.data[43].groupID
+      value: Button_Door
+      objectReference: {fileID: 0}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: soundEffects.Array.data[44].groupID
+      value: Button_Pause
+      objectReference: {fileID: 0}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: soundEffects.Array.data[45].groupID
+      value: Button_Pause
+      objectReference: {fileID: 0}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
       propertyPath: soundEffects.Array.data[0].clips.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -5890,6 +5963,18 @@ PrefabInstance:
     - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
       propertyPath: soundEffects.Array.data[42].clips.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: soundEffects.Array.data[43].clips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: soundEffects.Array.data[44].clips.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: soundEffects.Array.data[45].clips.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
       propertyPath: 'soundEffects.Array.data[0].clips.Array.data[0]'
@@ -6335,6 +6420,42 @@ PrefabInstance:
       propertyPath: 'soundEffects.Array.data[42].clips.Array.data[0]'
       value: 
       objectReference: {fileID: 8300000, guid: 2c94ce39711fa8843bfe8851456e8f35, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[43].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 386357cac657b794c9cb73e60f7712fb, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[43].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f13a05a2c17f635429d0a4d814ce533a, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[44].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 60945ba4f74c2734d87952728cdd572e, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[44].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: a6351d5951f90b54e8f1b499e26efa56, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[44].clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: bf4492133e2ac7446bfc09cc08304218, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[44].clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 5906ab7f70079e94e8d0a36bb34571a4, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[45].clips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 60945ba4f74c2734d87952728cdd572e, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[45].clips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: a6351d5951f90b54e8f1b499e26efa56, type: 3}
+    - target: {fileID: 3335232376772070410, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+      propertyPath: 'soundEffects.Array.data[45].clips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: bf4492133e2ac7446bfc09cc08304218, type: 3}
     - target: {fileID: 5365122966335717394, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
       propertyPath: sfxMixerGroup
       value: 
@@ -6609,6 +6730,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1813825112}
         m_TargetAssemblyTypeName: ITKombat.Panels, Assembly-CSharp
         m_MethodName: Lanjut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 835865081}
+        m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
+        m_MethodName: soundButtonPause
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

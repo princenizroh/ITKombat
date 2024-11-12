@@ -39,6 +39,7 @@ public class DoorPunch : MonoBehaviour
 
         // Pindah ke scene tujuan
         SceneController.instance.LoadSceneByName(targetSceneName);
+        SoundManager.Instance.PlaySound3D("Button_Door", transform.position);
         Debug.Log("Beralih ke scene: " + targetSceneName);
     }
 
