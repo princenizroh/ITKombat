@@ -8,7 +8,7 @@ namespace ITKombat
     public class GearStat : ScriptableObject
     {
         public string gear_name;
-        public int gear_stat_id;
+        public int gear_id;
         public int gear_type_id;
         public Sprite gear_sprite;
         [TextArea(3, 10)]

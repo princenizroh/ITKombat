@@ -474,34 +474,63 @@ namespace ITKombat
 
         // Documented start here
 
-        public async Task<List<InventoryItem>> GetAllPlayerInventory(string player_id) {
-
+        public async Task<List<InventoryItem>> GetAllPlayerInventory(string player_id)
+        {
             var inventoryList = new List<InventoryItem>();
-            var DBTask = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
 
-            if (DBTask.Exists)
+            try
             {
-                foreach (var childSnapshot in DBTask.Children)
-                {
-                    InventoryItem item = new InventoryItem
-                    {
-                        item_id = int.Parse(childSnapshot.Child("item_id").Value.ToString()),
-                        item_level = int.Parse(childSnapshot.Child("item_level").Value.ToString()),
-                        item_ascend = int.Parse(childSnapshot.Child("item_ascend").Value.ToString()),
-                        item_exp_max = int.Parse(childSnapshot.Child("item_exp_max").Value.ToString()),
-                        item_current_exp = int.Parse(childSnapshot.Child("item_current_exp").Value.ToString()),
-                        item_id_type_1 = int.Parse(childSnapshot.Child("item_id_type_1").Value.ToString()),
-                        item_id_type_2 = int.Parse(childSnapshot.Child("item_id_type_2").Value.ToString()),
-                        item_value_type_1 = int.Parse(childSnapshot.Child("item_value_type_1").Value.ToString()),
-                        item_value_type_2 = int.Parse(childSnapshot.Child("item_value_type_2").Value.ToString())
-                    };
+                // Await the task to get data from Firebase
+                var DBTask = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
 
-                    inventoryList.Add(item);
+                // Check if data exists
+                if (DBTask.Exists)
+                {
+                    Debug.Log("Inventory data found for player: " + player_id);
+
+                    // Iterate over the children (inventory items)
+                    foreach (var childSnapshot in DBTask.Children)
+                    {
+                        // Log the child data being read
+                        Debug.Log("Found child: " + childSnapshot.Key);
+
+                        InventoryItem item = new InventoryItem
+                        {
+                            item_id = int.Parse(childSnapshot.Child("item_id").Value.ToString()),
+                            item_level = int.Parse(childSnapshot.Child("item_level").Value.ToString()),
+                            item_ascend = int.Parse(childSnapshot.Child("item_ascend").Value.ToString()),
+                            item_exp_max = int.Parse(childSnapshot.Child("item_exp_max").Value.ToString()),
+                            item_current_exp = int.Parse(childSnapshot.Child("item_current_exp").Value.ToString()),
+                            item_id_type_1 = int.Parse(childSnapshot.Child("item_id_type_1").Value.ToString()),
+                            item_id_type_2 = int.Parse(childSnapshot.Child("item_id_type_2").Value.ToString()),
+                            item_value_type_1 = int.Parse(childSnapshot.Child("item_value_type_1").Value.ToString()),
+                            item_value_type_2 = int.Parse(childSnapshot.Child("item_value_type_2").Value.ToString())
+                        };
+
+                        // Log the values of the item
+                        Debug.Log($"Item {item.item_id}: Level {item.item_level}, Ascend {item.item_ascend}");
+
+                        inventoryList.Add(item);
+                    }
+
+                    // Log success after data is fetched and mapped
+                    Debug.Log("Inventory is fetched successfully!");
+
                 }
+                else
+                {
+                    Debug.LogWarning("No inventory data found for player: " + player_id);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle errors with detailed logs
+                Debug.LogError("Error fetching inventory: " + ex.Message);
             }
 
             return inventoryList;
         }
+
 
         public async Task<List<InventoryItem>> GetPlayerGearData(string player_id, int gear_id)
         {
