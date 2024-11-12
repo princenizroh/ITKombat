@@ -8,7 +8,7 @@ namespace ITKombat{
         public AI_Attack aiAttack;
         public AI_Defense aiDefense;
         public Transform player;
-        public float waitingTime = 1.5f; // Delay time before next state
+        public float waitingTime = 2f; // Delay time before next state
 
         private enum AIState {Approach, Retreat, Attack, Idle, Blocking}
         private AIState currentState = AIState.Idle;
