@@ -8,52 +8,52 @@ using Unity.Services.Lobbies.Models;
 
 namespace ITKombat
 {
-public class AudioSetting : MonoBehaviour
-{
-    public AudioMixer audioMixer;
-    public Slider musicSlider;
-    public Slider sfxSlider;
-
-    void Start()
+    public class AudioSetting : MonoBehaviour
     {
-        LoadVolume();
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        Debug.Log(currentSceneName + "adalah scene sekarang");
-        if (currentSceneName == "SoundMultiplayer")
+        public AudioMixer audioMixer;
+        public Slider musicSlider;
+        public Slider sfxSlider;
+
+        void Start()
         {
-            MusicManager.Instance.PlayMusic("Battle_1");
+            LoadVolume();
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            Debug.Log(currentSceneName + "adalah scene sekarang");
+            if (currentSceneName == "SoundMultiplayer")
+            {
+                MusicManager.Instance.PlayMusic("Battle_1");
+            }
+            else if (currentSceneName == "Asrama")
+            {
+                MusicManager.Instance.PlayMusic("MarsITKombat");
+            }
+
+
         }
-        else if (currentSceneName == "Asrama")
+
+        public void UpdateMusicVolume(float volume)
         {
-            MusicManager.Instance.PlayMusic("MarsITKombat");
+            audioMixer.SetFloat("MusicVolume", volume);
         }
 
-
+        public void UpdateSoundVolume(float volume)
+        {
+            audioMixer.SetFloat("SFXVolume", volume);
+        }
+    
+        public void SaveVolume()
+        {
+            audioMixer.GetFloat("MusicVolume", out float musicVolume);
+            PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+    
+            audioMixer.GetFloat("SFXVolume", out float sfxVolume);
+            PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
+        }
+    
+        public void LoadVolume()
+        {
+            musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+            sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+        }
     }
-
-    public void UpdateMusicVolume(float volume)
-    {
-        audioMixer.SetFloat("MusicVolume", volume);
-    }
-
-    public void UpdateSoundVolume(float volume)
-    {
-        audioMixer.SetFloat("SFXVolume", volume);
-    }
- 
-    public void SaveVolume()
-    {
-        audioMixer.GetFloat("MusicVolume", out float musicVolume);
-        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
- 
-        audioMixer.GetFloat("SFXVolume", out float sfxVolume);
-        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
-    }
- 
-    public void LoadVolume()
-    {
-        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-    }
-}
 }

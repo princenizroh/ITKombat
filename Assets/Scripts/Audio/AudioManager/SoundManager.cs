@@ -1,6 +1,6 @@
-using System;
-using System.Collections;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.Audio;
 
 namespace ITKombat
 {
@@ -12,6 +12,7 @@ namespace ITKombat
         private SoundLibrary sfxLibrary;
         [SerializeField]
         private AudioSource sfx2DSource;
+        public AudioMixerGroup sfxMixerGroup; // Tambahkan ini
 
         private AudioSource currentAudioSource;
         private bool isPlaying = false;
@@ -25,50 +26,48 @@ namespace ITKombat
             else
             {
                 Instance = this;
-                // Use the root object to avoid the DontDestroyOnLoad error
                 DontDestroyOnLoad(transform.root.gameObject);
             }
+
+            // Pastikan sfx2DSource menggunakan AudioMixerGroup
+            if (sfx2DSource != null && sfxMixerGroup != null)
+            {
+                sfx2DSource.outputAudioMixerGroup = sfxMixerGroup;
+            }
         }
 
-        public void PlaySound3D(string soundName, Vector3 pos)
-        {
-            if (!isPlaying)
+
+            public void PlaySound3D(string soundName, Vector3 pos)
             {
-                AudioClip clip = sfxLibrary.GetClipFromName(soundName);
-                if (clip != null)
+                if (!isPlaying)
                 {
-                    isPlaying = true;
+                    AudioClip clip = sfxLibrary.GetClipFromName(soundName);
+                    if (clip != null)
+                    {
+                        isPlaying = true;
 
-                    GameObject audioSourceObject = new GameObject("TempAudio");
-                    currentAudioSource = audioSourceObject.AddComponent<AudioSource>();
-                    currentAudioSource.clip = clip;
+                        GameObject audioSourceObject = new GameObject("TempAudio");
+                        currentAudioSource = audioSourceObject.AddComponent<AudioSource>();
+                        currentAudioSource.clip = clip;
 
-                    currentAudioSource.transform.position = pos;
-                    currentAudioSource.Play();
-                    StartCoroutine(WaitForSoundToFinish(currentAudioSource));
+                        currentAudioSource.transform.position = pos;
+                        currentAudioSource.Play();
+                        StartCoroutine(WaitForSoundToFinish(currentAudioSource));
+                    }
                 }
             }
-        }
 
-        private IEnumerator WaitForSoundToFinish(AudioSource audioSource)
-        {
-            while (audioSource != null && audioSource.isPlaying)
+            private IEnumerator WaitForSoundToFinish(AudioSource audioSource)
             {
-                yield return null;
+                while (audioSource != null && audioSource.isPlaying)
+                {
+                    yield return null;
+                }
             }
-
-            isPlaying = false;
-            Destroy(audioSource.gameObject);
-        }
 
         public void PlaySound2D(string soundName)
         {
             sfx2DSource.PlayOneShot(sfxLibrary.GetClipFromName(soundName));
-        }
-
-        internal void PlaySound3D(object position)
-        {
-            throw new NotImplementedException();
         }
     }
 }
