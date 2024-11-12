@@ -8,17 +8,19 @@ namespace ITKombat{
         public AI_Attack aiAttack;
         public AI_Defense aiDefense;
         public Transform player;
-        public float waitingTime = 1f; // Delay time before next state
+        public float waitingTime = 1.5f; // Delay time before next state
 
         private enum AIState {Approach, Retreat, Attack, Idle, Blocking}
         private AIState currentState = AIState.Idle;
+        
+
 
         [System.Obsolete]
         void Start()
         {
             aiAttack = GetComponent<AI_Attack>();
             aimovement = GetComponent<AI_Movement>();
-            aiDefense = GetComponent<AI_Defense>();
+            aiDefense = GetComponent<AI_Defense>();       
             player = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
@@ -71,9 +73,9 @@ namespace ITKombat{
             {
                 currentState = AIState.Blocking;
             }
-            else if (aiAttack.canAttack && distance <= aiAttack.attackRange)
+            else if (distance <= aiAttack.attackRange)
             {
-                currentState = AIState.Attack;
+                if(aiAttack.canAttack) currentState = AIState.Attack;
             }
         }
 
@@ -92,15 +94,17 @@ namespace ITKombat{
             {
                 currentState = AIState.Blocking;
             }
-            else if (aiAttack.canAttack && distance <= aiAttack.attackRange)
+            else if (distance <= aiAttack.attackRange)
             {
-                currentState = AIState.Attack;
+                if(aiAttack.canAttack) currentState = AIState.Attack;
             }
         }
 
         void AttackStateHandler(float distance)
         {
-            if (aiAttack.canAttack) aiAttack.Attack();
+            if (aiAttack.canAttack){
+                aiAttack.Attack();
+            }
             if (aiAttack.currentCombo >= aiAttack.maxCombo || distance > aiAttack.attackRange)
             {
                 NextAttackDecision();
@@ -128,7 +132,6 @@ namespace ITKombat{
         void NextAttackDecision()
         {
             float decision = Random.value;
-
             if (decision < 0.3f)
             {
                 aimovement.movementStep = 0f;

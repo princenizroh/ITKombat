@@ -33,7 +33,8 @@ public class DoorPunch : MonoBehaviour
     {
         if (CanActivateScene() && !string.IsNullOrEmpty(targetSceneName)) // Pastikan player di range dan scene tujuan tidak kosong
         {
-            SceneController.instance.LoadSceneByName(targetSceneName); // Pindah ke scene yang dituju
+            // SceneController.instance.LoadSceneByName(targetSceneName); // Pindah ke scene yang dituju
+            Loader.Load(Loader.Scene.WaitingUnranked);
             Debug.Log("Beralih ke scene: " + targetSceneName);
         }
     }
