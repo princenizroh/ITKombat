@@ -3,12 +3,12 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.VFX;
 using System.Runtime.CompilerServices;
+using UnityEngine.Audio;
 
 namespace ITKombat
 {
     public class PlayerIFAttack : NetworkBehaviour
     {
-
         public static PlayerIFAttack Instance;
         public Transform attackPoint;
         public float attackRadius = 1f;
@@ -32,18 +32,6 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack2_Left = null;
         [SerializeField] private ParticleSystem Attack3_Left = null;
         [SerializeField] private ParticleSystem Attack4_Left = null;
-
-        // Nanti ini taruh audiosource buat masing-masing soundnya
-        // AudioSource buat weapon hit
-        // AudioSource buat weapon miss
-        // AudioSource buat non-weapon hit
-        // AudioSource buat non-weapon miss
-
-        // Audio sources for normal attacks
-        // public AudioSource punchSound1;
-        // public AudioSource punchSound2;
-        // public AudioSource punchSound3;
-        // public AudioSource punchSound4;
 
         // Weapon state
         public bool isUsingWeapon; // Buat toggle manual di masing-masing prefab karakter menggunakan weapon atau tidak
@@ -225,7 +213,7 @@ namespace ITKombat
 
 
         // Taruh hit dan miss soundnya disini
-
+        
         private void PlayHitSound(int comboNumber)
         {
             switch (comboNumber)
@@ -245,6 +233,7 @@ namespace ITKombat
                 case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                
             }
         }
 

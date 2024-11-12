@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CloudMovement : MonoBehaviour
+namespace ITKombat{
+    public class CloudMovement : MonoBehaviour
 {
     public float speed = 1.0f; // Kecepatan awan
     public float leftEdge; // Posisi x untuk reset di ujung kiri
@@ -27,3 +28,5 @@ public class CloudMovement : MonoBehaviour
         transform.position = new Vector3(leftEdge, transform.position.y, transform.position.z);
     }
 }
+}
+

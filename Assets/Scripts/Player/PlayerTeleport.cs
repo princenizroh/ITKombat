@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class PlayerTeleport : MonoBehaviour
+namespace ITKombat{
+    public class PlayerTeleport : MonoBehaviour
 {
     private GameObject currentTeleporter;
 
@@ -34,3 +35,5 @@ public class PlayerTeleport : MonoBehaviour
         }
     }
 }
+}
+

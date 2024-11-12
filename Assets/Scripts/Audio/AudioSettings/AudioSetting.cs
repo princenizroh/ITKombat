@@ -17,7 +17,6 @@ public class AudioSetting : MonoBehaviour
     void Start()
     {
         LoadVolume();
-        // Mendapatkan nama scene saat ini
         string currentSceneName = SceneManager.GetActiveScene().name;
         Debug.Log(currentSceneName + "adalah scene sekarang");
         if (currentSceneName == "SoundMultiplayer")
@@ -28,36 +27,33 @@ public class AudioSetting : MonoBehaviour
         {
             MusicManager.Instance.PlayMusic("MarsITKombat");
         }
-        // Menampilkan nama scene di console
-        Debug.Log("Nama scene saat ini: " + currentSceneName);
 
-        //Nanti tambahkan else StopMusic()
-    
+
     }
 
     public void UpdateMusicVolume(float volume)
     {
-        audioMixer.SetFloat("MusicScript", volume);
+        audioMixer.SetFloat("MusicVolume", volume);
     }
- 
+
     public void UpdateSoundVolume(float volume)
     {
-        audioMixer.SetFloat("AudioScript", volume);
+        audioMixer.SetFloat("SFXVolume", volume);
     }
  
     public void SaveVolume()
     {
-        audioMixer.GetFloat("MusicScript", out float musicVolume);
-        PlayerPrefs.SetFloat("MusicScript", musicVolume);
+        audioMixer.GetFloat("MusicVolume", out float musicVolume);
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
  
-        audioMixer.GetFloat("AudioScript", out float sfxVolume);
-        PlayerPrefs.SetFloat("AudioScript", sfxVolume);
+        audioMixer.GetFloat("SFXVolume", out float sfxVolume);
+        PlayerPrefs.SetFloat("SFXVolume", sfxVolume);
     }
  
     public void LoadVolume()
     {
-        musicSlider.value = PlayerPrefs.GetFloat("MusicScript");
-        sfxSlider.value = PlayerPrefs.GetFloat("AudioScript");
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
     }
 }
 }

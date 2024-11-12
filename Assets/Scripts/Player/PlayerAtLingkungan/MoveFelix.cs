@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class MoveFelix : MonoBehaviour
+namespace ITKombat{
+    public class MoveFelix : MonoBehaviour
 {
     public float speed = 5f; // Kecepatan berjalan
     private Rigidbody2D rb;
@@ -27,18 +28,13 @@ public class MoveFelix : MonoBehaviour
         if (moveLeft)
         {
             movement.x = -1;
-            animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
         }
         // Jika tombol kanan ditekan, bergerak ke kanan
         else if (moveRight)
         {
             movement.x = 1;
-            animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
         }
-        else
-        {
-            animator.SetBool("IsMoving", false); // Set IsMoving ke false jika tidak bergerak
-        }
+
 
         // Kirim nilai ke Blend Tree melalui parameter 'Speed'
         animator.SetFloat("Speed", Mathf.Abs(movement.x));
@@ -84,4 +80,6 @@ public class MoveFelix : MonoBehaviour
         Debug.Log("Move Right Up");
         moveRight = false;
     }
+}
+
 }

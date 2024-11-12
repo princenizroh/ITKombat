@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerSliderController : MonoBehaviour
+
+namespace ITKombat{
+    public class PlayerSliderController : MonoBehaviour
 {
     private FinishPoint finishPoint; // Reference to the FinishPoint script
     [SerializeField] private Slider progressBar; // Reference to the slider UI
@@ -41,4 +43,6 @@ public class PlayerSliderController : MonoBehaviour
     {
         finishPoint = null;
     }
+}
+
 }
