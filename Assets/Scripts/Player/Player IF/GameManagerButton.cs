@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameManagerButton : MonoBehaviour
 {
     [SerializeField]
-    private PlayerAttackTestNope playerAttack;
+    private PlayerIFAttack playerAttack;
     [SerializeField]
     private PlayerMovement_2 playerMovement;
     [SerializeField]
@@ -13,7 +13,7 @@ public class GameManagerButton : MonoBehaviour
 
     private void Start()
     {
-        playerAttack = GetComponent<PlayerAttackTestNope>();
+        playerAttack = GetComponent<PlayerIFAttack>();
         playerMovement = GetComponent<PlayerMovement_2>();
         playerSkill = GetComponent<SkillsHolder>();
     }

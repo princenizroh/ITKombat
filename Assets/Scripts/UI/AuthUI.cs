@@ -11,6 +11,7 @@ namespace ITKombat
         {
             authenticateButton.onClick.AddListener(() =>
             {
+                Debug.Log("Authenticating...");
                 LobbyRoomManager.Instance.Authenticate(LobbyRoomManager.Instance.GetFirebaseUser());
                 Hide();
             });
