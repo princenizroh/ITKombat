@@ -6,8 +6,8 @@ namespace ITKombat
     {
         public bool isBlocking = false;
         public float criticalProximity = 2.5f;
-        public float blockChance = 0.35f;
-        public float blockDuration = 1f;
+        public float blockChance = 0.2f;
+        public float blockDuration = 0.7f;
         [Header("Others")]
         private AI_Movement aiMovement;
         private AI_Attack aiAttack;

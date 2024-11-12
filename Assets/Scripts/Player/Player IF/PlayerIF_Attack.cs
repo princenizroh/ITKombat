@@ -8,7 +8,6 @@ namespace ITKombat
 {
     public class PlayerIFAttack : NetworkBehaviour
     {
-
         public static PlayerIFAttack Instance;
         public Transform attackPoint;
         public float attackRadius = 1f;
@@ -32,18 +31,6 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack2_Left = null;
         [SerializeField] private ParticleSystem Attack3_Left = null;
         [SerializeField] private ParticleSystem Attack4_Left = null;
-
-        // Nanti ini taruh audiosource buat masing-masing soundnya
-        // AudioSource buat weapon hit
-        // AudioSource buat weapon miss
-        // AudioSource buat non-weapon hit
-        // AudioSource buat non-weapon miss
-
-        // Audio sources for normal attacks
-        // public AudioSource punchSound1;
-        // public AudioSource punchSound2;
-        // public AudioSource punchSound3;
-        // public AudioSource punchSound4;
 
         // Weapon state
         public bool isUsingWeapon; // Buat toggle manual di masing-masing prefab karakter menggunakan weapon atau tidak
@@ -102,13 +89,6 @@ namespace ITKombat
                     AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
                     if (enemyRb != null && !enemyDefense.isBlocking)
                     {
-                        if (combo == 4) // knockback hanya untuk hit ke 4
-                        {
-                            float attackForce = enemy.bounds.size.magnitude / 2; // penyesuaian attack force sesuai size karakter
-                            Vector2 direction = enemy.transform.position - attackPoint.position; // penyesuaian arah knockback
-                            enemyRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
-                        }
-
                         GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
 
                         if (enemyStateObject != null)
@@ -116,6 +96,7 @@ namespace ITKombat
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                             if (enemyState != null)
                             {
+                                ApplyKnockback(enemy,combo);
                                 enemyState.TakeDamage(attackPower);
                             }
                         }
@@ -134,6 +115,32 @@ namespace ITKombat
             {
                 animator.SetTrigger("Idle");
                 Debug.Log("Cooldown not exceeded, going to idle.");
+            }
+        }
+
+        void ApplyKnockback(Collider2D enemyCollider, float currentCombo)
+        {
+            if (enemyCollider != null)
+            {
+                Rigidbody2D enemyRb = enemyCollider.GetComponent<Rigidbody2D>();
+                if (enemyRb != null)
+                {
+                    if (currentCombo == 4) // knockback hanya untuk hit ke 4
+                        {
+                            float attackForce = enemyCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
+                            Vector2 direction = (enemyCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
+
+                            enemyRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+                        }
+                }
+                else
+                {
+                    Debug.LogWarning("No Rigidbody2D found on the enemy.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No enemy detected within knockback radius.");
             }
         }
 
