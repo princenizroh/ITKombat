@@ -7,7 +7,7 @@ namespace ITKombat
         
         public void soundButtonPause()
         {
-            SoundManager.Instance.PlaySound3D("Button_Pause", transform.position);
+            SoundManager.Instance.PlaySound3D("Button_Click", transform.position);
         }
     }
 }
