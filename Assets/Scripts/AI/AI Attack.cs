@@ -21,9 +21,6 @@ namespace ITKombat
         public float lastAttackTime = 0f;       // Time of the last attack
 
         public LayerMask playerlayer;
-        private Transform player;
-        private Rigidbody2D playerRigidbody;
-        private AI_Movement aiMovement;
         private Animator anim;
 
         // VFX Right
@@ -38,11 +35,6 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack3_Left = null;
         [SerializeField] private ParticleSystem Attack4_Left = null;
 
-        // public AudioSource punchSound1;
-        // public AudioSource punchSound2;
-        // public AudioSource punchSound3;
-        // public AudioSource punchSound4;
-
         private void Awake()
         {
             anim = GetComponent<Animator>();
@@ -55,14 +47,11 @@ namespace ITKombat
             {
                 DontDestroyOnLoad(gameObject);
             }
-
         }
 
         void Start()
         {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
             // playerlayer = LayerMask.FindGameObjectWithTag("Player").transform;
-            aiMovement = GetComponent<AI_Movement>();  // Reference to AI_Movement
             anim = GetComponent<Animator>();
         }
 
@@ -86,8 +75,8 @@ namespace ITKombat
                 lastAttackTime = Time.time;
 
                 // Apply damage to player
-                Collider2D[] hitplayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, playerlayer);
-                foreach (Collider2D player in hitplayer)
+                Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, playerlayer);
+                foreach (Collider2D player in hitPlayer)
                 {
                     Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
                     // PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
@@ -99,6 +88,7 @@ namespace ITKombat
                             PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
                             if (playerState != null)
                             {
+                                if (currentCombo == 4) Knockback(player);
                                 playerState.TakeDamage(attackPower);
                             }
                         }
@@ -115,24 +105,38 @@ namespace ITKombat
                         }
                     }
                 }
-                AttackAnimation();
+                AttackAnimation(hitPlayer);
 
             }
         }
 
-        void Knockback()
+        void Knockback(Collider2D playerCollider)
         {
-            playerRigidbody = player.GetComponent<Rigidbody2D>();
-            if (playerRigidbody != null)
+            if (playerCollider != null)
             {
-                Vector2 knockbackDirection = (player.position - transform.position).normalized;
-                // playerRigidbody.linearVelocity = Vector2.zero;
-                playerRigidbody.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
-                Debug.Log("Player hit by knockback");
+                Rigidbody2D playerRb = playerCollider.GetComponent<Rigidbody2D>();
+                if (playerRb != null)
+                {
+                    // Calculate knockback direction from attackPoint to player
+                    Vector2 knockbackDirection = (playerCollider.transform.position - attackPoint.position).normalized;
+
+                    // Apply knockback force
+                    playerRb.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
+                    Debug.Log("Player hit by knockback");
+                }
+                else
+                {
+                    Debug.LogWarning("No Rigidbody2D found on the player.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No player detected within knockback radius.");
             }
         }
 
-        private void AttackAnimation()
+
+        private void AttackAnimation(Collider2D[] hitPlayer)
         {
             CharacterController2D1 character = GetComponent<CharacterController2D1>();
             if (character == null) return;
@@ -147,7 +151,7 @@ namespace ITKombat
                     {
                         Attack1_Left.Play();
                     }
-                    SoundManager.Instance.PlaySound3D("CharIF_Attack1", transform.position);
+                    PlayAttackSound(1,hitPlayer.Length > 0);
                     anim.SetTrigger("attack1");
                     Debug.Log("Attack 1 triggered");
                     break;
@@ -160,7 +164,7 @@ namespace ITKombat
                     {
                         Attack2_Left.Play();
                     }
-                    SoundManager.Instance.PlaySound3D("CharIF_Attack2", transform.position);
+                    PlayAttackSound(2,hitPlayer.Length > 0);
                     anim.SetTrigger("attack2");
                     Debug.Log("Attack 2 triggered");
                     break;
@@ -173,7 +177,7 @@ namespace ITKombat
                     {
                         Attack3_Left.Play();
                     }
-                    SoundManager.Instance.PlaySound3D("CharIF_Attack3", transform.position);
+                    PlayAttackSound(3,hitPlayer.Length > 0);
                     anim.SetTrigger("attack3");
                     Debug.Log("Attack 3 triggered");
                     break;
@@ -186,21 +190,46 @@ namespace ITKombat
                     {
                         Attack4_Left.Play();
                     }
-                    SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position);
+                    PlayAttackSound(4,hitPlayer.Length > 0);
                     anim.SetTrigger("attack4");
                     Debug.Log("Attack 4 triggered");
-                    Knockback();
                     break;
             }
         }
 
-        // private void PlaySound(AudioSource sound)
-        //     {
-        //         if (sound != null)
-        //         {
-        //             sound.Play();
-        //         }
-        //     }
+        private void PlayAttackSound(int comboNumber, bool hitPlayer)
+        {
+            if (hitPlayer)
+            {
+                PlayHitSound(comboNumber);
+            }
+            else
+            {
+                PlayMissSound(comboNumber);
+            }
+        }
+
+        private void PlayHitSound(int comboNumber)
+        {
+            switch (comboNumber)
+            {
+                case 1: SoundManager.Instance.PlaySound3D("CharIF_Attack1", transform.position); break;
+                case 2: SoundManager.Instance.PlaySound3D("CharIF_Attack2", transform.position); break;
+                case 3: SoundManager.Instance.PlaySound3D("CharIF_Attack3", transform.position); break;
+                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+            }
+        }
+
+        private void PlayMissSound(int comboNumber)
+        {
+            switch (comboNumber)
+            {
+                case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+                case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+                case 4: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+            }
+        }
 
         private IEnumerator AttackCooldown()
         {
@@ -221,7 +250,7 @@ namespace ITKombat
 
         private void OnDrawGizmosSelected()
         {
-            if (attackPoint == null) Debug.Log("gaada jir");
+            if (attackPoint == null) return;
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ITKombat
@@ -9,18 +8,17 @@ namespace ITKombat
         [Header("Movement")]
         public float moveSpeed = 3f;
         public float movementStep = 0f;
-        public float maxStep = 3f;
-        public float maxDistance = 16f;
+        public float maxStep = 2f;
+        public float maxDistance = 15f;
         public bool facingPlayer = true;
         public bool canMove = true;
-
 
         [Header("Jump")]
         private float jumpForce = 5f;
         private float jumpCooldown = 2f;
         [SerializeField] private bool canJump = true;
 
-
+        [Header("Others")]
         [SerializeField] private Transform player;
         private Rigidbody2D myRigidbody;
         private Animator anim;
