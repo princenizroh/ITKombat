@@ -18112,9 +18112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e768fd05d8a8b479f49c0016b4489b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAttack: {fileID: 1433186302}
-  playerMovement: {fileID: 2786425133770990259}
-  playerSkill: {fileID: 0}
 --- !u!1 &1926056791
 GameObject:
   m_ObjectHideFlags: 0
@@ -18365,12 +18362,17 @@ MonoBehaviour:
   attackRange: 3
   attackForce: 50
   attackPower: 5
+  attackRadius: 1
+  attackPoint: {fileID: 0}
   attackCooldown: 0.5
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
   currentCombo: 0
   lastAttackTime: 0
+  playerlayer:
+    serializedVersion: 2
+    m_Bits: 0
   Attack1_Right: {fileID: 0}
   Attack2_Right: {fileID: 0}
   Attack3_Right: {fileID: 0}
@@ -18379,10 +18381,6 @@ MonoBehaviour:
   Attack2_Left: {fileID: 0}
   Attack3_Left: {fileID: 0}
   Attack4_Left: {fileID: 0}
-  punchSound1: {fileID: 0}
-  punchSound2: {fileID: 0}
-  punchSound3: {fileID: 0}
-  punchSound4: {fileID: 0}
 --- !u!114 &1938394557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18398,6 +18396,7 @@ MonoBehaviour:
   moveSpeed: 3
   movementStep: 0
   maxStep: 50
+  maxDistance: 16
   facingPlayer: 1
   canMove: 1
   canJump: 1
@@ -20840,18 +20839,10 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3087016880
       objectReference: {fileID: 0}
-    - target: {fileID: 1688327821764172534, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 2176880652430277937, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: easeHealthSlider
       value: 
       objectReference: {fileID: 279210144}
-    - target: {fileID: 2536794618827931801, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_Flip.x
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -20896,27 +20887,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerIF
       objectReference: {fileID: 0}
-    - target: {fileID: 6813249475475899441, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6813249475475899441, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -563544493199251312, guid: fcc33a69d7d4a5a46ad433e3c614ece6, type: 3}
-    - target: {fileID: 6913358028164970780, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.8125
-      objectReference: {fileID: 0}
-    - target: {fileID: 6913358028164970780, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1.9375
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 4908309808898911737, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-    - {fileID: 8138815111568107395, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-    - {fileID: 7379478448842199368, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
