@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class PlayerPrefsClearer : MonoBehaviour
+namespace ITKombat{
+    public class PlayerPrefsClearer : MonoBehaviour
 {
     private void Start()
     {
@@ -14,3 +15,5 @@ public class PlayerPrefsClearer : MonoBehaviour
         Debug.Log("All PlayerPrefs data has been deleted.");
     }
 }
+}
+

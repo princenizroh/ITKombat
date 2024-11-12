@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class FinishPoint : MonoBehaviour
+namespace ITKombat{
+    public class FinishPoint : MonoBehaviour
 {
     private float timer = 0f;
     private bool playerInZone = false;
@@ -83,3 +84,5 @@ public class FinishPoint : MonoBehaviour
     public bool IsPlayerInZone() => playerInZone;
     public float GetTimer() => timer;
 }
+}
+

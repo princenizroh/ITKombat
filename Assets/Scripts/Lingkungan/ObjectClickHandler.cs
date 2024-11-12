@@ -1,21 +1,23 @@
 using UnityEngine;
 
-public class ObjectClickHandler : MonoBehaviour
+namespace ITKombat
 {
-    [SerializeField] private GameObject leaderboardCanvas; // Reference to the leaderboard canvas
-
-    private void Start()
+    public class ObjectClickHandler : MonoBehaviour
     {
-        leaderboardCanvas.SetActive(false); // Hide leaderboard at the start
-    }
+        [SerializeField] private GameObject leaderboardCanvas; // Reference to the leaderboard canvas
 
-    private void OnMouseDown()
-    {
-        Debug.Log("Canvas Terklik"); // Tes apakah metode ini terpicu
-        if (!leaderboardCanvas.activeSelf)
+        private void Start()
         {
-            leaderboardCanvas.SetActive(true);
+            leaderboardCanvas.SetActive(false); // Hide leaderboard at the start
+        }
+
+        private void OnMouseDown()
+        {
+            Debug.Log("Canvas Terklik"); // Tes apakah metode ini terpicu
+            if (!leaderboardCanvas.activeSelf)
+            {
+                leaderboardCanvas.SetActive(true);
+            }
         }
     }
-
 }

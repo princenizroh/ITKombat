@@ -1,59 +1,59 @@
 using UnityEngine;
 
-
-public class PlayerCombat : MonoBehaviour
+namespace ITKombat
 {
-    public Animator animator;
-    public bool isAttacking = false;
-    public static PlayerCombat instance;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private BuildingPunchCollider buildingCollider; // Referensi ke collider bangunan
-
-    private DoorPunch doorCollider;
-
-    private void Awake ()
+    public class PlayerCombat : MonoBehaviour
     {
-        instance = this;
-    }
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-    }
+        public Animator animator;
+        public bool isAttacking = false;
+        public static PlayerCombat instance;
 
-    // Update is called once per frame
-    public void OnAttackButtonPressed()
-    {
-        if (!isAttacking)
+        private BuildingPunchCollider buildingCollider; // Referensi ke collider bangunan
+        private DoorPunch doorCollider;
+
+        private void Awake()
         {
-            isAttacking = true;
-            HandlePunchCombo();
-        }
-    }
-
-    private void HandlePunchCombo()
-    {
-        // Cek apakah player sedang memukul dan berkolisi dengan bangunan
-        if (buildingCollider != null && buildingCollider.CanActivateCanvas())
-        {
-            Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
-            buildingCollider.ActivateCanvas();
+            instance = this;
         }
 
-        // Cek apakah player sedang memukul dan berkolisi dengan bangunan
-        else if (doorCollider != null && doorCollider.CanActivateScene()) // Pastikan menggunakan doorCollider di sini
+        void Start()
         {
-            Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
-            doorCollider.TransitionToScene(); // Pindahkan ke scene yang dituju
+            animator = GetComponent<Animator>();
         }
-    }
 
-    public void SetBuildingCollider(BuildingPunchCollider collider)
-    {
-        buildingCollider = collider;
-    }
+        // Update is called once per frame
+        public void OnAttackButtonPressed()
+        {
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                HandlePunchCombo();
+            }
+        }
 
-    public void SetPunchCollider(DoorPunch collider)
-    {
-        doorCollider = collider;
+        private void HandlePunchCombo()
+        {
+            // Cek apakah player sedang memukul dan berkolisi dengan bangunan
+            if (buildingCollider != null && buildingCollider.CanActivateCanvas())
+            {
+                Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
+                buildingCollider.ActivateCanvas();
+            }
+            else if (doorCollider != null && doorCollider.CanActivateScene()) // Pastikan menggunakan doorCollider di sini
+            {
+                Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
+                doorCollider.TransitionToScene(); // Pindahkan ke scene yang dituju
+            }
+        }
+
+        public void SetBuildingCollider(BuildingPunchCollider collider)
+        {
+            buildingCollider = collider;
+        }
+
+        public void SetPunchCollider(DoorPunch collider)
+        {
+            doorCollider = collider;
+        }
     }
 }

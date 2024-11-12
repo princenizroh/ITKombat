@@ -2,7 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneController : MonoBehaviour
+namespace ITKombat{
+    public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
     [SerializeField] Animator transitionAnim;
@@ -42,5 +43,7 @@ public class SceneController : MonoBehaviour
         Debug.Log("Scene transition to: " + sceneName + " completed");
         
     }
+
+}
 
 }

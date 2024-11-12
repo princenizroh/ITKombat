@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class MoveFelix : MonoBehaviour
+namespace ITKombat{
+    public class MoveFelix : MonoBehaviour
 {
     public float speed = 5f; // Kecepatan berjalan
     private Rigidbody2D rb;
@@ -79,4 +80,6 @@ public class MoveFelix : MonoBehaviour
         Debug.Log("Move Right Up");
         moveRight = false;
     }
+}
+
 }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Teleporter : MonoBehaviour
+namespace ITKombat{
+    public class Teleporter : MonoBehaviour
 {
     [SerializeField] private Transform destination;
     public GameObject Objek; 
@@ -33,4 +34,6 @@ public class Teleporter : MonoBehaviour
             Debug.Log("Objek keluar dari collider.");
         }
     }
+}
+
 }
