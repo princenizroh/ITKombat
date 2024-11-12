@@ -11,10 +11,11 @@ public class ObjectClickHandler : MonoBehaviour
 
     private void OnMouseDown()
     {
-        // Check if the leaderboard is not already active
+        Debug.Log("Canvas Terklik"); // Tes apakah metode ini terpicu
         if (!leaderboardCanvas.activeSelf)
         {
-            leaderboardCanvas.SetActive(true); // Show the leaderboard canvas when the trophy is clicked
+            leaderboardCanvas.SetActive(true);
         }
     }
+
 }

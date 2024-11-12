@@ -450,7 +450,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a5affd36eac5a544f8db9094456b0505, type: 3}
+  m_Sprite: {fileID: 2309219019919756552, guid: 9d90f94343da91943b3551176e4b0ecc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1966,7 +1966,7 @@ Transform:
   m_GameObject: {fileID: 1154637748}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.4105268, y: 4.4499993, z: -10.373763}
+  m_LocalPosition: {x: 4.5473685, y: 3.4499998, z: -10.373763}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2104,7 +2104,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2
+  orthographic size: 1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3358,9 +3358,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1804866472}
+      - m_Target: {fileID: 1804866479}
         m_TargetAssemblyTypeName: PlayerCombat, Assembly-CSharp
-        m_MethodName: OnAttackButtonDown
+        m_MethodName: OnAttackButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3737,7 +3737,7 @@ GameObject:
   - component: {fileID: 1804866475}
   - component: {fileID: 1804866474}
   - component: {fileID: 1804866473}
-  - component: {fileID: 1804866472}
+  - component: {fileID: 1804866479}
   - component: {fileID: 1804866471}
   m_Layer: 0
   m_Name: Fisika
@@ -3776,23 +3776,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionButtonImage: {fileID: 203540619}
-  attackSprite: {fileID: 21300000, guid: a5affd36eac5a544f8db9094456b0505, type: 3}
-  doorSprite: {fileID: 8792170677195614851, guid: b4ec7301ac998b74caa54c6196ea615b, type: 3}
-  shopSprite: {fileID: 0}
-  topUpSprite: {fileID: 0}
---- !u!114 &1804866472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804866469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e235cfbe2ea4e774ab09b45c3020b859, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  comboDelay: 1
+  attackSprite: {fileID: 2309219019919756552, guid: 9d90f94343da91943b3551176e4b0ecc, type: 3}
+  doorSprite: {fileID: 633218748477426386, guid: d092884bc8c94704c9768843013b4214, type: 3}
+  shopSprite: {fileID: 3496996903020787579, guid: 13145c7596a161045838808473a0fdb6, type: 3}
+  topUpSprite: {fileID: 3971880395040776194, guid: 31045b0ce073fac4588734b483e8fd32, type: 3}
 --- !u!114 &1804866473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3969,6 +3956,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1804866479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804866469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cfc719fbabd20748b53d866ee340146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1804866477}
+  isAttacking: 0
 --- !u!1 &1863283560
 GameObject:
   m_ObjectHideFlags: 0
@@ -4169,7 +4170,7 @@ Transform:
   m_GameObject: {fileID: 2044845656}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.4105268, y: 4.4499993, z: -10.373763}
+  m_LocalPosition: {x: 4.5473685, y: 3.4499998, z: -10.373763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4232,7 +4233,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0.37, y: 1.77, z: 0}
+  TargetOffset: {x: 0.5, y: 0.67, z: 0}
   Damping: {x: 1, y: 1, z: 1}
   Lookahead:
     Enabled: 0
@@ -4264,7 +4265,7 @@ MonoBehaviour:
     CustomLookAtTarget: 1
   Lens:
     FieldOfView: 60
-    OrthographicSize: 2
+    OrthographicSize: 1
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
