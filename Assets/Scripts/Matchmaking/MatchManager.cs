@@ -26,6 +26,7 @@ namespace ITKombat
 
         //Audio Source Sound Manager
         private bool isSoundFight = false;
+        
 
         void Start() 
         {

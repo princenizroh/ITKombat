@@ -7,7 +7,7 @@ namespace ITKombat
     public class IFSkill1 : Skills
     {
         // Masukin sound dan anim disini
-
+        
         [SerializeField] private Transform attackPoint;
         private float damage = 30f;
         private float force = 5f;
@@ -18,7 +18,7 @@ namespace ITKombat
         public override void Activate(GameObject parent)
         {
             // Masukin sound dan anim disini
-
+            
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemy);
             foreach (Collider2D enemy in hitEnemies)
             {
