@@ -64,7 +64,7 @@ namespace ITKombat
             Debug.Log("ServerBattleRoomState Start");
 
     #if DEDICATED_SERVER
-            await MultiplayService.Instance.UnreadyServerAsync();
+            // await MultiplayService.Instance.UnreadyServerAsync();
             
             Camera.main.enabled = false;
     #endif
