@@ -295,7 +295,7 @@ SpriteRenderer:
   m_SortingLayerID: -911367517
   m_SortingLayer: 4
   m_SortingOrder: 200
-  m_Sprite: {fileID: 8480970923650575096, guid: 10df074be930c8142ae057155e9b76a1, type: 3}
+  m_Sprite: {fileID: -563544493199251312, guid: fcc33a69d7d4a5a46ad433e3c614ece6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -393,7 +393,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.09375, y: 2.03125}
+    oldSize: {x: 0.8125, y: 1.9375}
     newSize: {x: 1.09375, y: 2.03125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -449,7 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3978643440
+  GlobalObjectIdHash: 219171551
   InScenePlacedSourceGlobalObjectIdHash: 3978643440
   DeferredDespawnTick: 0
   Ownership: 1
@@ -495,14 +495,14 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  Attack1_Right: {fileID: 0}
-  Attack2_Right: {fileID: 0}
-  Attack3_Right: {fileID: 0}
-  Attack4_Right: {fileID: 0}
-  Attack1_Left: {fileID: 0}
-  Attack2_Left: {fileID: 0}
-  Attack3_Left: {fileID: 0}
-  Attack4_Left: {fileID: 0}
+  Attack1_Right: {fileID: 779737927099393662}
+  Attack2_Right: {fileID: 1563678312032742721}
+  Attack3_Right: {fileID: 4126210061525547973}
+  Attack4_Right: {fileID: 6099359316863651672}
+  Attack1_Left: {fileID: 2148557689610558641}
+  Attack2_Left: {fileID: 4083302349605917132}
+  Attack3_Left: {fileID: 4765688780520937115}
+  Attack4_Left: {fileID: 840625220458494488}
   isUsingWeapon: 0
 --- !u!114 &660875470113568699
 MonoBehaviour:
@@ -586,8 +586,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   movementStep: 0
-  maxStep: 50
-  maxDistance: 70
+  maxStep: 2
+  maxDistance: 15
   facingPlayer: 1
   canMove: 1
   canJump: 1
@@ -604,12 +604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fce5f7a821399d42bceb37788324c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 3
-  attackForce: 5
-  attackPower: 5
+  attackRange: 2.7
+  attackPower: 10
   attackRadius: 1
   attackPoint: {fileID: 3048261050815633105}
-  attackCooldown: 0.5
+  attackCooldown: 1
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
@@ -617,7 +616,7 @@ MonoBehaviour:
   lastAttackTime: 0
   playerlayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   Attack1_Right: {fileID: 2148557689610558641}
   Attack2_Right: {fileID: 4083302349605917132}
   Attack3_Right: {fileID: 4765688780520937115}
@@ -835,8 +834,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 69cee60f3ad809449b41d87dea9e74ff, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 53e888415dd9337409c76e1d294344e3, type: 3}
+  m_Resource: {fileID: 8300000, guid: 53e888415dd9337409c76e1d294344e3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -932,8 +931,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: b8d855ecc4d867447b68283479c79992, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 53e888415dd9337409c76e1d294344e3, type: 3}
+  m_Resource: {fileID: 8300000, guid: 53e888415dd9337409c76e1d294344e3, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1030,7 +1029,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 69cee60f3ad809449b41d87dea9e74ff, type: 3}
+  m_Resource: {fileID: 8300000, guid: 92589eb24053671469bcd76cf44ecfd7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1126,8 +1125,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 6fb78c0b37204a540a32e3db59fde5dd, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 3495e23ed1fef484d82415e3cedc09b9, type: 3}
+  m_Resource: {fileID: 8300000, guid: 3495e23ed1fef484d82415e3cedc09b9, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
