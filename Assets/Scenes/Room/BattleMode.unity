@@ -632,9 +632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83e768fd05d8a8b479f49c0016b4489b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAttack: {fileID: 0}
-  playerMovement: {fileID: 0}
-  playerSkill: {fileID: 0}
 --- !u!1 &351211054
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,7 +1677,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1095185261
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1966,7 +1963,7 @@ Transform:
   m_GameObject: {fileID: 1154637748}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5473685, y: 3.4499998, z: -10.373763}
+  m_LocalPosition: {x: 4.5473685, y: 3.6999993, z: -10.373763}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4034,8 +4031,12 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.35512686, y: 7.6722097}
-      - {x: -19.766714, y: 7.639094}
-      - {x: -19.650623, y: -4.755443}
+      - {x: -16.511572, y: 7.1740727}
+      - {x: -16.56986, y: 0.06913972}
+      - {x: -16.715181, y: -2.023447}
+      - {x: -16.686117, y: -4.232295}
+      - {x: -16.48267, y: -4.58106}
+      - {x: -16.511738, y: -5.1042104}
       - {x: 3.6889226, y: -4.6790943}
       - {x: 3.6743836, y: 7.672462}
   m_UseDelaunayMesh: 0
@@ -4170,7 +4171,7 @@ Transform:
   m_GameObject: {fileID: 2044845656}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.5473685, y: 3.4499998, z: -10.373763}
+  m_LocalPosition: {x: 4.5473685, y: 3.6999993, z: -10.373763}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4224,7 +4225,7 @@ MonoBehaviour:
   CameraDistance: 10
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: 0, y: -0.15}
+    ScreenPosition: {x: 0, y: 0.03}
     DeadZone:
       Enabled: 1
       Size: {x: 0, y: 0}
@@ -4233,7 +4234,7 @@ MonoBehaviour:
       Size: {x: 0.8, y: 0.8}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
-  TargetOffset: {x: 0.5, y: 0.67, z: 0}
+  TargetOffset: {x: 0.5, y: 0.51, z: 0}
   Damping: {x: 1, y: 1, z: 1}
   Lookahead:
     Enabled: 0
