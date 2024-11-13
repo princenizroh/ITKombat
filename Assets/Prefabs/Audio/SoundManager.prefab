@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7695900466762072591}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sfxLibrary: {fileID: 3335232376772070410}
   sfx2DSource: {fileID: 5766143046279593193}
+  sfxMixerGroup: {fileID: 4186753030360121521, guid: 28f99fde1d3c11840aecb208a188f697, type: 2}
 --- !u!114 &3335232376772070410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,12 +62,161 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundEffects:
-  - groupID: punch
+  - groupID: CharIF_Attack1
     clips:
-    - {fileID: 0}
-    - {fileID: 0}
-  - groupID: 
-    clips: []
+    - {fileID: 8300000, guid: 53e888415dd9337409c76e1d294344e3, type: 3}
+  - groupID: CharIF_Attack2
+    clips:
+    - {fileID: 8300000, guid: 68f5efd99b9d87d409b01552b6ec8e5f, type: 3}
+  - groupID: CharIF_Attack3
+    clips:
+    - {fileID: 8300000, guid: 867dfd835af8b644d8b5a55efee68aaf, type: 3}
+  - groupID: CharIF_Attack4
+    clips:
+    - {fileID: 8300000, guid: 699abc3d1614a2b409a153c884e6a2e5, type: 3}
+  - groupID: CharIF_Skill1
+    clips:
+    - {fileID: 8300000, guid: 63e1ef1804cebc7459e946e8b062f6e1, type: 3}
+  - groupID: CharIF_Skill2
+    clips:
+    - {fileID: 8300000, guid: 92e4f566fa18ab146a2b3108ca4bc89e, type: 3}
+  - groupID: CharIF_Skill2_shieldPecah
+    clips:
+    - {fileID: 8300000, guid: fe561cbb35bd6954888c9949a62982b6, type: 3}
+  - groupID: CharIF_Skill3
+    clips:
+    - {fileID: 8300000, guid: 4b26864b5ece94e4381d6f1837e39627, type: 3}
+  - groupID: CharMesin_Attack
+    clips:
+    - {fileID: 8300000, guid: e12e5d9ea9e94ea45b329550402cd63c, type: 3}
+    - {fileID: 8300000, guid: e12e5d9ea9e94ea45b329550402cd63c, type: 3}
+    - {fileID: 8300000, guid: c96b10887dbc91b4184fc1dea399bbeb, type: 3}
+    - {fileID: 8300000, guid: 9ace3331e04e2a846b1ddf868a720833, type: 3}
+  - groupID: CharMesin_Skill1
+    clips:
+    - {fileID: 8300000, guid: 14d131f9102f20f4f89abcd24433c05d, type: 3}
+  - groupID: CharMesin_Skill2
+    clips:
+    - {fileID: 8300000, guid: d754b782f614a624e847cf933597acc7, type: 3}
+  - groupID: CharTKimia_Attack
+    clips:
+    - {fileID: 8300000, guid: c89070ccd70878746965ee4de4d8d6b3, type: 3}
+    - {fileID: 8300000, guid: c89070ccd70878746965ee4de4d8d6b3, type: 3}
+    - {fileID: 8300000, guid: 8a407b91c012ef14abc1aaade98468bc, type: 3}
+    - {fileID: 8300000, guid: f25a85ef8f6235f4c855b2e411a39634, type: 3}
+  - groupID: CharTKimia_Skill1_Mix
+    clips:
+    - {fileID: 8300000, guid: ca5fb798bbf702c4b9c1001c2ffad7d8, type: 3}
+  - groupID: CharTKimia_Skill1_Splash
+    clips:
+    - {fileID: 8300000, guid: baf5f8bba5573374b912beebeb9fc6f5, type: 3}
+  - groupID: CharTKimia_Skill2
+    clips:
+    - {fileID: 8300000, guid: 5854637c23810e34ca111d9095cbcb3c, type: 3}
+  - groupID: CharTKimia_Skill3
+    clips:
+    - {fileID: 8300000, guid: 8b5e89f8df267e44d856eab1bfcaa24f, type: 3}
+  - groupID: CharFisika_Attack
+    clips:
+    - {fileID: 8300000, guid: 7ac6cac28b732bb4ebb4b7e49135ed9c, type: 3}
+    - {fileID: 8300000, guid: 029103c9337eecb468027ce1ed9b7d8a, type: 3}
+    - {fileID: 8300000, guid: 7ac6cac28b732bb4ebb4b7e49135ed9c, type: 3}
+    - {fileID: 8300000, guid: 029103c9337eecb468027ce1ed9b7d8a, type: 3}
+  - groupID: CharFisika_Skill1
+    clips:
+    - {fileID: 8300000, guid: 0add98b3f5332164694792606937e366, type: 3}
+  - groupID: CharFisika_Skill2
+    clips:
+    - {fileID: 8300000, guid: 9a28108862b901d449db01ad46a6ef42, type: 3}
+  - groupID: CharFisika_Skill3
+    clips:
+    - {fileID: 8300000, guid: 2c251ade4c63b624196b6f531fefc6f6, type: 3}
+  - groupID: WalkGrass
+    clips:
+    - {fileID: 8300000, guid: 8455e92f64c44e243993afc5323970f8, type: 3}
+    - {fileID: 8300000, guid: 7bdef9bca1964274fa2caf3c30621ffc, type: 3}
+    - {fileID: 8300000, guid: b5a24fca9256ec14d9412674d2e9af94, type: 3}
+  - groupID: WalkFloor
+    clips:
+    - {fileID: 8300000, guid: e49627989bdfcec4ca100d1d18060363, type: 3}
+    - {fileID: 8300000, guid: 6953e513b301d47439f4694ca3394f6e, type: 3}
+  - groupID: WalkDIrt
+    clips:
+    - {fileID: 8300000, guid: 91313692d91c33840b04ebcf9e0fea7e, type: 3}
+    - {fileID: 8300000, guid: 201d8de3bcc201e44a5604fd6f0d99c9, type: 3}
+    - {fileID: 8300000, guid: 2f6b929ea5b2aec45966fbb8fb34331b, type: 3}
+  - groupID: Jump
+    clips:
+    - {fileID: 8300000, guid: 57899bb1a92e2b14082d5f2333e9806f, type: 3}
+  - groupID: Dash
+    clips:
+    - {fileID: 8300000, guid: b10b9be85667e68448f5a277eba4211e, type: 3}
+  - groupID: Crouch
+    clips:
+    - {fileID: 8300000, guid: db8ec93d4a4ac9f4aa513e701a89e4ea, type: 3}
+  - groupID: Block_noWeapon_vs_NoWeapon
+    clips:
+    - {fileID: 8300000, guid: 2d508f4acc112b94bb123b39ee9bfd9c, type: 3}
+  - groupID: Block_noWeapon_vs_Weapon
+    clips:
+    - {fileID: 8300000, guid: bcf544170791b8846a8628461e871dcd, type: 3}
+  - groupID: Block_Weapon_vs_Weapon
+    clips:
+    - {fileID: 8300000, guid: 4d4e769e09a028942a02d580f7de1c87, type: 3}
+  - groupID: AttackMiss_noWeapon
+    clips:
+    - {fileID: 8300000, guid: f9d5f73aa9c8f7e4aa347e2d9cec723d, type: 3}
+  - groupID: AttackMiss_Weapon
+    clips:
+    - {fileID: 8300000, guid: a52eeb570e6b14b4f9072105363c5e7c, type: 3}
+  - groupID: Round1
+    clips:
+    - {fileID: 8300000, guid: 0f676379314ea2d45bf2f578b600db66, type: 3}
+  - groupID: Round2
+    clips:
+    - {fileID: 8300000, guid: ba793943861dcd343980b4b3817f4371, type: 3}
+  - groupID: Round3
+    clips:
+    - {fileID: 8300000, guid: 7ee812b24b0033344b77733c2fde9623, type: 3}
+  - groupID: Round4
+    clips:
+    - {fileID: 8300000, guid: dcdec2fb71a510b49b664c0b719a127c, type: 3}
+  - groupID: Final_Round
+    clips:
+    - {fileID: 8300000, guid: 9bcb5ab22dcdd904081e78e041f7003f, type: 3}
+  - groupID: Fight
+    clips:
+    - {fileID: 8300000, guid: af8cb527f50d67142a883e300d1b3020, type: 3}
+  - groupID: Player_Won
+    clips:
+    - {fileID: 8300000, guid: f58857026f4f2e549b7acdd0261a8aea, type: 3}
+  - groupID: Enemy_Won
+    clips:
+    - {fileID: 8300000, guid: a8cb1c97ce9a8374db61f10fd54801de, type: 3}
+  - groupID: Draw
+    clips:
+    - {fileID: 8300000, guid: dfb6df07f94431141abea82d13ddf357, type: 3}
+  - groupID: Victory
+    clips:
+    - {fileID: 8300000, guid: 36eebec894e375643b03bb654c5c2998, type: 3}
+  - groupID: Defeat
+    clips:
+    - {fileID: 8300000, guid: 6bca90b90d39961478f8cccfd132ed6c, type: 3}
+  - groupID: Time_Out
+    clips:
+    - {fileID: 8300000, guid: 2c94ce39711fa8843bfe8851456e8f35, type: 3}
+  - groupID: Kick_Miss
+    clips:
+    - {fileID: 8300000, guid: 5295282d415d1b941bf0588146bf2814, type: 3}
+  - groupID: AttackMiss_noWeapon2
+    clips:
+    - {fileID: 8300000, guid: 67f3333e1bff9f2429c0a8a653d1fecf, type: 3}
+  - groupID: Button_Door
+    clips:
+    - {fileID: 8300000, guid: 386357cac657b794c9cb73e60f7712fb, type: 3}
+  - groupID: Button_Click
+    clips:
+    - {fileID: 8300000, guid: 81e4c3dabe037aa4d95617dbdf62543f, type: 3}
 --- !u!1 &7750124903724404602
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +258,7 @@ AudioSource:
   m_GameObject: {fileID: 7750124903724404602}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 437877497894879325, guid: 521ce97e9f80e3649a018519786d31f8, type: 2}
+  OutputAudioMixerGroup: {fileID: 4186753030360121521, guid: 28f99fde1d3c11840aecb208a188f697, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0

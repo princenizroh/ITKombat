@@ -1,4 +1,3 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace ITKombat
@@ -8,44 +7,83 @@ namespace ITKombat
     {
         // Masukin sound dan anim disini
 
-        [SerializeField] private Transform attackPoint;
+        [SerializeField] private Transform playerAttackPoint;
+        [SerializeField] private Transform enemyAttackPoint;
         private float damage = 30f;
         private float force = 5f;
         private float radius = 1f;
 
-        public LayerMask enemy;
+        public LayerMask enemyLayer;
+        public LayerMask playerLayer;
 
         public override void Activate(GameObject parent)
         {
             // Masukin sound dan anim disini
 
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, radius, enemy);
-            foreach (Collider2D enemy in hitEnemies)
+            if (parent.CompareTag("Player"))
             {
-                Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
-                if (enemyRb != null && !enemyDefense.isBlocking)
+                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(playerAttackPoint.position, radius, enemyLayer);
+                foreach (Collider2D enemy in hitEnemies)
                 {
-                    enemyRb.AddForce(parent.transform.right * force, ForceMode2D.Impulse);
-
-                    GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
-
-                    if (enemyStateObject != null)
+                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+                    if (enemyRb != null)
                     {
-                        EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
-                        if (enemyState != null)
+                        Vector2 direction = (enemy.transform.position - playerAttackPoint.position).normalized;
+
+                        enemyRb.AddForce(direction * force, ForceMode2D.Impulse);
+
+                        GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
+
+                        if (enemyStateObject != null)
                         {
-                            enemyState.TakeDamage(damage);
+                            EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
+                            if (enemyState != null)
+                            {
+                                enemyState.TakeDamage(damage);
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("EnemyState not found.");
                         }
                     }
                     else
                     {
-                        Debug.Log("EnemyState not found.");
+                        Debug.Log("Skill 1 masih cooldown.");
                     }
                 }
-                else
+            }
+            else if (parent.CompareTag("Enemy"))
+            {
+                Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemyAttackPoint.position, radius, playerLayer);
+                foreach (Collider2D player in hitPlayer)
                 {
-                    Debug.Log("Skill 1 masih cooldown.");
+                    Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+                    if (playerRb != null)
+                    {
+                        Vector2 direction = (player.transform.position - enemyAttackPoint.position).normalized;
+
+                        playerRb.AddForce(direction * force, ForceMode2D.Impulse);
+
+                        GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
+
+                        if (playerStateObject != null)
+                        {
+                            PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
+                            if (playerState != null)
+                            {
+                                playerState.TakeDamage(damage);
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("PlayerState not found.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Skill 1 masih cooldown.");
+                    }
                 }
             }
         }

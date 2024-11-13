@@ -11,10 +11,9 @@ namespace ITKombat
     {
         public static PlayerIFAttack Instance;
         public Transform attackPoint;
-        public float attackForce = 5f;
         public float attackRadius = 1f;
         public float attackCooldown = 0.5f;
-        public float attackPower = 25f;
+        public float attackPower = 5f;
         public int maxCombo = 4;
         public LayerMask enemyLayer;
         private int combo = 0;
@@ -91,7 +90,12 @@ namespace ITKombat
                     AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
                     if (enemyRb != null && !enemyDefense.isBlocking)
                     {
-                        enemyRb.AddForce(transform.right * attackForce, ForceMode2D.Impulse);
+                        if (combo == 4) // knockback hanya untuk hit ke 4
+                        {
+                            float attackForce = enemy.bounds.size.magnitude / 2; // penyesuaian attack force sesuai size karakter
+                            Vector2 direction = enemy.transform.position - attackPoint.position; // penyesuaian arah knockback
+                            enemyRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+                        }
 
                         GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
 
@@ -226,8 +230,8 @@ namespace ITKombat
             switch (comboNumber)
             {
                 case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon2", transform.position); break;
+                case 3: SoundManager.Instance.PlaySound3D("Kick_Miss", transform.position); break;
                 case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
                 
             }

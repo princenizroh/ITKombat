@@ -12,9 +12,9 @@ namespace ITKombat
             {
                 Destroy(NetworkManager.Singleton.gameObject);
             }
-            if (LobbyManager.Instance != null)
+            if (LobbyRoomManager.Instance != null)
             {
-                Destroy(LobbyManager.Instance.gameObject);
+                Destroy(LobbyRoomManager.Instance.gameObject);
             }            
         }
     }

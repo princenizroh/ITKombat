@@ -26,6 +26,8 @@ public class CharacterController2D1 : MonoBehaviour
 
     public UnityEvent OnLandEvent;
     public BoolEvent OnCrouchEvent;
+
+    private SpriteRenderer spriteRenderer;
     public bool IsFacingRight => m_FacingRight;
 
     [System.Serializable]
@@ -40,6 +42,7 @@ public class CharacterController2D1 : MonoBehaviour
 
         if (OnCrouchEvent == null)
             OnCrouchEvent = new BoolEvent();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
@@ -134,9 +137,10 @@ public class CharacterController2D1 : MonoBehaviour
         }
     }
 
-    private void Flip()
+    public void Flip()
     {
-        m_FacingRight = !m_FacingRight;
+        // spriteRenderer.flipX = !spriteRenderer.flipX;
+        // m_FacingRight = !m_FacingRight;
 
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;

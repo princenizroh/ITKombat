@@ -118,6 +118,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &939725520076794899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7553517847684516035}
+  m_Layer: 7
+  m_Name: enemyAttackPoint
+  m_TagString: Attack
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7553517847684516035
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939725520076794899}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.61, y: 0.33, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7814952906632176184}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2734247828243483285
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +206,7 @@ GameObject:
   - component: {fileID: 4375670650902938375}
   - component: {fileID: 6271457181215855436}
   - component: {fileID: 6211191168650674319}
+  - component: {fileID: 8092777801304928371}
   - component: {fileID: 3640624252990537109}
   m_Layer: 7
   m_Name: PlayerIF (bot)
@@ -216,6 +248,7 @@ Transform:
   - {fileID: 8568702676332998425}
   - {fileID: 7751061156200676235}
   - {fileID: 3048261050815633105}
+  - {fileID: 7553517847684516035}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7928877593404194721
@@ -455,7 +488,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   attackPoint: {fileID: 3048261050815633105}
-  attackForce: 10
   attackRadius: 1
   attackCooldown: 1
   attackPower: 25
@@ -555,6 +587,7 @@ MonoBehaviour:
   moveSpeed: 3
   movementStep: 0
   maxStep: 50
+  maxDistance: 70
   facingPlayer: 1
   canMove: 1
   canJump: 1
@@ -574,12 +607,17 @@ MonoBehaviour:
   attackRange: 3
   attackForce: 5
   attackPower: 5
+  attackRadius: 1
+  attackPoint: {fileID: 3048261050815633105}
   attackCooldown: 0.5
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
   currentCombo: 0
   lastAttackTime: 0
+  playerlayer:
+    serializedVersion: 2
+    m_Bits: 0
   Attack1_Right: {fileID: 2148557689610558641}
   Attack2_Right: {fileID: 4083302349605917132}
   Attack3_Right: {fileID: 4765688780520937115}
@@ -664,6 +702,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentSkills: []
+--- !u!114 &8092777801304928371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3081762322249640699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0f17658b90c304e8363f0fb13c930e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skill1Chance: 0.7
+  skill3Chance: 0.3
+  player: {fileID: 0}
+  skillsHolder: {fileID: 0}
+  aiMovement: {fileID: 0}
+  aiAttack: {fileID: 0}
+  enemyStateObject: {fileID: 0}
 --- !u!114 &3640624252990537109
 MonoBehaviour:
   m_ObjectHideFlags: 0

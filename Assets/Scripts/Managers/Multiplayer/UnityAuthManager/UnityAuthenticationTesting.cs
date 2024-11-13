@@ -51,7 +51,7 @@ namespace ITKombat
             }
         }
 
-        private void InitializeFirebase()
+        public void InitializeFirebase()
         {
             Debug.Log("Setting up Firebase Auth...");
             auth = FirebaseAuth.DefaultInstance; // Menginisialisasi FirebaseAuth

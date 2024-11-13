@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ITKombat
@@ -9,17 +8,17 @@ namespace ITKombat
         [Header("Movement")]
         public float moveSpeed = 3f;
         public float movementStep = 0f;
-        public float maxStep = 100f;
+        public float maxStep = 2f;
+        public float maxDistance = 15f;
         public bool facingPlayer = true;
         public bool canMove = true;
-
 
         [Header("Jump")]
         private float jumpForce = 5f;
         private float jumpCooldown = 2f;
         [SerializeField] private bool canJump = true;
 
-
+        [Header("Others")]
         [SerializeField] private Transform player;
         private Rigidbody2D myRigidbody;
         private Animator anim;
@@ -49,8 +48,9 @@ namespace ITKombat
             }
 
             myRigidbody.linearVelocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
-            movementStep++;
             anim.SetTrigger("Walk");
+            movementStep += Time.deltaTime;
+            // SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
         }
 
         public void Retreat()
@@ -58,8 +58,9 @@ namespace ITKombat
             Vector2 RetreatDirection = (transform.position - player.position).normalized;
 
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
-            movementStep++;
             anim.SetTrigger("Walk");
+            movementStep += Time.deltaTime;
+            // SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
         }
 
         void Flip()
@@ -78,6 +79,7 @@ namespace ITKombat
                 myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, jumpForce);
                 StartCoroutine(JumpCooldown());
                 anim.SetTrigger("Jump");
+                SoundManager.Instance.PlaySound3D("Jump", transform.position);
             }
         }
 

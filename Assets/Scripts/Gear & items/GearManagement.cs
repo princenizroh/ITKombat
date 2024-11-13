@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.UI;
+using static ITKombat.GameFirebase;
 
 namespace ITKombat
 {
@@ -45,6 +46,18 @@ namespace ITKombat
         public int itemCode;
     }
 
+    public class InventoryListAll {
+        public int item_id;
+        public int item_level;
+        public int item_ascend;
+        public int item_exp_max;
+        public int item_current_exp;
+        public int item_id_type_1;
+        public int item_id_type_2;
+        public int item_value_type_1;
+        public int item_value_type_2;
+    }
+
     public class GearManagement : MonoBehaviour
     {   
         public IntgearStats intGear;
@@ -61,33 +74,177 @@ namespace ITKombat
         public GameObject upgradeGearButtonGO;
         public Button upgradeGearButton;
         public Button ascendGearButton;
+        private bool gearAscendStatus = false;
+        private GameFirebase gameFirebase;
+        public PlayerScriptableObject playerData;
+
+        // UI
+        public TMP_Dropdown dropdownUI;
+
+        // List all inventory
+        public InventoryListAll[] inventoryData;
+
+        // Single Picked Inventory
+
+        public InventoryListAll[] singleInventoryData;
+
+        // Card Prefab
+
+        public GameObject cardPrefab;
+
+        // Public Variable For Single Card
+
+        public int gearId;
+        public string gearName;
         public int gearLevel;
+        public int gearStat1Id;
+        public int gearStat2Id;
+        public int gearStat1Value;
+        public int gearStat2Value;
+        public int ascendLevel;
+        public int gearTypeId;
         public int gearExpMax;
         public int gearExpStatus;
-        private bool gearAscendStatus = false;
+        public bool elitedCard = false;
 
-        void Start() {
+        // Settings
+        private bool dropdownUpdated = false;
+
+        async void Start()
+        {
+            gameFirebase = GameFirebase.instance;
 
             ascendGearButton.enabled = false;
-            gearExpMax = 100;
 
+            if (dropdownUI == null)
+            {
+                Debug.LogError("Dropdown UI not assigned.");
+                return;
+            }
+
+            await FetchPlayerInventory();
+            dropdownUI.onValueChanged.AddListener(OnDropdownValueChanged);
         }
 
-        void Update() {
-
-            gearLevelText.SetText("Gear Level " + gearLevel+"/15");
-            gearExpStatusText.SetText("Gear Exp Status: "+ gearExpStatus+"/"+gearExpMax);
-
-            gearStats1.SetText(gearStats.statsCode_1+":"+gearStats.statsValue_1);
-            gearStats2.SetText(gearStats.statsCode_2+":"+gearStats.statsValue_2);
-
+        void Update()
+        {   
+            gearLevelText.SetText("Gear Level " + gearLevel + "/15");
+            gearExpStatusText.SetText("Gear Exp Status: " + gearExpStatus + "/" + gearExpMax);
+            gearStats1.SetText(gearStats.statsCode_1 + ":" + gearStats.statsValue_1);
+            gearStats2.SetText(gearStats.statsCode_2 + ":" + gearStats.statsValue_2);
         }
+
+        private async void OnDropdownValueChanged(int index)
+        {
+            // Make sure the index is valid
+            if (index >= 0 && index < inventoryData.Length)
+            {
+                // Get the selected item from the inventory data
+                InventoryListAll selectedItem = inventoryData[index];
+
+                // Update the singleInventoryData array
+                singleInventoryData = new InventoryListAll[] { selectedItem };
+                await FetchPlayerInventory();
+                
+                // Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
+                gearId = selectedItem.item_id;
+                gearLevel = selectedItem.item_level;
+                gearStat1Id = selectedItem.item_id_type_1;
+                gearStat2Id = selectedItem.item_id_type_2;
+                gearStat1Value = selectedItem.item_value_type_1;
+                gearStat2Value = selectedItem.item_value_type_2;
+                ascendLevel = selectedItem.item_ascend;
+            }
+        }
+
+        private IEnumerator GetPlayerGearDataCoroutine(string player_id, int gear_id)
+        {
+            // SingleDataOnly
+            Task<List<InventoryItem>> task = gameFirebase.GetPlayerGearData(player_id, gear_id);
+            yield return new WaitUntil(() => task.IsCompleted);
+
+            List<InventoryItem> playerGearData = task.Result;
+            foreach (var item in playerGearData)
+            {
+                gearExpStatus = item.item_current_exp;
+                gearExpMax = item.item_exp_max;
+                gearLevel = item.item_level;
+                gearStats.statsCode_1 = item.item_id_type_1;
+                gearStats.statsCode_2 = item.item_id_type_2;
+                gearStats.statsValue_1 = item.item_value_type_1;
+                gearStats.statsValue_2 = item.item_value_type_2;
+            }
+        }
+
+        // Ensure this method is marked as async and returns a Task
+        public async Task FetchPlayerInventory()
+        {
+            try
+            {
+                // Await the task to complete asynchronously
+                List<InventoryItem> inventoryList = await gameFirebase.GetAllPlayerInventory(playerData.player_id);
+
+                Debug.Log("System tasking is working successfully");
+
+                // Initialize the inventory data array
+                inventoryData = new InventoryListAll[inventoryList.Count];
+
+                // Map the InventoryItem to InventoryListAll
+                for (int i = 0; i < inventoryList.Count; i++)
+                {
+                    InventoryItem item = inventoryList[i];
+                    inventoryData[i] = new InventoryListAll
+                    {
+                        item_id = item.item_id,
+                        item_level = item.item_level,
+                        item_ascend = item.item_ascend,
+                        item_exp_max = item.item_exp_max,
+                        item_current_exp = item.item_current_exp,
+                        item_id_type_1 = item.item_id_type_1,
+                        item_id_type_2 = item.item_id_type_2,
+                        item_value_type_1 = item.item_value_type_1,
+                        item_value_type_2 = item.item_value_type_2
+                    };
+                }
+
+                // Handle dropdown options only if data is available
+                if (inventoryData.Length > 0 && dropdownUpdated == false)
+                {
+                    List<string> itemOptions = inventoryData.Select(item => item.item_id.ToString()).ToList();
+                    dropdownUpdated = true;
+                    // Use a coroutine to update the dropdown on the main thread
+                    StartCoroutine(UpdateDropdownUI(itemOptions));
+                }
+                else
+                {
+                    Debug.LogWarning("No inventory data available to populate dropdown.");
+                }
+
+                Debug.Log("Inventory fetched successfully!");
+            }
+            catch (Exception ex)
+            {
+                // Catch any exceptions that might occur during the fetch process
+                Debug.LogError("Failed to fetch inventory data. Exception: " + ex.Message);
+            }
+        }
+
+        // Coroutine to update dropdown UI
+        private IEnumerator UpdateDropdownUI(List<string> itemOptions)
+        {
+            // Wait for the next frame to ensure it happens on the main thread
+            yield return null;
+
+            dropdownUI.ClearOptions();
+            dropdownUI.AddOptions(itemOptions);
+            Debug.Log("Dropdown populated with items.");
+        }
+
 
         public void upgradeGear(int exp) {
 
             gearExpStatus += exp;
-
-            Debug.Log("added " + exp + " exps to the gear");
+            StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_current_exp", gearExpStatus));
 
             if (gearLevel == 15) {
 
@@ -126,10 +283,14 @@ namespace ITKombat
                 int gearCalculation = gearExpStatus - gearExpMax;
 
                 gearLevel += 1;
-                gearExpMax *= 2;
-                gearExpStatus = 0;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_level", gearLevel));
 
-                Debug.Log("gear upgraded");
+                gearExpMax *= 2;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_exp_max", gearExpMax));
+
+                gearExpStatus = 0;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_current_exp", gearExpStatus));
+
                 gearAscendStatus = false;
 
                 if (gearCalculation > 0) {
@@ -188,17 +349,23 @@ namespace ITKombat
         void AscendStat(int newCode, int statCode, ref int code1, ref int value1, ref int code2, ref int value2) {
             if (code1 == statCode) {
                 value1 *= 2;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_value_type_1", value1));
                 Debug.Log("Succesfully upgraded stat 1");
             } else if (code2 == statCode) {
                 value2 *= 2;
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_value_type_2", value2));
                 Debug.Log("Succesfully upgraded stat 2");
             } else if (code1 == 0) {
                 code1 = newCode;
-                value1 = UnityEngine.Random.Range(10, 20);
+                value1 = UnityEngine.Random.Range(10, 22);
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_id_type_1", code1));
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_value_type_1", value1));
                 Debug.Log("Added new stat 1: code " + code1 + ", value " + value1);
             } else if (code2 == 0) {
                 code2 = newCode;
-                value2 = UnityEngine.Random.Range(10, 20);
+                value2 = UnityEngine.Random.Range(10, 22);
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_id_type_2", code2));
+                StartCoroutine(gameFirebase.EditPlayerGearData(playerData.player_id, 22, "item_value_type_2", value2));
                 Debug.Log("Added new stat 2: code " + code2 + ", value " + value2);
             } else {
                 Debug.Log("All stats are filled.");
