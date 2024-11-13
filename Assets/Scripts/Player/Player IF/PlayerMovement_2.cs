@@ -85,19 +85,25 @@ namespace ITKombat
         public void OnMoveLeft()
         {
             if (canMove)
+            {
                 useKeyboardInput = false;
                 horizontalMove = -moveSpeed;
                 anim.SetTrigger("Walk");
                 SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+            }
+
         }
 
         public void OnMoveRight()
         {
             if (canMove)
+            {
                 useKeyboardInput = false;
                 horizontalMove = moveSpeed;
                 anim.SetTrigger("Walk");
                 SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+            }
+
         }
 
         public void OnStopMoving()
