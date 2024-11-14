@@ -6,39 +6,39 @@ namespace ITKombat
     public class FisikaSkill3 : Skills
     {
         // Masukin sound dan anim disini
-
-        private float attackRadius = 1f;
-        private float damage = 30f;
-        private float force = 5f;
-
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
+        public GameObject aoePrefab;  // Prefab for the AoE effect
+        public float slowAmount = 0.5f;
+        public float aoeDuration = 3f;
+        private GameObject aoeInstance;
+        private bool isAoEActive = false;
 
         public override void Activate(GameObject parent)
         {
             // Masukin sound dan anim disini
-
-            Vector3 skillPosition = parent.transform.position;
-
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
-            {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
-                {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
-                }
-            }
+            // Instantiate AoE effect at a specific point
+            aoeInstance = Instantiate(aoePrefab, parent.transform.position, Quaternion.identity);
+            isAoEActive = true;
+            Debug.Log("AoE slow activated.");
         }
 
         public override void BeginCooldown(GameObject parent)
         {
-            //Logic cooldown skill di taruh disini
-            Debug.Log("Skill 1 Cooldown");
+            if (isAoEActive)
+            {
+                Destroy(aoeInstance);  // Remove the AoE effect
+                isAoEActive = false;
+                Debug.Log("AoE slow deactivated.");
+            }
         }
+
+/*        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (isAoEActive && other.CompareTag("Enemy"))
+            {
+                // Apply slow to the enemy
+                other.GetComponent<EnemyController>().ApplySlow(slowAmount, aoeDuration);
+                Debug.Log("Enemy slowed.");
+            }
+        }*/
     }
 }
