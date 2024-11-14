@@ -1,3 +1,4 @@
+using GooglePlayGames.BasicApi;
 using UnityEngine;
 
 namespace ITKombat
@@ -6,39 +7,45 @@ namespace ITKombat
     public class MesinSkill3 : Skills
     {
         // Masukin sound dan anim disini
+        public GameObject aoeEffectPrefab;  // Prefab for AoE effect
+        public float damagePerSecond = 5f;
+        public float skillPointsRequired = 1f; // Skill points for AoE area
 
-        private float attackRadius = 1f;
-        private float damage = 30f;
-        private float force = 5f;
-
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
+        private GameObject aoeInstance;
+        private bool isAoEActive = false;
 
         public override void Activate(GameObject parent)
         {
-            // Masukin sound dan anim disini
-
-            Vector3 skillPosition = parent.transform.position;
-
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
+/*            if (parent.GetComponent<PlayerStats>().skillPoints >= skillPointsRequired)
             {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
-                {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
-                }
-            }
+                // Spawn AoE effect
+                Vector3 spawnPosition = parent.transform.position;  // Define the AoE area based on skill points
+                aoeInstance = Instantiate(aoeEffectPrefab, spawnPosition, Quaternion.identity);
+                isAoEActive = true;
+
+                Debug.Log("AoE attack activated.");
+            }*/
         }
 
         public override void BeginCooldown(GameObject parent)
         {
-            //Logic cooldown skill di taruh disini
-            Debug.Log("Skill 1 Cooldown");
+            if (isAoEActive)
+            {
+                Destroy(aoeInstance);  // Remove the AoE effect after activeTime
+                isAoEActive = false;
+                Debug.Log("AoE attack deactivated.");
+            }
+        }
+
+        private void ApplyAoEDamage(GameObject player)
+        {
+/*            // This method should be called during the AoE active time to deal damage
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(player.transform.position, skillPointsRequired); // Detects enemies in the AoE radius
+
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<Health>().TakeDamage(damagePerSecond * Time.deltaTime);
+            }*/
         }
     }
 }

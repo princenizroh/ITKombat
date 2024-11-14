@@ -7,32 +7,23 @@ namespace ITKombat
     {
         // Masukin sound dan anim disini
 
-        private float attackRadius = 1f;
-        private float damage = 30f;
-        private float force = 5f;
-
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
+        public float damage = 20f;
+        public float stunDuration = 2f;
 
         public override void Activate(GameObject parent)
         {
-            // Masukin sound dan anim disini
+/*            // Masukin sound dan anim disini
 
-            Vector3 skillPosition = parent.transform.position;
+            player.GetComponent<Animator>().SetTrigger("StunAttack");
 
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
+            // Detect and apply damage and stun
+            GameObject target = DetectEnemyInFront(player);
+            if (target != null)
             {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
-                {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
-                }
-            }
+                target.GetComponent<EnemyController>().TakeDamage(damage);
+                target.GetComponent<EnemyController>().ApplyStun(stunDuration);
+                Debug.Log("Enemy hit and stunned.");
+            }*/
         }
 
         public override void BeginCooldown(GameObject parent)
