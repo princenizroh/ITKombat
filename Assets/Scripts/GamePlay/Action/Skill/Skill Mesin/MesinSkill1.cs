@@ -6,33 +6,19 @@ namespace ITKombat
     public class MesinSkill1 : Skills
     {
         // Masukin sound dan anim disini
-
-        private float attackRadius = 1f;
-        private float damage = 30f;
-        private float force = 5f;
-
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
+        public float damage = 10f;
+        public float knockbackForce = 5f;
 
         public override void Activate(GameObject parent)
         {
-            // Masukin sound dan anim disini
+ /*           // Deal damage
+            target.GetComponent<Health>().TakeDamage(damage);
 
-            Vector3 skillPosition = parent.transform.position;
-
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
-            {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
-                {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
-                }
-            }
+            // Apply knockback to the enemy
+            Rigidbody2D rb = target.GetComponent<Rigidbody2D>();
+            Vector2 knockback = (target.transform.position - parent.transform.position).normalized * knockbackForce;
+            rb.AddForce(knockback, ForceMode2D.Impulse);
+            Debug.Log("Thrust attack performed with knockback.");*/
         }
 
         public override void BeginCooldown(GameObject parent)

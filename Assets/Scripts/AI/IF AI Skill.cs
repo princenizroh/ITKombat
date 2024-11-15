@@ -1,11 +1,11 @@
-using UnityEditor.ShaderGraph.Internal;
+using System.Collections;
 using UnityEngine;
 
 namespace ITKombat
 {
     public class IF_AISkill : MonoBehaviour
     {
-        public float skill1Chance = 0.7f;
+        public float skill1Chance = 0.3f;
         public float skill3Chance = 0.3f;
         public Transform player;
         public SkillsHolder skillsHolder;
@@ -30,8 +30,7 @@ namespace ITKombat
 
             if (distanceToPlayer <= aiAttack.attackRange && chance < skill1Chance)
             {
-                aiAttack.canAttack = false;
-                skillsHolder.ActivateSkill1();
+                StartCoroutine(ActivatingSkill1());
             }
 
             if (enemyStateObject != null)
@@ -39,18 +38,25 @@ namespace ITKombat
                 EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                 if (enemyState != null)
                 {
-                    Debug.Log(enemyState.currentHealth);
                     if (enemyState.currentHealth <= enemyState.maxHealth * 0.4f)
                     {
                         skillsHolder.ActivateSkill2();
                     }
 
-                    if ((distanceToPlayer >= aiMovement.maxDistance && chance < skill3Chance) || enemyState.currentHealth <= enemyState.maxHealth * 0.6f)
+                    if (distanceToPlayer >= aiMovement.maxDistance && chance < skill3Chance)
                     {
                         skillsHolder.ActivateSkill3();
                     }
                 }
             }
         }   
+
+        IEnumerator ActivatingSkill1()
+        {
+            aiAttack.canAttack = false;
+            skillsHolder.ActivateSkill1();
+            yield return new WaitForSeconds(1);
+            aiAttack.canAttack = true;
+        }
     }
 }

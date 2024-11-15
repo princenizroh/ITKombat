@@ -14,6 +14,7 @@ namespace ITKombat
             GameScene,
             LoadingScene,
             LobbyScene,
+            BattleMode,
             WaitingUnranked,
             CharacterSelectScene,
             LoginPageFirebase,

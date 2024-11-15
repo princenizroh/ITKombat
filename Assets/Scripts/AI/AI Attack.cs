@@ -7,8 +7,7 @@ namespace ITKombat
     public class AI_Attack : MonoBehaviour
     {
         public static AI_Attack Instance;
-        public float attackRange = 2.5f;         // Range within which the enemy can attack
-        public float attackForce = 5f;          // Knockback force
+        public float attackRange = 2.7f;         // Range within which the enemy can attack
         public float attackPower = 5f;
         public float attackRadius = 1f;
         public Transform attackPoint;
@@ -88,7 +87,7 @@ namespace ITKombat
                             PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
                             if (playerState != null)
                             {
-                                if (currentCombo == 4) Knockback(player);
+                                ApplyKnockback(player,currentCombo);
                                 playerState.TakeDamage(attackPower);
                             }
                         }
@@ -110,19 +109,20 @@ namespace ITKombat
             }
         }
 
-        void Knockback(Collider2D playerCollider)
+        void ApplyKnockback(Collider2D playerCollider, float currentCombo)
         {
             if (playerCollider != null)
             {
                 Rigidbody2D playerRb = playerCollider.GetComponent<Rigidbody2D>();
                 if (playerRb != null)
                 {
-                    // Calculate knockback direction from attackPoint to player
-                    Vector2 knockbackDirection = (playerCollider.transform.position - attackPoint.position).normalized;
+                    if (currentCombo == 4) // knockback hanya untuk hit ke 4
+                        {
+                            float attackForce = playerCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
+                            Vector2 direction = (playerCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
 
-                    // Apply knockback force
-                    playerRb.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
-                    Debug.Log("Player hit by knockback");
+                            playerRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+                        }
                 }
                 else
                 {
@@ -134,7 +134,6 @@ namespace ITKombat
                 Debug.LogWarning("No player detected within knockback radius.");
             }
         }
-
 
         private void AttackAnimation(Collider2D[] hitPlayer)
         {
@@ -227,7 +226,7 @@ namespace ITKombat
                 case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
             }
         }
 

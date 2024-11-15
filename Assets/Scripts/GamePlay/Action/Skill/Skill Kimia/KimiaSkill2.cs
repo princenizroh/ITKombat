@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace ITKombat
@@ -6,39 +7,34 @@ namespace ITKombat
     public class KimiaSkill2 : Skills
     {
         // Masukin sound dan anim disini
+        public GameObject shieldEffect;  // Visual effect for the shield
+        private GameObject currentShield;
+        public float reflectionDamageMultiplier = 1.0f;
 
-        private float attackRadius = 1f;
-        private float damage = 30f;
-        private float force = 5f;
-
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
+        private bool shieldActive = false;
 
         public override void Activate(GameObject parent)
         {
-            // Masukin sound dan anim disini
-
-            Vector3 skillPosition = parent.transform.position;
-
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
-            {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
-                {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
-                }
-            }
+            // Create the shield effect around the player
+            currentShield = Instantiate(shieldEffect, parent.transform.position, Quaternion.identity, parent.transform);
+            shieldActive = true; // Mark the shield as active
+            Debug.Log("Reflective shield activated.");
         }
 
         public override void BeginCooldown(GameObject parent)
         {
-            //Logic cooldown skill di taruh disini
-            Debug.Log("Skill 1 Cooldown");
+            if (currentShield != null) Destroy(currentShield);
+            shieldActive = false;
+            Debug.Log("Reflective shield deactivated.");
+        }
+
+        public void ReflectDamage (GameObject player, float damage)
+        {
+            // Reflect damage to the attacker
+            float reflectedDamage = damage * reflectionDamageMultiplier;
+/*            player.GetComponent<Health>().TakeDamage(reflectedDamage); // Assuming the enemy has a Health script
+*/            Debug.Log("Reflected " + reflectedDamage + " damage to the attacker.");
+
         }
     }
 }

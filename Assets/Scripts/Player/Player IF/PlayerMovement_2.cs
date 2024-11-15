@@ -93,22 +93,24 @@ namespace ITKombat
         {
             if (canMove)
             {
-                isWalkingSoundPlaying = true;
                 useKeyboardInput = false;
                 horizontalMove = -moveSpeed;
                 anim.SetTrigger("Walk");
+                SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
             }
+
         }
 
         public void OnMoveRight()
         {
             if (canMove)
             {
-                isWalkingSoundPlaying = true;
                 useKeyboardInput = false;
                 horizontalMove = moveSpeed;
                 anim.SetTrigger("Walk");
+                SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
             }
+
         }
 
         public void OnStopMoving()
