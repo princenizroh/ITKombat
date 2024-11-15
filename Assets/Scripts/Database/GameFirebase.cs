@@ -144,7 +144,9 @@ namespace ITKombat
                 { "username", player_id },  // Set initial username
                 { "email", player_id + "@itkombat.net" }, // Set initial email
                 { "password", player_id }, // You might want to hash this before saving
-                { "registration_date", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") }
+                { "registration_date", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") },
+                { "picked_permanent_character", 0},
+                { "picked_permanent_character_id", 0}
             };
 
             var profileData = new Dictionary<string, object>
@@ -186,7 +188,8 @@ namespace ITKombat
 
             if (Login.Exception != null) {
                 Debug.Log("Login sucessfuly");
-                loginPageUIManager.StartScreen();
+                _ = checkPlayerPermanentCharacterAsync(email);
+                // loginPageUIManager.StartScreen();
             } else {
                 Debug.Log("Login failed");
             }
@@ -350,65 +353,63 @@ namespace ITKombat
         //     Debug.Log("Inventory data added successfully.");
         // }
 
-        // public async void AddGearRandom(string player_id)
-        // {
-        //     // Load all objects from Resources/GearData
-        //     GearStat[] gearDataArray = Resources.LoadAll<GearStat>("GearData");
+        public async void AddGearRandom(string player_id)
+        {
+            // Load all objects from Resources/GearData
+            GearStat[] gearDataArray = Resources.LoadAll<GearStat>("GearData");
 
-        //     if (gearDataArray.Length == 0)
-        //     {
-        //         Debug.LogWarning("No gear data found in Resources/GearData");
-        //         return;
-        //     }
+            if (gearDataArray.Length == 0)
+            {
+                Debug.LogWarning("No gear data found in Resources/GearData");
+                return;
+            }
 
-        //     // Select a random gear
-        //     GearStat randomGear = gearDataArray[UnityEngine.Random.Range(0, gearDataArray.Length)];
+            // Select a random gear
+            GearStat randomGear = gearDataArray[UnityEngine.Random.Range(0, gearDataArray.Length)];
 
-        //     Debug.Log($"Selected Gear: {randomGear.gear_name}, Stat ID: {randomGear.gear_stat_id}, Type ID: {randomGear.gear_type_id}, Description: {randomGear.gear_desc}");
+            // Fetch the existing inventory data to determine the next index
+            var inventorySnapshot = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
 
-        //     // Fetch the existing inventory data to determine the next index
-        //     var inventorySnapshot = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
+            int nextIndex = 1; // Start at 1
 
-        //     int nextIndex = 1; // Start at 1
+            if (inventorySnapshot.Exists)
+            {
+                // Get the existing keys to find the highest index
+                foreach (var child in inventorySnapshot.Children)
+                {
+                    if (int.TryParse(child.Key, out int currentIndex))
+                    {
+                        // Find the maximum index
+                        if (currentIndex >= nextIndex)
+                        {
+                            nextIndex = currentIndex + 1; // Increment for the next item
+                        }
+                    }
+                }
+            }
 
-        //     if (inventorySnapshot.Exists)
-        //     {
-        //         // Get the existing keys to find the highest index
-        //         foreach (var child in inventorySnapshot.Children)
-        //         {
-        //             if (int.TryParse(child.Key, out int currentIndex))
-        //             {
-        //                 // Find the maximum index
-        //                 if (currentIndex >= nextIndex)
-        //                 {
-        //                     nextIndex = currentIndex + 1; // Increment for the next item
-        //                 }
-        //             }
-        //         }
-        //     }
+            // Create a dictionary for the gear data
+            var gearData = new Dictionary<string, object>
+            {
+                { "item_id", randomGear.gear_type_id },
+                { "item_level", 1 },
+                { "item_ascend", 0 },
+                { "item_exp_max", 100 },
+                { "item_current_exp", 0 },
+                { "item_id_type_1", 0 },
+                { "item_id_type_2", 0 },
+                { "item_value_type_1", 0 },
+                { "item_value_type_2", 0 }
+            };
 
-        //     // Create a dictionary for the gear data
-        //     var gearData = new Dictionary<string, object>
-        //     {
-        //         { "item_id", randomGear.gear_type_id },
-        //         { "item_level", 1 },
-        //         { "item_ascend", 0 },
-        //         { "item_exp_max", 100 },
-        //         { "item_current_exp", 0 },
-        //         { "item_id_type_1", 0 },
-        //         { "item_id_type_2", 0 },
-        //         { "item_value_type_1", 0 },
-        //         { "item_value_type_2", 0 }
-        //     };
+            // Define the reference location in the database for new data with the next index
+            var DBTask = DBreference.Child("inventory").Child(player_id).Child(nextIndex.ToString());
 
-        //     // Define the reference location in the database for new data with the next index
-        //     var DBTask = DBreference.Child("inventory").Child(player_id).Child(nextIndex.ToString());
+            // Add data to the database
+            await DBTask.SetValueAsync(gearData);
 
-        //     // Add data to the database
-        //     await DBTask.SetValueAsync(gearData);
-
-        //     Debug.Log("Random gear added to inventory successfully.");
-        // }
+            Debug.Log("Random gear added to inventory successfully.");
+        }
 
         // public IEnumerator UpgradeGear(string player_id, int gear_id, int gear_exp_add) 
         // {
@@ -667,5 +668,35 @@ namespace ITKombat
             Task DBTask = DBreference.Child("balances").Child(player_id).Child(topup_type).SetValueAsync(amount);
             yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
         }
+
+        // Account pick one character
+
+        async Task checkPlayerPermanentCharacterAsync(string playerId) {
+
+            var checkPlayerPermanentCharacter = await DBreference.Child("players").Child(playerId).Child("picked_permanent_character").GetValueAsync();
+
+            if (checkPlayerPermanentCharacter.Exists) {
+
+                if (int.Parse(checkPlayerPermanentCharacter.Value.ToString()) == 0) {
+
+                    // pilih karakter
+
+                } else {
+
+                    var checkCharacterData = await DBreference.Child("players").Child(playerId).Child("picked_permanent_character_id").GetValueAsync();
+                    var data = checkCharacterData.Value.ToString();
+
+                    // push data -> game
+
+                    loginPageUIManager.StartScreen();
+                    Debug.Log("Player telah memiliki karakter permanent");
+
+                }
+                
+            }
+
+        }
+        
+
     }
 }

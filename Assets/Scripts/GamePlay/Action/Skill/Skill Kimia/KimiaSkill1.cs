@@ -6,39 +6,46 @@ namespace ITKombat
     public class KimiaSkill1 : Skills
     {
         // Masukin sound dan anim disini
+        private bool isFirstSequenceActive = false;
+        private float sequenceTimer = 0f;
+        public float timeToActivateSecondSequence = 5f;
 
-        private float attackRadius = 1f;
-        private float damage = 30f;
-        private float force = 5f;
+        public GameObject skill1Kimia;
 
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
 
         public override void Activate(GameObject parent)
         {
-            // Masukin sound dan anim disini
-
-            Vector3 skillPosition = parent.transform.position;
-
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
+            if (isFirstSequenceActive)
             {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
-                {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
-                }
+                isFirstSequenceActive = true;
+                sequenceTimer = timeToActivateSecondSequence;
+                Debug.Log("Tahap pertama aktif. Lanjutkan ke tahap kedua dalam " + timeToActivateSecondSequence + " detik.");
+            }
+            else
+            {
+                Vector3 attackPoint = parent.transform.position + new Vector3(2f, 0, 0);
+                Instantiate(skill1Kimia, attackPoint, Quaternion.identity);
             }
         }
 
         public override void BeginCooldown(GameObject parent)
         {
             //Logic cooldown skill di taruh disini
+            isFirstSequenceActive = false;
             Debug.Log("Skill 1 Cooldown");
+        }
+
+        public void Update()
+        {
+            if (isFirstSequenceActive)
+            {
+                sequenceTimer -= Time.deltaTime;
+                if (sequenceTimer <= 0)
+                {
+                    isFirstSequenceActive = false;
+                    Debug.Log("Wakut habis. Tahap kedua tidak bisa dilakukan");
+                }
+            }
         }
     }
 }

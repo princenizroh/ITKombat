@@ -13,7 +13,6 @@ namespace ITKombat
 
         private void OnMouseDown()
         {
-            Debug.Log("Canvas Terklik"); // Tes apakah metode ini terpicu
             if (!leaderboardCanvas.activeSelf)
             {
                 leaderboardCanvas.SetActive(true);

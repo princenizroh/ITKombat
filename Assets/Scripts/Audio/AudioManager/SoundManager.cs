@@ -49,7 +49,7 @@ namespace ITKombat
                         GameObject audioSourceObject = new GameObject("TempAudio");
                         currentAudioSource = audioSourceObject.AddComponent<AudioSource>();
                         currentAudioSource.clip = clip;
-
+                        currentAudioSource.outputAudioMixerGroup = sfxMixerGroup;
                         currentAudioSource.transform.position = pos;
                         currentAudioSource.Play();
                         StartCoroutine(WaitForSoundToFinish(currentAudioSource));
@@ -63,6 +63,7 @@ namespace ITKombat
                 {
                     yield return null;
                 }
+                isPlaying = false;
             }
 
         public void PlaySound2D(string soundName)
