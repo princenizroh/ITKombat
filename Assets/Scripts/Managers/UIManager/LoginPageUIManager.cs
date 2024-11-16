@@ -45,7 +45,6 @@ namespace ITKombat
             loginPanel.SetActive(false);
             registerPanel.SetActive(false);
             startPanel.SetActive(true);
-            MusicManager.Instance.PlayMusic("MarsITKombat");
             changeNameToUser();
         }
 
