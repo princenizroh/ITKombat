@@ -11,6 +11,7 @@ public class GameManagerButton : MonoBehaviour
     [SerializeField]
     private SkillsHolder playerSkill;
 
+
     private void Start()
     {
         playerAttack = GetComponent<PlayerIFAttack>();
