@@ -8,12 +8,12 @@ using UnityEngine.SceneManagement;
 
 namespace ITKombat
 {
-    public class MultiplayerManager : NetworkBehaviour
+    public class GameMultiplayerManager : NetworkBehaviour
     {
         public const int MAX_PLAYER_AMOUNT = 2;
 
         private const string PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER = "PlayerNameMultiplayer";
-        public static MultiplayerManager Instance { get; private set;}
+        public static GameMultiplayerManager Instance { get; private set;}
 
         public static bool playMultiplayer = true;
 
