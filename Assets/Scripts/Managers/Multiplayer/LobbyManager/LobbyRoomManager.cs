@@ -118,28 +118,28 @@ namespace ITKombat
                 Debug.Log("Player User: " + playerUser);
 
                 // Dedicated Server
-                #if !DEDICATED_SERVER
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                #endif
+                // #if !DEDICATED_SERVER
+                //     await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                // #endif
 
-                #if DEDICATED_SERVER
-                    Debug.Log("DEDICATED_SERVER LOBBY");
+                // #if DEDICATED_SERVER
+                //     Debug.Log("DEDICATED_SERVER LOBBY");
 
-                    MultiplayEventCallbacks multiplayEventCallbacks = new MultiplayEventCallbacks();
-                    multiplayEventCallbacks.Allocate += MultiplayEventCallbacks_Allocate;
-                    multiplayEventCallbacks.Deallocate += MultiplayEventCallbacks_Deallocate;
-                    multiplayEventCallbacks.Error += MultiplayEventCallbacks_Error;
-                    multiplayEventCallbacks.SubscriptionStateChanged += MultiplayEventCallbacks_SubscriptionStateChanged;
-                    IServerEvents serverEvents = await MultiplayService.Instance.SubscribeToServerEventsAsync(multiplayEventCallbacks);
+                //     MultiplayEventCallbacks multiplayEventCallbacks = new MultiplayEventCallbacks();
+                //     multiplayEventCallbacks.Allocate += MultiplayEventCallbacks_Allocate;
+                //     multiplayEventCallbacks.Deallocate += MultiplayEventCallbacks_Deallocate;
+                //     multiplayEventCallbacks.Error += MultiplayEventCallbacks_Error;
+                //     multiplayEventCallbacks.SubscriptionStateChanged += MultiplayEventCallbacks_SubscriptionStateChanged;
+                //     IServerEvents serverEvents = await MultiplayService.Instance.SubscribeToServerEventsAsync(multiplayEventCallbacks);
 
-                    serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(2, "MyServerName", "ITKombat", "1.0", "Default");
+                //     serverQueryHandler = await MultiplayService.Instance.StartServerQueryHandlerAsync(2, "MyServerName", "ITKombat", "1.0", "Default");
 
-                    var serverConfig = MultiplayService.Instance.ServerConfig;
-                    if (serverConfig.AllocationId != "") {
-                        // Already Allocated
-                        MultiplayEventCallbacks_Allocate(new MultiplayAllocation("", serverConfig.ServerId, serverConfig.AllocationId));
-                    }
-                #endif
+                //     var serverConfig = MultiplayService.Instance.ServerConfig;
+                //     if (serverConfig.AllocationId != "") {
+                //         // Already Allocated
+                //         MultiplayEventCallbacks_Allocate(new MultiplayAllocation("", serverConfig.ServerId, serverConfig.AllocationId));
+                //     }
+                // #endif
             }
             
         }

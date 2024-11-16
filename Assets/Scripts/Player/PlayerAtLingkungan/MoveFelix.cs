@@ -27,18 +27,21 @@ public class MoveFelix : MonoBehaviour
         if (moveLeft)
         {
             movement.x = -1;
+            SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
             animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
         }
         // Jika tombol kanan ditekan, bergerak ke kanan
         else if (moveRight)
         {
             movement.x = 1;
+            SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
             animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
         }
         else
         {
             animator.SetBool("IsMoving", false); // Set IsMoving ke false jika tidak bergerak
         }
+
 
         // Kirim nilai ke Blend Tree melalui parameter 'Speed'
         animator.SetFloat("Speed", Mathf.Abs(movement.x));

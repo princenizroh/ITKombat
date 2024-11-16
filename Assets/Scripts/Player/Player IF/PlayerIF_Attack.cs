@@ -3,6 +3,7 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.VFX;
 using System.Runtime.CompilerServices;
+using UnityEngine.Audio;
 
 namespace ITKombat
 {
@@ -232,7 +233,7 @@ namespace ITKombat
 
 
         // Taruh hit dan miss soundnya disini
-
+        
         private void PlayHitSound(int comboNumber)
         {
             switch (comboNumber)
@@ -249,9 +250,10 @@ namespace ITKombat
             switch (comboNumber)
             {
                 case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon2", transform.position); break;
+                case 3: SoundManager.Instance.PlaySound3D("Kick_Miss", transform.position); break;
                 case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                
             }
         }
 
