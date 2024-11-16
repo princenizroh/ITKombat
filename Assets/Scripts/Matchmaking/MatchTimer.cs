@@ -5,11 +5,11 @@ namespace ITKombat
 {
     public class MatchTimer : MonoBehaviour
     {
-        public static MatchTimer Instance;
-        public float timerSet = 0.5f;
-        public float timerStart = 120;
-        public float normalTimerSet = 0.5f;
-        public float normalTimerStart;
+        public static MatchTimer Instance { get; private set; }
+        [SerializeField] private float timerSet = 0.5f;
+        [SerializeField] public float timerStart = 120;
+        [SerializeField] public float normalTimerSet = 0.5f;
+        [SerializeField] public float normalTimerStart = 3;
         public bool statusMatch;
 
         private void Awake()

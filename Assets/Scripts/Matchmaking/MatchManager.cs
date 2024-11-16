@@ -30,6 +30,7 @@ namespace ITKombat
 
         void Start() 
         {
+            // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             StartCoroutine(ShowRoundStartNotification(1));
             playerMovement.canMove = false;
         }
@@ -44,7 +45,22 @@ namespace ITKombat
             enemyState = FindObjectOfType<EnemyState>();
             playerMovement = FindObjectOfType<PlayerMovement_2>();
         }
+        private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
+        {
+            if(ServerBattleRoomState.Instance.IsCountdownToStartActive())
+            {
+                StartCoroutine(ShowRoundStartNotification(1));
+            }
 
+        }
+
+    // private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e) {
+    //     if (KitchenGameManager.Instance.IsCountdownToStartActive()) {
+    //         Show();
+    //     } else {
+    //         Hide();
+    //     }
+    // }
         void Update()
         {
             timerText.text = matchTimer.GetStageTimeInSecond().ToString();
@@ -242,27 +258,27 @@ namespace ITKombat
             StartCoroutine(HandleRoundTransition());
         }
 
-private IEnumerator HandleDrawTransition()
-{
-    // Cek apakah ada draw
-    if (playerState.currentHealth == enemyState.currentHealth) 
-    {   
-        yield return StartCoroutine(ShowRoundStartNotification(6)); // Tampilkan Notifikasi Draw
-    }
+        private IEnumerator HandleDrawTransition()
+        {
+            // Cek apakah ada draw
+            if (playerState.currentHealth == enemyState.currentHealth) 
+            {   
+                yield return StartCoroutine(ShowRoundStartNotification(6)); // Tampilkan Notifikasi Draw
+            }
 
-    // Cek apakah kedua pemain mendapatkan poin kemenangan
-    if (playerVictoryPoint == 1 && enemyVictoryPoint == 1)
-    {
-        yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint)); // Tampilkan Notifikasi Ronde 2
-    }
-    // Jika hanya musuh yang mencapai 4 poin, lanjutkan ke ronde berikutnya
-    else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2)
-    {
-        yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint - 1)); // Tampilkan Notifikasi Ronde 2
-    }
+            // Cek apakah kedua pemain mendapatkan poin kemenangan
+            if (playerVictoryPoint == 1 && enemyVictoryPoint == 1)
+            {
+                yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint)); // Tampilkan Notifikasi Ronde 2
+            }
+            // Jika hanya musuh yang mencapai 4 poin, lanjutkan ke ronde berikutnya
+            else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2)
+            {
+                yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint - 1)); // Tampilkan Notifikasi Ronde 2
+            }
 
-    StartNormalTimer(); // Mulai timer untuk ronde baru
-}
+            StartNormalTimer(); // Mulai timer untuk ronde baru
+        }
 
 
 

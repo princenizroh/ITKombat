@@ -59,7 +59,7 @@ namespace ITKombat
 
         private void Start() {
             GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
-            GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+            GameInput_OnInteractAction();
 
             Debug.Log("ServerBattleRoomState Start");
 
@@ -114,7 +114,7 @@ namespace ITKombat
             OnStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void GameInput_OnInteractAction(object sender, EventArgs e) {
+        private void GameInput_OnInteractAction() {
             Debug.Log("GameInput_OnInteractAction");
             if (state.Value == State.WaitingToStart) {
                 isLocalPlayerReady = true;
