@@ -22,7 +22,7 @@ namespace ITKombat
                         ushort port = ushort.Parse(portText.text);
                         NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port);
 
-                        MultiplayerManager.Instance.StartClient();
+                        GameMultiplayerManager.Instance.StartClient();
                     } else {
                         Debug.LogError("ipText or portText is not set.");
                     }
