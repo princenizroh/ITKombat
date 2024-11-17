@@ -22,6 +22,10 @@ namespace ITKombat
             {
                 MusicManager.Instance.PlayMusic("MarsITKombat");
             }
+            else if(currentSceneName == "BattleMode")
+            {
+                MusicManager.Instance.PlayMusic("Battle_2");
+            }
         }
     }
 }
