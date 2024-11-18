@@ -18,7 +18,7 @@ namespace ITKombat
             {
                 MusicManager.Instance.PlayMusic("MarsITKombat");
             }
-            else if (currentSceneName == "LoginPageFirebase")
+            else if (currentSceneName == "(new)LoginRegister")
             {
                 MusicManager.Instance.PlayMusic("MarsITKombat");
             }
@@ -26,6 +26,10 @@ namespace ITKombat
             {
                 MusicManager.Instance.PlayMusic("Battle_2");
             }
+            else if(currentSceneName == "Lingkungan 1")
+            {
+                MusicManager.Instance.PlayMusic("MarsITKombat");
+            }
         }
-    }
-}
+    };
+};
