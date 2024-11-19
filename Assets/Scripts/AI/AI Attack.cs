@@ -94,13 +94,9 @@ namespace ITKombat
                         // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
                         StartCoroutine(AttackCooldown());
                         if (currentCombo > maxCombo)
-                            {
-                                currentCombo = 0;
-                                StartCoroutine(ComboCooldown());
-                            }
-                        else
                         {
-                            Debug.Log("PlayerState not found.");
+                            currentCombo = 0;
+                            StartCoroutine(ComboCooldown());
                         }
                     }
                 }

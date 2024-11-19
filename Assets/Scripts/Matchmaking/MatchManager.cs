@@ -16,16 +16,20 @@ namespace ITKombat
         public TMP_Text timerText, timeoutToTimer, vpPlayer, vpEnemy;
         public bool timeoutTriggered = false;
         public bool timeoutTimer = false;
-        private bool finalRound = false;
+        public bool finalRound = false;
+        //Audio Source Sound Manager
+        private bool isSoundFight = false;
+
 
         private PlayerMovement_2 playerMovement;
 
         // Reference to PlayerState and EnemyState
-        private PlayerState playerState;
-        private EnemyState enemyState;
+        public PlayerState playerState;
+        public EnemyState enemyState;
+        public SoundManager soundManager;
 
-        //Audio Source Sound Manager
-        private bool isSoundFight = false;
+  
+        private IState currentState;
         
 
         void Start() 
@@ -33,6 +37,15 @@ namespace ITKombat
             // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             StartCoroutine(ShowRoundStartNotification(1));
             playerMovement.canMove = false;
+        }
+
+        public void ChangeState(IState newState)
+        {
+            Debug.Log("Changing state to: " + newState.GetType().Name);
+            currentState.Exit();
+            currentState = newState; // Ubah state ke state baru
+            currentState.Enter(); // Panggil Enter pada state baru
+            Debug.Log("State changed. Current timeoutToTimer.text: " + timeoutToTimer.text);
         }
 
         [System.Obsolete]
@@ -76,10 +89,14 @@ namespace ITKombat
             {   
                 HandleTimeoutTimer();
             }
+            
         }
 
         private void HandleTimeout()
         {            
+            Debug.Log("Timeout triggered");
+            // ChangeState(new TimeOutState(this));
+            // currentState.Execute();
             StartCoroutine(MatchTimeout());
             timeoutTriggered = true;
         }
@@ -89,11 +106,12 @@ namespace ITKombat
             matchTimer.ChangeMatchStatus(false);
             timeoutToTimer.text = matchTimer.GetNormalTimeInSecond().ToString();
 
-            if (matchTimer.normalTimerStart <= 1f) 
+            Debug.Log(timeoutToTimer.text);
+            if (matchTimer.GetNormalTimeInSecond() <= 0f) 
             {
                 matchTimer.ChangeMatchStatus(true);
                 if(!isSoundFight){
-                    SoundManager.Instance.PlaySound3D("Fight", transform.position);
+                    soundManager.PlaySound3D("Fight", transform.position);
                     isSoundFight = true;
                 }
                 timeoutToTimer.text = "FIGHT";
@@ -109,11 +127,11 @@ namespace ITKombat
 
             switch (roundNumber)
             {
-                case 1: currentRoundNotif = Round1Notif; SoundManager.Instance.PlaySound3D("Round1", transform.position) ; break;
-                case 2: currentRoundNotif = Round2Notif; SoundManager.Instance.PlaySound3D("Round2", transform.position) ; break;
-                case 3: currentRoundNotif = Round3Notif; SoundManager.Instance.PlaySound3D("Round3", transform.position) ; break;
-                case 4: currentRoundNotif = Round4Notif; SoundManager.Instance.PlaySound3D("Round4", transform.position) ; break;
-                case 5: currentRoundNotif = FinalRoundNotif; SoundManager.Instance.PlaySound3D("Final_Round", transform.position); break;
+                case 1: currentRoundNotif = Round1Notif; soundManager.PlaySound3D("Round1", transform.position) ; break;
+                case 2: currentRoundNotif = Round2Notif; soundManager.PlaySound3D("Round2", transform.position) ; break;
+                case 3: currentRoundNotif = Round3Notif; soundManager.PlaySound3D("Round3", transform.position) ; break;
+                case 4: currentRoundNotif = Round4Notif; soundManager.PlaySound3D("Round4", transform.position) ; break;
+                case 5: currentRoundNotif = FinalRoundNotif; soundManager.PlaySound3D("Final_Round", transform.position); break;
                 case 6: currentRoundNotif = DrawRoundNotif; break;
             }
 
@@ -128,7 +146,7 @@ namespace ITKombat
                 if (roundNumber == 1)
                 {
                     FightNotif.SetActive(true);
-                    SoundManager.Instance.PlaySound3D("Fight", transform.position);
+                    soundManager.PlaySound3D("Fight", transform.position);
                     yield return new WaitForSeconds(1.5f);
                     FightNotif.SetActive(false);
                     playerMovement.canMove = true;
@@ -192,7 +210,7 @@ namespace ITKombat
         private IEnumerator MatchTimeout() 
         {
             Debug.Log("Match Timeout");
-            SoundManager.Instance.PlaySound3D("Time_Out", transform.position);
+            soundManager.PlaySound3D("Time_Out", transform.position);
             TimeoutNotif.SetActive(true);
             timeoutToTimer.text = "TIME OUT";
             yield return new WaitForSeconds(3f);
@@ -241,20 +259,20 @@ namespace ITKombat
         {
             playerVictoryPoint += 1;
             enemyVictoryPoint += 1;
-            SoundManager.Instance.PlaySound3D("Draw", transform.position);
+            soundManager.PlaySound3D("Draw", transform.position);
             StartCoroutine(HandleDrawTransition());
         }
         public void PlayerVictory() 
         {
             playerVictoryPoint += 1;
-            SoundManager.Instance.PlaySound3D("Player_Won", transform.position);
+            soundManager.PlaySound3D("Player_Won", transform.position);
             StartCoroutine(HandleRoundTransition());
         }
 
         public void EnemyVictory() 
         {
             enemyVictoryPoint += 1;
-            SoundManager.Instance.PlaySound3D("Enemy_Won", transform.position);
+            soundManager.PlaySound3D("Enemy_Won", transform.position);
             StartCoroutine(HandleRoundTransition());
         }
 
@@ -306,7 +324,7 @@ namespace ITKombat
                 ShowVictoryNotif(true);
                 yield return new WaitForSeconds(2f);
                 VictoryNotif.SetActive(false);
-                SoundManager.Instance.PlaySound3D("Victory", transform.position);
+                soundManager.PlaySound3D("Victory", transform.position);
                 yield return StartCoroutine(ShowEndGameButton());
             }
             
@@ -315,7 +333,7 @@ namespace ITKombat
                 ShowVictoryNotif(false);
                 yield return new WaitForSeconds(1f);
                 DefeatNotif.SetActive(false);
-                SoundManager.Instance.PlaySound3D("Defeat", transform.position);
+                soundManager.PlaySound3D("Defeat", transform.position);
                 yield return StartCoroutine(ShowEndGameButton());
             }
             else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
@@ -342,7 +360,7 @@ namespace ITKombat
         void StartNormalTimer()
         {
             TimeoutNotif.SetActive(true);
-            matchTimer.normalTimerStart = 3;
+            matchTimer.GetNormalTimeInSecond();
             timeoutTimer = true;
             
             StartCoroutine(WaitAndResetTimeout());
@@ -356,7 +374,7 @@ namespace ITKombat
             matchTimer.ChangeMatchStatus(true);
 
             // Reset timer
-            matchTimer.timerStart = 120;
+            matchTimer.GetResetTimerStart();
             timeoutTriggered = false;
 
             // Reset health

@@ -15,7 +15,7 @@ namespace ITKombat
         public static ServerBattleRoomState Instance { get; private set; }
         
         // [SerializeField] PersistentGameState persistentGameState;
-        [SerializeField] private MatchManager matchManager;
+        private MatchManager matchManager;
         
         [Tooltip("Tempat Spawn player berada")]
         [SerializeField] private Transform[] m_PlayerSpawnPoints;
@@ -32,6 +32,7 @@ namespace ITKombat
 
         // Network Variable untuk menyimpan state game
         private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
+        private State states;
         private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
         private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
         
@@ -52,6 +53,7 @@ namespace ITKombat
         private void Awake() {
             Instance = this;
 
+            states = State.WaitingToStart;
             playerReadyDictionary = new Dictionary<ulong, bool>();
             playerPausedDictionary = new Dictionary<ulong, bool>();
             Debug.Log("ServerBattleRoomState Awake");
@@ -116,11 +118,13 @@ namespace ITKombat
 
         private void GameInput_OnInteractAction() {
             Debug.Log("GameInput_OnInteractAction");
-            if (state.Value == State.WaitingToStart) {
-                isLocalPlayerReady = true;
-                OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
+            if (states == State.WaitingToStart) {
+                states = State.CountdownToStart;
+                // isLocalPlayerReady = true;
+                // OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChanged?.Invoke(this, EventArgs.Empty);
 
-                SetPlayerReadyServerRpc();
+                // SetPlayerReadyServerRpc();
             }
         }
 

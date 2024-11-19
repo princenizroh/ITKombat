@@ -98,25 +98,22 @@ namespace ITKombat
             return 0f;
         }
 
-        private void EndGame()
-        {
-            Debug.Log("Game Berakhir");
-            // Implementasikan logika end game, bisa panggil UI atau lainnya.
-        }
 
         private void ApplyKnockback()
         {
-            Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
-            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+            // Pastikan sumber knockback berasal dari arah collision
+            Collider2D attacker = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Attack"));
+            if (attacker != null)
+            {
+                Vector2 knockbackDirection = (transform.position - attacker.transform.position).normalized;
+                rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+            }
+            else
+            {
+                Debug.LogWarning("No attacker found for knockback calculation.");
+            }
         }
 
-        private IEnumerator PlayRandomHitAnimation()
-        {
-            string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
-            playerAnimator.SetTrigger(randomHitAnimation);
-            yield return new WaitForSeconds(0.5f);
-            playerAnimator.SetTrigger(idleAnimationTrigger);
-        }
 
         private void PlayRandomHitSound()
         {
