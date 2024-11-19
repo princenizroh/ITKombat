@@ -87,23 +87,17 @@ namespace ITKombat
             return 0f;
         }
 
-        private void EndGame()
-        {
-            Debug.Log("Game Berakhir");
-            // Implementasikan logika end game, bisa panggil UI atau lainnya.
-        }
-
-        private void Die()
-        {
-            Debug.Log("Enemy mati!");
-            // Implementasi logika kematian enemy
-        }
-
         private void ApplyKnockback()
         {
-            Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
+            Vector2 knockbackDirection = Vector2.left; // Atur arah knockback ke kiri, misalnya
+            if (transform.localScale.x > 0)
+            {
+                knockbackDirection = Vector2.right; // Arah knockback berubah jika pemain menghadap sebaliknya
+            }
+
             rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
         }
+
 
         private IEnumerator PlayRandomHitAnimation()
         {

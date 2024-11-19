@@ -9708,21 +9708,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerIF (bot)
       objectReference: {fileID: 0}
-    - target: {fileID: 3081762322249640699, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7571168033097755824, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3188006907
-      objectReference: {fileID: 0}
-    - target: {fileID: 7607559142707280492, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
-      propertyPath: easeHealthSlider
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7607559142707280492, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
-      propertyPath: playerHealthSlider
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7814952906632176184, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9762,6 +9750,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814952906632176184, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8092777801304928371, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -19602,6 +19594,17 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
+--- !u!114 &539652658 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5365122966335717394, guid: e0e0155770292334297dc5688e1c9fb8, type: 3}
+  m_PrefabInstance: {fileID: 363268725}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5cf6212c2c2de047b9a9de0b6c874a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &539837388
 GameObject:
   m_ObjectHideFlags: 0
@@ -81706,6 +81709,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2022132896}
     - target: {fileID: 330852862872049722, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
+      propertyPath: enemyState
+      value: 
+      objectReference: {fileID: 9802370}
+    - target: {fileID: 330852862872049722, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: DefeatNotif
       value: 
       objectReference: {fileID: 421828061}
@@ -81726,6 +81733,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1129108554}
     - target: {fileID: 330852862872049722, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
+      propertyPath: playerState
+      value: 
+      objectReference: {fileID: 472047335}
+    - target: {fileID: 330852862872049722, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: TimeoutNotif
       value: 
       objectReference: {fileID: 72048564}
@@ -81733,6 +81744,10 @@ PrefabInstance:
       propertyPath: VictoryNotif
       value: 
       objectReference: {fileID: 732013257}
+    - target: {fileID: 330852862872049722, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
+      propertyPath: soundManager
+      value: 
+      objectReference: {fileID: 539652658}
     - target: {fileID: 330852862872049722, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: timeoutTimer
       value: 0
@@ -81796,6 +81811,14 @@ PrefabInstance:
     - target: {fileID: 5157538577195936670, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965319745082861204, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
+      propertyPath: statusMatch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5965319745082861204, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
+      propertyPath: normalTimerStart
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
