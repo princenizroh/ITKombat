@@ -38,7 +38,10 @@ namespace ITKombat
             AudioClip clip = soundLibrary.GetClipFromName(soundGroupName);
             if (clip != null)
             {
-                AudioSource.PlayClipAtPoint(clip, position);
+                sfxSource.transform.position = position;
+                sfxSource.clip = clip;
+                sfxSource.outputAudioMixerGroup = sfxMixerGroup;
+                sfxSource.Play();
             }
             else
             {

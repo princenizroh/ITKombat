@@ -33,7 +33,7 @@ namespace ITKombat
         {
             if(isWalkingSoundPlaying)
             {
-                SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+                NewSoundManager.Instance.PlaySound("Walk_Floor", transform.position);
             }
 
             if (canMove && useKeyboardInput)
