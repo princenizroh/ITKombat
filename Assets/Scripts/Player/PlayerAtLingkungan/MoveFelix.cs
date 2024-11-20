@@ -3,7 +3,7 @@ using UnityEngine;
 namespace ITKombat{
     public class MoveFelix : MonoBehaviour
 {
-    public float speed = 5f; // Kecepatan berjalan
+    public float moveSpeed = 5f; // Kecepatan berjalan
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -11,8 +11,11 @@ namespace ITKombat{
     private Vector2 movement;
     private bool moveLeft = false; // Menyimpan apakah tombol kiri ditekan
     private bool moveRight = false; // Menyimpan apakah tombol kanan ditekan
+    public bool canMove = true;
+    float horizontalMove = 0f;
+    private bool isWalkingSoundPlaying = false;
 
-    void Start()
+        void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -22,25 +25,31 @@ namespace ITKombat{
     void Update()
     {
         // Reset movement setiap frame
-        movement.x = 0;
+        // movement.x = 0;
+        // if (!canMove)
+        // {
+        //     horizontalMove = 0f;  // Player can't move if canMove is false
+        //     return;
+        // }
 
         // Jika tombol kiri ditekan, bergerak ke kiri
         if (moveLeft)
         {
             movement.x = -1;
             SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
-            animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
+            animator.SetTrigger("isWalk"); // Set IsMoving ke true saat bergerak
+            Debug.Log("Waling left");
         }
         // Jika tombol kanan ditekan, bergerak ke kanan
         else if (moveRight)
         {
             movement.x = 1;
             SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
-            animator.SetBool("IsMoving", true); // Set IsMoving ke true saat bergerak
+            animator.SetTrigger("isWalk"); // Set IsMoving ke true saat bergerak
         }
         else
         {
-            animator.SetBool("IsMoving", false); // Set IsMoving ke false jika tidak bergerak
+            animator.SetTrigger("isIdle"); // Set IsMoving ke false jika tidak bergerak
         }
 
 
@@ -57,12 +66,36 @@ namespace ITKombat{
             spriteRenderer.flipX = true; // Jalan ke kiri
         }
     }
-
-    void FixedUpdate()
+    public void OnMoveLeft()
+        {
+            if (moveLeft)
+            {
+                isWalkingSoundPlaying = true;
+                horizontalMove = -moveSpeed;
+                animator.SetTrigger("isWalk");
+            }
+        }
+    public void OnMoveRight()
     {
-        // Menggerakkan karakter
-        rb.linearVelocity = new Vector2(movement.x * speed, rb.linearVelocity.y);
+        if (moveRight)
+        {
+            isWalkingSoundPlaying = true;
+            horizontalMove = moveSpeed;
+            animator.SetTrigger("isWalk");
+        }
     }
+    public void OnStopMoving()
+    {
+        isWalkingSoundPlaying = false;
+        horizontalMove = 0f;
+        animator.SetTrigger("isIdle");
+    }
+
+    // void FixedUpdate()
+    // {
+    //     // Menggerakkan karakter
+    //     rb.linearVelocity = new Vector2(movement.x * speed, rb.linearVelocity.y);
+    // }
 
     // Method untuk UI Button - Dipanggil saat tombol kiri ditekan
     public void OnMoveLeftDown()
