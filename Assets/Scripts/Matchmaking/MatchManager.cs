@@ -111,7 +111,7 @@ namespace ITKombat
             {
                 matchTimer.ChangeMatchStatus(true);
                 if(!isSoundFight){
-                    NewSoundManager.Instance.PlaySound("Fight", transform.position);
+                    NewSoundManager.Instance.PlaySound2D("Fight");
                     isSoundFight = true;
                 }
                 timeoutToTimer.text = "FIGHT";
@@ -127,11 +127,11 @@ namespace ITKombat
 
             switch (roundNumber)
             {
-                case 1: currentRoundNotif = Round1Notif; NewSoundManager.Instance.PlaySound("Round1", transform.position) ; break;
-                case 2: currentRoundNotif = Round2Notif; NewSoundManager.Instance.PlaySound("Round2", transform.position) ; break;
-                case 3: currentRoundNotif = Round3Notif; NewSoundManager.Instance.PlaySound("Round3", transform.position) ; break;
-                case 4: currentRoundNotif = Round4Notif; NewSoundManager.Instance.PlaySound("Round4", transform.position) ; break;
-                case 5: currentRoundNotif = FinalRoundNotif; NewSoundManager.Instance.PlaySound("Final_Round", transform.position); break;
+                case 1: currentRoundNotif = Round1Notif; NewSoundManager.Instance.PlaySound2D("Round1") ; break;
+                case 2: currentRoundNotif = Round2Notif; NewSoundManager.Instance.PlaySound2D("Round2") ; break;
+                case 3: currentRoundNotif = Round3Notif; NewSoundManager.Instance.PlaySound2D("Round3") ; break;
+                case 4: currentRoundNotif = Round4Notif; NewSoundManager.Instance.PlaySound2D("Round4") ; break;
+                case 5: currentRoundNotif = FinalRoundNotif; NewSoundManager.Instance.PlaySound2D("Final_Round"); break;
                 case 6: currentRoundNotif = DrawRoundNotif; break;
             }
 
@@ -146,7 +146,7 @@ namespace ITKombat
                 if (roundNumber == 1)
                 {
                     FightNotif.SetActive(true);
-                    NewSoundManager.Instance.PlaySound("Fight", transform.position);
+                    NewSoundManager.Instance.PlaySound2D("Fight");
                     yield return new WaitForSeconds(1.5f);
                     FightNotif.SetActive(false);
                     playerMovement.canMove = true;
@@ -210,7 +210,7 @@ namespace ITKombat
         private IEnumerator MatchTimeout() 
         {
             Debug.Log("Match Timeout");
-            NewSoundManager.Instance.PlaySound("Time_Out", transform.position);
+            NewSoundManager.Instance.PlaySound2D("Time_Out");
             TimeoutNotif.SetActive(true);
             timeoutToTimer.text = "TIME OUT";
             yield return new WaitForSeconds(3f);
@@ -259,20 +259,20 @@ namespace ITKombat
         {
             playerVictoryPoint += 1;
             enemyVictoryPoint += 1;
-            NewSoundManager.Instance.PlaySound("Draw", transform.position);
+            NewSoundManager.Instance.PlaySound2D("Draw");
             StartCoroutine(HandleDrawTransition());
         }
         public void PlayerVictory() 
         {
             playerVictoryPoint += 1;
-            NewSoundManager.Instance.PlaySound("Player_Won", transform.position);
+            NewSoundManager.Instance.PlaySound2D("Player_Won");
             StartCoroutine(HandleRoundTransition());
         }
 
         public void EnemyVictory() 
         {
             enemyVictoryPoint += 1;
-            NewSoundManager.Instance.PlaySound("Enemy_Won", transform.position);
+            NewSoundManager.Instance.PlaySound2D("Enemy_Won");
             StartCoroutine(HandleRoundTransition());
         }
 
@@ -322,18 +322,18 @@ namespace ITKombat
             if (playerVictoryPoint == 3) 
             {
                 ShowVictoryNotif(true);
+                NewSoundManager.Instance.PlaySound2D("Victory");
                 yield return new WaitForSeconds(2f);
                 VictoryNotif.SetActive(false);
-                NewSoundManager.Instance.PlaySound("Victory", transform.position);
                 yield return StartCoroutine(ShowEndGameButton());
             }
             
             else if (enemyVictoryPoint == 3) 
             {
                 ShowVictoryNotif(false);
+                NewSoundManager.Instance.PlaySound2D("Defeat");
                 yield return new WaitForSeconds(1f);
                 DefeatNotif.SetActive(false);
-                NewSoundManager.Instance.PlaySound("Defeat", transform.position);
                 yield return StartCoroutine(ShowEndGameButton());
             }
             else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)

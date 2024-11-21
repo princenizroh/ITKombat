@@ -11,8 +11,10 @@ namespace ITKombat
         [SerializeField] private NewSoundLibrary soundLibrary; // Referensi ke ScriptableObject SoundLibrary
 
         [Header("Audio Settings")]
-        [SerializeField] private AudioSource sfxSource; // AudioSource untuk memainkan suara
+        [SerializeField] private AudioSource sfxSource;
+        [SerializeField] private AudioSource sfx2DSource; // AudioSource untuk memainkan suara
         [SerializeField] private AudioMixerGroup sfxMixerGroup;
+        [SerializeField] private AudioMixerGroup sfxMixerGroup2D;
 
         private void Awake()
         {
@@ -30,6 +32,11 @@ namespace ITKombat
             if (sfxSource != null && sfxMixerGroup != null)
             {
                 sfxSource.outputAudioMixerGroup = sfxMixerGroup;
+            }
+
+            if (sfx2DSource != null && sfxMixerGroup2D != null)
+            {
+                sfx2DSource.outputAudioMixerGroup = sfxMixerGroup2D;
             }
         }
 
@@ -54,12 +61,15 @@ namespace ITKombat
             AudioClip clip = soundLibrary.GetClipFromName(soundGroupName);
             if (clip != null)
             {
-                sfxSource.PlayOneShot(clip);
+                sfx2DSource.clip = clip;
+                sfx2DSource.outputAudioMixerGroup = sfxMixerGroup2D;
+                sfx2DSource.Play();
             }
             else
             {
                 Debug.LogWarning($"Sound group '{soundGroupName}' not found in SoundLibrary!");
             }
         }
+        
     }
 }

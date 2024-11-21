@@ -28,13 +28,13 @@ namespace ITKombat{
         if (moveLeft)
         {
             movement.x = -1;
-            SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+            NewSoundManager.Instance.PlaySound("Walk_Floor", transform.position);
         }
         // Jika tombol kanan ditekan, bergerak ke kanan
         else if (moveRight)
         {
             movement.x = 1;
-            SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+            NewSoundManager.Instance.PlaySound("Walk_Floor", transform.position);
         }
 
 

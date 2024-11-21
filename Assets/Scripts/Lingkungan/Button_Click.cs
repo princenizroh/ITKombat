@@ -7,7 +7,7 @@ namespace ITKombat
         
         public void soundButtonClick()
         {
-            NewSoundManager.Instance.PlaySound("Button_Click", transform.position);
+            NewSoundManager.Instance.PlaySound2D("Button_Click");
         }
     }
 }
