@@ -40,17 +40,13 @@ namespace ITKombat
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                             if (enemyState != null)
                             {
-                                enemyState.TakeDamage(damage);
+                                enemyState.TakeDamageFromSkill(damage);
                             }
                         }
                         else
                         {
                             Debug.Log("EnemyState not found.");
                         }
-                    }
-                    else
-                    {
-                        Debug.Log("Skill 1 masih cooldown.");
                     }
                 }
             }
