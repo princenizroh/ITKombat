@@ -115,7 +115,7 @@ namespace ITKombat
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                             if (enemyState != null)
                             {
-                                enemyState.TakeDamage(skill1Damage);
+                                enemyState.TakeDamageFromSkill(skill1Damage);
                             }
                         }
                         else
@@ -192,7 +192,7 @@ namespace ITKombat
                 PlayerState playerState = GetComponent<PlayerState>();
                 if (playerState != null)
                 {
-                    playerState.TakeDamage(damage);
+                    playerState.TakeDamageFromSkill(damage);
                 }
             }
         }

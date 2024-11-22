@@ -69,17 +69,13 @@ namespace ITKombat
                             PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
                             if (playerState != null)
                             {
-                                playerState.TakeDamage(damage);
+                                playerState.TakeDamageFromSkill(damage);
                             }
                         }
                         else
                         {
                             Debug.Log("PlayerState not found.");
                         }
-                    }
-                    else
-                    {
-                        Debug.Log("Skill 1 masih cooldown.");
                     }
                 }
             }
