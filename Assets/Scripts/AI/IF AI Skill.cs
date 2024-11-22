@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ namespace ITKombat
 {
     public class IF_AISkill : MonoBehaviour
     {
-        public float skill1Chance = 0.7f;
+        public float skill1Chance = 0.3f;
         public float skill3Chance = 0.3f;
         public Transform player;
         public SkillsHolder skillsHolder;
@@ -28,29 +29,35 @@ namespace ITKombat
             // Debug.Log(distanceToPlayer);
             float chance = Random.value;
 
-            if (distanceToPlayer <= aiAttack.attackRange && chance < skill1Chance)
-            {
-                aiAttack.canAttack = false;
-                skillsHolder.ActivateSkill1();
-            }
+            // if (distanceToPlayer <= aiAttack.attackRange && chance < skill1Chance)
+            // {
+            //     StartCoroutine(ActivatingSkill1());
+            // }
 
             if (enemyStateObject != null)
             {
                 EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                 if (enemyState != null)
                 {
-                    Debug.Log(enemyState.currentHealth);
-                    if (enemyState.currentHealth <= enemyState.maxHealth * 0.4f)
+                    if (enemyState.currentHealth <= enemyState.maxHealth * 0.7f && chance < skill1Chance)
                     {
                         skillsHolder.ActivateSkill2();
                     }
 
-                    if ((distanceToPlayer >= aiMovement.maxDistance && chance < skill3Chance) || enemyState.currentHealth <= enemyState.maxHealth * 0.6f)
+                    if (distanceToPlayer >= aiMovement.maxDistance && chance < skill3Chance)
                     {
                         skillsHolder.ActivateSkill3();
                     }
                 }
             }
         }   
+
+        IEnumerator ActivatingSkill1()
+        {
+            aiAttack.canAttack = false;
+            skillsHolder.ActivateSkill1();
+            yield return new WaitForSeconds(1);
+            aiAttack.canAttack = true;
+        }
     }
 }

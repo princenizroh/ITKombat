@@ -7,12 +7,11 @@ namespace ITKombat
     public class AI_Attack : MonoBehaviour
     {
         public static AI_Attack Instance;
-        public float attackRange = 2.5f;         // Range within which the enemy can attack
-        public float attackForce = 5f;          // Knockback force
-        public float attackPower = 5f;
+        public float attackRange = 2.7f;         // Range within which the enemy can attack
+        public float attackPower = 3f;
         public float attackRadius = 1f;
         public Transform attackPoint;
-        public float attackCooldown = 1f;      // Cooldown between each attack
+        public float attackCooldown = 0.7f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
@@ -79,8 +78,8 @@ namespace ITKombat
                 foreach (Collider2D player in hitPlayer)
                 {
                     Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
-                    // PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
-                    if (playerRB != null) //&& !playerDefense.isBlocking)
+                    PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
+                    if (playerRB != null && !playerDefense.isBlocking)
                     {   
                         GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
                         if (playerStateObject != null)
@@ -88,41 +87,45 @@ namespace ITKombat
                             PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
                             if (playerState != null)
                             {
-                                if (currentCombo == 4) Knockback(player);
-                                playerState.TakeDamage(attackPower);
+                                ApplyKnockback(player,currentCombo);
+                                AttackAnimation(hitPlayer); 
+                                playerState.TakeDamage(attackPower,currentCombo);
+                            }
+                            else
+                            {
+                                Debug.Log("PlayerState not found.");
                             }
                         }
                         // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
                         StartCoroutine(AttackCooldown());
-                        if (currentCombo > maxCombo)
+                        if (currentCombo >= maxCombo)
                             {
                                 currentCombo = 0;
                                 StartCoroutine(ComboCooldown());
                             }
-                        else
-                        {
-                            Debug.Log("PlayerState not found.");
-                        }
                     }
                 }
-                AttackAnimation(hitPlayer);
-
+            }
+            else
+            {
+                 anim.SetTrigger("Idle");
             }
         }
 
-        void Knockback(Collider2D playerCollider)
+        void ApplyKnockback(Collider2D playerCollider, float currentCombo)
         {
             if (playerCollider != null)
             {
                 Rigidbody2D playerRb = playerCollider.GetComponent<Rigidbody2D>();
                 if (playerRb != null)
                 {
-                    // Calculate knockback direction from attackPoint to player
-                    Vector2 knockbackDirection = (playerCollider.transform.position - attackPoint.position).normalized;
+                    if (currentCombo == 4) // knockback hanya untuk hit ke 4
+                        {
+                            float attackForce = playerCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
+                            Vector2 direction = (playerCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
 
-                    // Apply knockback force
-                    playerRb.AddForce(knockbackDirection * attackForce, ForceMode2D.Impulse);
-                    Debug.Log("Player hit by knockback");
+                            playerRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+                        }
                 }
                 else
                 {
@@ -134,7 +137,6 @@ namespace ITKombat
                 Debug.LogWarning("No player detected within knockback radius.");
             }
         }
-
 
         private void AttackAnimation(Collider2D[] hitPlayer)
         {
@@ -153,7 +155,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(1,hitPlayer.Length > 0);
                     anim.SetTrigger("attack1");
-                    Debug.Log("Attack 1 triggered");
+                    // Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
                     if (character.IsFacingRight)
@@ -166,7 +168,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(2,hitPlayer.Length > 0);
                     anim.SetTrigger("attack2");
-                    Debug.Log("Attack 2 triggered");
+                    // Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
                     if (character.IsFacingRight)
@@ -179,7 +181,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(3,hitPlayer.Length > 0);
                     anim.SetTrigger("attack3");
-                    Debug.Log("Attack 3 triggered");
+                    // Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
                     if (character.IsFacingRight)
@@ -192,7 +194,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(4,hitPlayer.Length > 0);
                     anim.SetTrigger("attack4");
-                    Debug.Log("Attack 4 triggered");
+                    // Debug.Log("Attack 4 triggered");
                     break;
             }
         }
@@ -227,7 +229,7 @@ namespace ITKombat
                 case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
                 case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
+                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
             }
         }
 
@@ -242,9 +244,6 @@ namespace ITKombat
         {
             canAttack = false;
             yield return new WaitForSeconds(comboResetTime);
-            Debug.Log("Combo Reset");
-            // Reset the combo counter after cooldown
-            // currentCombo = 0;
             canAttack = true;
         }
 

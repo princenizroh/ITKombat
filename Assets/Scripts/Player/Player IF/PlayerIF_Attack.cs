@@ -62,7 +62,7 @@ namespace ITKombat
 
         public void PerformAttack()
         {
-            Debug.Log("Performing attack...");
+            // Debug.Log("Performing attack...");
             if (Time.time - timeSinceLastAttack > attackCooldown)
             {
                 // Jika cooldown terlampaui sebelum serangan berikutnya, reset combo ke 1
@@ -80,23 +80,16 @@ namespace ITKombat
                 }
 
                 timeSinceLastAttack = Time.time; // Simpan waktu serangan terakhir
-                Debug.Log("Combo: " + combo);
+                // Debug.Log("Combo: " + combo);
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-                Debug.Log("Hit " + hitEnemies.Length + " enemies.");
+                // Debug.Log("Hit " + hitEnemies.Length + " enemies.");
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
                     AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
                     if (enemyRb != null && !enemyDefense.isBlocking)
                     {
-                        if (combo == 4) // knockback hanya untuk hit ke 4
-                        {
-                            float attackForce = enemy.bounds.size.magnitude / 2; // penyesuaian attack force sesuai size karakter
-                            Vector2 direction = enemy.transform.position - attackPoint.position; // penyesuaian arah knockback
-                            enemyRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
-                        }
-
                         GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
 
                         if (enemyStateObject != null)
@@ -104,7 +97,8 @@ namespace ITKombat
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                             if (enemyState != null)
                             {
-                                enemyState.TakeDamage(attackPower);
+                                ApplyKnockback(enemy,combo);
+                                enemyState.TakeDamage(attackPower,combo);
                             }
                         }
 
@@ -116,12 +110,38 @@ namespace ITKombat
                 }
                 AttackAnimation(hitEnemies);
 
-                Debug.Log("Performed attack.");
+                // Debug.Log("Performed attack.");
             }
             else
             {
                 animator.SetTrigger("Idle");
-                Debug.Log("Cooldown not exceeded, going to idle.");
+                // Debug.Log("Cooldown not exceeded, going to idle.");
+            }
+        }
+
+        void ApplyKnockback(Collider2D enemyCollider, float currentCombo)
+        {
+            if (enemyCollider != null)
+            {
+                Rigidbody2D enemyRb = enemyCollider.GetComponent<Rigidbody2D>();
+                if (enemyRb != null)
+                {
+                    if (currentCombo == 4) // knockback hanya untuk hit ke 4
+                        {
+                            float attackForce = enemyCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
+                            Vector2 direction = (enemyCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
+
+                            enemyRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+                        }
+                }
+                else
+                {
+                    Debug.LogWarning("No Rigidbody2D found on the enemy.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No enemy detected within knockback radius.");
             }
         }
 
@@ -143,7 +163,7 @@ namespace ITKombat
                     PlayAttackSound(1, hitEnemies.Length > 0);
                     animator.SetTrigger("attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
-                    Debug.Log("Attack 1 triggered");
+                    // Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
                     if (character.IsFacingRight)
@@ -157,7 +177,7 @@ namespace ITKombat
                     PlayAttackSound(2, hitEnemies.Length > 0);
                     animator.SetTrigger("attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
-                    Debug.Log("Attack 2 triggered");
+                    // Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
                     if (character.IsFacingRight)
@@ -171,7 +191,7 @@ namespace ITKombat
                     PlayAttackSound(3, hitEnemies.Length > 0);
                     animator.SetTrigger("attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
-                    Debug.Log("Attack 3 triggered");
+                    // Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
                     if (character.IsFacingRight)
@@ -185,7 +205,7 @@ namespace ITKombat
                     PlayAttackSound(4, hitEnemies.Length > 0);
                     animator.SetTrigger("attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
-                    Debug.Log("Attack 4 triggered");
+                    // Debug.Log("Attack 4 triggered");
                     break;
             }
         }
@@ -194,7 +214,7 @@ namespace ITKombat
         {
             yield return new WaitForSeconds(time); 
             animator.SetTrigger("Idle"); 
-            Debug.Log("Reset to Idle after " + time + " seconds.");
+            // Debug.Log("Reset to Idle after " + time + " seconds.");
         }
 
         // Untuk determinasi apakah attacknya kena atau tidak

@@ -8,7 +8,7 @@ namespace ITKombat{
         public AI_Attack aiAttack;
         public AI_Defense aiDefense;
         public Transform player;
-        public float waitingTime = 1.5f; // Delay time before next state
+        public float waitingTime = 2f; // Delay time before next state
 
         private enum AIState {Approach, Retreat, Attack, Idle, Blocking}
         private AIState currentState = AIState.Idle;
@@ -148,12 +148,12 @@ namespace ITKombat{
         IEnumerator ActivateBlock()
         {
             aiDefense.isBlocking = true;
-            Debug.Log("AI is blocking");
+            // Debug.Log("AI is blocking");
 
             yield return new WaitForSeconds(aiDefense.blockDuration);
 
             aiDefense.isBlocking = false;
-            Debug.Log("Ai stop blocking");
+            // Debug.Log("Ai stop blocking");
 
             NextMovementDecision();
         }
