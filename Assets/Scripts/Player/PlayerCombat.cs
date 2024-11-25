@@ -34,7 +34,7 @@ namespace ITKombat
             {
                 Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
                 buildingCollider.ActivateCanvas();
-                SoundManager.Instance.PlaySound3D("Button_Click", transform.position);
+                NewSoundManager.Instance.PlaySound("Button_Click", transform.position);
             }
             else if (doorCollider != null && doorCollider.CanActivateScene()) // Pastikan menggunakan doorCollider di sini
             {

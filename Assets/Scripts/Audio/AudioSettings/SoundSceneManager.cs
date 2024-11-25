@@ -16,11 +16,11 @@ namespace ITKombat
             }
             else if (currentSceneName == "Asrama")
             {
-                MusicManager.Instance.PlayMusic("MarsITKombat");
+                MusicManager.Instance.PlayMusic("Mars_ITKombat");
             }
             else if (currentSceneName == "(new)LoginRegister")
             {
-                MusicManager.Instance.PlayMusic("MarsITKombat");
+                MusicManager.Instance.PlayMusic("Mars_ITKombat");
             }
             else if(currentSceneName == "BattleMode")
             {
@@ -28,7 +28,7 @@ namespace ITKombat
             }
             else if(currentSceneName == "Lingkungan 1")
             {
-                MusicManager.Instance.PlayMusic("MarsITKombat");
+                MusicManager.Instance.PlayMusic("Mars_ITKombat");
             }
         }
     };
