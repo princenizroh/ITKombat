@@ -24,11 +24,7 @@ namespace ITKombat
         // Update is called once per frame
         public void OnAttackButtonPressed()
         {
-            if (!isAttacking)
-            {
-                isAttacking = true;
-                HandlePunchCombo();
-            }
+            HandlePunchCombo();
         }
 
         private void HandlePunchCombo()
