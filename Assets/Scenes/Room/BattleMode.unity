@@ -298,7 +298,7 @@ Transform:
   m_GameObject: {fileID: 74637344}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 34.970657, y: 8.231796, z: 0}
+  m_LocalPosition: {x: 34.970657, y: 8.877391, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3421,7 +3421,7 @@ Transform:
   m_GameObject: {fileID: 1343403559}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.231821, y: 6.31529, z: -0.0024779798}
+  m_LocalPosition: {x: 12.231821, y: 6.9608855, z: -0.0024779798}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3438,10 +3438,10 @@ GameObject:
   - component: {fileID: 1392218553}
   - component: {fileID: 1392218556}
   - component: {fileID: 1392218555}
-  - component: {fileID: 1392218557}
+  - component: {fileID: 1392218554}
   m_Layer: 0
   m_Name: Keluar
-  m_TagString: Pintu
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3458,10 +3458,22 @@ Transform:
   m_LocalPosition: {x: 1.939, y: 7.378, z: 0}
   m_LocalScale: {x: 0.08863636, y: 0.255, z: 0.2215909}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1488309870}
+  m_Children: []
   m_Father: {fileID: 341551415}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1392218554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392218552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6218b5c761ead54d940249a885ba97f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetSceneName: Lingkungan 1
 --- !u!61 &1392218555
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3563,21 +3575,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1392218557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1392218552}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 494f8c68ba64f034d958880947fcacc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetSceneName: Lingkungan 1
-  outline: {fileID: 1488309869}
-  playerInRange: 0
 --- !u!1 &1394379784
 GameObject:
   m_ObjectHideFlags: 0
@@ -3647,7 +3644,7 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -1.3734714, y: -0.8405828}
+  - {x: -1.3705264, y: -0.8529356}
   - {x: -1.1056615, y: -0.84595966}
   - {x: -0.83135223, y: -0.8497656}
   - {x: -0.83187836, y: -0.7773577}
@@ -3657,8 +3654,8 @@ EdgeCollider2D:
   - {x: -0.8330592, y: -0.36115628}
   - {x: -0.8483473, y: -0.35675368}
   - {x: -0.8786106, y: -0.35979968}
-  - {x: -1.3729746, y: -0.3546059}
-  - {x: -1.373153, y: -0.83743465}
+  - {x: -1.3699931, y: -0.3650276}
+  - {x: -1.3692263, y: -0.8575081}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -3688,7 +3685,7 @@ Transform:
   m_GameObject: {fileID: 1406901390}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.68, y: -0.34559524, z: 0}
+  m_LocalPosition: {x: 32.68, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3953,37 +3950,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parallaxCamera: {fileID: 0}
---- !u!1 &1488309869
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1488309870}
-  m_Layer: 0
-  m_Name: Outline
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1488309870
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488309869}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1392218553}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1517184549
 GameObject:
   m_ObjectHideFlags: 0
@@ -4286,7 +4252,7 @@ Transform:
   m_GameObject: {fileID: 1536308697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.231821, y: 6.31529, z: -0.0024779798}
+  m_LocalPosition: {x: 12.231821, y: 6.9608855, z: -0.0024779798}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4589,7 +4555,7 @@ Transform:
   m_GameObject: {fileID: 1704663950}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.68572235, y: -1.14, z: 0.02520749}
+  m_LocalPosition: {x: 0.68572235, y: -0.49440485, z: 0.02520749}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5300,7 +5266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1863283562}
-  - component: {fileID: 1863283563}
+  - component: {fileID: 1863283561}
   m_Layer: 0
   m_Name: Pembatas Kamera
   m_TagString: CameraBounds
@@ -5308,23 +5274,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1863283562
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1863283560}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.39, y: 1.5, z: -0.60348225}
-  m_LocalScale: {x: 2, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2127065360}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &1863283563
-BoxCollider2D:
+--- !u!60 &1863283561
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5357,7 +5308,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.11321974, y: 0.9591036}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5634,7 +5585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoundingShape2D: {fileID: 1863283563}
+  BoundingShape2D: {fileID: 1863283561}
   Damping: 0.5
   SlowingDistance: 5
   OversizeWindow:
@@ -5670,7 +5621,7 @@ MonoBehaviour:
   CameraDistance: 10
   DeadZoneDepth: 0
   Composition:
-    ScreenPosition: {x: 0, y: 0.03}
+    ScreenPosition: {x: 0, y: -0.15}
     DeadZone:
       Enabled: 1
       Size: {x: 0, y: 0}
@@ -6057,7 +6008,7 @@ Transform:
   m_GameObject: {fileID: 2127065358}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.35, y: 4.8244042, z: 0.6286897}
+  m_LocalPosition: {x: 11.35, y: 5.47, z: 0.6286897}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
