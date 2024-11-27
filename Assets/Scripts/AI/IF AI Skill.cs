@@ -28,17 +28,17 @@ namespace ITKombat
             // Debug.Log(distanceToPlayer);
             float chance = Random.value;
 
-            if (distanceToPlayer <= aiAttack.attackRange && chance < skill1Chance)
-            {
-                StartCoroutine(ActivatingSkill1());
-            }
+            // if (distanceToPlayer <= aiAttack.attackRange && chance < skill1Chance)
+            // {
+            //     StartCoroutine(ActivatingSkill1());
+            // }
 
             if (enemyStateObject != null)
             {
                 EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                 if (enemyState != null)
                 {
-                    if (enemyState.currentHealth <= enemyState.maxHealth * 0.4f)
+                    if (enemyState.currentHealth <= enemyState.maxHealth * 0.7f && chance < skill1Chance)
                     {
                         skillsHolder.ActivateSkill2();
                     }

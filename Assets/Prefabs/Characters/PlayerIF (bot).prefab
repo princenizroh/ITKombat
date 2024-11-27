@@ -207,7 +207,6 @@ GameObject:
   - component: {fileID: 6271457181215855436}
   - component: {fileID: 6211191168650674319}
   - component: {fileID: 8092777801304928371}
-  - component: {fileID: 3640624252990537109}
   m_Layer: 7
   m_Name: PlayerIF (bot)
   m_TagString: Enemy
@@ -393,7 +392,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.8125, y: 1.9375}
+    oldSize: {x: 2, y: 2.3125}
     newSize: {x: 1.09375, y: 2.03125}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -604,8 +603,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fce5f7a821399d42bceb37788324c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRange: 2.7
-  attackPower: 10
+  attackRange: 3
+  attackPower: 5
   attackRadius: 1
   attackPoint: {fileID: 3048261050815633105}
   attackCooldown: 1
@@ -695,12 +694,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 777159a8662bd3d4eab28c8899b67c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentSkills: []
+  currentSkills:
+  - {fileID: 11400000, guid: 655c117f24391dc4593a085d40c6e473, type: 2}
+  - {fileID: 11400000, guid: 5d443d70ed0e0724f87e8298c1f63f37, type: 2}
+  - {fileID: 11400000, guid: 5feacb1e4eb27a046b8226c2542eaa9e, type: 2}
 --- !u!114 &8092777801304928371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,22 +722,6 @@ MonoBehaviour:
   aiMovement: {fileID: 0}
   aiAttack: {fileID: 0}
   enemyStateObject: {fileID: 0}
---- !u!114 &3640624252990537109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60f13a1ca5620de40b07a1c4ae9e7f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBlocking: 0
-  criticalProximity: 2.5
-  blockChance: 0.5
-  blockDuration: 2
 --- !u!1 &3491457443060551730
 GameObject:
   m_ObjectHideFlags: 0

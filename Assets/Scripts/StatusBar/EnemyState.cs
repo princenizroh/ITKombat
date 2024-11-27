@@ -29,9 +29,26 @@ namespace ITKombat
             }
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage,float combo)
         {
             currentHealth -= damage;
+            Debug.Log(currentHealth);
+            healthBar.UpdateHealth(currentHealth, maxHealth);
+            if (currentHealth <= 0)
+            {
+                HandleDeath();
+            }
+            else
+            {
+                // ApplyKnockback();
+                AttackedAnimation(combo);
+                // PlayRandomHitSound();
+            }
+        }
+
+        public void TakeDamageFromSkill(float skillDamage)
+        {
+            currentHealth -= skillDamage;
             healthBar.UpdateHealth(currentHealth, maxHealth);
 
             if (currentHealth <= 0)
@@ -40,7 +57,7 @@ namespace ITKombat
             }
             else
             {
-                ApplyKnockback();
+                // ApplyKnockback();
                 PlayRandomHitSound();
             }
         }
@@ -60,58 +77,116 @@ namespace ITKombat
             }
         }
 
-        [System.Obsolete]
-        private void OnTriggerEnter2D(Collider2D collision)
+         private void AttackedAnimation(float combo)
         {
-            if (collision.CompareTag(attackTag))
+            // CharacterController2D1 character = GetComponent<CharacterController2D1>();
+            // if (character == null) return;
+            switch (combo)
             {
-                Debug.Log("Player attacked by: " + collision.gameObject.name);
-                float attackPower = GetDamageFromPlayer();
-                Debug.Log("Player attacked power: " + attackPower);
-                TakeDamage(attackPower); 
+                case 1:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul sekali cik");
+                    break;
+                case 2:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul 2x cik");
+                    break;
+                case 3:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul 3x cik");
+                    break;
+                case 4:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul 4x cik");
+                    break;
             }
         }
 
-        [System.Obsolete]
-        public float GetDamageFromPlayer()
-        {
-            PlayerIFAttack playerAttack = FindObjectOfType<PlayerIFAttack>(); // Mengambil dari objek pemain secara global
-            if (playerAttack != null)
-            {
-                float damage = playerAttack.attackPower;
-                if (damage > 0)
-                {
-                    return damage; // Pastikan nilai lebih dari 0
-                }
-            }
-            return 0f;
-        }
 
-        private void EndGame()
-        {
-            Debug.Log("Game Berakhir");
-            // Implementasikan logika end game, bisa panggil UI atau lainnya.
-        }
+        // [System.Obsolete]
+        // private void OnTriggerEnter2D(Collider2D collision)
+        // {
+        //     if (collision.CompareTag(attackTag))
+        //     {
+        //         Debug.Log("Player attacked by: " + collision.gameObject.name);
+        //         float attackPower = GetDamageFromPlayer();
+        //         Debug.Log("Player attacked power: " + attackPower);
+        //         TakeDamage(attackPower); 
+        //     }
+        // }
 
-        private void Die()
-        {
-            Debug.Log("Enemy mati!");
-            // Implementasi logika kematian enemy
-        }
+        // [System.Obsolete]
+        // public float GetDamageFromPlayer()
+        // {
+        //     PlayerIFAttack playerAttack = FindObjectOfType<PlayerIFAttack>(); // Mengambil dari objek pemain secara global
+        //     if (playerAttack != null)
+        //     {
+        //         float damage = playerAttack.attackPower;
+        //         if (damage > 0)
+        //         {
+        //             return damage; // Pastikan nilai lebih dari 0
+        //         }
+        //     }
+        //     return 0f;
+        // }
 
-        private void ApplyKnockback()
-        {
-            Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
-            rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-        }
+        // private void EndGame()
+        // {
+        //     Debug.Log("Game Berakhir");
+        //     // Implementasikan logika end game, bisa panggil UI atau lainnya.
+        // }
 
-        private IEnumerator PlayRandomHitAnimation()
-        {
-            string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
-            enemyAnimator.SetTrigger(randomHitAnimation);
-            yield return new WaitForSeconds(0.5f);
-            enemyAnimator.SetTrigger(idleAnimationTrigger);
-        }
+        // private void Die()
+        // {
+        //     Debug.Log("Enemy mati!");
+        //     // Implementasi logika kematian enemy
+        // }
+
+        // private void ApplyKnockback()
+        // {
+        //     Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
+        //     rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+        // }
+
+        // private IEnumerator PlayRandomHitAnimation()
+        // {
+        //     string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
+        //     enemyAnimator.SetTrigger(randomHitAnimation);
+        //     yield return new WaitForSeconds(0.5f);
+        //     enemyAnimator.SetTrigger(idleAnimationTrigger);
+        // }
 
         private void PlayRandomHitSound()
         {

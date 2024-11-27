@@ -39,7 +39,6 @@ namespace ITKombat
             if (canMove && useKeyboardInput)
             {
                 horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
-                
                 if (Input.GetButtonDown("Crouch"))
                 {
                     OnCrouchDown();

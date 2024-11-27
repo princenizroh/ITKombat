@@ -17,18 +17,6 @@ namespace ITKombat
         void Start()
         {
             LoadVolume();
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            Debug.Log(currentSceneName + "adalah scene sekarang");
-            if (currentSceneName == "SoundMultiplayer")
-            {
-                MusicManager.Instance.PlayMusic("Battle_1");
-            }
-            else if (currentSceneName == "Asrama")
-            {
-                MusicManager.Instance.PlayMusic("MarsITKombat");
-            }
-
-
         }
 
         public void UpdateMusicVolume(float volume)

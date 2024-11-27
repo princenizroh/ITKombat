@@ -5,11 +5,11 @@ namespace ITKombat
 {
     public class MatchTimer : MonoBehaviour
     {
-        public static MatchTimer Instance;
-        public float timerSet = 0.5f;
-        public float timerStart = 120;
-        public float normalTimerSet = 0.5f;
-        public float normalTimerStart;
+        public static MatchTimer Instance { get; private set; }
+        [SerializeField] private float timerSet = 0.5f;
+        [SerializeField] private float timerStart = 120;
+        [SerializeField] private float normalTimerSet = 0.1f;
+        [SerializeField] private float normalTimerStart = 5f;
         public bool statusMatch;
 
         private void Awake()
@@ -49,6 +49,12 @@ namespace ITKombat
         {
             int minutes = Mathf.FloorToInt(timerStart / 60);
             return minutes;
+        }
+
+        public int GetResetTimerStart()
+        {
+            timerStart = 120;
+            return Mathf.FloorToInt(timerStart);
         }
 
         public int GetStageTimeInSecond()
