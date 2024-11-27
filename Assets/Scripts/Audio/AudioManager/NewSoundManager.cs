@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using System.Collections;
 
 namespace ITKombat
 {
@@ -12,9 +13,11 @@ namespace ITKombat
 
         [Header("Audio Settings")]
         [SerializeField] private AudioSource sfxSource;
-        [SerializeField] private AudioSource sfx2DSource; // AudioSource untuk memainkan suara
+        [SerializeField] private AudioSource sfx2DSource; 
         [SerializeField] private AudioMixerGroup sfxMixerGroup;
         [SerializeField] private AudioMixerGroup sfxMixerGroup2D;
+
+        private bool isPlaying = false;
 
         private void Awake()
         {
@@ -70,6 +73,36 @@ namespace ITKombat
                 Debug.LogWarning($"Sound group '{soundGroupName}' not found in SoundLibrary!");
             }
         }
+
+        public void Footstep(string soundGroupName, Vector3 position)
+        {
+            if(!isPlaying)
+            {
+                AudioClip clip = soundLibrary.GetClipFromName(soundGroupName);
+                if(clip != null)
+                {
+                    isPlaying = true;
+                    sfx2DSource.clip = clip;
+                    sfx2DSource.transform.position = position;
+                    sfx2DSource.outputAudioMixerGroup = sfxMixerGroup;
+                    sfx2DSource.Play();
+                    StartCoroutine(WaitForSoundToFinish(sfx2DSource));
+                }
+                else
+                {
+                    Debug.LogWarning($"Sound group '{soundGroupName}' not found in SoundLibrary!");
+                }
+            }
+        }
+
+        private IEnumerator WaitForSoundToFinish(AudioSource audioSource)
+            {
+                while (audioSource != null && audioSource.isPlaying)
+                {
+                    yield return null;
+                }
+                isPlaying = false;
+            }
         
     }
 }
