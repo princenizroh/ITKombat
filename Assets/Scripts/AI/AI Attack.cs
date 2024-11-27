@@ -196,6 +196,10 @@ namespace ITKombat
         {
             if (hitPlayer)
             {
+                // if(playerDefense.isBlocking)
+                // {
+                //     PlayBlockSound();
+                // }
                 PlayHitSound(comboNumber);
             }
             else
@@ -204,10 +208,19 @@ namespace ITKombat
             }
         }
 
+        // private void PlayBlockSound(int comboNumber)
+        // {
+        //     switch (comboNumber)
+        //     {
+        //         case 1: NewSoundManager.Instance.PlaySound("exampleBlockSound", transform.position); break;
+        //     }
+        // }
+
         private void PlayHitSound(int comboNumber)
         {
             switch (comboNumber)
             {
+                
                 case 1: NewSoundManager.Instance.PlaySound("IF_Attack1", transform.position); break;
                 case 2: NewSoundManager.Instance.PlaySound("IF_Attack2", transform.position); break;
                 case 3: NewSoundManager.Instance.PlaySound("IF_Attack3", transform.position); break;
