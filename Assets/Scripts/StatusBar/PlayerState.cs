@@ -41,14 +41,31 @@ namespace ITKombat
             }
         }
 
-        private void Update()
-        {
-            float attackPower = GetDamageFromPlayer();
-        }
+        // private void Update()
+        // {
+        //     float attackPower = GetDamageFromPlayer();
+        // }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage,float combo)
         {
             currentHealth -= damage;
+            Debug.Log(currentHealth);
+            healthBar.UpdateHealth(currentHealth, maxHealth);
+            if (currentHealth <= 0)
+            {
+                HandleDeath();
+            }
+            else
+            {
+                // ApplyKnockback();
+                AttackedAnimation(combo);
+                // PlayRandomHitSound();
+            }
+        }
+
+        public void TakeDamageFromSkill(float skillDamage)
+        {
+            currentHealth -= skillDamage;
         
             healthBar.UpdateHealth(currentHealth, maxHealth);
 
@@ -58,7 +75,7 @@ namespace ITKombat
             }
             else
             {
-                ApplyKnockback();
+                // ApplyKnockback();
                 PlayRandomHitSound();
             }
         }
@@ -78,42 +95,102 @@ namespace ITKombat
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void AttackedAnimation(float combo)
         {
-            if (collision.CompareTag(attackTag))
+            // CharacterController2D1 character = GetComponent<CharacterController2D1>();
+            // if (character == null) return;
+            switch (combo)
             {
-                Debug.Log("Player attacked by: " + collision.gameObject.name);
-                float attackPower = GetDamageFromPlayer();
-                TakeDamage(attackPower); 
+                case 1:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul sekali cik");
+                    break;
+                case 2:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul 2x cik");
+                    break;
+                case 3:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul 3x cik");
+                    break;
+                case 4:
+                    // if (character.IsFacingRight)
+                    // {
+                    //     //vfx disini
+                    // }
+                    // else
+                    // {
+                    //     //vfx disini
+                    // }
+                    //anim & sound disini
+                    Debug.Log("Kena pukul 4x cik");
+                    break;
             }
         }
 
-        public float GetDamageFromPlayer()
-        {
-            PlayerIFAttack playerAttack = GetComponent<PlayerIFAttack>();
-            if (playerAttack != null)
-            {
-                return playerAttack.attackPower; // Pastikan attackPower bernilai lebih dari 0
-            }
-            return 0f;
-        }
+        // private void OnTriggerEnter2D(Collider2D collision)
+        // {
+        //     if (collision.CompareTag(attackTag))
+        //     {
+        //         Debug.Log("Player attacked by: " + collision.gameObject.name);
+        //         float attackPower = GetDamageFromPlayer();
+        //         TakeDamage(attackPower); 
+        //     }
+        // }
 
+        // public float GetDamageFromPlayer()
+        // {
+        //     PlayerIFAttack playerAttack = GetComponent<PlayerIFAttack>();
+        //     if (playerAttack != null)
+        //     {
+        //         return playerAttack.attackPower; // Pastikan attackPower bernilai lebih dari 0
+        //     }
+        //     return 0f;
+        // }
 
-        private void ApplyKnockback()
-        {
-            // Pastikan sumber knockback berasal dari arah collision
-            Collider2D attacker = Physics2D.OverlapCircle(transform.position, 1f, LayerMask.GetMask("Attack"));
-            if (attacker != null)
-            {
-                Vector2 knockbackDirection = (transform.position - attacker.transform.position).normalized;
-                rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-            }
-            else
-            {
-                Debug.LogWarning("No attacker found for knockback calculation.");
-            }
-        }
+        // private void EndGame()
+        // {
+        //     Debug.Log("Game Berakhir");
+        //     // Implementasikan logika end game, bisa panggil UI atau lainnya.
+        // }
 
+        // private void ApplyKnockback()
+        // {
+        //     Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
+        //     rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+        // }
+
+        // private IEnumerator PlayRandomHitAnimation()
+        // {
+        //     string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
+        //     playerAnimator.SetTrigger(randomHitAnimation);
+        //     yield return new WaitForSeconds(0.5f);
+        //     playerAnimator.SetTrigger(idleAnimationTrigger);
+        // }
 
         private void PlayRandomHitSound()
         {
