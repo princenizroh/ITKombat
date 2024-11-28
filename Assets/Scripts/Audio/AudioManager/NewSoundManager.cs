@@ -82,11 +82,11 @@ namespace ITKombat
                 if(clip != null)
                 {
                     isPlaying = true;
-                    sfx2DSource.clip = clip;
-                    sfx2DSource.transform.position = position;
-                    sfx2DSource.outputAudioMixerGroup = sfxMixerGroup;
-                    sfx2DSource.Play();
-                    StartCoroutine(WaitForSoundToFinish(sfx2DSource));
+                    sfxSource.clip = clip;
+                    sfxSource.transform.position = position;
+                    sfxSource.outputAudioMixerGroup = sfxMixerGroup;
+                    sfxSource.Play();
+                    StartCoroutine(WaitForSoundToFinish(sfxSource));
                 }
                 else
                 {
