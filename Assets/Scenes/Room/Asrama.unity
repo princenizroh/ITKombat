@@ -995,6 +995,7 @@ GameObject:
   - component: {fileID: 198519664}
   - component: {fileID: 198519665}
   - component: {fileID: 198519666}
+  - component: {fileID: 198519667}
   m_Layer: 0
   m_Name: Piala
   m_TagString: Untagged
@@ -1131,6 +1132,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leaderboardCanvas: {fileID: 403658475}
+--- !u!114 &198519667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198519661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 198519666}
+          m_TargetAssemblyTypeName: ITKombat.ObjectClickHandler, Assembly-CSharp
+          m_MethodName: OnMouseDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &236037577
 GameObject:
   m_ObjectHideFlags: 0
@@ -6298,6 +6328,7 @@ GameObject:
   - component: {fileID: 1482303673}
   - component: {fileID: 1482303672}
   - component: {fileID: 1482303671}
+  - component: {fileID: 1482303676}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6468,6 +6499,22 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1482303676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482303669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56666c5a40171f54783dd416a44f42bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1 &1529943610
 GameObject:
   m_ObjectHideFlags: 0
