@@ -1,4 +1,4 @@
-using Microsoft.Unity.VisualStudio.Editor;
+// using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 
@@ -64,9 +64,9 @@ namespace ITKombat
         public TMP_Text TMP_stat2Value;
 
         // Image Value Ref -> UnityUI
-        public Image mainStat;
-        public Image stat1;
-        public Image stat2;
+        // public Image mainStat;
+        // public Image stat1;
+        // public Image stat2;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start() {
