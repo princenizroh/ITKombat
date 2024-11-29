@@ -8,7 +8,7 @@ namespace ITKombat
         public static MusicManager Instance;
 
         [SerializeField]
-        private MusicLibrary musicLibrary;
+        private NewMusicLibrary musicLibrary;
         [SerializeField]
         private AudioSource musicSource;
 
@@ -28,7 +28,17 @@ namespace ITKombat
 
         public void PlayMusic(string trackName, float fadeDuration = 0.5f)
         {
-            StartCoroutine(AnimateMusicCrossfade(musicLibrary.GetClipFromName(trackName), fadeDuration));
+            AudioClip clip = musicLibrary.GetClipFromName(trackName);
+
+            // If clip is found, start playing
+            if (clip != null)
+            {
+                StartCoroutine(AnimateMusicCrossfade(clip, fadeDuration));
+            }
+            else
+            {
+                Debug.LogWarning($"Track named '{trackName}' not found in MusicLibrary.");
+            }
         }
 
         IEnumerator AnimateMusicCrossfade(AudioClip nextTrack, float fadeDuration = 0.5f)
