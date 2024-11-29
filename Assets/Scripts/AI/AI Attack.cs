@@ -11,7 +11,7 @@ namespace ITKombat
         public float attackPower = 3f;
         public float attackRadius = 1f;
         public Transform attackPoint;
-        public float attackCooldown = 1f;      // Cooldown between each attack
+        public float attackCooldown = 0.7f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
@@ -78,8 +78,8 @@ namespace ITKombat
                 foreach (Collider2D player in hitPlayer)
                 {
                     Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
-                    // PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
-                    if (playerRB != null) //&& !playerDefense.isBlocking)
+                    PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
+                    if (playerRB != null && !playerDefense.isBlocking)
                     {   
                         GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
                         if (playerStateObject != null)
@@ -88,20 +88,27 @@ namespace ITKombat
                             if (playerState != null)
                             {
                                 ApplyKnockback(player,currentCombo);
-                                playerState.TakeDamage(attackPower);
+                                AttackAnimation(hitPlayer); 
+                                playerState.TakeDamage(attackPower,currentCombo);
+                            }
+                            else
+                            {
+                                Debug.Log("PlayerState not found.");
                             }
                         }
                         // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
                         StartCoroutine(AttackCooldown());
-                        if (currentCombo > maxCombo)
-                        {
-                            currentCombo = 0;
-                            StartCoroutine(ComboCooldown());
-                        }
+                        if (currentCombo >= maxCombo)
+                            {
+                                currentCombo = 0;
+                                StartCoroutine(ComboCooldown());
+                            }
                     }
                 }
-                AttackAnimation(hitPlayer);
-
+            }
+            else
+            {
+                 anim.SetTrigger("Idle");
             }
         }
 
@@ -148,7 +155,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(1,hitPlayer.Length > 0);
                     anim.SetTrigger("attack1");
-                    Debug.Log("Attack 1 triggered");
+                    // Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
                     if (character.IsFacingRight)
@@ -161,7 +168,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(2,hitPlayer.Length > 0);
                     anim.SetTrigger("attack2");
-                    Debug.Log("Attack 2 triggered");
+                    // Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
                     if (character.IsFacingRight)
@@ -174,7 +181,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(3,hitPlayer.Length > 0);
                     anim.SetTrigger("attack3");
-                    Debug.Log("Attack 3 triggered");
+                    // Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
                     if (character.IsFacingRight)
@@ -187,7 +194,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(4,hitPlayer.Length > 0);
                     anim.SetTrigger("attack4");
-                    Debug.Log("Attack 4 triggered");
+                    // Debug.Log("Attack 4 triggered");
                     break;
             }
         }
@@ -196,6 +203,10 @@ namespace ITKombat
         {
             if (hitPlayer)
             {
+                // if(playerDefense.isBlocking)
+                // {
+                //     PlayBlockSound();
+                // }
                 PlayHitSound(comboNumber);
             }
             else
@@ -204,14 +215,23 @@ namespace ITKombat
             }
         }
 
+        // private void PlayBlockSound(int comboNumber)
+        // {
+        //     switch (comboNumber)
+        //     {
+        //         case 1: NewSoundManager.Instance.PlaySound("exampleBlockSound", transform.position); break;
+        //     }
+        // }
+
         private void PlayHitSound(int comboNumber)
         {
             switch (comboNumber)
             {
-                case 1: SoundManager.Instance.PlaySound3D("CharIF_Attack1", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("CharIF_Attack2", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("CharIF_Attack3", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                
+                case 1: NewSoundManager.Instance.PlaySound("IF_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("IF_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("IF_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
             }
         }
 
@@ -219,10 +239,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Kick_Miss", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("CharIF_Attack4", transform.position); break;
             }
         }
 
@@ -237,9 +257,6 @@ namespace ITKombat
         {
             canAttack = false;
             yield return new WaitForSeconds(comboResetTime);
-            Debug.Log("Combo Reset");
-            // Reset the combo counter after cooldown
-            // currentCombo = 0;
             canAttack = true;
         }
 

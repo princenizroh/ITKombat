@@ -28,10 +28,10 @@ namespace ITKombat
             // Debug.Log(distanceToPlayer);
             float chance = Random.value;
 
-            if (distanceToPlayer <= aiAttack.attackRange && chance < skill1Chance)
-            {
-                StartCoroutine(ActivatingSkill1());
-            }
+            // if (distanceToPlayer <= aiAttack.attackRange && chance < skill1Chance)
+            // {
+            //     StartCoroutine(ActivatingSkill1());
+            // }
 
             if (enemyStateObject != null)
             {

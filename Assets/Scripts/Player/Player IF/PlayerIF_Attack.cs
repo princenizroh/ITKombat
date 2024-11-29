@@ -62,7 +62,7 @@ namespace ITKombat
 
         public void PerformAttack()
         {
-            Debug.Log("Performing attack...");
+            // Debug.Log("Performing attack...");
             if (Time.time - timeSinceLastAttack > attackCooldown)
             {
                 // Jika cooldown terlampaui sebelum serangan berikutnya, reset combo ke 1
@@ -80,10 +80,10 @@ namespace ITKombat
                 }
 
                 timeSinceLastAttack = Time.time; // Simpan waktu serangan terakhir
-                Debug.Log("Combo: " + combo);
+                // Debug.Log("Combo: " + combo);
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-                Debug.Log("Hit " + hitEnemies.Length + " enemies.");
+                // Debug.Log("Hit " + hitEnemies.Length + " enemies.");
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
@@ -98,7 +98,7 @@ namespace ITKombat
                             if (enemyState != null)
                             {
                                 ApplyKnockback(enemy,combo);
-                                enemyState.TakeDamage(attackPower);
+                                enemyState.TakeDamage(attackPower,combo);
                             }
                         }
 
@@ -110,12 +110,12 @@ namespace ITKombat
                 }
                 AttackAnimation(hitEnemies);
 
-                Debug.Log("Performed attack.");
+                // Debug.Log("Performed attack.");
             }
             else
             {
                 animator.SetTrigger("Idle");
-                Debug.Log("Cooldown not exceeded, going to idle.");
+                // Debug.Log("Cooldown not exceeded, going to idle.");
             }
         }
 
@@ -163,7 +163,7 @@ namespace ITKombat
                     PlayAttackSound(1, hitEnemies.Length > 0);
                     animator.SetTrigger("attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
-                    Debug.Log("Attack 1 triggered");
+                    // Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
                     if (character.IsFacingRight)
@@ -177,7 +177,7 @@ namespace ITKombat
                     PlayAttackSound(2, hitEnemies.Length > 0);
                     animator.SetTrigger("attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
-                    Debug.Log("Attack 2 triggered");
+                    // Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
                     if (character.IsFacingRight)
@@ -191,7 +191,7 @@ namespace ITKombat
                     PlayAttackSound(3, hitEnemies.Length > 0);
                     animator.SetTrigger("attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
-                    Debug.Log("Attack 3 triggered");
+                    // Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
                     if (character.IsFacingRight)
@@ -205,7 +205,7 @@ namespace ITKombat
                     PlayAttackSound(4, hitEnemies.Length > 0);
                     animator.SetTrigger("attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
-                    Debug.Log("Attack 4 triggered");
+                    // Debug.Log("Attack 4 triggered");
                     break;
             }
         }
@@ -214,7 +214,7 @@ namespace ITKombat
         {
             yield return new WaitForSeconds(time); 
             animator.SetTrigger("Idle"); 
-            Debug.Log("Reset to Idle after " + time + " seconds.");
+            // Debug.Log("Reset to Idle after " + time + " seconds.");
         }
 
         // Untuk determinasi apakah attacknya kena atau tidak
@@ -238,10 +238,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: SoundManager.Instance.PlaySound3D("CharIF_Attack1", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("CharIF_Attack2", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("CharIF_Attack3", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("IF_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("IF_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("IF_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
             }
         }
 
@@ -249,10 +249,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon2", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("Kick_Miss", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Kick_Miss", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
                 
             }
         }

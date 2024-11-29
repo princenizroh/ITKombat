@@ -148,12 +148,12 @@ namespace ITKombat{
         IEnumerator ActivateBlock()
         {
             aiDefense.isBlocking = true;
-            Debug.Log("AI is blocking");
+            // Debug.Log("AI is blocking");
 
             yield return new WaitForSeconds(aiDefense.blockDuration);
 
             aiDefense.isBlocking = false;
-            Debug.Log("Ai stop blocking");
+            // Debug.Log("Ai stop blocking");
 
             NextMovementDecision();
         }

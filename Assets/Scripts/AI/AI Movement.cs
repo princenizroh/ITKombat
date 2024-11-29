@@ -8,7 +8,7 @@ namespace ITKombat
         [Header("Movement")]
         public float moveSpeed = 3f;
         public float movementStep = 0f;
-        public float maxStep = 2f;
+        public float maxStep = 3f;
         public float maxDistance = 15f;
         public bool facingPlayer = true;
         public bool canMove = true;
@@ -50,7 +50,7 @@ namespace ITKombat
             myRigidbody.linearVelocity = new Vector2(ApproachDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;
-            // SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+            NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
         }
 
         public void Retreat()
@@ -60,7 +60,7 @@ namespace ITKombat
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;
-            // SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+            NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
         }
 
         void Flip()
