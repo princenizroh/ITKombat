@@ -24,6 +24,7 @@ namespace ITKombat
         // Update is called once per frame
         public void OnAttackButtonPressed()
         {
+            Debug.Log("OnAttackButtonPressed: isAttacking = " + isAttacking);
             if (!isAttacking)
             {
                 isAttacking = true;

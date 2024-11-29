@@ -8,7 +8,7 @@ namespace ITKombat
         public GameObject canvasDead;
 
         public GameObject outline;
-        [HideInInspector] public bool playerInRange = false; // Dapat diakses dari PlayerCombat
+        [HideInInspector] public bool playerInRange = false; // Dapat diakses dari PlayerComba
 
         void OnTriggerEnter2D(Collider2D other)
         {
