@@ -10,18 +10,17 @@ public class InteractionSprite
 
 public class InteractionController : MonoBehaviour
 {
-    public Image actionButtonImage; // Drag & drop tombol UI yang ingin diubah di inspector
-    public Sprite defaultSprite;    // Sprite default untuk tombol
-    public InteractionSprite[] interactionSprites; // Array pasangan tag dan sprite
+    public Image actionButtonImage; 
+    public Sprite defaultSprite; 
+    public InteractionSprite[] interactionSprites; 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Cari sprite berdasarkan tag yang ditemukan
         foreach (var interaction in interactionSprites)
         {
             if (collision.CompareTag(interaction.tagName))
             {
-                actionButtonImage.sprite = interaction.sprite; // Ganti gambar tombol
+                actionButtonImage.sprite = interaction.sprite; 
                 return;
             }
         }
@@ -29,12 +28,11 @@ public class InteractionController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // Kembalikan ke sprite default jika keluar dari collider
         foreach (var interaction in interactionSprites)
         {
             if (collision.CompareTag(interaction.tagName))
             {
-                actionButtonImage.sprite = defaultSprite; // Kembali ke gambar default
+                actionButtonImage.sprite = defaultSprite; 
                 return;
             }
         }
