@@ -42,6 +42,7 @@ public class CharacterController2D1 : MonoBehaviour
 
         if (OnCrouchEvent == null)
             OnCrouchEvent = new BoolEvent();
+
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -139,12 +140,12 @@ public class CharacterController2D1 : MonoBehaviour
 
     public void Flip()
     {
-        // spriteRenderer.flipX = !spriteRenderer.flipX;
-        // m_FacingRight = !m_FacingRight;
-
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+        spriteRenderer.flipX = !spriteRenderer.flipX;
+        m_FacingRight = !m_FacingRight;
+        /*
+                Vector3 theScale = transform.localScale;
+                theScale.x *= -1;
+                transform.localScale = theScale;*/
     }
 
     public void Dash(float dashSpeed, float dashDuration)
