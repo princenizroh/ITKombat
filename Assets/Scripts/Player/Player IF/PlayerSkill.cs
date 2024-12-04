@@ -173,7 +173,7 @@ namespace ITKombat
                 PlaySound(skillSound3);
                 isSkill3Active = true;
                 StartCoroutine(ResetToIdleAfterTime(1.5f));
-                PlaySound(skillSound3Part2);
+                // PlaySound(skillSound3Part2);
             }
         }
 
