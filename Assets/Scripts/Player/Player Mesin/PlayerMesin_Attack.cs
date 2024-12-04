@@ -206,10 +206,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Mesin_Hit1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Mesin_Hit2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Mesin_Hit3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Mesin_Hit4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Mesin_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Mesin_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Mesin_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Mesin_Attack4", transform.position); break;
             }
         }
 
@@ -217,10 +217,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Mesin_Miss1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Mesin_Miss2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Mesin_Miss3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Mesin_Miss4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
             }
         }
 
