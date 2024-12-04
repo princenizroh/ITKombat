@@ -122,7 +122,7 @@ namespace ITKombat
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                             if (enemyState != null)
                             {
-                                enemyState.TakeDamage(attackPower, combo);
+                                enemyState.TakeDamage(attackPower,combo);
                             }
                         }
 
