@@ -1,35 +1,42 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class InteractionSprite
+{
+    public string tagName;     // Nama tag untuk mendeteksi interaksi
+    public Sprite sprite;      // Sprite yang akan digunakan
+}
+
 public class InteractionController : MonoBehaviour
 {
     public Image actionButtonImage; // Drag & drop tombol UI yang ingin diubah di inspector
-    public Sprite attackSprite;     // Sprite untuk default tombol Attack
-    public Sprite doorSprite;       // Sprite untuk tombol Door
-    public Sprite shopSprite;       // Sprite untuk tombol Shop
-    public Sprite topUpSprite;      // Sprite untuk tombol Top Up
+    public Sprite defaultSprite;    // Sprite default untuk tombol
+    public InteractionSprite[] interactionSprites; // Array pasangan tag dan sprite
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Pintu"))
+        // Cari sprite berdasarkan tag yang ditemukan
+        foreach (var interaction in interactionSprites)
         {
-            actionButtonImage.sprite = doorSprite;  // Ganti gambar tombol menjadi Door
-        }
-        else if (collision.CompareTag("ShopItem"))
-        {
-            actionButtonImage.sprite = shopSprite;  // Ganti gambar tombol menjadi Shop
-        }
-        else if (collision.CompareTag("TopUp"))
-        {
-            actionButtonImage.sprite = topUpSprite;
+            if (collision.CompareTag(interaction.tagName))
+            {
+                actionButtonImage.sprite = interaction.sprite; // Ganti gambar tombol
+                return;
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Pintu") || collision.CompareTag("ShopItem") || collision.CompareTag("TopUp"))
+        // Kembalikan ke sprite default jika keluar dari collider
+        foreach (var interaction in interactionSprites)
         {
-            actionButtonImage.sprite = attackSprite;  // Kembali ke gambar default Attack
+            if (collision.CompareTag(interaction.tagName))
+            {
+                actionButtonImage.sprite = defaultSprite; // Kembali ke gambar default
+                return;
+            }
         }
     }
 }

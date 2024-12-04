@@ -38491,10 +38491,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionButtonImage: {fileID: 367789689}
-  attackSprite: {fileID: 2309219019919756552, guid: 9d90f94343da91943b3551176e4b0ecc, type: 3}
-  doorSprite: {fileID: 633218748477426386, guid: d092884bc8c94704c9768843013b4214, type: 3}
-  shopSprite: {fileID: 3496996903020787579, guid: 13145c7596a161045838808473a0fdb6, type: 3}
-  topUpSprite: {fileID: 3971880395040776194, guid: 31045b0ce073fac4588734b483e8fd32, type: 3}
+  defaultSprite: {fileID: 2309219019919756552, guid: 9d90f94343da91943b3551176e4b0ecc, type: 3}
+  interactionSprites:
+  - tagName: TopUp
+    sprite: {fileID: 3971880395040776194, guid: 31045b0ce073fac4588734b483e8fd32, type: 3}
+  - tagName: ShopItem
+    sprite: {fileID: 3496996903020787579, guid: 13145c7596a161045838808473a0fdb6, type: 3}
+  - tagName: Pintu
+    sprite: {fileID: 633218748477426386, guid: d092884bc8c94704c9768843013b4214, type: 3}
+  - tagName: Piala
+    sprite: {fileID: 3496996903020787579, guid: 13145c7596a161045838808473a0fdb6, type: 3}
 --- !u!114 &1788049579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40588,7 +40594,7 @@ GameObject:
   m_Layer: 0
   m_Name: TopUp
   m_TagString: TopUp
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
