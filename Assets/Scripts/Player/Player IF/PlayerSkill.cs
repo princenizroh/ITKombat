@@ -11,6 +11,7 @@ namespace ITKombat
         public AudioSource skillSound1;
         public AudioSource skillSound2;
         public AudioSource skillSound3;
+        public AudioSource skillSound3Part2;
 
         private Animator anim;
         private bool isSkill1Active = false;
