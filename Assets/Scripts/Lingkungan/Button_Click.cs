@@ -9,5 +9,10 @@ namespace ITKombat
         {
             NewSoundManager.Instance.PlaySound2D("Button_Click");
         }
+
+        public void soundBottonBooks()
+        {
+            NewSoundManager.Instance.PlaySound2D("Books");
+        }
     }
 }

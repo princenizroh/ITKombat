@@ -5255,16 +5255,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835865079}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.030798206}
+  m_LocalScale: {x: 1.3115538, y: 1.3115538, z: 1.3115538}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1086309020}
+  m_Father: {fileID: 1631117505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1388.9814, y: 636.3175}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &835865081
@@ -6468,7 +6468,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 661594565}
-  - {fileID: 835865080}
   m_Father: {fileID: 1590963731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6890,6 +6889,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1608686687}
         m_TargetAssemblyTypeName: ITKombat.Book, Assembly-CSharp
         m_MethodName: RotateForward
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 835865081}
+        m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
+        m_MethodName: soundBottonBooks
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7543,6 +7554,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1608686687}
         m_TargetAssemblyTypeName: ITKombat.Book, Assembly-CSharp
         m_MethodName: RotateBack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 835865081}
+        m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
+        m_MethodName: soundBottonBooks
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9196,6 +9219,7 @@ Transform:
   - {fileID: 851172408}
   - {fileID: 1263022422}
   - {fileID: 1813825113}
+  - {fileID: 835865080}
   - {fileID: 1484190046}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
