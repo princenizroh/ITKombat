@@ -237,12 +237,31 @@ namespace ITKombat
         {
             if (itemButton != null && itemButton.itemData != null)
             {
-                Debug.Log($"Button clicked! Item ID: {itemButton.itemData.item_id}, Level: {itemButton.itemData.item_level}");
-                
-                // Perform actions with the data
-                // For example, show detailed information about the item
-                TMP_gearName.text = "Item ID: " + itemButton.itemData.item_id;
-                TMP_gearLevel.text = "Level: " + itemButton.itemData.item_level;
+                GearStat[] gearDataArray = Resources.LoadAll<GearStat>("GearData");
+                foreach (GearStat gearData in gearDataArray)
+                {
+                    if (gearData.gear_id == itemButton.itemData.item_id)
+                    {
+                        TMP_gearName.text = gearData.gear_name;
+                        TMP_gearDesc.text = gearData.gear_desc;
+                    }
+                }
+
+                gearId = itemButton.itemData.item_id;
+                gearLevel = itemButton.itemData.item_level;
+                gearExpMaximum = itemButton.itemData.item_exp_max;
+                currentGearExp = itemButton.itemData.item_current_exp;
+                gearLevel = itemButton.itemData.item_level;
+                gearAscendLevel = itemButton.itemData.item_ascend;
+
+                // mainstatid = 
+                // mainstatValue = 
+                stat1id = itemButton.itemData.item_id_type_1;
+                stat1value = itemButton.itemData.item_value_type_1;
+                stat2id = itemButton.itemData.item_id_type_2;
+                stat2value = itemButton.itemData.item_value_type_2;
+
+                TMP_gearLevel.text = "+" + itemButton.itemData.item_level;
                 TMP_mainstatValue.text = "Main Stat Value: " + itemButton.itemData.item_value_type_1;
             }
             else
