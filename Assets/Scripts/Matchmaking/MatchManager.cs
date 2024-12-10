@@ -111,8 +111,8 @@ namespace ITKombat
             {
                 matchTimer.ChangeMatchStatus(true);
                 if(!isSoundFight){
-                    isSoundFight = true;
                     NewSoundManager.Instance.PlaySound2D("Fight");
+                    isSoundFight = true;
                 }
                 timeoutToTimer.text = "FIGHT";
             }
@@ -318,6 +318,8 @@ namespace ITKombat
 
             TimeoutNotif.SetActive(false);
 
+            isSoundFight = false;
+
             // Cek apakah salah satu sudah mencapai 3 poin (kondisi kemenangan)
             if (playerVictoryPoint == 3) 
             {
@@ -352,9 +354,11 @@ namespace ITKombat
 
         public IEnumerator NextRound()
         {
-                int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
+            isSoundFight = false;
+
+            int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
                 
-                yield return StartCoroutine(ShowRoundStartNotification(nextRound));
+             yield return StartCoroutine(ShowRoundStartNotification(nextRound));
         }
 
         void StartNormalTimer()
