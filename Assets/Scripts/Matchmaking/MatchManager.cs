@@ -111,8 +111,8 @@ namespace ITKombat
             {
                 matchTimer.ChangeMatchStatus(true);
                 if(!isSoundFight){
-                    NewSoundManager.Instance.PlaySound2D("Fight");
                     isSoundFight = true;
+                    NewSoundManager.Instance.PlaySound2D("Fight");
                 }
                 timeoutToTimer.text = "FIGHT";
             }
