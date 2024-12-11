@@ -318,7 +318,6 @@ namespace ITKombat
 
             TimeoutNotif.SetActive(false);
 
-            isSoundFight = false;
 
             // Cek apakah salah satu sudah mencapai 3 poin (kondisi kemenangan)
             if (playerVictoryPoint == 3) 
