@@ -22,11 +22,13 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack1_Right_Kelautan = null;
         [SerializeField] private ParticleSystem Attack2_Right_Kelautan = null;
         [SerializeField] private ParticleSystem Attack3_Right_Kelautan = null;
+        [SerializeField] private ParticleSystem Attack4_Right_Kelautan = null;
 
         // VFX Left
         [SerializeField] private ParticleSystem Attack1_Left_Kelautan = null;
         [SerializeField] private ParticleSystem Attack2_Left_Kelautan = null;
         [SerializeField] private ParticleSystem Attack3_Left_Kelautan = null;
+        [SerializeField] private ParticleSystem Attack4_Left_Kelautan = null;
 
         // Weapon state
         public bool isUsingWeapon;
@@ -166,6 +168,19 @@ namespace ITKombat
                     animator.SetTrigger("kelautan_attack3");
                     StartCoroutine(ResetToIdleAfterTime(1.2f));
                     break;
+                case 4:
+                    if (character.IsFacingRight)
+                    {
+                        Attack4_Right_Kelautan.Play();
+                    }
+                    else
+                    {
+                        Attack4_Left_Kelautan.Play();
+                    }
+                    PlayAttackSound(4, hitEnemies.Length > 0);
+                    animator.SetTrigger("mesin_attack4");
+                    StartCoroutine(ResetToIdleAfterTime(1f));
+                    break;
             }
         }
 
@@ -191,9 +206,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Kelautan_Hit1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Kelautan_Hit2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Kelautan_Hit3", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Laut_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Laut_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Laut_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Laut_Attack4", transform.position); break;
             }
         }
 
@@ -201,9 +217,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Kelautan_Miss1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Kelautan_Miss2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Kelautan_Miss3", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss_SharpWeapon1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss_SharpWeapon2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Attack_Miss_SharpWeapon3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Attack_Miss_SharpWeapon3", transform.position); break;
             }
         }
 

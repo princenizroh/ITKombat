@@ -217,10 +217,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Attack_MissWeapon", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
             }
         }
 
