@@ -318,6 +318,7 @@ namespace ITKombat
 
             TimeoutNotif.SetActive(false);
 
+
             // Cek apakah salah satu sudah mencapai 3 poin (kondisi kemenangan)
             if (playerVictoryPoint == 3) 
             {
@@ -352,9 +353,11 @@ namespace ITKombat
 
         public IEnumerator NextRound()
         {
-                int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
+            isSoundFight = false;
+
+            int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
                 
-                yield return StartCoroutine(ShowRoundStartNotification(nextRound));
+             yield return StartCoroutine(ShowRoundStartNotification(nextRound));
         }
 
         void StartNormalTimer()
