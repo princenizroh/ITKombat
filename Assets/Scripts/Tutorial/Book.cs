@@ -47,7 +47,7 @@ namespace ITKombat
             //suara
             backButton.SetActive(true); //every time we turn the page forward, the back button should be activated
         }
-        if (index == pages.Count - 1)
+        if (index == pages.Count - 2)
         {
             forwardButton.SetActive(false); //if the page is last then we turn off the forward button
         }

@@ -778,7 +778,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboard: 0
   leaderboardCanvas: {fileID: 448132913}
-  canvasDead: {fileID: 662181278}
+  exitButton: {fileID: 1406364269}
+  canvasDead: {fileID: 787333233}
+  pauseButton: {fileID: 1484190045}
   outline: {fileID: 1842973978}
 --- !u!1 &103121777
 GameObject:
@@ -1456,7 +1458,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboard: 0
   leaderboardCanvas: {fileID: 403658475}
-  canvasDead: {fileID: 1957637737}
+  exitButton: {fileID: 1957637737}
+  canvasDead: {fileID: 787333233}
+  pauseButton: {fileID: 1484190045}
   outline: {fileID: 1092273076}
 --- !u!1 &199266833
 GameObject:
@@ -4688,6 +4692,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 787333233}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1484190045}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &662181281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5261,7 +5289,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboard: 0
   leaderboardCanvas: {fileID: 0}
+  exitButton: {fileID: 0}
   canvasDead: {fileID: 0}
+  pauseButton: {fileID: 0}
   outline: {fileID: 0}
 --- !u!1 &765211202
 GameObject:
@@ -12511,6 +12541,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 787333233}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1484190045}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1957637740
 MonoBehaviour:
