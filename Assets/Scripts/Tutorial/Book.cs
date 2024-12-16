@@ -33,7 +33,7 @@ namespace ITKombat
     {
         if (rotate == true) { return; }
         index++;
-        float angle = 90; //in order to rotate the page forward, you need to set the rotation by 180 degrees around the y axis
+        float angle = 91; //in order to rotate the page forward, you need to set the rotation by 180 degrees around the y axis
         ForwardButtonActions();
         pages[index].SetAsLastSibling();
         StartCoroutine(Rotate(angle, true));
