@@ -54,9 +54,14 @@ namespace ITKombat
             Instance = this;
 
             states = State.WaitingToStart;
+            // states = State.GamePlaying;
+            // states = State.CountdownToStart;
+            Debug.Log("States: " + states);
+            ChangeState(State.CountdownToStart);
             playerReadyDictionary = new Dictionary<ulong, bool>();
             playerPausedDictionary = new Dictionary<ulong, bool>();
             Debug.Log("ServerBattleRoomState Awake");
+            Debug.Log("Current State: " + state.Value);
         }
 
         private void Start() {
@@ -72,6 +77,11 @@ namespace ITKombat
     #endif
         }
 
+        private void ChangeState(State newState) {
+            state.Value = newState;
+            Debug.Log("State changed to: " + newState);
+            OnStateChanged?.Invoke(this, EventArgs.Empty);
+        }
         public override void OnNetworkSpawn() {
             state.OnValueChanged += State_OnValueChanged;
             isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
@@ -158,8 +168,11 @@ namespace ITKombat
                 return;
             }
 
+            Debug.Log("ServerBattleRoomState Update");
+
             switch (state.Value) {
                 case State.WaitingToStart:
+                    Debug.Log("Waiting to start. from ServerBattleRoomState");
                     break;
                 case State.CountdownToStart:
                     countdownToStartTimer.Value -= Time.deltaTime;
@@ -182,6 +195,7 @@ namespace ITKombat
         }
 
         private void LateUpdate() {
+            Debug.Log("ServerBattleRoomState LateUpdate");
             if (autoTestGamePausedState) {
                 autoTestGamePausedState = false;
                 TestGamePausedState();
