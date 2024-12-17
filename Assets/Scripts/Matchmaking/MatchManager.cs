@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using NUnit.Framework.Internal;
 
 namespace ITKombat
 {
@@ -35,6 +36,7 @@ namespace ITKombat
         void Start() 
         {
             // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            Debug.Log("MatchManager Start");
             StartCoroutine(ShowRoundStartNotification(1));
             playerMovement.canMove = false;
         }
@@ -60,11 +62,16 @@ namespace ITKombat
         }
         private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
         {
-            if(ServerBattleRoomState.Instance.IsCountdownToStartActive())
+            Debug.Log("Checking IsCountdownToStartActive");
+            if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
             {
+                Debug.Log("CountdownToStart is active");
                 StartCoroutine(ShowRoundStartNotification(1));
             }
-
+            else
+            {
+                Debug.Log("CountdownToStart is NOT active");
+            }
         }
 
     // private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e) {
@@ -318,7 +325,6 @@ namespace ITKombat
 
             TimeoutNotif.SetActive(false);
 
-
             // Cek apakah salah satu sudah mencapai 3 poin (kondisi kemenangan)
             if (playerVictoryPoint == 3) 
             {
@@ -340,6 +346,7 @@ namespace ITKombat
             else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
             {
                 finalRound = true;
+                isSoundFight = false;
                 yield return StartCoroutine(ShowRoundStartNotification(5)); // Final round
             }
 
@@ -357,7 +364,7 @@ namespace ITKombat
 
             int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
                 
-             yield return StartCoroutine(ShowRoundStartNotification(nextRound));
+            yield return StartCoroutine(ShowRoundStartNotification(nextRound));
         }
 
         void StartNormalTimer()
