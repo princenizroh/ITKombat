@@ -13,7 +13,7 @@ namespace ITKombat
         public Transform attackPoint;
         public float attackRadius = 1f;
         public float attackCooldown = 0.5f;
-        public float attackPower = 5f;
+        public float attackPower = 3f;
         public int maxCombo = 4;
         public LayerMask enemyLayer;
         private int combo = 0;

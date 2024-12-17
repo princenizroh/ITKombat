@@ -32,7 +32,7 @@ namespace ITKombat
             anim = GetComponent<Animator>();
             playerState = parentPlayer.GetComponent<PlayerState>();
 
-            aiAttack = FindObjectOfType<AI_Attack>();
+            aiAttack = FindAnyObjectByType<AI_Attack>();
 
             if (playerState == null)
             {
@@ -50,6 +50,7 @@ namespace ITKombat
             isBlocking = true;
             lastBlockTime = Time.time;
             Debug.Log(gameObject.name + " started blocking.");
+            Debug.Log(isBlocking);
         }
 
         public void EndBlocking()
@@ -57,6 +58,7 @@ namespace ITKombat
             isBlocking = false;
             isParrying = false;
             Debug.Log(gameObject.name + " stopped blocking.");
+            Debug.Log(isBlocking);
         }
 
 

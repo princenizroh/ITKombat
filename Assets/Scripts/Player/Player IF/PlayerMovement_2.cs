@@ -16,7 +16,7 @@ namespace ITKombat
 
         public float moveSpeed = 50f;
         float horizontalMove = 0f;
-        private bool isBlocking = false;
+        public bool isBlocking = false;
         private bool isCrouching = false;
         private bool isCrouchAttacking = false;
         bool useKeyboardInput = true;

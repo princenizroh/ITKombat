@@ -233,7 +233,7 @@ namespace ITKombat
         {
             while (auth.CurrentUser == null)
             {
-                Debug.Log("Waiting for Firebase User...");
+                // Debug.Log("Waiting for Firebase User...");
                 await Task.Delay(500);  // Tunggu 500ms sebelum mengecek lagi
             }
             user = auth.CurrentUser;
