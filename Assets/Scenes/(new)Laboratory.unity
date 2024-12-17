@@ -16607,7 +16607,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1220309438}
         m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
         m_MethodName: soundButtonClick
         m_Mode: 1
@@ -17091,6 +17091,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218772148}
   m_CullTransparentMesh: 1
+--- !u!1 &1220309437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1220309439}
+  - component: {fileID: 1220309438}
+  m_Layer: 0
+  m_Name: SoundButtonClick
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1220309438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220309437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4610904894653642a7d3f1ac7046972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &1220309439
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220309437}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1389, y: 642}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1223244927
 GameObject:
   m_ObjectHideFlags: 0
@@ -18133,7 +18181,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1220309438}
         m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
         m_MethodName: soundButtonClick
         m_Mode: 1
@@ -25736,80 +25784,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705612046}
   m_CullTransparentMesh: 1
---- !u!1 &1711375435
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1711375436}
-  - component: {fileID: 1711375439}
-  - component: {fileID: 1711375438}
-  - component: {fileID: 1711375437}
-  m_Layer: 0
-  m_Name: SettingManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1711375436
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711375435}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.66714984, y: -6.176876, z: 0.056005694}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1822749146}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1711375437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711375435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c199bb3d2380cf48945a2c27143fc48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1711375438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711375435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f65c02f44e8aaf42b7281ab609ebf21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioMixer: {fileID: 24100000, guid: 28f99fde1d3c11840aecb208a188f697, type: 2}
-  musicSlider: {fileID: 0}
-  sfxSlider: {fileID: 0}
---- !u!114 &1711375439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711375435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19a927792c126df4790bf9d236fdfbb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  openPanel: {fileID: 0}
 --- !u!1 &1712422563
 GameObject:
   m_ObjectHideFlags: 0
@@ -27390,7 +27364,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1220309438}
         m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
         m_MethodName: soundButtonClick
         m_Mode: 1
@@ -28463,7 +28437,6 @@ Transform:
   m_Children:
   - {fileID: 553325171}
   - {fileID: 1861612115}
-  - {fileID: 1711375436}
   - {fileID: 1138633690}
   - {fileID: 453590838}
   m_Father: {fileID: 0}
@@ -33022,3 +32995,4 @@ SceneRoots:
   - {fileID: 1738823923}
   - {fileID: 335016706}
   - {fileID: 1822749146}
+  - {fileID: 1220309439}
