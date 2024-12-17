@@ -22,6 +22,7 @@ namespace ITKombat
         bool useKeyboardInput = true;
         bool jump = false;
         public bool canMove = true;
+        private bool isWalking = false;
 
         private bool isWalkingSoundPlaying = false;
         private void Start()
@@ -76,6 +77,12 @@ namespace ITKombat
                 // Continuously trigger block animation while blocking
                 anim.SetTrigger("Block");
             }
+
+            if (isWalking)
+            {
+                anim.SetTrigger("Walk");
+            }
+
         }
         
         private void FixedUpdate()
@@ -92,6 +99,7 @@ namespace ITKombat
         {
             if (canMove)
             {
+                isWalking = true;
                 useKeyboardInput = false;
                 horizontalMove = -moveSpeed;
                 anim.SetTrigger("Walk");
@@ -104,6 +112,7 @@ namespace ITKombat
         {
             if (canMove)
             {
+                isWalking = true;
                 useKeyboardInput = false;
                 horizontalMove = moveSpeed;
                 anim.SetTrigger("Walk");
@@ -114,6 +123,7 @@ namespace ITKombat
 
         public void OnStopMoving()
         {
+            isWalking = false;
             isWalkingSoundPlaying = false;
             useKeyboardInput = false;
             horizontalMove = 0f;
