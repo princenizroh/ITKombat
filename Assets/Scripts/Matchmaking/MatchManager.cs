@@ -35,10 +35,10 @@ namespace ITKombat
 
         void Start() 
         {
-            ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
-            // StartCoroutine(ShowRoundStartNotification(1));
-            // playerMovement.canMove = false;
+            StartCoroutine(ShowRoundStartNotification(1));
+            playerMovement.canMove = false;
         }
 
         public void ChangeState(IState newState)

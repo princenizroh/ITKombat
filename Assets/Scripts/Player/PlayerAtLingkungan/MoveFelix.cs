@@ -44,7 +44,7 @@ namespace ITKombat
             }
 
             // Kirim nilai ke Blend Tree melalui parameter 'Speed'
-            animator.SetFloat("Speed", Mathf.Abs(movement.x));
+            // animator.SetFloat("Speed", Mathf.Abs(movement.x));
         }
 
         void FixedUpdate()
