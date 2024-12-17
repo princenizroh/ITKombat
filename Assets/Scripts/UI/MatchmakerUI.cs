@@ -153,7 +153,7 @@ namespace ITKombat
                         ushort port = (ushort)multiplayAssignment.Port;
                         NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port);
 
-                        MultiplayerManager.Instance.StartClient();
+                        GameMultiplayerManager.Instance.StartClient();
                         break;
                     case MultiplayAssignment.StatusOptions.InProgress:
                         // Still waiting...

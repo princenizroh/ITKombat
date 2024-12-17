@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 namespace ITKombat
@@ -6,39 +7,30 @@ namespace ITKombat
     public class FisikaSkill2 : Skills
     {
         // Masukin sound dan anim disini
-
-        private float attackRadius = 1f;
-        private float damage = 30f;
-        private float force = 5f;
-
-        // Cooldown Settings
-        private float skill1Cooldown = 10f;
+        public float attackBuff = 10f;
+        public float defenseBuff = 10f;
+        public float buffDuration = 5f;
 
         public override void Activate(GameObject parent)
         {
-            // Masukin sound dan anim disini
+/*            PlayerStats stats = parent.GetComponent<PlayerStats>();
 
-            Vector3 skillPosition = parent.transform.position;
+            // Apply the buff to the player
+            stats.attackPower += attackBuff;
+            stats.defensePower += defenseBuff;
 
-            // Mendeteksi semua objek dalam radius serangan
-            Collider[] hitColliders = Physics.OverlapSphere(skillPosition, attackRadius);
-
-            foreach (Collider hitCollider in hitColliders)
-            {
-                // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
-                {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
-                    Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
-                }
-            }
+            Debug.Log("Attack and defense buffed.");*/
         }
 
         public override void BeginCooldown(GameObject parent)
         {
-            //Logic cooldown skill di taruh disini
-            Debug.Log("Skill 1 Cooldown");
+/*            PlayerStats stats = parent.GetComponent<PlayerStats>();
+
+            // Remove the buff after the duration is over
+            stats.attackPower -= attackBuff;
+            stats.defensePower -= defenseBuff;
+
+            Debug.Log("Buff deactivated, stats reset.");*/
         }
     }
 }

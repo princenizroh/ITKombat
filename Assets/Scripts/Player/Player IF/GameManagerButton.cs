@@ -9,6 +9,7 @@ public class GameManagerButton : MonoBehaviour
     private PlayerMovement_2 playerMovement;
     private SkillsHolder playerSkill;
 
+
     private void Start()
     {
         playerAttack = GetComponent<PlayerIFAttack>();

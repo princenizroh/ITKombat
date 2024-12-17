@@ -49,7 +49,6 @@ namespace ITKombat
         public void TakeDamage(float damage,float combo)
         {
             currentHealth -= damage;
-            Debug.Log(currentHealth);
             healthBar.UpdateHealth(currentHealth, maxHealth);
             if (currentHealth <= 0)
             {
@@ -111,7 +110,6 @@ namespace ITKombat
                     //     //vfx disini
                     // }
                     //anim & sound disini
-                    Debug.Log("Kena pukul sekali cik");
                     break;
                 case 2:
                     // if (character.IsFacingRight)
@@ -123,7 +121,6 @@ namespace ITKombat
                     //     //vfx disini
                     // }
                     //anim & sound disini
-                    Debug.Log("Kena pukul 2x cik");
                     break;
                 case 3:
                     // if (character.IsFacingRight)
@@ -135,7 +132,7 @@ namespace ITKombat
                     //     //vfx disini
                     // }
                     //anim & sound disini
-                    Debug.Log("Kena pukul 3x cik");
+
                     break;
                 case 4:
                     // if (character.IsFacingRight)
@@ -147,7 +144,6 @@ namespace ITKombat
                     //     //vfx disini
                     // }
                     //anim & sound disini
-                    Debug.Log("Kena pukul 4x cik");
                     break;
             }
         }

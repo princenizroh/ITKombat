@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using System;
 using Unity.Collections;
@@ -9,7 +10,9 @@ namespace ITKombat
     public class ServerCharacterMovement : NetworkBehaviour
     {
         // private PlayerController2D controller;
+        public static ServerCharacterMovement LocalInstance { get; private set; }
         private CharacterController2D1 controller;
+        public static event EventHandler OnAnyPlayerSpawned;
         private Animator anim;
 
         public float dashSpeed = 50f;
@@ -18,7 +21,7 @@ namespace ITKombat
         private bool canDash = true;
         private bool isDashing = false;
 
-        public float moveSpeed = 50f;
+        [SerializeField] private float moveSpeed = 50f;
         float horizontalMove = 0f;
         private bool isBlocking = false;
         private bool isCrouching = false;
@@ -26,6 +29,7 @@ namespace ITKombat
         bool useKeyboardInput = true;
         bool jump = false;
         public bool canMove = true;
+        [SerializeField] private List<Vector3> spawnPositionList;
         private void Start()
         {
             anim = GetComponent<Animator>();
@@ -66,6 +70,18 @@ namespace ITKombat
                 // Continuously trigger block animation while blocking
                 anim.SetTrigger("Block");
             }
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            if (IsOwner)
+            {
+                LocalInstance = this;
+            }
+
+            // transform.position = spawnPositionList[NetworkManager.Singleton.ConnectedClients.Count - 1];
+            transform.position = spawnPositionList[(int)OwnerClientId];
+            OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
         }
         private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
         {

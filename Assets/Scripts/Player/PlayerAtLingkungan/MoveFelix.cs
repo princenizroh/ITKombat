@@ -30,6 +30,7 @@ namespace ITKombat
             {
                 movement.x = -1;
                 spriteRenderer.flipX = true; // Menghadap kiri
+                NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
                 Debug.Log("Move Left: Sprite flipped to left");
             }
 
@@ -38,11 +39,12 @@ namespace ITKombat
             {
                 movement.x = 1;
                 spriteRenderer.flipX = false; // Menghadap kanan
+                NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
                 Debug.Log("Move Right: Sprite flipped to right");
             }
 
             // Kirim nilai ke Blend Tree melalui parameter 'Speed'
-            animator.SetFloat("Speed", Mathf.Abs(movement.x));
+            // animator.SetFloat("Speed", Mathf.Abs(movement.x));
         }
 
         void FixedUpdate()

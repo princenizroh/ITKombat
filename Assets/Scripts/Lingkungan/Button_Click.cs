@@ -5,9 +5,14 @@ namespace ITKombat
     public class Button_Click : MonoBehaviour
     {
         
-        public void soundButtonPause()
+        public void soundButtonClick()
         {
-            SoundManager.Instance.PlaySound3D("Button_Click", transform.position);
+            NewSoundManager.Instance.PlaySound2D("Button_Click");
+        }
+
+        public void soundBottonBooks()
+        {
+            NewSoundManager.Instance.PlaySound2D("Books");
         }
     }
 }

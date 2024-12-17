@@ -22,6 +22,7 @@ namespace ITKombat
         bool useKeyboardInput = true;
         bool jump = false;
         public bool canMove = true;
+        private bool isWalking = false;
 
         private bool isWalkingSoundPlaying = false;
         private void Start()
@@ -33,7 +34,7 @@ namespace ITKombat
         {
             if(isWalkingSoundPlaying)
             {
-                SoundManager.Instance.PlaySound3D("WalkFloor", transform.position);
+                NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
             }
 
             if (canMove && useKeyboardInput)
@@ -76,6 +77,12 @@ namespace ITKombat
                 // Continuously trigger block animation while blocking
                 anim.SetTrigger("Block");
             }
+
+            if (isWalking)
+            {
+                anim.SetTrigger("Walk");
+            }
+
         }
         
         private void FixedUpdate()
@@ -92,26 +99,31 @@ namespace ITKombat
         {
             if (canMove)
             {
-                isWalkingSoundPlaying = true;
+                isWalking = true;
                 useKeyboardInput = false;
                 horizontalMove = -moveSpeed;
                 anim.SetTrigger("Walk");
+                isWalkingSoundPlaying = true;
             }
+
         }
 
         public void OnMoveRight()
         {
             if (canMove)
             {
-                isWalkingSoundPlaying = true;
+                isWalking = true;
                 useKeyboardInput = false;
                 horizontalMove = moveSpeed;
                 anim.SetTrigger("Walk");
+                isWalkingSoundPlaying = true;
             }
+
         }
 
         public void OnStopMoving()
         {
+            isWalking = false;
             isWalkingSoundPlaying = false;
             useKeyboardInput = false;
             horizontalMove = 0f;
@@ -122,14 +134,14 @@ namespace ITKombat
         {
             jump = true;
             anim.SetTrigger("Jump");
-            SoundManager.Instance.PlaySound3D("Jump", transform.position);
+            NewSoundManager.Instance.PlaySound("Jump", transform.position);
         }
 
         public void OnCrouchDown()
         {
             isCrouching = true;
             anim.SetTrigger("Crouch");
-            SoundManager.Instance.PlaySound3D("Crouch", transform.position);
+            NewSoundManager.Instance.PlaySound("Crouch", transform.position);
             Debug.Log("Player is crouching");
         }
 
@@ -187,7 +199,7 @@ namespace ITKombat
             isDashing = true;
             canDash = false;
             anim.SetTrigger("Dash");
-            SoundManager.Instance.PlaySound3D("Dash", transform.position);
+            NewSoundManager.Instance.PlaySound("Dash", transform.position);
 
             float dashDirection = controller.m_FacingRight ? 1f : -1f;
             controller.Dash(dashSpeed * dashDirection, dashDuration);

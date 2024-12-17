@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using VContainer;
-using Unity.Services.Multiplay;
+// using Unity.Services.Multiplay;
 using UnityEngine;
 using QFSW.QC.Actions;
 using Unity.VisualScripting;
@@ -15,7 +15,7 @@ namespace ITKombat
         public static ServerBattleRoomState Instance { get; private set; }
         
         // [SerializeField] PersistentGameState persistentGameState;
-        [SerializeField] private MatchManager matchManager;
+        private MatchManager matchManager;
         
         [Tooltip("Tempat Spawn player berada")]
         [SerializeField] private Transform[] m_PlayerSpawnPoints;
@@ -32,6 +32,7 @@ namespace ITKombat
 
         // Network Variable untuk menyimpan state game
         private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
+        private State states;
         private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
         private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
         
@@ -52,14 +53,20 @@ namespace ITKombat
         private void Awake() {
             Instance = this;
 
+            states = State.WaitingToStart;
+            // states = State.GamePlaying;
+            // states = State.CountdownToStart;
+            Debug.Log("States: " + states);
+            ChangeState(State.CountdownToStart);
             playerReadyDictionary = new Dictionary<ulong, bool>();
             playerPausedDictionary = new Dictionary<ulong, bool>();
             Debug.Log("ServerBattleRoomState Awake");
+            Debug.Log("Current State: " + state.Value);
         }
 
         private void Start() {
             GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
-            GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+            GameInput_OnInteractAction();
 
             Debug.Log("ServerBattleRoomState Start");
 
@@ -70,6 +77,11 @@ namespace ITKombat
     #endif
         }
 
+        private void ChangeState(State newState) {
+            state.Value = newState;
+            Debug.Log("State changed to: " + newState);
+            OnStateChanged?.Invoke(this, EventArgs.Empty);
+        }
         public override void OnNetworkSpawn() {
             state.OnValueChanged += State_OnValueChanged;
             isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
@@ -114,13 +126,15 @@ namespace ITKombat
             OnStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void GameInput_OnInteractAction(object sender, EventArgs e) {
+        private void GameInput_OnInteractAction() {
             Debug.Log("GameInput_OnInteractAction");
-            if (state.Value == State.WaitingToStart) {
-                isLocalPlayerReady = true;
-                OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
+            if (states == State.WaitingToStart) {
+                states = State.CountdownToStart;
+                // isLocalPlayerReady = true;
+                // OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChanged?.Invoke(this, EventArgs.Empty);
 
-                SetPlayerReadyServerRpc();
+                // SetPlayerReadyServerRpc();
             }
         }
 
@@ -154,8 +168,11 @@ namespace ITKombat
                 return;
             }
 
+            Debug.Log("ServerBattleRoomState Update");
+
             switch (state.Value) {
                 case State.WaitingToStart:
+                    Debug.Log("Waiting to start. from ServerBattleRoomState");
                     break;
                 case State.CountdownToStart:
                     countdownToStartTimer.Value -= Time.deltaTime;
@@ -178,6 +195,7 @@ namespace ITKombat
         }
 
         private void LateUpdate() {
+            Debug.Log("ServerBattleRoomState LateUpdate");
             if (autoTestGamePausedState) {
                 autoTestGamePausedState = false;
                 TestGamePausedState();

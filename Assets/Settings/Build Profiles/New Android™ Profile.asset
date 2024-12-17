@@ -21,6 +21,8 @@ MonoBehaviour:
   - m_enabled: 0
     m_path: Assets/Scenes/MainMenu.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/(new)LoginRegister.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/DebugScene.unity
   - m_enabled: 1
     m_path: Assets/Scenes/WaitingRoom/WaitingUnranked.unity
@@ -60,6 +62,16 @@ MonoBehaviour:
     m_path: Assets/Scenes/FirebaseLoginTestpage.unity
   - m_enabled: 1
     m_path: Assets/Scenes/GearManagement.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Multiplayer/ClientTest.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Multiplayer/MultiplayerV1.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/LoadingScreen.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Exam/LoadingScene.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/(new)Laboratory.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings:
@@ -85,7 +97,7 @@ MonoBehaviour:
     - line: '|   m_SplashScreenOverlayOpacity: 1'
     - line: '|   m_SplashScreenAnimation: 1'
     - line: '|   m_SplashScreenLogoStyle: 1'
-    - line: '|   m_SplashScreenDrawMode: 0'
+    - line: '|   m_SplashScreenDrawMode: 1'
     - line: '|   m_SplashScreenBackgroundAnimationZoom: 1'
     - line: '|   m_SplashScreenLogoAnimationZoom: 1'
     - line: '|   m_SplashScreenBackgroundLandscapeAspect: 1'
@@ -102,7 +114,13 @@ MonoBehaviour:
     - line: '|     y: 0'
     - line: '|     width: 1'
     - line: '|     height: 1'
-    - line: '|   m_SplashScreenLogos: []'
+    - line: '|   m_SplashScreenLogos:'
+    - line: '|   - logo: {fileID: 21300000, guid: 0a5661d5469a0294392cd5b482b5c21e,
+        type: 3}'
+    - line: '|     duration: 2'
+    - line: '|   - logo: {fileID: 10404, guid: 0000000000000000f000000000000000,
+        type: 0}'
+    - line: '|     duration: 2'
     - line: '|   m_VirtualRealitySplashScreen: {instanceID: 0}'
     - line: '|   m_HolographicTrackingLossScreen: {instanceID: 0}'
     - line: '|   defaultScreenWidth: 1920'
@@ -139,7 +157,7 @@ MonoBehaviour:
     - line: '|   androidMinimumWindowWidth: 400'
     - line: '|   androidMinimumWindowHeight: 300'
     - line: '|   androidFullscreenMode: 1'
-    - line: '|   androidAutoRotationBehavior: 1'
+    - line: '|   androidAutoRotationBehavior: 2'
     - line: '|   androidPredictiveBackSupport: 0'
     - line: '|   androidApplicationEntry: 1'
     - line: '|   defaultIsNativeResolution: 1'
@@ -202,7 +220,7 @@ MonoBehaviour:
     - line: '|   loadStoreDebugModeEnabled: 0'
     - line: '|   visionOSBundleVersion: 1.0'
     - line: '|   tvOSBundleVersion: 1.0'
-    - line: '|   bundleVersion: 1.2.1'
+    - line: '|   bundleVersion: 1.5.2'
     - line: '|   preloadedAssets: []'
     - line: '|   metroInputSource: 0'
     - line: '|   wsaTransparentSwapchain: 0'
@@ -233,9 +251,9 @@ MonoBehaviour:
     - line: '|     iPhone: 0'
     - line: '|     tvOS: 0'
     - line: '|   overrideDefaultApplicationIdentifier: 0'
-    - line: '|   AndroidBundleVersionCode: 31'
+    - line: '|   AndroidBundleVersionCode: 42'
     - line: '|   AndroidMinSdkVersion: 33'
-    - line: '|   AndroidTargetSdkVersion: 0'
+    - line: '|   AndroidTargetSdkVersion: 33'
     - line: '|   AndroidPreferredInstallLocation: 1'
     - line: '|   aotOptions: '
     - line: '|   stripEngineCode: 1'
@@ -884,6 +902,6 @@ MonoBehaviour:
         m_DebugSymbolFormat: 5
         m_CurrentDeploymentTargetId: __builtin__target_default
         m_BuildType: 2
-        m_BuildAppBundle: 1
+        m_BuildAppBundle: 0
         m_IPAddressToConnect: 
         m_SymlinkSources: 0

@@ -42,6 +42,7 @@ namespace ITKombat
             // Pindah ke scene tujuan
             SceneController.instance.LoadSceneByName(targetSceneName);
             Debug.Log("Beralih ke scene: " + targetSceneName);
+            NewSoundManager.Instance.PlaySound("Button_Door", transform.position);
         }
 
         void OnTriggerEnter2D(Collider2D other)

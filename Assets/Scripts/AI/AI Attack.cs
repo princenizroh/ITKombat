@@ -78,8 +78,8 @@ namespace ITKombat
                 foreach (Collider2D player in hitPlayer)
                 {
                     Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
-                    PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
-                    if (playerRB != null && !playerDefense.isBlocking)
+                    // PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
+                    if (playerRB != null) //&& !playerDefense.isBlocking)
                     {   
                         GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
                         if (playerStateObject != null)
@@ -203,6 +203,10 @@ namespace ITKombat
         {
             if (hitPlayer)
             {
+                // if(playerDefense.isBlocking)
+                // {
+                //     PlayBlockSound();
+                // }
                 PlayHitSound(comboNumber);
             }
             else
@@ -211,14 +215,23 @@ namespace ITKombat
             }
         }
 
+        // private void PlayBlockSound(int comboNumber)
+        // {
+        //     switch (comboNumber)
+        //     {
+        //         case 1: NewSoundManager.Instance.PlaySound("exampleBlockSound", transform.position); break;
+        //     }
+        // }
+
         private void PlayHitSound(int comboNumber)
         {
             switch (comboNumber)
             {
-                case 1: SoundManager.Instance.PlaySound3D("CharIF_Attack1", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("CharIF_Attack2", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("CharIF_Attack3", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                
+                case 1: NewSoundManager.Instance.PlaySound("IF_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("IF_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("IF_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
             }
         }
 
@@ -226,10 +239,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 2: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 3: SoundManager.Instance.PlaySound3D("AttackMiss_noWeapon", transform.position); break;
-                case 4: SoundManager.Instance.PlaySound3D("CharIF_Attack4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Kick_Miss", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("CharIF_Attack4", transform.position); break;
             }
         }
 
