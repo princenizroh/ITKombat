@@ -9,7 +9,7 @@ namespace ITKombat
 {
     public class PlayerIFAttack : NetworkBehaviour
     {
-        public static PlayerIFAttack Instance;
+         public static PlayerIFAttack Instance;
         public Transform attackPoint;
         public float attackRadius = 1f;
         public float attackCooldown = 0.5f;

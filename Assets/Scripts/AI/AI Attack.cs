@@ -78,8 +78,8 @@ namespace ITKombat
                 foreach (Collider2D player in hitPlayer)
                 {
                     Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
-                    // PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
-                    if (playerRB != null) //&& !playerDefense.isBlocking)
+                    PlayerDefense playerDefense = player.GetComponent<PlayerDefense>();
+                    if (playerRB != null && !playerDefense.isBlocking)
                     {   
                         GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
                         if (playerStateObject != null)
