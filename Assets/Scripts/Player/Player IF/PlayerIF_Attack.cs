@@ -84,10 +84,18 @@ namespace ITKombat
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
                 // Debug.Log("Hit " + hitEnemies.Length + " enemies.");
+                bool isBlocked = false;
+
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
                     AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
+
+                    if (enemyDefense != null && enemyDefense.isBlocking)
+                    {
+                        isBlocked = true; // Mark if at least one enemy is blocking
+                    }
+
                     if (enemyRb != null && !enemyDefense.isBlocking)
                     {
                         GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
@@ -97,19 +105,18 @@ namespace ITKombat
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                             if (enemyState != null)
                             {
-                                ApplyKnockback(enemy,combo);
-                                enemyState.TakeDamage(attackPower,combo);
+                                ApplyKnockback(enemy, combo);
+                                enemyState.TakeDamage(attackPower, combo);
                             }
                         }
-
                         else
                         {
                             Debug.Log("EnemyState not found.");
                         }
                     }
                 }
-                AttackAnimation(hitEnemies);
-
+                // Pass the isBlocked state to AttackAnimation
+                AttackAnimation(hitEnemies, isBlocked);
                 // Debug.Log("Performed attack.");
             }
             else
@@ -145,7 +152,7 @@ namespace ITKombat
             }
         }
 
-        private void AttackAnimation(Collider2D[] hitEnemies)
+        private void AttackAnimation(Collider2D[] hitEnemies, bool isBlocked)
         {
             CharacterController2D1 character = GetComponent<CharacterController2D1>();
             if (character == null) return;
@@ -160,7 +167,7 @@ namespace ITKombat
                     {
                         Attack1_Left.Play();
                     }
-                    PlayAttackSound(1, hitEnemies.Length > 0);
+                    PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     // Debug.Log("Attack 1 triggered");
@@ -174,7 +181,7 @@ namespace ITKombat
                     {
                         Attack2_Left.Play();
                     }
-                    PlayAttackSound(2, hitEnemies.Length > 0);
+                    PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     // Debug.Log("Attack 2 triggered");
@@ -188,7 +195,7 @@ namespace ITKombat
                     {
                         Attack3_Left.Play();
                     }
-                    PlayAttackSound(3, hitEnemies.Length > 0);
+                    PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     // Debug.Log("Attack 3 triggered");
@@ -202,7 +209,7 @@ namespace ITKombat
                     {
                         Attack4_Left.Play();
                     }
-                    PlayAttackSound(4, hitEnemies.Length > 0);
+                    PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     // Debug.Log("Attack 4 triggered");
@@ -219,9 +226,14 @@ namespace ITKombat
 
         // Untuk determinasi apakah attacknya kena atau tidak
 
-        private void PlayAttackSound(int comboNumber, bool hitEnemies)
+        private void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
         {
-            if (hitEnemies)
+            if (isBlocked)
+            {
+                PlayBlockedSound(comboNumber);
+            }
+
+            else if (hitEnemies)
             {
                 PlayHitSound(comboNumber);
             }
@@ -254,6 +266,17 @@ namespace ITKombat
                 case 3: NewSoundManager.Instance.PlaySound("Kick_Miss", transform.position); break;
                 case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
                 
+            }
+        }
+
+        private void PlayBlockedSound(int comboNumber)
+        {
+            switch (comboNumber)
+            {
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Blocked1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Blocked2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Kick_Blocked", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Attack_Blocked4", transform.position); break;
             }
         }
 

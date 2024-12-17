@@ -1,10 +1,5 @@
-using ITKombat;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using System.Collections;
 
 namespace ITKombat
 {
@@ -14,12 +9,10 @@ namespace ITKombat
         public float blockCooldown = 1.0f;
         public bool isBlocking = false;
 
-
         [Header("Parry Settings")]
         public float parryWindow = 0.2f;
         public int parryDamage = 10;
         private float lastBlockTime = -1f;
-        private bool canParry = false;
         private bool isParrying = false;
 
         [Header("Colliders")]
@@ -27,14 +20,29 @@ namespace ITKombat
         public LayerMask enemyLayer;
         public float defenseRadius = 1f;
 
-        Animator anim;
+        private Animator anim;
         private GameObject parentPlayer;
+        private PlayerState playerState;
+
+        private AI_Attack aiAttack;
 
         private void Start()
         {
-            // Get parent GameObject
             parentPlayer = transform.root.gameObject;
             anim = GetComponent<Animator>();
+            playerState = parentPlayer.GetComponent<PlayerState>();
+
+            aiAttack = FindObjectOfType<AI_Attack>();
+
+            if (playerState == null)
+            {
+                Debug.LogError("PlayerState script is missing on the player GameObject!");
+            }
+
+            if (aiAttack == null)
+            {
+                Debug.LogError("AI_Attack script is missing on the player GameObject!");
+            }
         }
 
         public void StartBlocking()
@@ -47,28 +55,26 @@ namespace ITKombat
         public void EndBlocking()
         {
             isBlocking = false;
-            isParrying = false; // Reset parry ketika block selesai
+            isParrying = false;
             Debug.Log(gameObject.name + " stopped blocking.");
         }
 
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            // Check if the collider is an attack
             if (collision.CompareTag("Attack"))
             {
-                // Ensure the attack is from a different player
-                GameObject otherParent = collision.transform.root.gameObject;
+                GameObject attacker = collision.transform.root.gameObject;
 
-                if (otherParent != parentPlayer && otherParent.CompareTag("Enemy"))
+                // Handle attacks from both players and AI
+                if (attacker != parentPlayer && (attacker.CompareTag("Enemy") || attacker.GetComponent<AI_Attack>()))
                 {
-                    // Check if the player is blocking
+                    // Handle blocking
                     if (isBlocking)
                     {
-                        // Block the attack succesfully
-                        Debug.Log(gameObject.name + " blocked the attack.");
                         BlockSuccess(collision);
 
-                        // Check jika parry bisa dilakukan saat dalam jangka parry window
+                        // Check if parry timing is correct
                         if (Time.time - lastBlockTime <= parryWindow)
                         {
                             PerformParry(collision);
@@ -76,56 +82,70 @@ namespace ITKombat
                     }
                     else
                     {
-                        // Player is not blocking, take damage
-                        Debug.Log(gameObject.name + " was hit by " + otherParent.name);
-                        TakeDamage(collision.gameObject.GetComponent<PlayerIFAttack>().attackPower);
+                        // Handle non-blocked attacks
+                        HandleAttack(collision, attacker);
                     }
                 }
             }
         }
 
-        // Logic for what happens when the block is successful
+        private void HandleAttack(Collider2D attack, GameObject attacker)
+        {
+            // Determine attack power from either AI or player attacks
+            float attackPower = 0;
+
+            if (attacker.GetComponent<PlayerIFAttack>() != null)
+            {
+                attackPower = attacker.GetComponent<PlayerIFAttack>().attackPower;
+            }
+            else if (attacker.GetComponent<AI_Attack>() != null)
+            {
+                attackPower = attacker.GetComponent<AI_Attack>().attackPower;
+            }
+
+            Debug.Log(gameObject.name + " was hit by " + attacker.name);
+
+            // Use PlayerState for health management
+            if (playerState != null)
+            {
+                playerState.TakeDamage(attackPower, 1); // Combo set to 1 for simplicity
+            }
+        }
+
         private void BlockSuccess(Collider2D attack)
         {
-            // Masih bisa naruh block anim/sound
             Debug.Log("Attack blocked!");
 
-            PlayerIFAttack enemyAttack = attack.GetComponent<PlayerIFAttack>();
-            if (enemyAttack != null)
+            if (attack.GetComponent<PlayerIFAttack>() != null || attack.GetComponent<AI_Attack>() != null)
             {
-                 attack.enabled = false;
-                // enemyAttack.OnBlocked();
+                attack.enabled = false;
+                // Additional block effects can be triggered here
             }
         }
 
         private void PerformParry(Collider2D attack)
         {
             isParrying = true;
-            Debug.Log("Perfect parry! PUKULIN!");
+            Debug.Log("Perfect parry! Counterattack initiated.");
 
-            //Memberikan damage saat parry
-            //Note tambahan: Jadi di bagian bawah ini, masih dalam review
-            //Soalnya, variable attack di PlayerAttack.cs belum kedefine
-            PlayerIFAttack enemyAttack = attack.gameObject.GetComponent<PlayerIFAttack>();
-            if (enemyAttack != null)
+            // Handle both AI and player attacks
+            if (attack.gameObject.GetComponent<PlayerIFAttack>() != null)
             {
-                HealthBarTest enemyHealth = enemyAttack.GetComponent<HealthBarTest>();
-                if (enemyHealth != null)
+                PlayerState enemyState = attack.GetComponent<PlayerIFAttack>().GetComponent<PlayerState>();
+                if (enemyState != null)
                 {
-                    // enemyHealth.TakeDamage(parryDamage);
+                    enemyState.TakeDamage(parryDamage, 1);
                     Debug.Log("Enemy took " + parryDamage + " damage from parry!");
                 }
             }
-        }
-
-        // Logic for taking damage
-        public void TakeDamage (float attackPower)
-        {
-            HealthBarTest health = GetComponent<HealthBarTest>();
-            if (health != null)
+            else if (attack.gameObject.GetComponent<AI_Attack>() != null)
             {
-                /*            health.TakeDamage(damageAmount);*/
-                Debug.Log($"{gameObject.name} took damage!");
+                AI_Attack aiAttacker = attack.GetComponent<AI_Attack>();
+                if (aiAttacker != null)
+                {
+                    Debug.Log("Parried AI attack! AI combo interrupted.");
+                    aiAttacker.currentCombo = 0; // Interrupt AI combo
+                }
             }
         }
 
@@ -137,5 +157,4 @@ namespace ITKombat
             Gizmos.DrawWireSphere(defensePoint.position, defenseRadius);
         }
     }
-
 }

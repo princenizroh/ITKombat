@@ -75,13 +75,23 @@ namespace ITKombat
                 timeSinceLastAttack = Time.time;
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
+
+                bool isBlocked = false;
+
                 foreach (Collider2D enemy in hitEnemies)
                 {
                     Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
                     AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
+
+                    if (enemyDefense != null && enemyDefense.isBlocking)
+                    {
+                        isBlocked = true; // Mark if at least one enemy is blocking
+                    }
+
                     if (enemyRb != null && !enemyDefense.isBlocking)
                     {
                         GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
+
                         if (enemyStateObject != null)
                         {
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
@@ -97,7 +107,7 @@ namespace ITKombat
                         }
                     }
                 }
-                AttackAnimation(hitEnemies);
+                AttackAnimation(hitEnemies, isBlocked);
             }
             else
             {
@@ -122,7 +132,7 @@ namespace ITKombat
             }
         }
 
-        private void AttackAnimation(Collider2D[] hitEnemies)
+        private void AttackAnimation(Collider2D[] hitEnemies, bool isBlocked)
         {
             CharacterController2D1 character = GetComponent<CharacterController2D1>();
             if (character == null) return;
@@ -138,7 +148,7 @@ namespace ITKombat
                     {
                         Attack1_Left_Fisika.Play();
                     }
-                    PlayAttackSound(1, hitEnemies.Length > 0);
+                    PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("fisika_attack1");
                     StartCoroutine(ResetToIdleAfterTime(0.8f));
                     break;
@@ -151,7 +161,7 @@ namespace ITKombat
                     {
                         Attack2_Left_Fisika.Play();
                     }
-                    PlayAttackSound(2, hitEnemies.Length > 0);
+                    PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("fisika_attack2");
                     StartCoroutine(ResetToIdleAfterTime(0.8f));
                     break;
@@ -164,7 +174,7 @@ namespace ITKombat
                     {
                         Attack3_Left_Fisika.Play();
                     }
-                    PlayAttackSound(3, hitEnemies.Length > 0);
+                    PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("fisika_attack3");
                     StartCoroutine(ResetToIdleAfterTime(0.8f));
                     break;
@@ -190,9 +200,13 @@ namespace ITKombat
             animator.SetTrigger("Idle");
         }
 
-        private void PlayAttackSound(int comboNumber, bool hitEnemies)
+        private void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
         {
-            if (hitEnemies)
+            if (isBlocked)
+            {
+                PlayBlockedSound(comboNumber);
+            }
+            else if (hitEnemies)
             {
                 PlayHitSound(comboNumber);
             }
@@ -224,6 +238,15 @@ namespace ITKombat
             }
         }
 
+        private void PlayBlockedSound(int comboNumber)
+        {
+            switch (comboNumber)
+            {
+                case 1: NewSoundManager.Instance.PlaySound("Fisika_Blocked1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Fisika_Blocked2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Fisika_Blocked3", transform.position); break;
+            }
+        }
         private void OnDrawGizmosSelected()
         {
             if (attackPoint == null) return;
