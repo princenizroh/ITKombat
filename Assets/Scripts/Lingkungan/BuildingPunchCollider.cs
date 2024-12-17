@@ -5,8 +5,8 @@ namespace ITKombat
     public class BuildingPunchCollider : MonoBehaviour
     {
         public GameObject targetCanvas;
-        public GameObject canvasDead;
-
+        public GameObject canvasDead1;
+        public GameObject canvasDead2;
         public GameObject outline;
         [HideInInspector] public bool playerInRange = false; // Dapat diakses dari PlayerComba
 
@@ -41,8 +41,10 @@ namespace ITKombat
             if (targetCanvas != null)
             {
                 targetCanvas.SetActive(true);
-                canvasDead.SetActive(false);
+                canvasDead1.SetActive(false);
+                canvasDead2.SetActive(false);
                 Debug.Log("Canvas diaktifkan");
+                Debug.Log("HUD Dinonaktifkan");
             }
         }
     }
