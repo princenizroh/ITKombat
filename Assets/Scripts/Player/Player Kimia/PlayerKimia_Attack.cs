@@ -220,10 +220,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Kimia_Hit1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Kimia_Hit2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Kimia_Hit3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Kimia_Hit4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Kimia_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Kimia_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Kimia_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Kimia_Attack4", transform.position); break;
             }
         }
 
@@ -231,10 +231,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Kimia_Miss1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Kimia_Miss2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Kimia_Miss3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Kimia_Miss4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
             }
         }
 

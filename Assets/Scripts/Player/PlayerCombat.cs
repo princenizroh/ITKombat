@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace ITKombat
@@ -8,8 +9,9 @@ namespace ITKombat
         public bool isAttacking = false;
         public static PlayerCombat instance;
 
-        private BuildingPunchCollider buildingCollider; // Referensi ke collider bangunan
+        private BuildingPunchCollider buildingCollider;
         private DoorPunch doorCollider;
+        private ObjectClickHandler pialaCollider;
 
         private void Awake()
         {
@@ -21,7 +23,6 @@ namespace ITKombat
             animator = GetComponent<Animator>();
         }
 
-        // Update is called once per frame
         public void OnAttackButtonPressed()
         {
             HandlePunchCombo();
@@ -29,17 +30,20 @@ namespace ITKombat
 
         private void HandlePunchCombo()
         {
-            // Cek apakah player sedang memukul dan berkolisi dengan bangunan
             if (buildingCollider != null && buildingCollider.CanActivateCanvas())
             {
-                Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
                 buildingCollider.ActivateCanvas();
                 NewSoundManager.Instance.PlaySound("Button_Click", transform.position);
+
             }
-            else if (doorCollider != null && doorCollider.CanActivateScene()) // Pastikan menggunakan doorCollider di sini
+            else if (doorCollider != null && doorCollider.CanActivateScene())
             {
-                Debug.Log("Ini bisa?"); // Log ini seharusnya muncul jika semua kondisi terpenuhi
-                doorCollider.TransitionToScene(); // Pindahkan ke scene yang dituju
+                doorCollider.TransitionToScene();
+            }
+            else if (pialaCollider != null && pialaCollider.CanActivateCanvas())
+            {
+                pialaCollider.ActivateCanvas();
+                NewSoundManager.Instance.PlaySound("Button_Click", transform.position);
             }
         }
 
@@ -51,6 +55,10 @@ namespace ITKombat
         public void SetPunchCollider(DoorPunch collider)
         {
             doorCollider = collider;
+        }
+        public void setPialaCollider(ObjectClickHandler collider)
+        {
+            pialaCollider = collider;
         }
     }
 }

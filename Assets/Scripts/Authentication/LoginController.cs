@@ -23,6 +23,9 @@ public class LoginController : MonoBehaviour
 
     private PlayerInfo playerInfo;
 
+    public GameObject loginButtonGameobject;
+    public GameObject StartGameGameobject;
+
     private async void Awake()
     {
         // Initialize Unity Services
@@ -129,6 +132,10 @@ public class LoginController : MonoBehaviour
         } else {
             StartCoroutine(firebase.GoogleRegister(player_id));
         }
+
+        loginButtonGameobject.SetActive(false);
+
+        StartGameGameobject.SetActive(true);
 
         UpdateUI(profile);
     }

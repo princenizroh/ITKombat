@@ -4,18 +4,45 @@ namespace ITKombat
 {
     public class ObjectClickHandler : MonoBehaviour
     {
-        [SerializeField] private GameObject leaderboardCanvas; // Reference to the leaderboard canvas
+        [HideInInspector] public bool leaderboard = false; // Reference to the leaderboard canvas
+        public GameObject leaderboardCanvas;
+        public GameObject canvasDead;
+        public GameObject outline;
 
-        public void Start()
+
+        void OnTriggerEnter2D(Collider2D other)
         {
-            leaderboardCanvas.SetActive(false); // Hide leaderboard at the start
+            if (other.CompareTag("Player"))
+            {
+                leaderboard = true;
+                outline.SetActive(true);
+                other.GetComponent<PlayerCombat>().setPialaCollider(this);
+                Debug.Log("Masuk collider");
+            }
         }
 
-        public void OnMouseDown()
+        void OnTriggerExit2D(Collider2D other) 
         {
-            if (!leaderboardCanvas.activeSelf)
+            if (other.CompareTag("Player"))
+            {
+                leaderboard = false;
+                outline.SetActive(false);
+                Debug.Log("Keluar collider");
+            } 
+        }
+
+        public bool CanActivateCanvas()
+        {
+            return leaderboard;
+        }
+
+        public void ActivateCanvas()
+        {
+            if(leaderboardCanvas != null)
             {
                 leaderboardCanvas.SetActive(true);
+                canvasDead.SetActive(true);
+                Debug.Log("CanvasActive");
             }
         }
     }

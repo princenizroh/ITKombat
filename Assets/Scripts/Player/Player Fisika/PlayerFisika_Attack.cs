@@ -22,11 +22,13 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack1_Right_Fisika = null;
         [SerializeField] private ParticleSystem Attack2_Right_Fisika = null;
         [SerializeField] private ParticleSystem Attack3_Right_Fisika = null;
+        [SerializeField] private ParticleSystem Attack4_Right_Fisika = null;
 
         // VFX Left
         [SerializeField] private ParticleSystem Attack1_Left_Fisika = null;
         [SerializeField] private ParticleSystem Attack2_Left_Fisika = null;
         [SerializeField] private ParticleSystem Attack3_Left_Fisika = null;
+        [SerializeField] private ParticleSystem Attack4_Left_Fisika = null;
 
         // Weapon state
         public bool isUsingWeapon;
@@ -176,6 +178,19 @@ namespace ITKombat
                     animator.SetTrigger("fisika_attack3");
                     StartCoroutine(ResetToIdleAfterTime(0.8f));
                     break;
+                case 4:
+                    if (character.IsFacingRight)
+                    {
+                        Attack4_Right_Fisika.Play();
+                    }
+                    else
+                    {
+                        Attack4_Left_Fisika.Play();
+                    }
+                    PlayAttackSound(4, hitEnemies.Length > 0);
+                    animator.SetTrigger("mesin_attack4");
+                    StartCoroutine(ResetToIdleAfterTime(1f));
+                    break;
             }
         }
 
@@ -205,9 +220,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Fisika_Hit1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Fisika_Hit2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Fisika_Hit3", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Fisika_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Fisika_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Fisika_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Fisika_Attack4", transform.position); break;
             }
         }
 
@@ -215,9 +231,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Fisika_Miss1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Fisika_Miss2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Fisika_Miss3", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
             }
         }
 

@@ -12,7 +12,7 @@ namespace ITKombat
             Debug.Log(currentSceneName + "adalah scene sekarang");
             if (currentSceneName == "SoundMultiplayer")
             {
-                MusicManager.Instance.PlayMusic("Battle_1");
+                MusicManager.Instance.PlayMusic("Battle_2");
             }
             else if (currentSceneName == "Asrama")
             {
@@ -24,7 +24,7 @@ namespace ITKombat
             }
             else if(currentSceneName == "BattleMode")
             {
-                MusicManager.Instance.PlayMusic("Battle_2");
+                MusicManager.Instance.PlayMusic("Battle_1");
             }
             else if(currentSceneName == "Lingkungan 1")
             {
