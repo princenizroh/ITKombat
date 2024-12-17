@@ -8,6 +8,7 @@ namespace ITKombat
         [Header("Defense Settings")]
         public float blockCooldown = 1.0f;
         public bool isBlocking = false;
+        public float defenseMultiplier = 0.7f;
 
         [Header("Parry Settings")]
         public float parryWindow = 0.2f;
@@ -25,14 +26,14 @@ namespace ITKombat
         private PlayerState playerState;
 
         private AI_Attack aiAttack;
+        private PlayerIFAttack playerAttack;
+        public CharacterStat characterStats;
 
         private void Start()
         {
             parentPlayer = transform.root.gameObject;
             anim = GetComponent<Animator>();
             playerState = parentPlayer.GetComponent<PlayerState>();
-
-            aiAttack = FindObjectOfType<AI_Attack>();
 
             if (playerState == null)
             {
@@ -58,7 +59,6 @@ namespace ITKombat
             isParrying = false;
             Debug.Log(gameObject.name + " stopped blocking.");
         }
-
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -92,35 +92,132 @@ namespace ITKombat
         private void HandleAttack(Collider2D attack, GameObject attacker)
         {
             // Determine attack power from either AI or player attacks
-            float attackPower = 0;
-
             if (attacker.GetComponent<PlayerIFAttack>() != null)
             {
-                attackPower = attacker.GetComponent<PlayerIFAttack>().attackPower;
+                PlayerIFAttack playerAttackScript = attacker.GetComponent<PlayerIFAttack>();
+
+                // Use characterStats to get the base attack power
+                float attackPower = playerAttackScript.characterStats.characterBaseAtk;
+
+                // Get the defender's base defense and apply the defense multiplier
+                float defenderBaseDef = characterStats.characterBaseDef;
+
+                // Calculate the total defense
+                float totalDefense = defenderBaseDef * defenseMultiplier;
+
+                // Apply the damage mitigation formula
+                float mitigation = 1 - (defenderBaseDef / (defenderBaseDef + 100));
+
+                // Calculate the damage multiplier based on the combo stage
+                float damageMultiplier = 0.2f;  // Default to the 1st and 2nd combo
+
+                // Check the combo stage for the attack
+                if (playerAttackScript != null)
+                {
+                    int comboStage = playerAttackScript.combo; // Get the current combo stage
+
+                    // Adjust the multiplier based on the combo stage
+                    if (comboStage == 3)
+                    {
+                        damageMultiplier = 0.4f;  // 3rd combo
+                    }
+                    else if (comboStage >= 4)
+                    {
+                        damageMultiplier = 0.8f;  // Final combo
+                    }
+                }
+
+                // Calculate the damage after applying defense and mitigation
+                float damageAfterDefense = (attackPower - totalDefense) * damageMultiplier;
+
+                // Apply mitigation to the damage
+                float finalDamage = damageAfterDefense * mitigation;
+
+                Debug.Log(gameObject.name + " was hit by " + attacker.name + " for " + finalDamage + " damage after mitigation.");
+
+                // Use PlayerState for health management
+                if (playerState != null)
+                {
+                    playerState.TakeDamage(finalDamage, 1); // Combo set to 1 for simplicity
+                }
             }
             else if (attacker.GetComponent<AI_Attack>() != null)
             {
-                attackPower = attacker.GetComponent<AI_Attack>().attackPower;
-            }
+                float attackPower = attacker.GetComponent<AI_Attack>().attackPower;
 
-            Debug.Log(gameObject.name + " was hit by " + attacker.name);
+                // Get the defender's base defense and apply the defense multiplier
+                float defenderBaseDef = characterStats.characterBaseDef;
 
-            // Use PlayerState for health management
-            if (playerState != null)
-            {
-                playerState.TakeDamage(attackPower, 1); // Combo set to 1 for simplicity
+                // Calculate the total defense
+                float totalDefense = defenderBaseDef * defenseMultiplier;
+
+                // Apply the damage mitigation formula
+                float mitigation = 1 - (defenderBaseDef / (defenderBaseDef + 100));
+
+                // Calculate the damage multiplier based on the combo stage
+                float damageMultiplier = 0.2f;  // Default to the 1st and 2nd combo
+
+                // Check the combo stage for the attack
+                if (attacker.GetComponent<AI_Attack>() != null)
+                {
+                    int comboStage = attacker.GetComponent<AI_Attack>().currentCombo; // Get the current combo stage
+
+                    // Adjust the multiplier based on the combo stage
+                    if (comboStage == 3)
+                    {
+                        damageMultiplier = 0.4f;  // 3rd combo
+                    }
+                    else if (comboStage >= 4)
+                    {
+                        damageMultiplier = 0.8f;  // Final combo
+                    }
+                }
+
+                // Calculate the damage after applying defense and mitigation
+                float damageAfterDefense = (attackPower - totalDefense) * damageMultiplier;
+
+                // Apply mitigation to the damage
+                float finalDamage = damageAfterDefense * mitigation;
+
+                Debug.Log(gameObject.name + " was hit by AI for " + finalDamage + " damage after mitigation.");
+
+                // Use PlayerState for health management
+                if (playerState != null)
+                {
+                    playerState.TakeDamage(finalDamage, 1); // Combo set to 1 for simplicity
+                }
             }
         }
 
         private void BlockSuccess(Collider2D attack)
         {
+            if (isBlocking)
+            {
+                Debug.Log("Attack was blocked. No damage taken.");
+                return;
+            }
+
             Debug.Log("Attack blocked!");
 
-            if (attack.GetComponent<PlayerIFAttack>() != null || attack.GetComponent<AI_Attack>() != null)
+            AI_Attack aiAttacker = attack.transform.root.GetComponent<AI_Attack>();
+            if (aiAttacker != null)
+            {
+                aiAttacker.currentCombo = 0; // Interrupt the AI combo
+                aiAttacker.canAttack = false; // Temporarily disable attacks
+                StartCoroutine(EnableAIAttackCooldown(aiAttacker));
+            }
+
+            PlayerIFAttack playerAttack = attack.GetComponent<PlayerIFAttack>();
+            if (playerAttack != null)
             {
                 attack.enabled = false;
-                // Additional block effects can be triggered here
             }
+        }
+
+        private IEnumerator EnableAIAttackCooldown(AI_Attack aiAttacker)
+        {
+            yield return new WaitForSeconds(1.0f); // Block effect duration
+            aiAttacker.canAttack = true; // Re-enable AI attacks
         }
 
         private void PerformParry(Collider2D attack)

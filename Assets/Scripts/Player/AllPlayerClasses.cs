@@ -8,7 +8,7 @@ namespace ITKombat
         public PlayerDefense playerDefense;
         public PlayerMovement_2 playerMovement;
         public PlayerSkill playerSkill;
-        public HealthBarTest healthBar;
+        public PlayerState playerState;
         public CharacterController2D1 characterController;
         public GameManagerButton gameManagerButton;
     }

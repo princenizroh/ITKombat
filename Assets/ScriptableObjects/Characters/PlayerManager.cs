@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
             // Menginisialisasi komponen player dengan script yang berbeda
             playerData.audioPlayerTest.PlayBackgroundMusic();
             playerData.characterController.Move(playerData.moveSpeed, false, false);
-            playerData.healthBar.UpdateHealthBar();
+            playerData.playerState.UpdateHealth();
             playerData.playerAttack.PerformAttack();
         }
     }
