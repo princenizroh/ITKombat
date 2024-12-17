@@ -242,10 +242,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Kimia_Blocked1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Kimia_Blocked2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Kimia_Blocked3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Kimia_Blocked4", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
             }
         }
 

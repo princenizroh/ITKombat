@@ -187,7 +187,7 @@ namespace ITKombat
                     {
                         Attack4_Left_Fisika.Play();
                     }
-                    PlayAttackSound(4, hitEnemies.Length > 0);
+                    PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("mesin_attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     break;
@@ -242,9 +242,10 @@ namespace ITKombat
         {
             switch (comboNumber)
             {
-                case 1: NewSoundManager.Instance.PlaySound("Fisika_Blocked1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Fisika_Blocked2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Fisika_Blocked3", transform.position); break;
+                case 1: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
             }
         }
         private void OnDrawGizmosSelected()
