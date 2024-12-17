@@ -50,6 +50,10 @@ public class Book : MonoBehaviour {
     public Image Right;
     public Image RightNext;
     public UnityEvent OnFlip;
+
+    [SerializeField] GameObject FowardButton;
+    [SerializeField] GameObject BackButton;
+
     float radius1, radius2;
     //Spine Bottom
     Vector3 sb;
@@ -392,6 +396,10 @@ public class Book : MonoBehaviour {
         UpdateSprites();
         Shadow.gameObject.SetActive(false);
         ShadowLTR.gameObject.SetActive(false);
+
+        CheckForwardButtonState();
+        CheckBackButtonState();
+
         if (OnFlip != null)
             OnFlip.Invoke();
     }
@@ -429,6 +437,34 @@ public class Book : MonoBehaviour {
                 ));
         }
     }
+
+    public void CheckForwardButtonState()
+{
+    // Matikan tombol forward jika currentPage >= total halaman - 2
+    if (currentPage >= TotalPageCount - 2)
+    {
+        FowardButton.SetActive(false);
+    }
+    else
+    {
+        FowardButton.SetActive(true);
+    }
+}
+
+public void CheckBackButtonState()
+{
+    // Matikan tombol back jika currentPage <= 1
+    if (currentPage <= 1)
+    {
+        BackButton.SetActive(false);
+    }
+    else
+    {
+        BackButton.SetActive(true);
+    }
+}
+
+
     public IEnumerator TweenTo(Vector3 to, float duration, System.Action onFinish)
     {
         int steps = (int)(duration / 0.025f);
