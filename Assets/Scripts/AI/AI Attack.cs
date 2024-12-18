@@ -51,7 +51,6 @@ namespace ITKombat
 
         void Start()
         {
-           
         }
 
         void Update()
@@ -95,9 +94,8 @@ namespace ITKombat
                             PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
                             if (playerState != null)
                             {
-                                ApplyKnockback(player,currentCombo);
-                                AttackAnimation(hitPlayer, isBlocked); 
                                 if(!playerMovement.isBlocking){
+                                ApplyKnockback(player,currentCombo);
                                 playerState.TakeDamage(attackPower,currentCombo);
                                 }
                             }
@@ -115,6 +113,7 @@ namespace ITKombat
                             }
                     }
                 }
+                AttackAnimation(hitPlayer, isBlocked);
             }
             else
             {
@@ -215,16 +214,16 @@ namespace ITKombat
             if (isBlocked == true)
             {
                 PlayBlockedSound(comboNumber);
+                return;
             }
             
             if (hitPlayer)
             {
                 PlayHitSound(comboNumber);
+                return;
             }
-            else
-            {
-                PlayMissSound(comboNumber);
-            }
+            PlayMissSound(comboNumber);
+            
         }
 
         private void PlayHitSound(int comboNumber)
