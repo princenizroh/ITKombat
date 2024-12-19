@@ -7,6 +7,7 @@ namespace ITKombat
         public static Panels Instance; // Singleton instance
         [SerializeField] GameObject openPanel; // Panel yang ingin dibuka
 
+
         void Awake()
         {
             // Cek apakah Instance sudah ada, jika ada hancurkan objek ini
@@ -19,6 +20,8 @@ namespace ITKombat
             {
                 Destroy(gameObject); // Hancurkan objek yang duplikat
             }
+
+            
         }
 
         public void PauseMenu()
