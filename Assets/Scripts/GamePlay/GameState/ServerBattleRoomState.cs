@@ -32,16 +32,18 @@ namespace ITKombat
 
         // Network Variable untuk menyimpan state game
         private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
-        private State states;
-        private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
-        private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
         
-        private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
-        private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(0f);
+        // private State state;
+        [SerializeField] private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
+        [SerializeField] private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
+        [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
+        private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
 
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
-        private float gamePlayingTimerMax = 100f;
+        [SerializeField] private const float gamePlayingTimerMax = 5f;
         private bool isLocalGamePaused = false;
+        private bool isCountdownCoroutineStarted = false;
+        private bool isRoundOutcomeDetermined = false;
         
         private Dictionary<ulong, bool> playerReadyDictionary;
         private Dictionary<ulong, bool> playerPausedDictionary;
@@ -50,14 +52,10 @@ namespace ITKombat
         [Inject] PersistentGameState m_PersistentGameState;
         [SerializeField ]private GameObject quantumConsole;
 
+        
         private void Awake() {
             Instance = this;
-
-            states = State.WaitingToStart;
-            // states = State.GamePlaying;
-            // states = State.CountdownToStart;
-            Debug.Log("States: " + states);
-            ChangeState(State.CountdownToStart);
+            DontDestroyOnLoad(gameObject);
             playerReadyDictionary = new Dictionary<ulong, bool>();
             playerPausedDictionary = new Dictionary<ulong, bool>();
             Debug.Log("ServerBattleRoomState Awake");
@@ -65,8 +63,19 @@ namespace ITKombat
         }
 
         private void Start() {
-            GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
-            GameInput_OnInteractAction();
+            Debug.Log("ServerBattleRoomState Start from ServerBattleRoomState");
+            matchManager = MatchManager.Instance;
+            if (matchManager == null)
+            {
+                Debug.LogError("MatchManager instance is null in ServerBattleRoomState.");
+            }
+            // ChangeState(State.CountdownToStart);
+            // GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
+            if (Input.GetKey(KeyCode.H))
+            {
+                Debug.Log("Space is Space");
+                GameInput_OnInteractAction();
+            }
 
             Debug.Log("ServerBattleRoomState Start");
 
@@ -78,17 +87,30 @@ namespace ITKombat
         }
 
         private void ChangeState(State newState) {
-            state.Value = newState;
-            Debug.Log("State changed to: " + newState);
-            OnStateChanged?.Invoke(this, EventArgs.Empty);
+            if (state.Value != newState)
+            {
+                state.Value = newState;
+                Debug.Log("State changed to: " + newState);
+                OnStateChanged?.Invoke(this, EventArgs.Empty);
+            }
+            
         }
         public override void OnNetworkSpawn() {
+          Debug.Log("ServerBattleRoomState OnNetworkSpawn" + state.Value);
             state.OnValueChanged += State_OnValueChanged;
+            Debug.Log("ServerBattleRoomState OnNetworkSpawn" + state.Value);
+             // Memanggil CheckDirtyState() setelah semua perubahan selesai
+            state.CheckDirtyState();
+            Debug.Log("Check Dirty State "+ state.CheckDirtyState());
             isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
+            Debug.Log("ServerBattleRoomState OnNetworkSpawn" + isGamePaused.Value);
 
             if (IsServer) {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+                Debug.Log("ServerBattleRoomState OnNetworkSpawn, ConnectedClientsIds: " + string.Join(", ", NetworkManager.Singleton.ConnectedClientsIds));                
+                Debug.Log("ServerBattleRoomState OnNetworkSpawn, connectedHostIds: " + string.Join(", ", NetworkManager.Singleton.ConnectedHostname));
                 NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
+            
             }
 
             Debug.Log("ServerBattleRoomState OnNetworkSpawn");
@@ -128,8 +150,8 @@ namespace ITKombat
 
         private void GameInput_OnInteractAction() {
             Debug.Log("GameInput_OnInteractAction");
-            if (states == State.WaitingToStart) {
-                states = State.CountdownToStart;
+            if (state.Value == State.WaitingToStart) {
+
                 // isLocalPlayerReady = true;
                 // OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
                 OnStateChanged?.Invoke(this, EventArgs.Empty);
@@ -167,27 +189,35 @@ namespace ITKombat
             if (!IsServer) {
                 return;
             }
-
-            Debug.Log("ServerBattleRoomState Update");
-
             switch (state.Value) {
                 case State.WaitingToStart:
                     Debug.Log("Waiting to start. from ServerBattleRoomState");
                     break;
                 case State.CountdownToStart:
                     countdownToStartTimer.Value -= Time.deltaTime;
+                    Debug.Log("Countdown to start: " + countdownToStartTimer.Value);
+                    OnStateChanged?.Invoke(this, EventArgs.Empty);
                     if (countdownToStartTimer.Value < 0f) {
+                        Debug.Log("Countdown to start finished." + countdownToStartTimer.Value);
                         state.Value = State.GamePlaying;
                         gamePlayingTimer.Value = gamePlayingTimerMax;
-                        Debug.Log("Countdown finished. Game started.");
                     }
                     break;
                 case State.GamePlaying:
                     gamePlayingTimer.Value -= Time.deltaTime;
-                    if (gamePlayingTimer.Value <= 0f) {
+                    if (gamePlayingTimer.Value <= 0f && !isRoundOutcomeDetermined) {
                         DetermineRoundOutcome();
-                        Debug.Log("Game over.");
+                        isRoundOutcomeDetermined = true;
+                        state.Value = State.WaitingTime;
+                        Debug.Log("State winState: " + state.Value);
+                        Debug.Log("Next round.");
+                        GetResetCountdownToStartTimer();
+                        if (winState.Value == WinState.Victory || winState.Value == WinState.Defeat) {
+                            Debug.Log("Game over.");
+                        }
                     }
+                    break;
+                case State.WaitingTime:
                     break;
                 case State.GameOver:
                     break;
@@ -195,7 +225,6 @@ namespace ITKombat
         }
 
         private void LateUpdate() {
-            Debug.Log("ServerBattleRoomState LateUpdate");
             if (autoTestGamePausedState) {
                 autoTestGamePausedState = false;
                 TestGamePausedState();
@@ -204,37 +233,40 @@ namespace ITKombat
 
         private void DetermineRoundOutcome()
         {
-            if (matchManager.playerVictoryPoint > matchManager.enemyVictoryPoint)
+            if (matchManager.playerState.currentHealth == matchManager.enemyState.currentHealth)
             {
-                winState.Value = WinState.Player1Win;
-                matchManager.PlayerVictory();
-            }
-            else if (matchManager.playerVictoryPoint < matchManager.enemyVictoryPoint)
-            {
-                winState.Value = WinState.Player2Win;
-                matchManager.EnemyVictory();
-            }
-            else
-            {
+                Debug.Log("Draw");
                 winState.Value = WinState.Draw;
-                matchManager.DrawRound();
+                Debug.Log("State winState: " + winState.Value);
+                Debug.Log("State: " + state.Value);
+            }
+            else if (matchManager.playerState.currentHealth > matchManager.enemyState.currentHealth)
+            {
+                Debug.Log("Player 1 win");
+                winState.Value = WinState.Player1Win;
+            }
+            else if (matchManager.playerState.currentHealth < matchManager.enemyState.currentHealth)
+            {
+                Debug.Log("Player 2 win");
+                winState.Value = WinState.Player2Win;
             }
 
             if (matchManager.playerVictoryPoint == 3 || matchManager.enemyVictoryPoint == 3)
             {
+                Debug.Log("Game over");
                 state.Value = State.GameOver;
                 StartCoroutine(HandleGameOver());
             }
-            else
-            {
-                StartCoroutine(HandleRoundTransition());
-            }
+            // else
+            // {
+            //     StartCoroutine(HandleRoundTransition());
+            // }
         }
         private IEnumerator HandleRoundTransition()
         {
             yield return new WaitForSeconds(3f);
             state.Value = State.CountdownToStart;
-            countdownToStartTimer.Value = 5f;
+            countdownToStartTimer.Value = 3f;
 
             // Update round state
             switch (roundState.Value)
@@ -275,22 +307,35 @@ namespace ITKombat
         }
 
         public bool IsGamePlaying() {
+            Debug.Log("State: " + state.Value);
+            ChangeState(State.GamePlaying);
+            
             return state.Value == State.GamePlaying;
         }
 
         public bool IsCountdownToStartActive() {
-            return state.Value == State.CountdownToStart;
+            Debug.Log("State: " + state.Value);
+            return state.Value == State.CountdownToStart && countdownToStartTimer.Value > 0f;
+        }
+
+        public bool IsWaitingTime() {
+            return state.Value == State.WaitingTime;
         }
 
         public float GetCountdownToStartTimer() {
             return countdownToStartTimer.Value;
         }
 
+        public float GetResetCountdownToStartTimer() {
+            countdownToStartTimer.Value = 3f;
+            return countdownToStartTimer.Value;
+        }
         public bool IsGameOver() {
             return state.Value == State.GameOver;
         }
 
         public bool IsWaitingToStart() {
+            Debug.Log("State: " + state.Value);
             return state.Value == State.WaitingToStart;
         }
 
@@ -298,8 +343,14 @@ namespace ITKombat
             return isLocalPlayerReady;
         }
 
-        public float GetGamePlayingTimerNormalized() {
-            return 1 - (gamePlayingTimer.Value / gamePlayingTimerMax);
+        public int GetGamePlayingTimerNormalized() {
+            float normalizedTime = Mathf.Max(0, gamePlayingTimer.Value);
+            return Mathf.FloorToInt(gamePlayingTimer.Value);
+            // return 3 - (gamePlayingTimer.Value / gamePlayingTimerMax);
+        }
+
+        public int GetResetGamePlayingTimerNormalized() {
+            return Mathf.FloorToInt(gamePlayingTimerMax);
         }
 
         public void TogglePauseGame() {

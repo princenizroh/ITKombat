@@ -27,6 +27,7 @@ namespace ITKombat
 
                 if (timerStart >= timerSet)
                 {
+                    Debug.Log("Timer Start: " + timerStart);
                     timerStart -= Time.deltaTime; 
                 }
 
@@ -34,6 +35,7 @@ namespace ITKombat
 
                 if (normalTimerStart >= normalTimerSet)
                 {
+                    Debug.Log("Normal Timer Start: " + normalTimerStart);
                     normalTimerStart -= Time.deltaTime;
                 }
                 
@@ -43,6 +45,7 @@ namespace ITKombat
 
         public void ChangeMatchStatus(bool status) {
             statusMatch = status;
+            Debug.Log("Match Status: " + statusMatch);
         }
 
         public int GetStageTimeInMinute()
@@ -64,6 +67,14 @@ namespace ITKombat
 
         public int GetNormalTimeInSecond()
         {
+            Debug.Log("Normal Timer Start: " + normalTimerStart);
+            return Mathf.FloorToInt(normalTimerStart);
+        }
+
+        public int GetResetNormalTimerStart()
+        {
+            normalTimerStart = 5f;
+            Debug.Log("Normal Timer Start Reset: " + normalTimerStart);
             return Mathf.FloorToInt(normalTimerStart);
         }
     }

@@ -41,10 +41,14 @@ namespace ITKombat
             }
         }
 
-        // private void Update()
-        // {
-        //     float attackPower = GetDamageFromPlayer();
-        // }
+        private void Update()
+        {
+            // float attackPower = GetDamageFromPlayer();
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                TakeDamage(10f,1f);
+            }
+        }
 
         public void TakeDamage(float damage,float combo)
         {
