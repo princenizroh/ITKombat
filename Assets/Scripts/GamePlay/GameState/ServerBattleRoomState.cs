@@ -28,7 +28,6 @@ namespace ITKombat
         public event EventHandler OnLocalPlayerReadyChanged;
 
         [SerializeField] private Transform playerPrefab;
-        private bool isLocalPlayerReady;
 
         // Network Variable untuk menyimpan state game
         private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
@@ -37,6 +36,8 @@ namespace ITKombat
         [SerializeField] private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
         [SerializeField] private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
         [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
+        private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
+
         private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
 
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
@@ -71,12 +72,6 @@ namespace ITKombat
             }
             // ChangeState(State.CountdownToStart);
             // GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
-            if (Input.GetKey(KeyCode.H))
-            {
-                Debug.Log("Space is Space");
-                GameInput_OnInteractAction();
-            }
-
             Debug.Log("ServerBattleRoomState Start");
 
     #if DEDICATED_SERVER
@@ -148,15 +143,16 @@ namespace ITKombat
             OnStateChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        private void GameInput_OnInteractAction() {
-            Debug.Log("GameInput_OnInteractAction");
+        public void OnInteractAction(object sender, EventArgs e) {
+            Debug.Log("OnInteractAction");
             if (state.Value == State.WaitingToStart) {
+                Debug.Log("State from GameInputOnInteractAction: " + state.Value);
+                Debug.Log("Local player is ready." + isLocalPlayerReady);
+                isLocalPlayerReady.Value = true;
+                OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
 
-                // isLocalPlayerReady = true;
-                // OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
-                OnStateChanged?.Invoke(this, EventArgs.Empty);
-
-                // SetPlayerReadyServerRpc();
+                Debug.Log("After Local player is ready." + isLocalPlayerReady);
+                SetPlayerReadyServerRpc();
             }
         }
 
@@ -174,6 +170,8 @@ namespace ITKombat
                 }
             }
 
+            Debug.Log("All clients ready: " + allClientsReady);
+            
             if (allClientsReady) {
                 Debug.Log("All players are ready. Starting countdown.");
                 state.Value = State.CountdownToStart;
@@ -189,9 +187,9 @@ namespace ITKombat
             if (!IsServer) {
                 return;
             }
+
             switch (state.Value) {
                 case State.WaitingToStart:
-                    Debug.Log("Waiting to start. from ServerBattleRoomState");
                     break;
                 case State.CountdownToStart:
                     countdownToStartTimer.Value -= Time.deltaTime;
@@ -340,7 +338,8 @@ namespace ITKombat
         }
 
         public bool IsLocalPlayerReady() {
-            return isLocalPlayerReady;
+            Debug.Log("IsLocalPlayerReady: " + isLocalPlayerReady);
+            return isLocalPlayerReady.Value;
         }
 
         public int GetGamePlayingTimerNormalized() {

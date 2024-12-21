@@ -51,9 +51,9 @@ namespace ITKombat
             // {
             //     Debug.LogError("ServerBattleRoomState.Instance is NULL.");
             // }
-            // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
-            StartCoroutine(ShowRoundStartNotification(1));
+            // StartCoroutine(ShowRoundStartNotification(1));
             playerMovement.canMove = false;
         }
 
@@ -87,28 +87,28 @@ namespace ITKombat
             enemyState = FindObjectOfType<EnemyState>();
             playerMovement = FindObjectOfType<PlayerMovement_2>();
         }
-        // private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
-        // {
-        //     // Debug.Log("Checking IsCountdownToStartActive");
+        private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
+        {
+            // Debug.Log("Checking IsCountdownToStartActive");
 
-        //     if (ServerBattleRoomState.Instance.IsCountdownTotartActive())
-        //     {
-        //         // Debug.Log("CountdownToStart is active");
+            if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
+            {
+                // Debug.Log("CountdownToStart is active");
 
-        //         if (!isCountdownCoroutineStarted)
-        //         {
-        //             Debug.Log($"Couroutine started for Round {currentRound}");
-        //             StartCoroutine(CountedCoroutine(ShowRoundStartNotification(currentRound)));
-        //             // Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
-        //             isCountdownCoroutineStarted = true;
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Debug.Log("CountdownToStart is NOT active");
-        //         isCountdownCoroutineStarted = false;
-        //     }
-        // }
+                if (!isCountdownCoroutineStarted)
+                {
+                    Debug.Log($"Couroutine started for Round {currentRound}");
+                    StartCoroutine(CountedCoroutine(ShowRoundStartNotification(currentRound)));
+                    // Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
+                    isCountdownCoroutineStarted = true;
+                }
+            }
+            else
+            {
+                Debug.Log("CountdownToStart is NOT active");
+                isCountdownCoroutineStarted = false;
+            }
+        }
 
 
     // private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e) {

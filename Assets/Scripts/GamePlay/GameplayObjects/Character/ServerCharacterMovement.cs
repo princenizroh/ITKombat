@@ -82,6 +82,12 @@ namespace ITKombat
             // transform.position = spawnPositionList[NetworkManager.Singleton.ConnectedClients.Count - 1];
             transform.position = spawnPositionList[(int)OwnerClientId];
             OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+
+            if (IsServer)
+            {
+                NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+            }
+            
         }
         private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
         {

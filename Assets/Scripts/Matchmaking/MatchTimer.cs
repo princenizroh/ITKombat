@@ -27,7 +27,7 @@ namespace ITKombat
 
                 if (timerStart >= timerSet)
                 {
-                    Debug.Log("Timer Start: " + timerStart);
+                    // Debug.Log("Timer Start: " + timerStart);
                     timerStart -= Time.deltaTime; 
                 }
 
@@ -35,7 +35,7 @@ namespace ITKombat
 
                 if (normalTimerStart >= normalTimerSet)
                 {
-                    Debug.Log("Normal Timer Start: " + normalTimerStart);
+                    // Debug.Log("Normal Timer Start: " + normalTimerStart);
                     normalTimerStart -= Time.deltaTime;
                 }
                 
