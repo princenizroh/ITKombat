@@ -24,8 +24,6 @@ namespace ITKombat
             {
                 Debug.Log("Start Called");
                 ServerBattleRoomState.Instance.OnInteractAction(this, EventArgs.Empty);
-
-              
             });
         }
 

@@ -37,7 +37,7 @@ namespace ITKombat
         [SerializeField] private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
         [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
         private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
-
+        public NetworkVariable<bool> isHostAvailable = new NetworkVariable<bool>(true);
         private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
 
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
@@ -72,12 +72,27 @@ namespace ITKombat
             // ChangeState(State.CountdownToStart);
             // GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
             Debug.Log("ServerBattleRoomState Start");
+            if (IsServer)
+            {
+                Debug.Log("ServerBattleRoomState Start, inside IsServer block");
+                isHostAvailable.Value = true;
+            }
 
     #if DEDICATED_SERVER
             // await MultiplayService.Instance.UnreadyServerAsync();
             
             Camera.main.enabled = false;
     #endif
+        }
+
+        private void OnDestroy()
+        {
+            Debug.Log("ServerBattleRoomState OnDestroy");
+            if (IsServer)
+            {
+                Debug.Log("ServerBattleRoomState OnDestroy, inside IsServer block");
+                isHostAvailable.Value = false;
+            }
         }
 
         private void ChangeState(State newState) {
@@ -96,10 +111,12 @@ namespace ITKombat
              // Memanggil CheckDirtyState() setelah semua perubahan selesai
             state.CheckDirtyState();
             Debug.Log("Check Dirty State "+ state.CheckDirtyState());
-            isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
+            // isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
             Debug.Log("ServerBattleRoomState OnNetworkSpawn" + isGamePaused.Value);
 
+            Debug.Log("IsServer: " + IsServer);
             if (IsServer) {
+                Debug.Log("ServerBattleRoomState OnNetworkSpawn, inside IsServer block");
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
                 Debug.Log("ServerBattleRoomState OnNetworkSpawn, ConnectedClientsIds: " + string.Join(", ", NetworkManager.Singleton.ConnectedClientsIds));                
                 Debug.Log("ServerBattleRoomState OnNetworkSpawn, connectedHostIds: " + string.Join(", ", NetworkManager.Singleton.ConnectedHostname));
@@ -124,18 +141,18 @@ namespace ITKombat
             autoTestGamePausedState = true;
         }
 
-        private void IsGamePaused_OnValueChanged(bool previousValue, bool newValue) {
-            Debug.Log("IsGamePaused_OnValueChanged: " + newValue);
-            if (isGamePaused.Value) {
-                Time.timeScale = 0f;
+        // private void IsGamePaused_OnValueChanged(bool previousValue, bool newValue) {
+        //     Debug.Log("IsGamePaused_OnValueChanged: " + newValue);
+        //     if (isGamePaused.Value) {
+        //         Time.timeScale = 0f;
 
-                OnMultiplayerGamePaused?.Invoke(this, EventArgs.Empty);
-            } else {
-                Time.timeScale = 1f;
+        //         OnMultiplayerGamePaused?.Invoke(this, EventArgs.Empty);
+        //     } else {
+        //         Time.timeScale = 1f;
 
-                OnMultiplayerGameUnpaused?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        //         OnMultiplayerGameUnpaused?.Invoke(this, EventArgs.Empty);
+        //     }
+        // }
 
         private void State_OnValueChanged(State previousValue, State newValue) {
             Debug.Log("State_OnValueChanged: " + newValue);
@@ -177,10 +194,10 @@ namespace ITKombat
             }
         }
 
-        private void GameInput_OnPauseAction(object sender, EventArgs e) {
-            Debug.Log("GameInput_OnPauseAction");
-            TogglePauseGame();
-        }
+        // private void GameInput_OnPauseAction(object sender, EventArgs e) {
+        //     Debug.Log("GameInput_OnPauseAction");
+        //     TogglePauseGame();
+        // }
 
         private void Update() {
             if (!IsServer) {
@@ -221,12 +238,12 @@ namespace ITKombat
             }
         }
 
-        private void LateUpdate() {
-            if (autoTestGamePausedState) {
-                autoTestGamePausedState = false;
-                TestGamePausedState();
-            }
-        }
+        // private void LateUpdate() {
+        //     if (autoTestGamePausedState) {
+        //         autoTestGamePausedState = false;
+        //         TestGamePausedState();
+        //     }
+        // }
 
         private void DetermineRoundOutcome()
         {
@@ -351,50 +368,50 @@ namespace ITKombat
             return Mathf.FloorToInt(gamePlayingTimerMax);
         }
 
-        public void TogglePauseGame() {
-            isLocalGamePaused = !isLocalGamePaused;
-            if (isLocalGamePaused) {
-                PauseGameServerRpc();
+        // public void TogglePauseGame() {
+        //     isLocalGamePaused = !isLocalGamePaused;
+        //     if (isLocalGamePaused) {
+        //         PauseGameServerRpc();
 
-                OnLocalGamePaused?.Invoke(this, EventArgs.Empty);
-            } else {
-                UnpauseGameServerRpc();
+        //         OnLocalGamePaused?.Invoke(this, EventArgs.Empty);
+        //     } else {
+        //         UnpauseGameServerRpc();
 
-                OnLocalGameUnpaused?.Invoke(this, EventArgs.Empty);
-            }
-            Debug.Log("Game paused state toggled: " + isLocalGamePaused);
-        }
+        //         OnLocalGameUnpaused?.Invoke(this, EventArgs.Empty);
+        //     }
+        //     Debug.Log("Game paused state toggled: " + isLocalGamePaused);
+        // }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void PauseGameServerRpc(ServerRpcParams serverRpcParams = default) {
-            playerPausedDictionary[serverRpcParams.Receive.SenderClientId] = true;
-            Debug.Log($"Player {serverRpcParams.Receive.SenderClientId} paused the game.");
+        // [ServerRpc(RequireOwnership = false)]
+        // private void PauseGameServerRpc(ServerRpcParams serverRpcParams = default) {
+        //     playerPausedDictionary[serverRpcParams.Receive.SenderClientId] = true;
+        //     Debug.Log($"Player {serverRpcParams.Receive.SenderClientId} paused the game.");
 
-            TestGamePausedState();
-        }
+        //     TestGamePausedState();
+        // }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void UnpauseGameServerRpc(ServerRpcParams serverRpcParams = default) {
-            playerPausedDictionary[serverRpcParams.Receive.SenderClientId] = false;
-            Debug.Log($"Player {serverRpcParams.Receive.SenderClientId} unpaused the game.");
+        // [ServerRpc(RequireOwnership = false)]
+        // private void UnpauseGameServerRpc(ServerRpcParams serverRpcParams = default) {
+        //     playerPausedDictionary[serverRpcParams.Receive.SenderClientId] = false;
+        //     Debug.Log($"Player {serverRpcParams.Receive.SenderClientId} unpaused the game.");
 
-            TestGamePausedState();
-        }
+        //     TestGamePausedState();
+        // }
 
-        private void TestGamePausedState() {
-            foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
-                if (playerPausedDictionary.ContainsKey(clientId) && playerPausedDictionary[clientId]) {
-                    // This player is paused
-                    isGamePaused.Value = true;
-                    Debug.Log("Game is paused by player: " + clientId);
-                    return;
-                }
-            }
+        // private void TestGamePausedState() {
+        //     foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+        //         if (playerPausedDictionary.ContainsKey(clientId) && playerPausedDictionary[clientId]) {
+        //             // This player is paused
+        //             isGamePaused.Value = true;
+        //             Debug.Log("Game is paused by player: " + clientId);
+        //             return;
+        //         }
+        //     }
 
-            // All players are unpaused
-            isGamePaused.Value = false;
-            Debug.Log("All players are unpaused. Game is resumed.");
-        }
+        //     // All players are unpaused
+        //     isGamePaused.Value = false;
+        //     Debug.Log("All players are unpaused. Game is resumed.");
+        // }
 
     }
 }

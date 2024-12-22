@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Netcode;
 
 namespace ITKombat
 {
@@ -38,6 +39,7 @@ namespace ITKombat
             exitButton.onClick.AddListener(() =>
             {
                 Debug.Log("Exit Called");
+
                 Exit();
             });
         }
@@ -65,6 +67,7 @@ namespace ITKombat
 
         private void Exit()
         {
+            NetworkManager.Singleton.Shutdown();
             Loader.Load(Loader.Scene.Lingkungan);
         }
     }

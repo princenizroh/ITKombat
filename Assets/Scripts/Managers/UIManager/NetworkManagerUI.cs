@@ -14,18 +14,15 @@ namespace ITKombat
 
         private void Awake()
         {
-            serverBtn.onClick.AddListener(() => 
-                {
-                    NetworkManager.Singleton.StartServer();
-                });
             hostBtn.onClick.AddListener(() => 
                 {
-                    NetworkManager.Singleton.StartHost();
+                    GameMultiplayerManager.Instance.StartHost();
+                    Loader.LoadNetwork(Loader.Scene.SelectCharacterMultiplayer);
                     Hide();
                 });
             clientBtn.onClick.AddListener(() => 
                 {
-                    NetworkManager.Singleton.StartClient();
+                    GameMultiplayerManager.Instance.StartClient();
                     Hide();
                 });
         }
