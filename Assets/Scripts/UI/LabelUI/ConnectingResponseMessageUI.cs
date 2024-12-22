@@ -28,10 +28,9 @@ namespace ITKombat
         {
             Show();
             string disconnectReason = NetworkManager.Singleton.DisconnectReason;
-            responseMessage.text = "Failed to join game";
+            responseMessage.text = "Failed to connect";
             Debug.Log("Disconnect Reason: " + disconnectReason);
             Debug.Log("Response Message Text: " + responseMessage.text);
-            Debug.Log("GameMultiplayerManager_OnFailedToJoinGame");
             
         }
 

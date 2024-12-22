@@ -49,13 +49,13 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 3767706558131508538}
-    PlayerPrefab: {fileID: 4461272860668923110, guid: d2f72740ad76c26479f1311b6c2666db, type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 738a0c7e7b79d534bb24d82feb19b8d3, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
-    ConnectionApproval: 0
+    ConnectionApproval: 1
     ConnectionData: 
     EnableTimeResync: 0
     TimeResyncInterval: 30
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
-  m_MaxConnectAttempts: 60
+  m_MaxConnectAttempts: 10
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
     Address: 127.0.0.1
