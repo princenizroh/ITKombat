@@ -51,7 +51,7 @@ namespace ITKombat
             // {
             //     Debug.LogError("ServerBattleRoomState.Instance is NULL.");
             // }
-            ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
             // StartCoroutine(ShowRoundStartNotification(1));
             playerMovement.canMove = false;
@@ -87,29 +87,29 @@ namespace ITKombat
             enemyState = FindObjectOfType<EnemyState>();
             playerMovement = FindObjectOfType<PlayerMovement_2>();
         }
-        private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
-        {
-            // Debug.Log("Checking IsCountdownToStartActive");
-
-            if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
-            {
-                // Debug.Log("CountdownToStart is active");
-
-                if (!isCountdownCoroutineStarted)
-                {
-                    Debug.Log($"Couroutine started for Round {currentRound}");
-                    StartCoroutine(CountedCoroutine(ShowRoundStartNotification(currentRound)));
-                    // Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
-                    isCountdownCoroutineStarted = true;
-                }
-            }
-            else
-            {
-                Debug.Log("CountdownToStart is NOT active");
-                isCountdownCoroutineStarted = false;
-            }
-        }
-
+        // private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
+        // {
+        //     // Debug.Log("Checking IsCountdownToStartActive");
+        //
+        //     if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
+        //     {
+        //         // Debug.Log("CountdownToStart is active");
+        //
+        //         if (!isCountdownCoroutineStarted)
+        //         {
+        //             Debug.Log($"Couroutine started for Round {currentRound}");
+        //             StartCoroutine(CountedCoroutine(ShowRoundStartNotification(currentRound)));
+        //             // Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
+        //             isCountdownCoroutineStarted = true;
+        //         }
+        //     }
+        //     else
+        //     {
+        //         Debug.Log("CountdownToStart is NOT active");
+        //         isCountdownCoroutineStarted = false;
+        //     }
+        // }
+        //
 
     // private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e) {
     //     if (KitchenGameManager.Instance.IsCountdownToStartActive()) {
@@ -253,14 +253,14 @@ namespace ITKombat
             }
         }
 
-        public IEnumerator ShowEndGameButton()
+        public IEnumerator ShowEndGame()
         {
             matchTimer.ChangeMatchStatus(false);  // Stop the timer when match ends
             if (Reward != null)
             {
                 Reward.SetActive(true);
                 yield return new WaitForSeconds(1.5f);
-                SceneManager.LoadScene("Asrama");
+                Loader.Load(Loader.Scene.Lingkungan);
             }
         }
 
@@ -394,7 +394,7 @@ namespace ITKombat
                 NewSoundManager.Instance.PlaySound2D("Victory");
                 yield return new WaitForSeconds(2f);
                 VictoryNotif.SetActive(false);
-                yield return StartCoroutine(ShowEndGameButton());
+                yield return StartCoroutine(ShowEndGame());
             }
             
             else if (enemyVictoryPoint == 3) 
@@ -403,7 +403,7 @@ namespace ITKombat
                 NewSoundManager.Instance.PlaySound2D("Defeat");
                 yield return new WaitForSeconds(1f);
                 DefeatNotif.SetActive(false);
-                yield return StartCoroutine(ShowEndGameButton());
+                yield return StartCoroutine(ShowEndGame());
             }
             else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
             {
