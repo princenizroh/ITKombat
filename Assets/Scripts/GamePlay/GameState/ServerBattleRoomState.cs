@@ -56,7 +56,6 @@ namespace ITKombat
         
         private void Awake() {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
             playerReadyDictionary = new Dictionary<ulong, bool>();
             playerPausedDictionary = new Dictionary<ulong, bool>();
             Debug.Log("ServerBattleRoomState Awake");

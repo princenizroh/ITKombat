@@ -11,8 +11,12 @@ namespace ITKombat
         [SerializeField] private Button exitButton;
         [SerializeField] private GameObject SettingsPanel;
         [SerializeField] private GameObject GuidePanel;
+
+        private static PauseMenuUI Instance;
         private void Awake()
         {
+            Instance = this;
+            
             resumeButton.onClick.AddListener(() =>
             {
                 Debug.Log("Resume Called");
@@ -22,20 +26,23 @@ namespace ITKombat
             settingsButton.onClick.AddListener(() =>
             {
                 Debug.Log("Settings Called");
+                ShowSettings();
             });
 
             guideButton.onClick.AddListener(() =>
             {
                 Debug.Log("Guide Called");
+                ShowGuide();
             });
 
             exitButton.onClick.AddListener(() =>
             {
                 Debug.Log("Exit Called");
+                Exit();
             });
         }
 
-        private void Show()
+        public void Show()
         {
             gameObject.SetActive(true);
         }
@@ -50,24 +57,16 @@ namespace ITKombat
             SettingsPanel.SetActive(true);
         }
 
-        private void HideSettings()
-        {
-            SettingsPanel.SetActive(false);
-        }
 
         private void ShowGuide()
         {
             GuidePanel.SetActive(true);
         }
 
-        private void HideGuide()
-        {
-            GuidePanel.SetActive(false);
-        }
-
         private void Exit()
         {
-            
+            Loader.Load(Loader.Scene.Lingkungan);
         }
     }
+
 }

@@ -80,7 +80,11 @@ namespace ITKombat
         [System.Obsolete]
         private void Awake()
         {
+
             Instance = this;
+
+
+
 
             // Ensure PlayerState and EnemyState are correctly set up
             playerState = FindObjectOfType<PlayerState>();
