@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using NUnit.Framework.Internal;
 
 namespace ITKombat
 {
@@ -35,6 +36,7 @@ namespace ITKombat
         void Start() 
         {
             // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            Debug.Log("MatchManager Start");
             StartCoroutine(ShowRoundStartNotification(1));
             playerMovement.canMove = false;
         }
@@ -60,11 +62,16 @@ namespace ITKombat
         }
         private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
         {
-            if(ServerBattleRoomState.Instance.IsCountdownToStartActive())
+            Debug.Log("Checking IsCountdownToStartActive");
+            if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
             {
+                Debug.Log("CountdownToStart is active");
                 StartCoroutine(ShowRoundStartNotification(1));
             }
-
+            else
+            {
+                Debug.Log("CountdownToStart is NOT active");
+            }
         }
 
     // private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e) {

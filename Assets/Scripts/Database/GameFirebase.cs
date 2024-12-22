@@ -67,6 +67,7 @@ namespace ITKombat
         {
             // Initialize the CustomSceneManager
             customSceneManager = new CustomSceneManager();
+            InitializeFirebase();
         }
 
         private void InitializeFirebase()
