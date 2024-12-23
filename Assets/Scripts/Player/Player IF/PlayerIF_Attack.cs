@@ -13,10 +13,9 @@ namespace ITKombat
         public Transform attackPoint;
         public float attackRadius = 1f;
         public float attackCooldown = 0.5f;
-        public float attackPower = 3f;
         public int maxCombo = 4;
         public LayerMask enemyLayer;
-        private int combo = 0;
+        public int combo = 0;
         private float timeSinceLastAttack;
         // Animator
         private Animator animator;
@@ -36,6 +35,8 @@ namespace ITKombat
         // Weapon state
         public bool isUsingWeapon; // Buat toggle manual di masing-masing prefab karakter menggunakan weapon atau tidak
 
+        public CharacterStat characterStats;
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
@@ -51,6 +52,17 @@ namespace ITKombat
 
         }
 
+        private void Start()
+        {
+            if (characterStats == null)
+            {
+                characterStats = GetComponent<CharacterStat>();
+                if (characterStats == null)
+                {
+                    Debug.LogError("CharacterStat component is missing from this GameObject!");
+                }
+            }
+        }
 
         public void OnAttackButtonPressed()
         {
@@ -81,6 +93,8 @@ namespace ITKombat
 
                 timeSinceLastAttack = Time.time; // Simpan waktu serangan terakhir
                 // Debug.Log("Combo: " + combo);
+
+                float attackPower = characterStats.characterBaseAtk;
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
                 // Debug.Log("Hit " + hitEnemies.Length + " enemies.");

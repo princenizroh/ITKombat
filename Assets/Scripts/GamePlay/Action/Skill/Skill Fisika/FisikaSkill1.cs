@@ -26,10 +26,10 @@ namespace ITKombat
             foreach (Collider hitCollider in hitColliders)
             {
                 // Pastikan target adalah lawan dan memiliki komponen HealthBarTest
-                HealthBarTest targetHealth = hitCollider.GetComponent<HealthBarTest>();
-                if (targetHealth != null && hitCollider.CompareTag("Enemy"))
+                PlayerState targetPlayerState = hitCollider.GetComponent<PlayerState>();
+                if (targetPlayerState != null && hitCollider.CompareTag("Enemy"))
                 {
-                    targetHealth.TakeDamage(damage); // Berikan damage ke target
+                    targetPlayerState.TakeDamageFromSkill(damage); // Berikan damage ke target menggunakan PlayerState
                     Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
                 }
             }

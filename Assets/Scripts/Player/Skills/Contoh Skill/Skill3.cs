@@ -23,10 +23,10 @@ public class Skill3 : Skills
         }
 
         // Mendaftarkan event untuk mengakhiri skill jika terkena damage
-        HealthBarTest health = parent.GetComponent<HealthBarTest>();
-        if (health != null)
+        PlayerState playerState = parent.GetComponent<PlayerState>();
+        if (playerState != null)
         {
-            health.OnTakeDamage += CancelVanish; // Mendaftarkan event cancel vanish
+            playerState.OnTakeDamage += CancelVanish; // Mendaftarkan event cancel vanish
         }
 
         // Menunggu sampai durasi menghilang selesai
@@ -46,10 +46,10 @@ public class Skill3 : Skills
         }
 
         // Menghapus event cancel vanish
-        HealthBarTest health = parent.GetComponent<HealthBarTest>();
-        if (health != null)
+        PlayerState playerState = parent.GetComponent<PlayerState>();
+        if (playerState != null)
         {
-            health.OnTakeDamage -= CancelVanish; // Menghapus event
+            playerState.OnTakeDamage -= CancelVanish; // Menghapus event
         }
 
         Debug.Log("Skill 3 selesai - Karakter muncul kembali");
