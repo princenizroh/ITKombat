@@ -37,7 +37,7 @@ namespace ITKombat
         [SerializeField] private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
         [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
         private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
-        public NetworkVariable<bool> isHostAvailable = new NetworkVariable<bool>(true);
+
         private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
 
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
@@ -72,11 +72,6 @@ namespace ITKombat
             // ChangeState(State.CountdownToStart);
             // GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
             Debug.Log("ServerBattleRoomState Start");
-            if (IsServer)
-            {
-                Debug.Log("ServerBattleRoomState Start, inside IsServer block");
-                isHostAvailable.Value = true;
-            }
 
     #if DEDICATED_SERVER
             // await MultiplayService.Instance.UnreadyServerAsync();
@@ -84,17 +79,6 @@ namespace ITKombat
             Camera.main.enabled = false;
     #endif
         }
-
-        private void OnDestroy()
-        {
-            Debug.Log("ServerBattleRoomState OnDestroy");
-            if (IsServer)
-            {
-                Debug.Log("ServerBattleRoomState OnDestroy, inside IsServer block");
-                isHostAvailable.Value = false;
-            }
-        }
-
         private void ChangeState(State newState) {
             if (state.Value != newState)
             {

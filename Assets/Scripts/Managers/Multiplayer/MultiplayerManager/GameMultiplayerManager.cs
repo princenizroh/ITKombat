@@ -59,7 +59,6 @@ namespace ITKombat
             OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
             Debug.Log("StartClient Called");
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
-            // NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Client_OnClientConnectedCallback;
             NetworkManager.Singleton.StartClient();
             Debug.Log("StartClient");
             Debug.Log("NetworkManager.Singleton.ConnectedClientsIds.Count " + NetworkManager.Singleton.ConnectedClientsIds.Count);
@@ -101,9 +100,7 @@ namespace ITKombat
     #if DEDICATED_SERVER
             Debug.Log("playerDataNetworkList.Count " + playerDataNetworkList.Count);
             if (SceneManager.GetActiveScene().name == Loader.Scene.GameScene.ToString()) {
-                // Player leaving during GameScene
                 if (playerDataNetworkList.Count <= 0) {
-                    // All players left the game
                     Debug.Log("All players left the game");
                     Debug.Log("Shutting Down Network Manager");
                     NetworkManager.Singleton.Shutdown();
@@ -213,7 +210,7 @@ namespace ITKombat
             {
                 if (playerDataMultiplayer.prefabId == prefabId)
                 {
-                    return false; // Sudah digunakan
+                    return false; 
                 }
             }
             return true;

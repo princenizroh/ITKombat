@@ -47,5 +47,10 @@ namespace ITKombat
                 selectedGameObject.SetActive(false);
             }
         }
+
+        private void OnDestroy()
+        {
+            GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged -= GameMultiplayerManager_OnPlayerDataNetworkListChanged;
+        }
     }
 }
