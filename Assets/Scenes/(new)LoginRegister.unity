@@ -1378,6 +1378,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 85673543}
   m_CullTransparentMesh: 1
+--- !u!1 &88209930
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 88209931}
+  m_Layer: 0
+  m_Name: Bug
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &88209931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88209930}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1225.1647, y: 469.729, z: 7.371602}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1604156286}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &94837346
 GameObject:
   m_ObjectHideFlags: 0
@@ -17907,7 +17939,6 @@ Transform:
   - {fileID: 1474266573}
   - {fileID: 937399806}
   - {fileID: 1587870836}
-  - {fileID: 1604156286}
   - {fileID: 272474117}
   - {fileID: 153144663}
   - {fileID: 1692450839}
@@ -21263,7 +21294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1604156285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21285,11 +21316,11 @@ Transform:
   m_GameObject: {fileID: 1604156284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 19.011936, y: 1.3048289, z: 2615.0146}
+  m_LocalPosition: {x: -1205.467, y: -468.91858, z: 2607.6682}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1325530322}
+  m_Father: {fileID: 88209931}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1604156287
 MonoBehaviour:
@@ -27491,3 +27522,4 @@ SceneRoots:
   - {fileID: 1557411957}
   - {fileID: 1367315950}
   - {fileID: 630616585}
+  - {fileID: 88209931}
