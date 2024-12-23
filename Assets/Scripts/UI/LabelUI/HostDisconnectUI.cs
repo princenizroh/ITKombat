@@ -13,12 +13,7 @@ namespace ITKombat
 
         private void Start()
         {
-            if (!NetworkManager.Singleton.IsHost)
-            {
-                // Listen to changes in isHostAvailable for clients
-                ServerBattleRoomState.Instance.isHostAvailable.OnValueChanged += OnHostAvailabilityChanged;
-            }
-            
+
             Hide();
             Debug.Log("HostDisconnectUI initialized");
             UnityTransport transport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;

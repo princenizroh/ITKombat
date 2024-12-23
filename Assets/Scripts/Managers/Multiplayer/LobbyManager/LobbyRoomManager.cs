@@ -233,7 +233,7 @@ namespace ITKombat
         {
             while (auth.CurrentUser == null)
             {
-                // Debug.Log("Waiting for Firebase User...");
+                Debug.Log("Waiting for Firebase User...");
                 await Task.Delay(500);  // Tunggu 500ms sebelum mengecek lagi
             }
             user = auth.CurrentUser;
@@ -311,6 +311,7 @@ namespace ITKombat
         }
         private bool IsPlayerInLobby() {
             if (joinedLobby != null && joinedLobby.Players != null) {
+              Debug.Log("Player in Lobby");
                 // foreach (Player player in joinedLobby.Players) {
                 //     if (player.Id == user.UserId) {
                 //         // This player is in this lobby
