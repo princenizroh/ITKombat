@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace ITKombat
 {
-    public class LobbyListUIManager : MonoBehaviour
+    public class LobbyListUI : MonoBehaviour
     {
-        public static LobbyListUIManager Instance;
+        public static LobbyListUI Instance;
 
         [SerializeField] private Transform lobbySingleTemplate;
         [SerializeField] private Transform container;

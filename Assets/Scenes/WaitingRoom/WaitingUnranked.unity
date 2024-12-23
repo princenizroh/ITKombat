@@ -3186,7 +3186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &326456938
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3731,7 +3731,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &402128973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5263,7 +5263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &537138843
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8301,7 +8301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1089693078
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11296,7 +11296,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -338, y: 0}
   m_SizeDelta: {x: 600, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1569431669
@@ -11316,6 +11316,8 @@ MonoBehaviour:
   joinCodeGameButton: {fileID: 1507622122}
   joinCodeInputField: {fileID: 1282414503}
   playerNameInputField: {fileID: 308532204}
+  lobbyContainer: {fileID: 1303594017}
+  lobbyTemplate: {fileID: 1951171295}
 --- !u!114 &1569431670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12807,7 +12809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1841422039
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12834,7 +12836,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 359, y: -18}
   m_SizeDelta: {x: 600, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1854796965
@@ -13581,8 +13583,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1951171295}
-  - component: {fileID: 1951171297}
   - component: {fileID: 1951171296}
+  - component: {fileID: 1951171297}
   m_Layer: 5
   m_Name: LobbyListSingleTemplate
   m_TagString: Untagged
@@ -13608,9 +13610,9 @@ RectTransform:
   - {fileID: 1089693078}
   m_Father: {fileID: 1303594017}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300, y: -35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 600, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951171296
@@ -13666,9 +13668,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1951171294}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e337cb0ba2507784da6f315a8a46d079, type: 3}
+  m_Script: {fileID: 11500000, guid: f571a24c5040c9e4ba0ab86d3e44a4dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyNameText: {fileID: 1796474025}
 --- !u!1 &1965347574
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,7 +64,7 @@ public class LobbyUI : MonoBehaviour {
         foreach (Lobby lobby in lobbyList) {
             Transform lobbyTransform = Instantiate(lobbyTemplate, lobbyContainer);
             lobbyTransform.gameObject.SetActive(true);
-            lobbyTransform.GetComponent<LobbyListSingleUI>().SetLobby(lobby);
+            lobbyTransform.GetComponent<LobbyListSingleUIs>().SetLobby(lobby);
         }
     }
 

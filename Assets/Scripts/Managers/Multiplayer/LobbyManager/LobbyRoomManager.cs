@@ -10,6 +10,7 @@ using Unity.Services.Lobbies.Models;
 using Firebase;
 using Firebase.Auth;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 using Unity.Netcode; // Tambahkan ini
 using Unity.Netcode.Transports.UTP; 
 // using Unity.Services.Multiplay;
@@ -21,10 +22,10 @@ namespace ITKombat
     public class LobbyRoomManager : MonoBehaviour
     {
         public static LobbyRoomManager Instance { get; private set; }
-        
-        public const string KEY_PLAYER_NAME = "PlayerName";
-        public const string KEY_PLAYER_CHARACTER = "Character";
-        public const string KEY_GAME_MODE = "GameMode";
+        private const string KEY_RELAY_JOIN_CODE = "RelayJoinCode";
+        // public const string KEY_PLAYER_NAME = "PlayerName";
+        // public const string KEY_PLAYER_CHARACTER = "Character";
+        // public const string KEY_GAME_MODE = "GameMode";
         public event EventHandler OnLeftLobby;
 
         public event EventHandler<LobbyEventArgs> OnJoinedLobby;
@@ -59,6 +60,7 @@ namespace ITKombat
         private Lobby hostLobby;
         private Lobby joinedLobby;
         private float heartbeatTimer;
+        private float listLobbiesTimer;
         private float lobbyPollTimer;
         private float refreshLobbyListTimer = 5f;
         private string playerId;
@@ -248,6 +250,7 @@ namespace ITKombat
         private void Update()
         {
             HandleLobbyHeartbeat();
+            HandlePeriodicListLobbies();
             // HandleLobbyPolling();
             ButtonLobby();
         }
@@ -312,9 +315,44 @@ namespace ITKombat
             }
         }
 
+        private void HandlePeriodicListLobbies() {
+            Debug.Log("HandlePeriodicListLobbies");
+            if (joinedLobby == null && AuthenticationService.Instance.IsSignedIn) {
+                Debug.Log("List Lobbies");
+            // &&
+            //     UnityServices.State == ServicesInitializationState.Initialized &&
+            //     AuthenticationService.Instance.IsSignedIn &&
+            //     SceneManager.GetActiveScene().name == Loader.Scene.LobbyScene.ToString()) {
+
+                listLobbiesTimer -= Time.deltaTime;
+                if (listLobbiesTimer <= 0f) {
+                    float listLobbiesTimerMax = 3f;
+                    listLobbiesTimer = listLobbiesTimerMax;
+                    ListLobbies();
+                    Debug.Log("List Lobbies Timer");
+                }
+            }
+        }
         public bool IsLobbyHost() {
             // return joinedLobby != null && joinedLobby.HostId == user.UserId;
             return joinedLobby != null && joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
+        }
+        
+        private async void ListLobbies() {
+            try {
+                QueryLobbiesOptions queryLobbiesOptions = new QueryLobbiesOptions {
+                    Filters = new List<QueryFilter> {
+                    new QueryFilter(QueryFilter.FieldOptions.AvailableSlots, "0", QueryFilter.OpOptions.GT)
+                }
+                };
+                QueryResponse queryResponse = await LobbyService.Instance.QueryLobbiesAsync(queryLobbiesOptions);
+
+                OnLobbyListChanged?.Invoke(this, new OnLobbyListChangedEventArgs {
+                    lobbyList = queryResponse.Results
+                });
+            } catch (LobbyServiceException e) {
+                Debug.Log(e);
+            }
         }
         private bool IsPlayerInLobby() {
             if (joinedLobby != null && joinedLobby.Players != null) {
@@ -673,7 +711,23 @@ namespace ITKombat
             }
             
         }
+        public async void JoinWithId(string lobbyId) {
+            OnJoinStarted?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
+            try {
+                joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
 
+                // string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+
+                // JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+
+                // NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+
+                GameMultiplayerManager.Instance.StartClient();
+            } catch (LobbyServiceException e) {
+                Debug.Log(e);
+                OnJoinFailed?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
+            }
+        }
         public async void JoinWithCode(string lobbyCode)
         {
             OnJoinStarted?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
