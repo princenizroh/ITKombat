@@ -12,7 +12,7 @@ namespace ITKombat
         public AudioPlayerTest audioPlayerTest;
         public CharacterController2D1 characterController;
         public GameManagerButton gameManagerButton;
-        public HealthBarTest healthBar;
+        public PlayerState playerState;
         public PlayerIFAttack playerAttack;
         public PlayerMovement_2 playerMovement;
 

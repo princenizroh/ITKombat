@@ -17,6 +17,9 @@ namespace ITKombat
         public string idleAnimationTrigger = "Idle";
         public Rigidbody2D rb;
         public float knockbackForce = 1f;
+        public event DamageTaken OnTakeDamage; // Event to notify damage taken
+        public delegate void DamageTaken(GameObject player);
+
 
         private void Awake()
         {
@@ -50,6 +53,12 @@ namespace ITKombat
             }
         }
 
+        public void UpdateHealth()
+        {
+            // Update health or perform any logic when health is updated
+            healthBar.UpdateHealth(currentHealth, maxHealth);
+        }
+
         public void TakeDamage(float damage,float combo)
         {
             currentHealth -= damage;
@@ -64,6 +73,7 @@ namespace ITKombat
                 AttackedAnimation(combo);
                 // PlayRandomHitSound();
             }
+            OnTakeDamage?.Invoke(gameObject);
         }
 
         public void TakeDamageFromSkill(float skillDamage)

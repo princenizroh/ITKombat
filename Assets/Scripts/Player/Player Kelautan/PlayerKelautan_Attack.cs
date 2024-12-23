@@ -10,7 +10,6 @@ namespace ITKombat
         public Transform attackPoint;
         public float attackRadius = 1.5f; // Jangkauan serangan Kelautan lebih luas
         public float attackCooldown = 1.0f; // Cooldown lebih lama untuk serangan berat
-        public float attackPower = 10f; // Kekuatan serangan lebih tinggi
         public int maxCombo = 3; // Maksimal 3 combo
         public LayerMask enemyLayer;
         private int combo = 0;
@@ -31,7 +30,9 @@ namespace ITKombat
         [SerializeField] private ParticleSystem Attack4_Left_Kelautan = null;
 
         // Weapon state
-        public bool isUsingWeapon;
+        public bool isUsingWeapon; // Buat toggle manual di masing-masing prefab karakter menggunakan weapon atau tidak
+
+        public CharacterStat characterStats;
 
         private void Awake()
         {
@@ -45,6 +46,7 @@ namespace ITKombat
             {
                 DontDestroyOnLoad(gameObject);
             }
+
         }
 
         public void OnAttackButtonPressed()
@@ -57,25 +59,30 @@ namespace ITKombat
 
         public void PerformAttack()
         {
+            // Debug.Log("Performing attack...");
             if (Time.time - timeSinceLastAttack > attackCooldown)
             {
+                // Jika cooldown terlampaui sebelum serangan berikutnya, reset combo ke 1
                 if (combo == 0 || Time.time - timeSinceLastAttack > attackCooldown * 2)
                 {
-                    combo = 1;
+                    combo = 1; // Reset ke serangan pertama jika waktu terlalu lama
                 }
                 else
                 {
-                    combo++;
+                    combo++; // Lanjutkan ke serangan berikutnya jika waktu masih dalam cooldown
                     if (combo > maxCombo)
                     {
-                        combo = 1;
+                        combo = 1; // Kembali ke serangan pertama jika melebihi maxCombo
                     }
                 }
 
-                timeSinceLastAttack = Time.time;
+                timeSinceLastAttack = Time.time; // Simpan waktu serangan terakhir
+                // Debug.Log("Combo: " + combo);
+
+                float attackPower = characterStats.characterBaseAtk;
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-
+                // Debug.Log("Hit " + hitEnemies.Length + " enemies.");
                 bool isBlocked = false;
 
                 foreach (Collider2D enemy in hitEnemies)
@@ -107,11 +114,14 @@ namespace ITKombat
                         }
                     }
                 }
+                // Pass the isBlocked state to AttackAnimation
                 AttackAnimation(hitEnemies, isBlocked);
+                // Debug.Log("Performed attack.");
             }
             else
             {
                 animator.SetTrigger("Idle");
+                // Debug.Log("Cooldown not exceeded, going to idle.");
             }
         }
 
@@ -122,13 +132,22 @@ namespace ITKombat
                 Rigidbody2D enemyRb = enemyCollider.GetComponent<Rigidbody2D>();
                 if (enemyRb != null)
                 {
-                    if (currentCombo == maxCombo) // Knockback hanya pada combo terakhir
+                    if (currentCombo == 4) // knockback hanya untuk hit ke 4
                     {
-                        float attackForce = 2.5f; // Kekuatan knockback untuk Kelautan
-                        Vector2 direction = (enemyCollider.transform.position - attackPoint.position).normalized;
+                        float attackForce = enemyCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
+                        Vector2 direction = (enemyCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
+
                         enemyRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
                     }
                 }
+                else
+                {
+                    Debug.LogWarning("No Rigidbody2D found on the enemy.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No enemy detected within knockback radius.");
             }
         }
 
