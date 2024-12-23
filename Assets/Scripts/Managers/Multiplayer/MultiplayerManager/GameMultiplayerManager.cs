@@ -52,7 +52,7 @@ namespace ITKombat
         public void StartHost() {
             NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
             NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
-            // NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
+            NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
             NetworkManager.Singleton.StartHost();
         }
         public void StartClient() {
@@ -90,13 +90,13 @@ namespace ITKombat
             Debug.Log("Client Disconnected " + clientId);
             OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
 
-            // for (int i = 0; i < playerDataNetworkList.Count; i++) {
-            //     PlayerDataMultiplayer playerDataMultiplayer = playerDataNetworkList[i];
-            //     if (playerDataMultiplayer.clientId == clientId) {
-            //         // Disconnected!
-            //         playerDataNetworkList.RemoveAt(i);
-            //     }
-            // }
+            for (int i = 0; i < playerDataNetworkList.Count; i++) {
+                PlayerDataMultiplayer playerDataMultiplayer = playerDataNetworkList[i];
+                if (playerDataMultiplayer.clientId == clientId) {
+                    // Disconnected!
+                    playerDataNetworkList.RemoveAt(i);
+                }
+            }
 
     #if DEDICATED_SERVER
             Debug.Log("playerDataNetworkList.Count " + playerDataNetworkList.Count);
