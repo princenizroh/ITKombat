@@ -11,7 +11,6 @@ namespace ITKombat
 
 
         public ulong clientId;
-        public int colorId;
         public int prefabId;
         public FixedString64Bytes playerName;
         public FixedString64Bytes playerId;
@@ -20,18 +19,16 @@ namespace ITKombat
         public bool Equals(PlayerDataMultiplayer other) {
             return 
                 clientId == other.clientId &&
-                prefabId == other.prefabId;
-                // colorId == other.colorId &&
-                // playerName == other.playerName &&
+                prefabId == other.prefabId && 
+                playerName == other.playerName;
                 // playerId == other.playerId;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {
             serializer.SerializeValue(ref clientId);
             serializer.SerializeValue(ref prefabId);
-            // serializer.SerializeValue(ref colorId);
-            // serializer.SerializeValue(ref playerName);
-            // serializer.SerializeValue(ref playerId);
+            serializer.SerializeValue(ref playerName);
+            serializer.SerializeValue(ref playerId);
         }
 
     }

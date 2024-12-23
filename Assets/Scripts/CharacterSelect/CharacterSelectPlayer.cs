@@ -11,7 +11,6 @@ namespace ITKombat
         [SerializeField] private int playerIndex;
         [SerializeField] private GameObject readyGameObject;
         [SerializeField] private CharacterSelectVisual characterSelectVisual;
-        // [SerializeField] private PlayerVisual playerVisual;
         // [SerializeField] private Button kickButton;
         [SerializeField] private TextMeshPro playerNameText;
 
@@ -49,11 +48,12 @@ namespace ITKombat
 
                 readyGameObject.SetActive(CharacterSelectReadyMultiplayer.Instance.IsPlayerReady(playerData.clientId));
                 Debug.Log("ReadyGameObject Active");
-                // characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId));
+                
                 characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId));
-
                 Debug.Log("CharacterSelectVisual SetPlayerPrefab");
-                // playerNameText.text = playerData.playerName.ToString();
+
+                playerNameText.text = playerData.playerName.ToString();
+                
 
             } else {
                 Hide();

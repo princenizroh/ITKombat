@@ -73,6 +73,8 @@ namespace ITKombat
             if (allClientsReady) {
                 // OnGameStarting?.Invoke(this, EventArgs.Empty);
                 Debug.Log("All players are ready. Starting countdown.");
+                LobbyRoomManager.Instance.DeleteLobby();
+                Debug.Log("Lobby Deleted");
 
                 Loader.LoadNetwork(Loader.Scene.ClientTest);
             }

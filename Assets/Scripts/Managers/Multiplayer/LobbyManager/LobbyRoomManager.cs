@@ -31,6 +31,11 @@ namespace ITKombat
         public event EventHandler<LobbyEventArgs> OnJoinedLobbyUpdate;
         public event EventHandler<LobbyEventArgs> OnKickedFromLobby;
         public event EventHandler<LobbyEventArgs> OnLobbyGameModeChanged;
+        public event EventHandler<LobbyEventArgs> OnCreateLobbyStarted;
+        public event EventHandler<LobbyEventArgs> OnCreateLobbyFailed;
+        public event EventHandler<LobbyEventArgs> OnJoinStarted;
+        public event EventHandler<LobbyEventArgs> OnJoinFailed;
+        public event EventHandler<LobbyEventArgs> OnQuickJoinFailed;
         public class LobbyEventArgs : EventArgs {
             public Lobby lobby;
         }
@@ -325,6 +330,7 @@ namespace ITKombat
         }
         public async void CreateLobby(string lobbyName, bool isPrivate)
         {
+            OnCreateLobbyStarted?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
             try {
                 joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, GameMultiplayerManager.MAX_PLAYER_AMOUNT, new CreateLobbyOptions {
                     IsPrivate = isPrivate,
@@ -336,6 +342,7 @@ namespace ITKombat
                 Loader.LoadNetwork(Loader.Scene.SelectCharacterMultiplayer);
             } catch (LobbyServiceException e) {
                 Debug.Log("Failed to create lobby: " + e.Message);
+                OnCreateLobbyFailed?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
             }
           
         }
@@ -445,6 +452,7 @@ namespace ITKombat
 
         public async void QuickJoinLobby()
         {
+            OnJoinStarted?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
             try
             {
                 joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
@@ -454,6 +462,7 @@ namespace ITKombat
             catch (LobbyServiceException e)
             {
                 Debug.Log("Failed to quick join lobby: " + e.Message);
+                OnQuickJoinFailed?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
             }
         }
 
@@ -527,7 +536,7 @@ namespace ITKombat
             }
         }
 
-        private async void LeaveLobby()
+        private async void LeaveLobbyExists()
         {
             try
             {
@@ -537,6 +546,23 @@ namespace ITKombat
             catch (LobbyServiceException e)
             {
                 Debug.Log("Failed to leave lobby: " + e.Message);
+            }
+        }
+
+        public async void LeaveLobby()
+        {
+            if (joinedLobby != null)
+            {
+                try
+                {
+                    await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+                    joinedLobby = null;
+                    Debug.Log("Left lobby");
+                }
+                catch (LobbyServiceException e)
+                {
+                    Debug.Log("Failed to leave lobby: " + e.Message);
+                }
             }
         }
 
@@ -569,7 +595,7 @@ namespace ITKombat
               }
         }
 
-        private async void DeleteLobby()
+        private async void DeleteLobbyExist()
         {
             try
             {
@@ -580,6 +606,24 @@ namespace ITKombat
                 Debug.Log("Failed to delete lobby: " + e.Message);
             }
         }
+
+        public async void DeleteLobby()
+        {
+            if (joinedLobby == null)
+            {
+                try
+                {
+                    await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+                    joinedLobby = null;
+                } 
+                catch (LobbyServiceException e)
+                {
+                    Debug.Log("Failed to delete lobby: " + e.Message);
+                }
+            }
+ 
+        }
+        
 
                 // ini untuk debugging
         private async void DebugAuth()
@@ -632,10 +676,12 @@ namespace ITKombat
 
         public async void JoinWithCode(string lobbyCode)
         {
+            OnJoinStarted?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
             try {
                 joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
             } catch (LobbyServiceException e) {
                 Debug.Log("Failed to join lobby by code: " + e.Message);
+                OnJoinFailed?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
             }
         }
         public Lobby GetLobby()

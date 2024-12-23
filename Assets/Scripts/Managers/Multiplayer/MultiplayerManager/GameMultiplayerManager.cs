@@ -68,6 +68,7 @@ namespace ITKombat
         public void StartClient() {
             OnTryingToJoinGame?.Invoke(this, EventArgs.Empty);
             Debug.Log("StartClient Called");
+            NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_Client_OnClientConnectedCallback;
             NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Client_OnClientDisconnectCallback;
             NetworkManager.Singleton.StartClient();
             Debug.Log("StartClient");
@@ -123,10 +124,11 @@ namespace ITKombat
         }
         private void NetworkManager_Client_OnClientConnectedCallback(ulong clientId) {
             Debug.Log("Client connected with ID: " + clientId);
-            OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
+            // OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
             // Loader.Load(Loader.Scene.Multiplayer);
-            // SetPlayerNameServerRpc(GetPlayerName());
-            // SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
+            SetPlayerNameServerRpc(GetPlayerName());
+            Debug.Log("SetPlayerNameServerRpc");
+            SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
         }
 
         private void NetworkManager_OnClientConnectedCallback(ulong clientId) {
@@ -134,8 +136,10 @@ namespace ITKombat
 
             playerDataNetworkList.Add(new PlayerDataMultiplayer {
                 clientId = clientId,
-                colorId = GetFirstUnusedPrefabId(),
+                prefabId = GetFirstUnusedPrefabId(),
             });
+            SetPlayerNameServerRpc(GetPlayerName());
+            SetPlayerIdServerRpc(AuthenticationService.Instance.PlayerId);
 
         // #if !DEDICATED_SERVER
         //         SetPlayerNameServerRpc(GetPlayerName());
@@ -148,6 +152,28 @@ namespace ITKombat
             OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
         }
 
+            
+        [ServerRpc(RequireOwnership = false)]
+        private void SetPlayerNameServerRpc(string playerName, ServerRpcParams serverRpcParams = default) {
+            int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
+
+            PlayerDataMultiplayer playerData = playerDataNetworkList[playerDataIndex];
+
+            playerData.playerName = playerName;
+
+            playerDataNetworkList[playerDataIndex] = playerData;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SetPlayerIdServerRpc(string playerId, ServerRpcParams serverRpcParams = default) {
+            int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
+
+            PlayerDataMultiplayer playerData = playerDataNetworkList[playerDataIndex];
+
+            playerData.playerId = playerId;
+
+            playerDataNetworkList[playerDataIndex] = playerData;
+        }
         public NetworkList<PlayerDataMultiplayer> GetPlayerDataNetworkList() {
             return playerDataNetworkList;
         }

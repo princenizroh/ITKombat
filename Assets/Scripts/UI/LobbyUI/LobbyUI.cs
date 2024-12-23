@@ -8,7 +8,7 @@ namespace ITKombat
 {
     public class LobbyUI : MonoBehaviour
     {
-        [SerializeField] private Button createGameButton;
+        [SerializeField] private Button leaveGameButton;
         [SerializeField] private Button quickJoinGameButton;
         [SerializeField] private Button joinCodeGameButton;
         [SerializeField] private TMP_InputField joinCodeInputField;
@@ -16,8 +16,9 @@ namespace ITKombat
 
         private void Awake()
         {
-            createGameButton.onClick.AddListener(() => {
-                LobbyRoomManager.Instance.CreateLobby("ITKombat", false);
+            leaveGameButton.onClick.AddListener(() => {
+                LobbyRoomManager.Instance.LeaveLobby();
+                Loader.Load(Loader.Scene.BattleMode);
             });
             quickJoinGameButton.onClick.AddListener(() => {
                 LobbyRoomManager.Instance.QuickJoinLobby();
