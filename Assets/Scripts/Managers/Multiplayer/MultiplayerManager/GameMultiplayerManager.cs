@@ -29,24 +29,27 @@ namespace ITKombat
             Instance = this;
 
             DontDestroyOnLoad(gameObject);
-            playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(0, 1000));
+            // playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(0, 1000));
 
             playerDataNetworkList = new NetworkList<PlayerDataMultiplayer>();
+            playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
         }        
 
         private void Start() {
-        if (!playMultiplayer) {
-            // Singleplayer
-            StartHost();
-            Loader.LoadNetwork(Loader.Scene.Multiplayer);
+            if (!playMultiplayer) {
+                // Singleplayer
+                StartHost();
+                Loader.LoadNetwork(Loader.Scene.Multiplayer);
+            }
         }
-    }
 
-        
+        private void PlayerDataNetworkList_OnListChanged(NetworkListEvent<PlayerDataMultiplayer> changeEvent) {
+            OnPlayerDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         public void StartHost() {
             NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
-            // NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
+            NetworkManager.Singleton.OnClientConnectedCallback += NetworkManager_OnClientConnectedCallback;
             // NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_Server_OnClientDisconnectCallback;
             NetworkManager.Singleton.StartHost();
         }
@@ -120,10 +123,10 @@ namespace ITKombat
         private void NetworkManager_OnClientConnectedCallback(ulong clientId) {
             Debug.Log("Client Connected " + " " + clientId);
 
-        //     playerDataNetworkList.Add(new PlayerData {
-        //         clientId = clientId,
-        //         colorId = GetFirstUnusedColorId(),
-        //     });
+            playerDataNetworkList.Add(new PlayerDataMultiplayer {
+                clientId = clientId,
+                // colorId = GetFirstUnusedColorId(),
+            });
 
         // #if !DEDICATED_SERVER
         //         SetPlayerNameServerRpc(GetPlayerName());
@@ -134,6 +137,40 @@ namespace ITKombat
         private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientId) {
             Debug.Log("Client disconnected with ID: " + clientId);
             OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
+        }
+
+        public NetworkList<PlayerDataMultiplayer> GetPlayerDataNetworkList() {
+            return playerDataNetworkList;
+        }
+
+        public bool IsPlayerIndexConnected(int playerIndex) {
+            return playerIndex < playerDataNetworkList.Count;
+        }
+
+        public int GetPlayerDataIndexFromClientId(ulong clientId) {
+            for (int i=0; i< playerDataNetworkList.Count; i++) {
+                if (playerDataNetworkList[i].clientId == clientId) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public PlayerDataMultiplayer GetPlayerDataFromClientId(ulong clientId) {
+            foreach (PlayerDataMultiplayer playerDataMultiplayer in playerDataNetworkList) {
+                if (playerDataMultiplayer.clientId == clientId) {
+                    return playerDataMultiplayer;
+                }
+            }
+            return default;
+        }
+
+        public PlayerDataMultiplayer GetPlayerData() {
+            return GetPlayerDataFromClientId(NetworkManager.Singleton.LocalClientId);
+        }
+
+        public PlayerDataMultiplayer GetPlayerDataFromPlayerIndex(int playerIndex) {
+            return playerDataNetworkList[playerIndex];
         }
 
 
