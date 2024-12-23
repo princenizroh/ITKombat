@@ -14,6 +14,7 @@ using Unity.Netcode; // Tambahkan ini
 using Unity.Netcode.Transports.UTP; 
 // using Unity.Services.Multiplay;
 using TMPro;
+using Mono.CSharp;
 
 namespace ITKombat
 {
@@ -321,36 +322,50 @@ namespace ITKombat
             }
             return false;
         }
-        private async void CreateLobby(string lobbyName, int maxPlayers, bool isPrivate, GameMode gamemode)
+        private async void CreateLobby(string lobbyName, bool isPrivate)
         {
-            try
-            {
-                // Player player = GetPlayer();
-                CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
-                {
-                    // Player = GetPlayer(),
+            try {
+                joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, GameMultiplayerManager.MAX_PLAYER_AMOUNT, new CreateLobbyOptions {
                     IsPrivate = isPrivate,
-                    Data = new Dictionary<string, DataObject>
-                    {
-                        {
-                            KEY_GAME_MODE, new DataObject(DataObject.VisibilityOptions.Public, gamemode.ToString())
-                        },
-                        // {
-                        //     "Map", new DataObject(DataObject.VisibilityOptions.Public, "Laboratorium")
-                        // }
-                    }
-                };
-                // Create a new lobby
-                Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
-                joinedLobby = lobby;
+                });
 
-                Debug.Log("Create Lobby!" + lobby.Name + "" + lobby.MaxPlayers + " " + lobby.Id + " " + lobby.LobbyCode);
-            }
-            catch (LobbyServiceException e)
-            {
+                GameMultiplayerManager.Instance.StartHost();
+                Loader.LoadNetwork(Loader.Scene.CharacterSelectScene);
+            } catch (LobbyServiceException e) {
                 Debug.Log("Failed to create lobby: " + e.Message);
             }
+          
         }
+        // private async void CreateLobby(string lobbyName, int maxPlayers, bool isPrivate, GameMode gamemode)
+        // {
+        //     try
+        //     {
+        //         // Player player = GetPlayer();
+        //         CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
+        //         {
+        //             // Player = GetPlayer(),
+        //             IsPrivate = isPrivate,
+        //             Data = new Dictionary<string, DataObject>
+        //             {
+        //                 {
+        //                     KEY_GAME_MODE, new DataObject(DataObject.VisibilityOptions.Public, gamemode.ToString())
+        //                 },
+        //                 // {
+        //                 //     "Map", new DataObject(DataObject.VisibilityOptions.Public, "Laboratorium")
+        //                 // }
+        //             }
+        //         };
+        //         // Create a new lobby
+        //         Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
+        //         joinedLobby = lobby;
+
+        //         Debug.Log("Create Lobby!" + lobby.Name + "" + lobby.MaxPlayers + " " + lobby.Id + " " + lobby.LobbyCode);
+        //     }
+        //     catch (LobbyServiceException e)
+        //     {
+        //         Debug.Log("Failed to create lobby: " + e.Message);
+        //     }
+        // }
 
         public async void RefreshLobbyList() {
             try {
@@ -429,7 +444,8 @@ namespace ITKombat
         {
             try
             {
-                await LobbyService.Instance.QuickJoinLobbyAsync();
+                joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+                GameMultiplayerManager.Instance.StartClient();
                 Debug.Log("Quick join lobby");
             } 
             catch (LobbyServiceException e)
