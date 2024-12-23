@@ -6456,7 +6456,6 @@ GameObject:
   - component: {fileID: 1047193776112069441}
   - component: {fileID: 6706362090273060671}
   - component: {fileID: 6969204201631738373}
-  - component: {fileID: 2176880652430277937}
   - component: {fileID: 8497415400144460812}
   - component: {fileID: 4693945473309378740}
   - component: {fileID: 8964277854256121370}
@@ -6703,7 +6702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 791524057
+  GlobalObjectIdHash: 630215419
   InScenePlacedSourceGlobalObjectIdHash: 791524057
   DeferredDespawnTick: 0
   Ownership: 1
@@ -6744,11 +6743,11 @@ MonoBehaviour:
   attackPoint: {fileID: 2417947227579106396}
   attackRadius: 1
   attackCooldown: 1
-  attackPower: 25
   maxCombo: 4
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  combo: 0
   Attack1_Right: {fileID: 7177218548561681231}
   Attack2_Right: {fileID: 7230966346189486444}
   Attack3_Right: {fileID: 6680663468104781231}
@@ -6758,6 +6757,7 @@ MonoBehaviour:
   Attack3_Left: {fileID: 99135577686636665}
   Attack4_Left: {fileID: 2543872126009268304}
   isUsingWeapon: 0
+  characterStats: {fileID: 11400000, guid: be27f4e249590d548a992fbb5c452875, type: 2}
 --- !u!114 &6969204201631738373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6783,33 +6783,6 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &2176880652430277937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6461202943784008833}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b72401012239114ab76d3499c9987e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHealthSlider: {fileID: 0}
-  easeHealthSlider: {fileID: 0}
-  maxHealth: 100
-  health: 100
-  lerpSpeed: 5
-  attackTag: Attack
-  knockbackForce: 5
-  playerAnimator: {fileID: 0}
-  hitAudioSources: []
-  hitAnimationTriggers:
-  - Hit1
-  - Hit2
-  - Hit3
-  idleAnimationTrigger: Idle
-  HittedParticle: {fileID: 0}
 --- !u!114 &8497415400144460812
 MonoBehaviour:
   m_ObjectHideFlags: 0
