@@ -35,7 +35,7 @@ namespace ITKombat
 
             playerReadyDictionary = new Dictionary<ulong, bool>();
 
-            // OnInstanceCreated?.Invoke(this, EventArgs.Empty);
+            OnInstanceCreated?.Invoke(this, EventArgs.Empty);
         }
 
         private async void Start() {
@@ -56,7 +56,7 @@ namespace ITKombat
 
         [ServerRpc(RequireOwnership = false)]
         private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
-            // SetPlayerReadyClientRpc(serverRpcParams.Receive.SenderClientId);
+            SetPlayerReadyClientRpc(serverRpcParams.Receive.SenderClientId);
 
             Debug.Log("SetPlayerReadyServerRpc " + serverRpcParams.Receive.SenderClientId);
             playerReadyDictionary[serverRpcParams.Receive.SenderClientId] = true;

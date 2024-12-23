@@ -9,7 +9,7 @@ namespace ITKombat
     public class CharacterSelectPlayer : MonoBehaviour
     {    
         [SerializeField] private int playerIndex;
-        // [SerializeField] private GameObject readyGameObject;
+        [SerializeField] private GameObject readyGameObject;
         // [SerializeField] private PlayerVisual playerVisual;
         // [SerializeField] private Button kickButton;
         // [SerializeField] private TextMeshPro playerNameText;
@@ -25,14 +25,14 @@ namespace ITKombat
 
         private void Start() {
             GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged += GameMultiplayerManager_OnPlayerDataNetworkListChanged;
-            // CharacterSelectReady.Instance.OnReadyChanged += CharacterSelectReady_OnReadyChanged;
+            CharacterSelectReadyMultiplayer.Instance.OnReadyChanged += CharacterSelectReadyMultiplayer_OnReadyChanged;
 
             // kickButton.gameObject.SetActive(NetworkManager.Singleton.IsServer);
 
             UpdatePlayer();
         }
 
-        private void CharacterSelectReady_OnReadyChanged(object sender, System.EventArgs e) {
+        private void CharacterSelectReadyMultiplayer_OnReadyChanged(object sender, System.EventArgs e) {
             UpdatePlayer();
         }
 
@@ -44,9 +44,9 @@ namespace ITKombat
             if (GameMultiplayerManager.Instance.IsPlayerIndexConnected(playerIndex)) {
                 Show();
 
-                // PlayerDataMultiplayer playerData = GameMultiplayerManager.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
+                PlayerDataMultiplayer playerData = GameMultiplayerManager.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
 
-                // readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+                readyGameObject.SetActive(CharacterSelectReadyMultiplayer.Instance.IsPlayerReady(playerData.clientId));
 
                 // playerNameText.text = playerData.playerName.ToString();
 
