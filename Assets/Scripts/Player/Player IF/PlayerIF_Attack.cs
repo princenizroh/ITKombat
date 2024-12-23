@@ -52,6 +52,18 @@ namespace ITKombat
 
         }
 
+        private void Start()
+        {
+            if (characterStats == null)
+            {
+                characterStats = GetComponent<CharacterStat>();
+                if (characterStats == null)
+                {
+                    Debug.LogError("CharacterStat component is missing from this GameObject!");
+                }
+            }
+        }
+
         public void OnAttackButtonPressed()
         {
             if (IsOwner)
