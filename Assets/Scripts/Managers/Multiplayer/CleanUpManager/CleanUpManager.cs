@@ -16,6 +16,11 @@ namespace ITKombat
             {
                 Destroy(LobbyRoomManager.Instance.gameObject);
             }            
+
+            if (LobbyRoomManager.Instance != null)
+            {
+                Destroy(LobbyRoomManager.Instance.gameObject);
+            }
         }
     }
 }
