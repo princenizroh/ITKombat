@@ -30,6 +30,7 @@ namespace ITKombat
         bool jump = false;
         public bool canMove = true;
         [SerializeField] private List<Vector3> spawnPositionList;
+        // [SerializeField] private CharacterSelectVisual characterSelectVisual;
         private void Start()
         {
             anim = GetComponent<Animator>();
@@ -39,6 +40,8 @@ namespace ITKombat
             {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             }
+            PlayerDataMultiplayer playerData = GameMultiplayerManager.Instance.GetPlayerDataFromClientId(OwnerClientId);
+            // characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId));
         }
 
         private void Update()
