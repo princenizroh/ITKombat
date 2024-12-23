@@ -21,7 +21,9 @@ namespace ITKombat
         public event EventHandler OnFailedToJoinGame;
         public event EventHandler OnPlayerDataNetworkListChanged;
 
+        [SerializeField] private List<GameObject> playerPrefabsList;
         private NetworkList<PlayerDataMultiplayer> playerDataNetworkList;
+
         private string playerName;
 
         private void Awake()
@@ -173,6 +175,10 @@ namespace ITKombat
             return playerDataNetworkList[playerIndex];
         }
 
-
+        public GameObject GetPlayerPrefab(int playerIndex) {
+            Debug.Log("GetPlayerPrefab " + playerIndex);
+            Debug.Log("GetPlayerPrefab Success " + playerPrefabsList[playerIndex]);
+            return playerPrefabsList[playerIndex];
+        }
     }
 }
