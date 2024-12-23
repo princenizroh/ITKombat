@@ -127,7 +127,7 @@ namespace ITKombat
 
             playerDataNetworkList.Add(new PlayerDataMultiplayer {
                 clientId = clientId,
-                // colorId = GetFirstUnusedColorId(),
+                colorId = GetFirstUnusedPrefabId(),
             });
 
         // #if !DEDICATED_SERVER
@@ -160,6 +160,8 @@ namespace ITKombat
 
         public PlayerDataMultiplayer GetPlayerDataFromClientId(ulong clientId) {
             foreach (PlayerDataMultiplayer playerDataMultiplayer in playerDataNetworkList) {
+                Debug.Log("GetPlayerDataFromClientId " + playerDataMultiplayer.clientId);
+                Debug.Log("playerData" + playerDataMultiplayer);
                 if (playerDataMultiplayer.clientId == clientId) {
                     return playerDataMultiplayer;
                 }
@@ -179,6 +181,54 @@ namespace ITKombat
             Debug.Log("GetPlayerPrefab " + playerIndex);
             Debug.Log("GetPlayerPrefab Success " + playerPrefabsList[playerIndex]);
             return playerPrefabsList[playerIndex];
+        }
+
+        public void ChangePlayerPrefab(int prefabId)
+        {
+            ChangePlayerPrefabServerRpc(prefabId);
+        }
+
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ChangePlayerPrefabServerRpc(int prefabId, ServerRpcParams serverRpcParams = default)
+        {
+            // Validasi apakah prefab tersedia
+            if (!IsPrefabAvailable(prefabId))
+            {
+                return;
+            }
+
+            int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
+
+            PlayerDataMultiplayer playerDataMultiplayer = playerDataNetworkList[playerDataIndex];
+
+            playerDataMultiplayer.prefabId = prefabId;
+
+            playerDataNetworkList[playerDataIndex] = playerDataMultiplayer;
+        }
+
+        private bool IsPrefabAvailable(int prefabId)
+        {
+            foreach (PlayerDataMultiplayer playerDataMultiplayer in playerDataNetworkList)
+            {
+                if (playerDataMultiplayer.prefabId == prefabId)
+                {
+                    return false; // Sudah digunakan
+                }
+            }
+            return true;
+        }
+
+        private int GetFirstUnusedPrefabId()
+        {
+            for (int i = 0; i < playerPrefabsList.Count; i++)
+            {
+                if (IsPrefabAvailable(i))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace ITKombat
                 readyGameObject.SetActive(CharacterSelectReadyMultiplayer.Instance.IsPlayerReady(playerData.clientId));
                 Debug.Log("ReadyGameObject Active");
                 // characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId));
-                characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerIndex));
+                characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId));
 
                 Debug.Log("CharacterSelectVisual SetPlayerPrefab");
                 // playerNameText.text = playerData.playerName.ToString();
