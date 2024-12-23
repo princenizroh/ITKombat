@@ -243,7 +243,7 @@ namespace ITKombat
         private void Update()
         {
             HandleLobbyHeartbeat();
-            HandleLobbyPolling();
+            // HandleLobbyPolling();
             ButtonLobby();
         }
 
@@ -308,7 +308,8 @@ namespace ITKombat
         }
 
         public bool IsLobbyHost() {
-            return joinedLobby != null && joinedLobby.HostId == user.UserId;
+            // return joinedLobby != null && joinedLobby.HostId == user.UserId;
+            return joinedLobby != null && joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
         }
         private bool IsPlayerInLobby() {
             if (joinedLobby != null && joinedLobby.Players != null) {
@@ -322,15 +323,17 @@ namespace ITKombat
             }
             return false;
         }
-        private async void CreateLobby(string lobbyName, bool isPrivate)
+        public async void CreateLobby(string lobbyName, bool isPrivate)
         {
             try {
                 joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, GameMultiplayerManager.MAX_PLAYER_AMOUNT, new CreateLobbyOptions {
                     IsPrivate = isPrivate,
                 });
 
+                Debug.Log("Create Lobby!" + joinedLobby.Name + "" + joinedLobby.MaxPlayers + " " + joinedLobby.Id + " " + joinedLobby.LobbyCode);
+
                 GameMultiplayerManager.Instance.StartHost();
-                Loader.LoadNetwork(Loader.Scene.CharacterSelectScene);
+                Loader.LoadNetwork(Loader.Scene.SelectCharacterMultiplayer);
             } catch (LobbyServiceException e) {
                 Debug.Log("Failed to create lobby: " + e.Message);
             }
@@ -440,7 +443,7 @@ namespace ITKombat
             }
         }
 
-        private async void QuickJoinLobby()
+        public async void QuickJoinLobby()
         {
             try
             {
@@ -626,5 +629,19 @@ namespace ITKombat
             }
             
         }
+
+        public async void JoinWithCode(string lobbyCode)
+        {
+            try {
+                joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+            } catch (LobbyServiceException e) {
+                Debug.Log("Failed to join lobby by code: " + e.Message);
+            }
+        }
+        public Lobby GetLobby()
+        {
+            return joinedLobby;
+        }
+        
     }
 }

@@ -31,11 +31,21 @@ namespace ITKombat
             Instance = this;
 
             DontDestroyOnLoad(gameObject);
-            // playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(0, 1000));
+            playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(0, 1000));
 
             playerDataNetworkList = new NetworkList<PlayerDataMultiplayer>();
             playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
         }        
+
+        public string GetPlayerName()
+        {
+            return playerName;
+        }
+        public void SetPlayerName(string playerName)
+        {
+            this.playerName = playerName;
+            PlayerPrefs.SetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, playerName);
+        }
 
         private void Start() {
             if (!playMultiplayer) {

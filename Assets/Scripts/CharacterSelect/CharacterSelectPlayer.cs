@@ -13,7 +13,7 @@ namespace ITKombat
         [SerializeField] private CharacterSelectVisual characterSelectVisual;
         // [SerializeField] private PlayerVisual playerVisual;
         // [SerializeField] private Button kickButton;
-        // [SerializeField] private TextMeshPro playerNameText;
+        [SerializeField] private TextMeshPro playerNameText;
 
 
         private void Awake() {
