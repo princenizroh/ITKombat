@@ -16,10 +16,10 @@ namespace ITKombat
                 Instance = this;
                 DontDestroyOnLoad(gameObject); // Menjaga agar panel tetap ada saat berpindah scene
             }
-            else
-            {
-                Destroy(gameObject); // Hancurkan objek yang duplikat
-            }
+            // else
+            // {
+            //     Destroy(gameObject); // Hancurkan objek yang duplikat
+            // }
 
             
         }

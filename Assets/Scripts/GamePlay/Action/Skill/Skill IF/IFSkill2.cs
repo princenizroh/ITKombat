@@ -15,13 +15,13 @@ namespace ITKombat
         {
             attacksBlocked = 0;
             skillActive = true;
-            Debug.Log("Skill 2 Aktif");
+            // Debug.Log("Skill 2 Aktif");
         }
 
         public override void BeginCooldown(GameObject parent)
         {
             skillActive = false;
-            Debug.Log("Skill 2 Cooldown");
+            // Debug.Log("Skill 2 Cooldown");
         }
 
         public bool BlockAttack()
