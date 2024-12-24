@@ -51,7 +51,7 @@ namespace ITKombat
             if (!playMultiplayer) {
                 // Singleplayer
                 StartHost();
-                Loader.LoadNetwork(Loader.Scene.Multiplayer);
+                Loader.LoadNetwork(Loader.Scene.SoundMultiplayer);
             }
         }
 
