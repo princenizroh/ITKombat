@@ -17,6 +17,7 @@ using Unity.Netcode.Transports.UTP;
 using TMPro;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
+using Unity.Networking.Transport.Relay;
 
 namespace ITKombat
 {
@@ -354,6 +355,27 @@ namespace ITKombat
                 Debug.Log(e);
             }
         }
+        private async Task<string> GetRelayJoinCode(Allocation allocation) {
+            try {
+                string relayJoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+                return relayJoinCode;
+            } catch (RelayServiceException e) {
+                Debug.Log(e);
+                return default;
+            }
+        }
+
+        
+        private async Task<JoinAllocation> JoinRelay(string joinCode) {
+            try {
+                JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+                return joinAllocation;
+            } catch (RelayServiceException e) {
+                Debug.Log(e);
+                return default;
+            }
+        }
         private async Task<Allocation> AllocateRelay() {
             try {
                 Allocation allocation = await RelayService.Instance.CreateAllocationAsync(GameMultiplayerManager.MAX_PLAYER_AMOUNT - 1);
@@ -384,7 +406,18 @@ namespace ITKombat
                 joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, GameMultiplayerManager.MAX_PLAYER_AMOUNT, new CreateLobbyOptions {
                     IsPrivate = isPrivate,
                 });
+                Allocation allocation = await AllocateRelay();
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
 
+                string relayJoinCode = await GetRelayJoinCode(allocation);
+
+                await LobbyService.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions {
+                    Data = new Dictionary<string, DataObject> {
+                        {
+                            KEY_RELAY_JOIN_CODE, new DataObject(DataObject.VisibilityOptions.Member, relayJoinCode)
+                        }
+                    }
+                });
                 Debug.Log("Create Lobby!" + joinedLobby.Name + "" + joinedLobby.MaxPlayers + " " + joinedLobby.Id + " " + joinedLobby.LobbyCode);
 
                 GameMultiplayerManager.Instance.StartHost();
@@ -505,6 +538,10 @@ namespace ITKombat
             try
             {
                 joinedLobby = await LobbyService.Instance.QuickJoinLobbyAsync();
+                string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+
+                JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
                 GameMultiplayerManager.Instance.StartClient();
                 Debug.Log("Quick join lobby");
             } 
@@ -740,11 +777,11 @@ namespace ITKombat
             try {
                 joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
 
-                // string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+                string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
 
-                // JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+                JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
 
-                // NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
 
                 GameMultiplayerManager.Instance.StartClient();
             } catch (LobbyServiceException e) {
@@ -757,6 +794,13 @@ namespace ITKombat
             OnJoinStarted?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
             try {
                 joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
+                string relayJoinCode = joinedLobby.Data[KEY_RELAY_JOIN_CODE].Value;
+
+                JoinAllocation joinAllocation = await JoinRelay(relayJoinCode);
+
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
+
+                GameMultiplayerManager.Instance.StartClient();
             } catch (LobbyServiceException e) {
                 Debug.Log("Failed to join lobby by code: " + e.Message);
                 OnJoinFailed?.Invoke(this, new LobbyEventArgs { lobby = joinedLobby });
