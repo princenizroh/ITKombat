@@ -7,9 +7,12 @@ using UnityEngine.Audio;
 
 namespace ITKombat
 {
-    public class PlayerIFAttack : NetworkBehaviour
+    [RequireComponent(typeof(FelixStateMachine))]
+    public class PlayerIFAttack : NetworkBehaviour 
     {
-         public static PlayerIFAttack Instance;
+        private FelixStateMachine meleeStateMachine;
+
+        public static PlayerIFAttack Instance;
         public Transform attackPoint;
         public float attackRadius = 1f;
         public float attackCooldown = 0.5f;
@@ -17,8 +20,13 @@ namespace ITKombat
         public LayerMask enemyLayer;
         public int combo = 0;
         private float timeSinceLastAttack;
+
+        private bool canAttack = true;
         // Animator
         private Animator animator;
+
+        [SerializeField] public Collider2D hitbox;
+        [SerializeField] public GameObject Hiteffect;
 
         // VFX Right
         [SerializeField] private ParticleSystem Attack1_Right = null;
@@ -62,7 +70,44 @@ namespace ITKombat
                     Debug.LogError("CharacterStat component is missing from this GameObject!");
                 }
             }
+        
+            meleeStateMachine = GetComponent<FelixStateMachine>();
         }
+
+    // Update is called once per frame
+        public void OnButtonDown()
+        {
+        if (canAttack)
+        {
+            if (meleeStateMachine == null)
+            {
+                Debug.LogError("FelixStateMachine is null! Ensure it's added to the GameObject.");
+                return;
+            }
+
+            if (meleeStateMachine.CurrentState == null)
+            {
+                Debug.LogError("CurrentState is null! Check the state initialization in FelixStateMachine.");
+                return;
+            }
+
+            if (meleeStateMachine.CurrentState.GetType() == typeof(IdleCombatState))
+            {
+                meleeStateMachine.SetNextState(new GroundEntryState());
+            }
+        }
+            
+
+        }
+
+        public bool GetCanAttack (bool CanAttack)
+        {
+            canAttack = CanAttack;
+            Debug.Log("Berhasil Get Player Can Attack = " + CanAttack);
+            return canAttack;
+        }
+
+
 
         public void OnAttackButtonPressed()
         {
@@ -119,8 +164,8 @@ namespace ITKombat
                             EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                             if (enemyState != null)
                             {
-                                ApplyKnockback(enemy, combo);
-                                enemyState.TakeDamage(attackPower, combo);
+                                ApplyKnockback(enemy,combo);
+                                enemyState.TakeDamage(attackPower);
                             }
                         }
                         else
@@ -140,7 +185,7 @@ namespace ITKombat
             }
         }
 
-        void ApplyKnockback(Collider2D enemyCollider, float currentCombo)
+        public void ApplyKnockback(Collider2D enemyCollider, float currentCombo)
         {
             if (enemyCollider != null)
             {
@@ -182,7 +227,7 @@ namespace ITKombat
                         Attack1_Left.Play();
                     }
                     PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("attack1");
+                    animator.SetTrigger("Attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     // Debug.Log("Attack 1 triggered");
                     break;
@@ -196,7 +241,7 @@ namespace ITKombat
                         Attack2_Left.Play();
                     }
                     PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("attack2");
+                    animator.SetTrigger("Attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     // Debug.Log("Attack 2 triggered");
                     break;
@@ -210,7 +255,7 @@ namespace ITKombat
                         Attack3_Left.Play();
                     }
                     PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("attack3");
+                    animator.SetTrigger("Attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     // Debug.Log("Attack 3 triggered");
                     break;
@@ -224,7 +269,7 @@ namespace ITKombat
                         Attack4_Left.Play();
                     }
                     PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("attack4");
+                    animator.SetTrigger("Attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     // Debug.Log("Attack 4 triggered");
                     break;
@@ -240,7 +285,7 @@ namespace ITKombat
 
         // Untuk determinasi apakah attacknya kena atau tidak
 
-        private void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
+        public void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
         {
             if (isBlocked)
             {

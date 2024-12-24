@@ -11,10 +11,11 @@ namespace ITKombat
         public float attackPower = 3f;
         public float attackRadius = 1f;
         public Transform attackPoint;
-        public float attackCooldown = 0.7f;      // Cooldown between each attack
+        public float attackCooldown = 2f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
+        public bool newCanAttack = true;
 
         public int currentCombo = 0;            // Tracks the current combo
         public float lastAttackTime = 0f;       // Time of the last attack
@@ -37,6 +38,7 @@ namespace ITKombat
 
         private void Awake()
         {
+            
             anim = GetComponent<Animator>();
 
             if (Instance == null)
@@ -60,7 +62,7 @@ namespace ITKombat
 
         public void Attack()
         {
-            if (canAttack && Time.time - lastAttackTime > attackCooldown)
+            if (newCanAttack && canAttack && Time.time - lastAttackTime > attackCooldown)
             {
                 if (currentCombo == 0 || Time.time - lastAttackTime > attackCooldown*2)
                 {
@@ -121,6 +123,13 @@ namespace ITKombat
             }
         }
 
+        public bool GetCanAttack (bool CanAttack)
+        {
+            newCanAttack = CanAttack;
+            Debug.Log("Berhasil Get AI Can Attack = " + CanAttack);
+            return newCanAttack;
+        }
+
         void ApplyKnockback(Collider2D playerCollider, float currentCombo)
         {
             if (playerCollider != null)
@@ -163,9 +172,9 @@ namespace ITKombat
                     {
                         Attack1_Left.Play();
                     }
-                    PlayAttackSound(1,hitPlayer.Length > 0,isBlocked);
-                    anim.SetTrigger("attack1");
-                    Debug.Log("Attack 1 triggered");
+                    PlayAttackSound(1,hitPlayer.Length > 0, isBlocked);
+                    anim.SetTrigger("Attack1");
+                    // Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
                     if (character.IsFacingRight)
@@ -177,8 +186,8 @@ namespace ITKombat
                         Attack2_Left.Play();
                     }
                     PlayAttackSound(2,hitPlayer.Length > 0, isBlocked);
-                    anim.SetTrigger("attack2");
-                    Debug.Log("Attack 2 triggered");
+                    anim.SetTrigger("Attack2");
+                    // Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
                     if (character.IsFacingRight)
@@ -190,8 +199,8 @@ namespace ITKombat
                         Attack3_Left.Play();
                     }
                     PlayAttackSound(3,hitPlayer.Length > 0, isBlocked);
-                    anim.SetTrigger("attack3");
-                    Debug.Log("Attack 3 triggered");
+                    anim.SetTrigger("Attack3");
+                    // Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
                     if (character.IsFacingRight)
@@ -202,9 +211,9 @@ namespace ITKombat
                     {
                         Attack4_Left.Play();
                     }
-                    PlayAttackSound(4,hitPlayer.Length > 0,isBlocked);
-                    anim.SetTrigger("attack4");
-                    Debug.Log("Attack 4 triggered");
+                    PlayAttackSound(4,hitPlayer.Length > 0, isBlocked);
+                    anim.SetTrigger("Attack4");
+                    // Debug.Log("Attack 4 triggered");
                     break;
             }
         }

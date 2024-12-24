@@ -106,6 +106,7 @@ namespace ITKombat{
             {
                 NextAttackDecision();
             }
+            NextAttackDecision();
         }
 
         void CooldownStateHandler()

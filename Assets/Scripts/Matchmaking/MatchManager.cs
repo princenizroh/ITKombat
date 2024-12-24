@@ -32,14 +32,17 @@ namespace ITKombat
   
         private IState currentState;
         
-
+        [System.Obsolete]
         void Start() 
         {
             // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
             StartCoroutine(ShowRoundStartNotification(1));
-            playerMovement.canMove = false;
+            StartCoroutine(WaitForPlayer());
         }
+
+        
+
 
         public void ChangeState(IState newState)
         {
@@ -50,15 +53,25 @@ namespace ITKombat
             Debug.Log("State changed. Current timeoutToTimer.text: " + timeoutToTimer.text);
         }
 
-        [System.Obsolete]
+        
+
+        private IEnumerator WaitForPlayer()
+        {
+            yield return new WaitUntil(() => FindObjectOfType<PlayerMovement_2>() != null);
+            playerMovement = FindObjectOfType<PlayerMovement_2>();
+            playerMovement.canMove = false; // Atur setelah player ditemukan
+        }
         private void Awake()
         {
+            if (Instance != null && Instance != this) {
+            Destroy(gameObject);
+        } else {
             Instance = this;
+        }
 
             // Ensure PlayerState and EnemyState are correctly set up
             playerState = FindObjectOfType<PlayerState>();
             enemyState = FindObjectOfType<EnemyState>();
-            playerMovement = FindObjectOfType<PlayerMovement_2>();
         }
         private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
         {
