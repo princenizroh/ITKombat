@@ -30,6 +30,7 @@ namespace ITKombat
         {
             aiMovement.StopMovement();
             IdleTimer -= Time.deltaTime;
+            Debug.Log(IdleTimer);
 
             if (IdleTimer <= 0)
             {
@@ -60,11 +61,6 @@ namespace ITKombat
                     }
                 }
             }
-        }
-
-        public override void ExitState(AIStateManager manager)
-        {
-
         }
     }
 }

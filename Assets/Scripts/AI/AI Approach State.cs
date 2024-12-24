@@ -15,7 +15,7 @@ namespace ITKombat
             aiAttack = manager.aiAttack;
             aiDefense = manager.aiDefense;
 
-            Debug.Log("Approach State");
+            // Debug.Log("Approach State");
         }
 
         public override void UpdateState(AIStateManager manager, float distance){
@@ -38,10 +38,6 @@ namespace ITKombat
             {
                 manager.SwitchState(manager.IdleState);
             }
-        }
-
-        public override void ExitState(AIStateManager manager){
-
         }
     }
 }

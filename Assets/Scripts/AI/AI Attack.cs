@@ -7,7 +7,7 @@ namespace ITKombat
     public class AI_Attack : MonoBehaviour
     {
         public static AI_Attack Instance;
-        public float attackRange = 3f;         // Range within which the enemy can attack
+        public float attackRange = 2.7f;         // Range within which the enemy can attack
         public float attackPower = 3f;
         public float attackRadius = 1f;
         public Transform attackPoint;

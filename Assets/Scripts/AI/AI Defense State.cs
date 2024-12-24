@@ -1,30 +1,36 @@
+using Mono.CSharp;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace ITKombat
 {
     public class AIDefenseState : AIBaseState
     {
-        private float update;
-        private float timer;
-
-        public AIDefenseState(float updateTime){
-            update = updateTime;
+        AI_Defense aiDefense;
+        AI_Movement aiMovement;
+        float duration;
+        float blockTimer;
+        public AIDefenseState(float blockDuration){
+            duration = blockDuration;
         }
         public override void EnterState(AIStateManager manager){
-            Debug.Log("Defense State");
-            timer = update;
+            aiDefense = manager.aiDefense;
+            aiMovement = manager.aiMovement;
+
+            blockTimer = duration;
+            // Debug.Log("Defense State");
         }
 
         public override void UpdateState(AIStateManager manager, float distance){
-            timer -= Time.deltaTime;
-            if (timer <= 0)
+            aiDefense.isBlocking = true;
+            blockTimer -= Time.deltaTime;
+
+            if (blockTimer <= 0)
             {
-                manager.SwitchState(manager.IdleState);
+                aiDefense.isBlocking = false;
+                aiMovement.movementStep = 0;
+                manager.SwitchState(manager.RetreatState);
             }
-        }
-
-        public override void ExitState(AIStateManager manager){
-
         }
     }
 }

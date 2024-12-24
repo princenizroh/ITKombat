@@ -21,14 +21,10 @@ namespace ITKombat
             if (aiAttack.canAttack){
                 aiAttack.Attack();
             }
-            if (aiAttack.currentCombo >= aiAttack.maxCombo || distance > aiAttack.attackRange)
+            if (aiAttack.currentCombo == 0 || distance > aiAttack.attackRange)
             {
-                manager.SwitchState(manager.IdleState);
+                manager.SwitchState(manager.RetreatState);
             }
-        }
-
-        public override void ExitState(AIStateManager manager){
-
         }
     }
 }
