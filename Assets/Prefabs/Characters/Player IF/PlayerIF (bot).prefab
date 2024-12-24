@@ -6430,7 +6430,6 @@ GameObject:
   - component: {fileID: 7561129249942399193}
   - component: {fileID: 2166415633972335696}
   - component: {fileID: 7386946279599271849}
-  - component: {fileID: 8205463521693095782}
   - component: {fileID: 4624566987896514983}
   - component: {fileID: 7317811103347845085}
   - component: {fileID: 683958348253199683}
@@ -6442,6 +6441,7 @@ GameObject:
   - component: {fileID: 3760739159761122319}
   - component: {fileID: 2371598237178983994}
   - component: {fileID: 4530068849987798086}
+  - component: {fileID: 126550860242475085}
   m_Layer: 7
   m_Name: PlayerIF (bot)
   m_TagString: Enemy
@@ -6669,7 +6669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3529594370
+  GlobalObjectIdHash: 1195025001
   InScenePlacedSourceGlobalObjectIdHash: 791524057
   DeferredDespawnTick: 0
   Ownership: 1
@@ -6682,18 +6682,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &8205463521693095782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8684277193263532795}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 553409db1e6e9444ea95b7df85dd2b26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4624566987896514983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6715,14 +6703,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   combo: 0
-  Attack1_Right: {fileID: 0}
-  Attack2_Right: {fileID: 0}
-  Attack3_Right: {fileID: 0}
-  Attack4_Right: {fileID: 0}
-  Attack1_Left: {fileID: 0}
-  Attack2_Left: {fileID: 0}
-  Attack3_Left: {fileID: 0}
-  Attack4_Left: {fileID: 0}
+  hitbox: {fileID: 0}
+  Hiteffect: {fileID: 0}
   isUsingWeapon: 0
   characterStats: {fileID: 0}
 --- !u!114 &7317811103347845085
@@ -6807,19 +6789,12 @@ MonoBehaviour:
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
+  newCanAttack: 1
   currentCombo: 0
   lastAttackTime: 0
   playerlayer:
     serializedVersion: 2
     m_Bits: 0
-  Attack1_Right: {fileID: 0}
-  Attack2_Right: {fileID: 0}
-  Attack3_Right: {fileID: 0}
-  Attack4_Right: {fileID: 0}
-  Attack1_Left: {fileID: 0}
-  Attack2_Left: {fileID: 0}
-  Attack3_Left: {fileID: 0}
-  Attack4_Left: {fileID: 0}
 --- !u!114 &5813272537536854646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6833,6 +6808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 8584596639060886400}
+  anim: {fileID: 0}
   dashSpeed: 5
   dashDuration: 0.2
   dashCooldown: 1
@@ -6938,19 +6914,25 @@ MonoBehaviour:
   comboResetTime: 1
   maxCombo: 4
   canAttack: 1
+  newCanAttack: 1
   currentCombo: 0
   lastAttackTime: 0
   playerlayer:
     serializedVersion: 2
     m_Bits: 0
-  Attack1_Right: {fileID: 0}
-  Attack2_Right: {fileID: 0}
-  Attack3_Right: {fileID: 0}
-  Attack4_Right: {fileID: 0}
-  Attack1_Left: {fileID: 0}
-  Attack2_Left: {fileID: 0}
-  Attack3_Left: {fileID: 0}
-  Attack4_Left: {fileID: 0}
+--- !u!114 &126550860242475085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8684277193263532795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d384b02bb356e49ab7e5ff00d5ea0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customName: 
 --- !u!1 &9182596835446888487
 GameObject:
   m_ObjectHideFlags: 0
