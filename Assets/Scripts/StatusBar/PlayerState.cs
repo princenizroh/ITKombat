@@ -12,7 +12,6 @@ namespace ITKombat
         public string attackTag = "Attack"; 
         public HealthBar healthBar;
         public MatchManager matchManager;
-        private Animator playerAnimator;
         public AudioSource[] hitAudioSources;
         public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };
         public string idleAnimationTrigger = "Idle";

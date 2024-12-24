@@ -11,7 +11,7 @@ namespace ITKombat
         public string attackTag = "Attack";
         public HealthBar healthBar;
         public MatchManager matchManager;
-        private Animator enemyAnimator;
+
         public AudioSource[] hitAudioSources;
         public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };
         public string idleAnimationTrigger = "Idle";
@@ -24,16 +24,6 @@ namespace ITKombat
         private void Awake()
         {
             Instance = this;
-            
-            Debug.Log("Tes Awake Jalan");
-            enemyAnimator = GetComponent<Animator>();
-            if (enemyAnimator == null)
-            {
-                Debug.LogError("Animator is missing on " + gameObject.name);
-            }
-            else{
-                Debug.Log($"Animator ditemukan pada {gameObject.name} Animatornya adalah {enemyAnimator}");
-            }
 
         }
 
