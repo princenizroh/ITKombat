@@ -57,6 +57,7 @@ namespace ITKombat
             else
             {
                 // ApplyKnockback();
+                Debug.Log(currentHealth);
                 AttackedAnimation(combo);
                 // PlayRandomHitSound();
             }
