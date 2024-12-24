@@ -15,7 +15,8 @@ using Unity.Netcode; // Tambahkan ini
 using Unity.Netcode.Transports.UTP; 
 // using Unity.Services.Multiplay;
 using TMPro;
-using Mono.CSharp;
+using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
 
 namespace ITKombat
 {
@@ -317,7 +318,8 @@ namespace ITKombat
         }
 
         private void HandlePeriodicListLobbies() {
-            if (joinedLobby == null && AuthenticationService.Instance.IsSignedIn) {
+            if (joinedLobby == null && AuthenticationService.Instance.IsSignedIn && 
+                SceneManager.GetActiveScene().name == Loader.Scene.LobbyScene.ToString()) {
             // &&
             //     UnityServices.State == ServicesInitializationState.Initialized &&
             //     AuthenticationService.Instance.IsSignedIn &&
@@ -352,6 +354,17 @@ namespace ITKombat
                 Debug.Log(e);
             }
         }
+        // private async Task<Allocation> AllocateRelay() {
+        //     try {
+        //         Allocation allocation = await RelayService.Instance.CreateAllocationAsync(GameMultiplayerManager.MAX_PLAYER_AMOUNT - 1);
+
+        //         return allocation;
+        //     } catch (RelayServiceException e) {
+        //         Debug.Log(e);
+
+        //         return default;
+        //     }
+        // }
         private bool IsPlayerInLobby() {
             if (joinedLobby != null && joinedLobby.Players != null) {
               Debug.Log("Player in Lobby");

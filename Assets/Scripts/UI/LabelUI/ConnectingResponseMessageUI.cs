@@ -87,6 +87,11 @@ namespace ITKombat
         private void OnDestroy()
         {
             GameMultiplayerManager.Instance.OnFailedToJoinGame -= GameMultiplayerManager_OnFailedToJoinGame;
+            LobbyRoomManager.Instance.OnCreateLobbyStarted -= LobbyRoomManager_OnCreateLobbyStarted;
+            LobbyRoomManager.Instance.OnCreateLobbyFailed -= LobbyRoomManager_OnCreateLobbyFailed;
+            LobbyRoomManager.Instance.OnJoinStarted -= LobbyRoomManager_OnJoinStarted;
+            LobbyRoomManager.Instance.OnJoinFailed -= LobbyRoomManager_OnJoinFailed;
+            LobbyRoomManager.Instance.OnQuickJoinFailed -= LobbyRoomManager_OnQuickJoinFailed;
         }
     }
 }

@@ -69,6 +69,11 @@ namespace ITKombat
                 lobbyTransform.GetComponent<LobbyListSingleUI>().SetLobby(lobby);
             }
         }
+
+        private void OnDestroy()
+        {
+            LobbyRoomManager.Instance.OnLobbyListChanged -= LobbyRoomManager_OnLobbyListChanged;
+        }
     }
 }
 
