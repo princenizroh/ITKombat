@@ -446,7 +446,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1756236378}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.36547592
+  m_Size: 0.35910425
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -544,11 +544,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 220
-    m_Right: 255
+    m_Right: 220
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 3
-  m_Spacing: 250
+  m_Spacing: 290
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -1013,10 +1013,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxPage: 3
-  pageStop: {x: -780, y: 0, z: 0}
+  pageStop: {x: -800, y: 0, z: 0}
   levelPageRect: {fileID: 379245109}
   tweenTime: 0.3
   tweenType: 6
+  pageElements:
+  - id: 1
+    pageObject: {fileID: 1794171641}
+  - id: 2
+    pageObject: {fileID: 52344070}
 --- !u!1 &934975025
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,7 +1171,7 @@ GameObject:
   - component: {fileID: 1034617589}
   - component: {fileID: 1034617588}
   m_Layer: 5
-  m_Name: Kiri (1)
+  m_Name: Selected
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1238,7 +1243,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 550404170}
         m_TargetAssemblyTypeName: ITKombat.SwipeController, Assembly-CSharp
-        m_MethodName: Previous
+        m_MethodName: Selected
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
