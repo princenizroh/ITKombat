@@ -85,7 +85,8 @@ namespace ITKombat
             DontDestroyOnLoad(gameObject);
 
             // Uncomment ini jika sudah  tidak memerlukan BUTTON Authentication
-            Authenticate(GetFirebaseUser());
+            // Authenticate(GetFirebaseUser());
+            DebugSignInAnonymously();
         }
 
         private void Start() 
@@ -316,9 +317,7 @@ namespace ITKombat
         }
 
         private void HandlePeriodicListLobbies() {
-            Debug.Log("HandlePeriodicListLobbies");
             if (joinedLobby == null && AuthenticationService.Instance.IsSignedIn) {
-                Debug.Log("List Lobbies");
             // &&
             //     UnityServices.State == ServicesInitializationState.Initialized &&
             //     AuthenticationService.Instance.IsSignedIn &&
@@ -329,7 +328,6 @@ namespace ITKombat
                     float listLobbiesTimerMax = 3f;
                     listLobbiesTimer = listLobbiesTimerMax;
                     ListLobbies();
-                    Debug.Log("List Lobbies Timer");
                 }
             }
         }
@@ -664,6 +662,19 @@ namespace ITKombat
         
 
                 // ini untuk debugging
+        private async void DebugSignInAnonymously()
+        {
+            if (UnityServices.State != ServicesInitializationState.Initialized) 
+            {
+                InitializationOptions initializationOptions = new InitializationOptions();
+
+                initializationOptions.SetProfile(UnityEngine.Random.Range(0, 10000).ToString());
+
+                await UnityServices.InitializeAsync(initializationOptions);
+
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            }
+        }
         private async void DebugAuth()
         {
             
