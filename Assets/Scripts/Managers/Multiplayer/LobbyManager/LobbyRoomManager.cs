@@ -354,17 +354,17 @@ namespace ITKombat
                 Debug.Log(e);
             }
         }
-        // private async Task<Allocation> AllocateRelay() {
-        //     try {
-        //         Allocation allocation = await RelayService.Instance.CreateAllocationAsync(GameMultiplayerManager.MAX_PLAYER_AMOUNT - 1);
+        private async Task<Allocation> AllocateRelay() {
+            try {
+                Allocation allocation = await RelayService.Instance.CreateAllocationAsync(GameMultiplayerManager.MAX_PLAYER_AMOUNT - 1);
 
-        //         return allocation;
-        //     } catch (RelayServiceException e) {
-        //         Debug.Log(e);
+                return allocation;
+            } catch (RelayServiceException e) {
+                Debug.Log(e);
 
-        //         return default;
-        //     }
-        // }
+                return default;
+            }
+        }
         private bool IsPlayerInLobby() {
             if (joinedLobby != null && joinedLobby.Players != null) {
               Debug.Log("Player in Lobby");
