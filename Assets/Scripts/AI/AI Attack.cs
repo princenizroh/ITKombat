@@ -104,16 +104,16 @@ namespace ITKombat
                                 Debug.Log("PlayerState not found.");
                             }
                         }
-                        // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
-                        StartCoroutine(AttackCooldown());
-                        if (currentCombo >= maxCombo)
-                            {
-                                currentCombo = 0;
-                                StartCoroutine(ComboCooldown());
-                            }
                     }
                 }
                 AttackAnimation(hitPlayer, isBlocked);
+                // Debug.Log("Enemy performs attack : Attack" + currentCombo);
+                StartCoroutine(AttackCooldown());
+                if (currentCombo >= maxCombo)
+                    {
+                        currentCombo = 0;
+                        StartCoroutine(ComboCooldown());
+                    }
             }
             else
             {
@@ -133,7 +133,7 @@ namespace ITKombat
                             float attackForce = playerCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
                             Vector2 direction = (playerCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
 
-                            playerRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+                            playerRb.AddForce(direction * attackForce, ForceMode2D.Force);
                         }
                 }
                 else
@@ -165,7 +165,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(1,hitPlayer.Length > 0,isBlocked);
                     anim.SetTrigger("attack1");
-                    // Debug.Log("Attack 1 triggered");
+                    Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
                     if (character.IsFacingRight)
@@ -178,7 +178,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(2,hitPlayer.Length > 0, isBlocked);
                     anim.SetTrigger("attack2");
-                    // Debug.Log("Attack 2 triggered");
+                    Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
                     if (character.IsFacingRight)
@@ -191,7 +191,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(3,hitPlayer.Length > 0, isBlocked);
                     anim.SetTrigger("attack3");
-                    // Debug.Log("Attack 3 triggered");
+                    Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
                     if (character.IsFacingRight)
@@ -204,7 +204,7 @@ namespace ITKombat
                     }
                     PlayAttackSound(4,hitPlayer.Length > 0,isBlocked);
                     anim.SetTrigger("attack4");
-                    // Debug.Log("Attack 4 triggered");
+                    Debug.Log("Attack 4 triggered");
                     break;
             }
         }
@@ -259,7 +259,7 @@ namespace ITKombat
             }
         }
 
-        private IEnumerator AttackCooldown()
+        public IEnumerator AttackCooldown()
         {
             canAttack = false;
             yield return new WaitForSeconds(attackCooldown);

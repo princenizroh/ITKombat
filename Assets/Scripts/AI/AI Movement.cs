@@ -8,7 +8,7 @@ namespace ITKombat
         [Header("Movement")]
         public float moveSpeed = 3f;
         public float movementStep = 0f;
-        public float maxStep = 3f;
+        public float maxStep = 2f;
         public float maxDistance = 15f;
         public bool facingPlayer = true;
         public bool canMove = true;
@@ -33,8 +33,8 @@ namespace ITKombat
         public void StopMovement()
         {
             // Debug.Log("Idle State Called");
-            myRigidbody.linearVelocity = Vector2.zero;
             anim.SetTrigger("Idle");
+            myRigidbody.linearVelocity = Vector2.zero;
         }
 
         public void Approach()

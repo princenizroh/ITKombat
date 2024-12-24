@@ -9,7 +9,7 @@ namespace ITKombat
         void Start()
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
-            Debug.Log(currentSceneName + "adalah scene sekarang");
+            Debug.Log(currentSceneName + " adalah scene sekarang");
             if (currentSceneName == "SoundMultiplayer")
             {
                 MusicManager.Instance.PlayMusic("Battle_2");

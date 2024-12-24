@@ -6300,6 +6300,10 @@ PrefabInstance:
       propertyPath: playerHealthSlider
       value: 
       objectReference: {fileID: 995002210}
+    - target: {fileID: 3991399654481516892, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5365466274610412425, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_Resource
       value: 
@@ -81638,7 +81642,7 @@ GameObject:
   - component: {fileID: 2147252572}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81826,6 +81830,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5860330647074127107}
     - target: {fileID: 189063522151190786, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 189063522151190786, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: aimovement
       value: 
       objectReference: {fileID: 5860330647074127109}
@@ -81905,6 +81913,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerIF (bot)
       objectReference: {fileID: 0}
+    - target: {fileID: 4286311451895730719, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4730498254468617737, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_Resource
       value: 
@@ -81913,6 +81925,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 7e4325a99c9f57a43b822c79ce10ad23, type: 3}
+    - target: {fileID: 6211191168650674319, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7571168033097755824, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -81923,7 +81939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7607559142707280492, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7607559142707280492, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: easeHealthSlider
@@ -81951,7 +81967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814952906632176184, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 1.38
       objectReference: {fileID: 0}
     - target: {fileID: 7814952906632176184, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -81985,17 +82001,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8092777801304928371, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9221864205212673515, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 529909109}
+      objectReference: {fileID: 0}
     - target: {fileID: 9221864205212673515, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: maxStep
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9221864205212673515, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
+      propertyPath: moveSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221864205212673515, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: maxDistance
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 9221864205212673515, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
+      propertyPath: facingPlayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
