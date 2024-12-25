@@ -16,13 +16,15 @@ namespace ITKombat
         {
             hostBtn.onClick.AddListener(() => 
                 {
-                    GameMultiplayerManager.Instance.StartHost();
-                    Loader.LoadNetwork(Loader.Scene.SelectCharacterMultiplayer);
+                    NetworkManager.Singleton.StartHost();
+                    // GameMultiplayerManager.Instance.StartHost();
+                    // Loader.LoadNetwork(Loader.Scene.SelectCharacterMultiplayer);
                     Hide();
                 });
             clientBtn.onClick.AddListener(() => 
                 {
-                    GameMultiplayerManager.Instance.StartClient();
+                    // GameMultiplayerManager.Instance.StartClient();
+                    NetworkManager.Singleton.StartClient();
                     Hide();
                 });
         }
