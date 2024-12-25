@@ -135,7 +135,7 @@ public class LoginController : MonoBehaviour
 
         loginButtonGameobject.SetActive(false);
 
-        StartGameGameobject.SetActive(true);
+        // StartGameGameobject.SetActive(true);
 
         UpdateUI(profile);
     }

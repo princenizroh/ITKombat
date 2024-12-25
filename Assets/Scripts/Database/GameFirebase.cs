@@ -27,6 +27,7 @@ namespace ITKombat
         public class InventoryItem
         {
             public int item_id { get; set; }
+            public int item_type_id { get; set; }
             public int item_level { get; set; }
             public int item_ascend { get; set; }
             public int item_exp_max { get; set; }
@@ -36,6 +37,16 @@ namespace ITKombat
             public int item_value_type_1 { get; set; }
             public int item_value_type_2 { get; set; }
         }
+
+        public class ConsumableItem {
+
+            public int consumableId { get; set; }
+            public int consumableValue { get; set; }
+            public int consumableQuantity { get; set; }
+
+        }
+        public GameObject startgameobject;
+
         void Awake()
         {
             if (instance == null)
@@ -54,7 +65,7 @@ namespace ITKombat
                 if (dependencyStatus == DependencyStatus.Available)
                 {
                     //If they are avalible Initialize Firebase
-                    InitializeFirebase();
+                    // InitializeFirebase();
                 }
                 else
                 {
@@ -77,6 +88,14 @@ namespace ITKombat
             auth = FirebaseAuth.DefaultInstance;
             DBreference = FirebaseDatabase.DefaultInstance.RootReference;
         }
+
+        // private void InitializeFirebase()
+        // {
+        //     Debug.Log("Setting up Firebase Auth");
+        //     //Set the authentication instance object
+        //     auth = FirebaseAuth.DefaultInstance;
+        //     DBreference = FirebaseDatabase.DefaultInstance.RootReference;
+        // }
 
         // reff Task DBTask = DBreference.Child("users").Child(User.UserId).Child("username").SetValueAsync(_username);
 
@@ -115,6 +134,8 @@ namespace ITKombat
                         return true;
                     }
                 }
+            } else {
+                Debug.Log("not exist?");
             }
 
             return false;
@@ -146,8 +167,6 @@ namespace ITKombat
                 { "email", player_id + "@itkombat.net" }, // Set initial email
                 { "password", player_id }, // You might want to hash this before saving
                 { "registration_date", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") },
-                { "picked_permanent_character", 0},
-                { "picked_permanent_character_id", 0}
             };
 
             var profileData = new Dictionary<string, object>
@@ -166,6 +185,7 @@ namespace ITKombat
             var inventoryData = new Dictionary<string, object>
             {
                 { "item_id", 0 },
+                { "item_type_id", 0},
                 { "item_level", 0},
                 { "item_ascend", 0 },
                 { "item_exp_max", 0},
@@ -176,11 +196,72 @@ namespace ITKombat
                 { "item_value_type_2", 0 }
             };
 
+            var consumableData = new Dictionary<string, object>
+            {
+                { "r1", new Dictionary<string, object>
+                    {
+                        { "consumableId", 1 },
+                        { "consumableValue", 100 },
+                        { "consumableQuantity", 0 }
+                    }
+                },
+                { "r2", new Dictionary<string, object>
+                    {
+                        { "consumableId", 2 },
+                        { "consumableValue", 1000 },
+                        { "consumableQuantity", 0 }
+                    }
+                },
+                { "r3", new Dictionary<string, object>
+                    {
+                        { "consumableId", 3 },
+                        { "consumableValue", 4500 },
+                        { "consumableQuantity", 0 }
+                    }
+                },
+                { "r4", new Dictionary<string, object>
+                    {
+                        { "consumableId", 4 },
+                        { "consumableValue", 7000 },
+                        { "consumableQuantity", 0 }
+                    }
+                },
+                { "b1", new Dictionary<string, object>
+                    {
+                        { "consumableId", 5 },
+                        { "consumableValue", 0 },
+                        { "consumableQuantity", 0 }
+                    }
+                },
+                { "b2", new Dictionary<string, object>
+                    {
+                        { "consumableId", 6 },
+                        { "consumableValue", 0 },
+                        { "consumableQuantity", 0 }
+                    }
+                },
+                { "b3", new Dictionary<string, object>
+                    {
+                        { "consumableId", 7 },
+                        { "consumableValue", 0 },
+                        { "consumableQuantity", 0 }
+                    }
+                },
+                { "b4", new Dictionary<string, object>
+                    {
+                        { "consumableId", 8 },
+                        { "consumableValue", 0 },
+                        { "consumableQuantity", 0 }
+                    }
+                }
+            };
+
             // Push the data to Firebase under the player's ID
             DBreference.Child("players").Child(player_id).SetValueAsync(playerData); // player_id as the key
             DBreference.Child("profiles").Child(player_id).SetValueAsync(profileData); // player_id as the key for profiles
             DBreference.Child("balances").Child(player_id).SetValueAsync(balanceData); // player_id as the key for balances
             DBreference.Child("inventory").Child(player_id).Child("1").SetValueAsync(inventoryData); // player inventorty data value starter
+            DBreference.Child("consumable").Child(player_id).SetValueAsync(consumableData); // player inventorty data value starter
         }
 
         public IEnumerator firebaseAuhenticationLogin(string email, string password) {
@@ -189,8 +270,7 @@ namespace ITKombat
 
             if (Login.Exception != null) {
                 Debug.Log("Login sucessfuly");
-                _ = checkPlayerPermanentCharacterAsync(email);
-                // loginPageUIManager.StartScreen();
+                checkIfUsernameStillDefault();
             } else {
                 Debug.Log("Login failed");
             }
@@ -367,6 +447,8 @@ namespace ITKombat
 
             // Select a random gear
             GearStat randomGear = gearDataArray[UnityEngine.Random.Range(0, gearDataArray.Length)];
+            // randomizer id
+            GearStat randomizerid = gearDataArray[UnityEngine.Random.Range(0, 100000)];
 
             // Fetch the existing inventory data to determine the next index
             var inventorySnapshot = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
@@ -392,6 +474,8 @@ namespace ITKombat
             // Create a dictionary for the gear data
             var gearData = new Dictionary<string, object>
             {
+                { "item_id", 0 },
+                { "item_type_id", randomizerid},
                 { "item_id", randomGear.gear_type_id },
                 { "item_level", 1 },
                 { "item_ascend", 0 },
@@ -499,6 +583,7 @@ namespace ITKombat
                         InventoryItem item = new InventoryItem
                         {
                             item_id = int.Parse(childSnapshot.Child("item_id").Value.ToString()),
+                            item_type_id = int.Parse(childSnapshot.Child("item_type_id").Value.ToString()),
                             item_level = int.Parse(childSnapshot.Child("item_level").Value.ToString()),
                             item_ascend = int.Parse(childSnapshot.Child("item_ascend").Value.ToString()),
                             item_exp_max = int.Parse(childSnapshot.Child("item_exp_max").Value.ToString()),
@@ -547,6 +632,7 @@ namespace ITKombat
                 InventoryItem item = new InventoryItem
                 {
                     item_id = int.Parse(gearData.Child("item_id").Value.ToString()),
+                    item_type_id = int.Parse(gearData.Child("item_type_id").Value.ToString()),
                     item_level = int.Parse(gearData.Child("item_level").Value.ToString()),
                     item_ascend = int.Parse(gearData.Child("item_ascend").Value.ToString()),
                     item_exp_max = int.Parse(gearData.Child("item_exp_max").Value.ToString()),
@@ -567,10 +653,95 @@ namespace ITKombat
             return playerGearData;
         }
 
+        public async Task<List<ConsumableItem>> GetAllPlayerConsumable(string player_id)
+        {
+            var consumableList = new List<ConsumableItem>();
+
+            try
+            {
+                // Await the task to get data from Firebase
+                var DBTask = await DBreference.Child("consumable").Child(player_id).GetValueAsync();
+
+                // Check if data exists
+                if (DBTask.Exists)
+                {
+                    Debug.Log("consumable data found for player: " + player_id);
+
+                    // Iterate over the children (inventory items)
+                    foreach (var childSnapshot in DBTask.Children)
+                    {
+                        // Log the child data being read
+                        Debug.Log("Found child: " + childSnapshot.Key);
+
+                        ConsumableItem item = new ConsumableItem
+                        {
+                            consumableId = int.Parse(childSnapshot.Child("consumableId").Value.ToString()),
+                            consumableValue = int.Parse(childSnapshot.Child("consumableValue").Value.ToString()),
+                            consumableQuantity = int.Parse(childSnapshot.Child("consumableQuantity").Value.ToString())
+                        };
+
+                        consumableList.Add(item);
+                    }
+
+                    // Log success after data is fetched and mapped
+                    Debug.Log("Consumable is fetched successfully!");
+
+                }
+                else
+                {
+                    Debug.LogWarning("No consumable data found for player: " + player_id);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle errors with detailed logs
+                Debug.LogError("Error fetching consumable: " + ex.Message);
+            }
+
+            return consumableList;
+        }
+
+        public async Task<List<ConsumableItem>> GetPlayerConsumableData(string player_id, string value)
+        {
+            var playerConsumableData = new List<ConsumableItem>();
+            string path = $"consumable/{player_id}";
+            var consumableData = await DBreference.Child(path).GetValueAsync();
+
+            if (consumableData.Exists)
+            {
+                foreach (var consumableChild in consumableData.Children)
+                {
+                    string consumableName = consumableChild.Key;
+                    
+                    if (consumableName == value)
+                    {
+                        ConsumableItem consumable = new ConsumableItem
+                        {
+                            consumableId = int.Parse(consumableChild.Child("consumableId").Value.ToString()),
+                            consumableValue = int.Parse(consumableChild.Child("consumableValue").Value.ToString()),
+                            consumableQuantity = int.Parse(consumableChild.Child("consumableQuantity").Value.ToString()),
+                        };
+
+                        playerConsumableData.Add(consumable);
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Consumable data does not exist.");
+            }
+
+            return playerConsumableData;
+        }
 
         public IEnumerator EditPlayerGearData(string player_id, int gear_id, string selected_parameter, int set_value) {
             var gearData = DBreference.Child("inventory").Child(player_id).Child(gear_id.ToString()).Child(selected_parameter).SetValueAsync(set_value);
             yield return new WaitUntil(() => gearData.IsCompleted);
+        }
+
+        public IEnumerator EditPlayerConsumableData(string player_id, string selected_parameter, int set_value) {
+            var consumableData = DBreference.Child("consumable").Child(player_id).Child("data").Child(selected_parameter).SetValueAsync(set_value);
+            yield return new WaitUntil(() => consumableData.IsCompleted);
         }
 
         public IEnumerator DeletePlayerGear(string player_id, int gear_id) {
@@ -581,6 +752,8 @@ namespace ITKombat
         }
 
         public async void AddGearToPlayer(string player_id, int gear_type_id, int gear_type_1, int gear_type_2, int gear_value_1, int gear_value_2) {
+
+            var randomGear = UnityEngine.Random.Range(0, 100000);
             
             var inventoryData = new Dictionary<string, object>
             {
@@ -664,6 +837,10 @@ namespace ITKombat
             }
         }
 
+        public void TestChange() {
+            StartCoroutine(ChangeValueInteger("MgVD2xzBDjabUPE74MchcYV893G2", "players", "danus", 50));
+        }
+
         public IEnumerator TopUp(string player_id, string topup_type, int amount)
         {
             Task DBTask = DBreference.Child("balances").Child(player_id).Child(topup_type).SetValueAsync(amount);
@@ -672,32 +849,44 @@ namespace ITKombat
 
         // Account pick one character
 
-        async Task checkPlayerPermanentCharacterAsync(string playerId) {
+        // async Task checkPlayerPermanentCharacterAsync(string playerId) {
 
-            var checkPlayerPermanentCharacter = await DBreference.Child("players").Child(playerId).Child("picked_permanent_character").GetValueAsync();
+        //     var checkPlayerPermanentCharacter = await DBreference.Child("players").Child(playerId).Child("picked_permanent_character").GetValueAsync();
 
-            if (checkPlayerPermanentCharacter.Exists) {
+        //     if (checkPlayerPermanentCharacter.Exists) {
 
-                if (int.Parse(checkPlayerPermanentCharacter.Value.ToString()) == 0) {
+        //         if (int.Parse(checkPlayerPermanentCharacter.Value.ToString()) == 0) {
 
-                    // pilih karakter
+        //             // pilih karakter
 
-                } else {
+        //         } else {
 
-                    var checkCharacterData = await DBreference.Child("players").Child(playerId).Child("picked_permanent_character_id").GetValueAsync();
-                    var data = checkCharacterData.Value.ToString();
+        //             var checkCharacterData = await DBreference.Child("players").Child(playerId).Child("picked_permanent_character_id").GetValueAsync();
+        //             var data = checkCharacterData.Value.ToString();
 
-                    // push data -> game
+        //             // push data -> game
 
-                    loginPageUIManager.StartScreen();
-                    Debug.Log("Player telah memiliki karakter permanent");
+        //             loginPageUIManager.StartScreen();
+        //             Debug.Log("Player telah memiliki karakter permanent");
 
-                }
+        //         }
                 
+        //     }
+
+        // }
+        void checkIfUsernameStillDefault() {
+
+            if (playerData.playerName == player_id) {
+
+                customSceneManager.LoadSceneByName("SelectCharacterFirstTime");
+
+            } else {
+                startgameobject.SetActive(true);
+                // loginPageUIManager.StartScreen();
+
             }
 
         }
-        
 
     }
 }

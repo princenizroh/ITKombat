@@ -10,12 +10,10 @@ namespace ITKombat{
         public Transform player;
         public float waitingTime = 2f; // Delay time before next state
 
-        private enum AIState {Approach, Retreat, Attack, Idle, Blocking}
+        private enum AIState {Approach, Retreat, Attack, Idle, Blocking, Cooldown}
         private AIState currentState = AIState.Idle;
         
 
-
-        [System.Obsolete]
         void Start()
         {
             aiAttack = GetComponent<AI_Attack>();
@@ -54,6 +52,9 @@ namespace ITKombat{
                     break;
                 case AIState.Idle :
                     NextMovementDecision();
+                    break;
+                case AIState.Cooldown :
+                    CooldownStateHandler();
                     break;
             }
         }
@@ -94,10 +95,6 @@ namespace ITKombat{
             {
                 currentState = AIState.Blocking;
             }
-            else if (distance <= aiAttack.attackRange)
-            {
-                if(aiAttack.canAttack) currentState = AIState.Attack;
-            }
         }
 
         void AttackStateHandler(float distance)
@@ -109,6 +106,12 @@ namespace ITKombat{
             {
                 NextAttackDecision();
             }
+            NextAttackDecision();
+        }
+
+        void CooldownStateHandler()
+        {
+            aimovement.canMove = false;
         }
 
         // Handle the next state decision
@@ -166,6 +169,14 @@ namespace ITKombat{
             yield return new WaitForSeconds(waitingTime); // Wait for the defined delay
             currentState = nextState; // Change to the next state
             aimovement.canMove = true; // Reset waiting flag
+        }
+
+        IEnumerator TransitionToCooldown()
+        {
+            currentState = AIState.Cooldown; // Transition to Cooldown state
+            yield return new WaitForSeconds(aiAttack.attackCooldown); // Wait for cooldown
+            aiAttack.canAttack = true; // Reset attack capability
+            currentState = AIState.Idle; // Return to Idle state
         }
     }
 }

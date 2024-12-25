@@ -6,7 +6,7 @@ namespace ITKombat
     public class PlayerMovement_2 : MonoBehaviour
     {
         public CharacterController2D1 controller;
-        private Animator anim;
+        public Animator anim;
 
         public float dashSpeed = 50f;
         public float dashDuration = 0.2f;
@@ -27,7 +27,18 @@ namespace ITKombat
         private bool isWalkingSoundPlaying = false;
         private void Start()
         {
+            
             anim = GetComponent<Animator>();
+            Debug.Log("ini anim: "+ anim);
+
+            if (anim == null)
+            {
+                Debug.LogError("Animator not assigned or is null! Please check the Inspector.");
+            }
+            else
+            {
+                Debug.Log("Animator successfully assigned.");
+            }
         }
 
         private void Update()
@@ -211,5 +222,6 @@ namespace ITKombat
             yield return new WaitForSeconds(dashCooldown);
             canDash = true;
         }
+
     }
 }

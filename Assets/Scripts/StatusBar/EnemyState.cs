@@ -5,23 +5,34 @@ namespace ITKombat
 {
     public class EnemyState : MonoBehaviour
     {
+        public static EnemyState Instance;
         public float maxHealth = 100f;
         public float currentHealth;
         public string attackTag = "Attack";
         public HealthBar healthBar;
         public MatchManager matchManager;
-        private Animator enemyAnimator;
+
         public AudioSource[] hitAudioSources;
         public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };
         public string idleAnimationTrigger = "Idle";
         public Rigidbody2D rb;
         public float knockbackForce = 1f;
+        public bool checkDamage = false;
+
+        public bool canAttack;
+
+        private void Awake()
+        {
+            Instance = this;
+
+        }
+
 
         private void Start()
         {
             currentHealth = maxHealth;
             healthBar.SetMaxHealth(maxHealth);
-            
+
             // Dapatkan referensi ke MatchManager
             if (matchManager == null)
             {
@@ -29,22 +40,60 @@ namespace ITKombat
             }
         }
 
-        public void TakeDamage(float damage,float combo)
+        public bool CheckDamage()
         {
+            return checkDamage;
+        }
+
+        public void TakeDamage(float damage)
+        {   
             currentHealth -= damage;
-            Debug.Log(currentHealth);
             healthBar.UpdateHealth(currentHealth, maxHealth);
+            
             if (currentHealth <= 0)
             {
                 HandleDeath();
             }
             else
             {
+                checkDamage = true;
+                canAttack = false;
+                AI_Attack.Instance.GetCanAttack(canAttack);
+                Debug.Log("Check Damage" + checkDamage);
+
+                Debug.Log("Memanggil OnEnemyDamaged");
+                AIDamageChecker.Instance.OnEnemyDamaged();
+                StartCoroutine(ResetCheckDamage()); // Atur ulang ke false setelah durasi tertentu.
+                StartCoroutine(ResetAICanAttack());
                 // ApplyKnockback();
-                AttackedAnimation(combo);
+                // AttackedAnimation(combo);
                 // PlayRandomHitSound();
+            
             }
+            checkDamage = false; //Hapus kalau mau langsung 4
         }
+
+        private IEnumerator ResetCheckDamage()
+        {
+            yield return new WaitForSeconds(0.1f); // Sesuaikan durasi ini sesuai kebutuhan.
+            checkDamage = false;
+            Debug.Log("Pemain tidak lagi menerima serangan.");
+        }
+
+        private IEnumerator ResetAICanAttack()
+        {
+            Debug.Log("Tunggu 5 Detik");
+
+            yield return new WaitForSeconds(10f); // Sesuaikan durasi 
+            Debug.Log("Sudah 5 Detik");
+            canAttack = true;
+            AI_Attack.Instance.GetCanAttack(canAttack);
+        }
+
+        // public void HitAnimation()
+        // {
+        //     stateMachine.SetState(new LightReactionState());
+        // }
 
         public void TakeDamageFromSkill(float skillDamage)
         {

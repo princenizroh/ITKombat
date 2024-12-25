@@ -6,7 +6,7 @@ namespace ITKombat
     public class SwipeScene : MonoBehaviour
     {
         public GameObject scrollBar;
-        private float scrollPos = 0;
+        private float scrollPos = 1;
         private float[] pos;
 
         void Start()

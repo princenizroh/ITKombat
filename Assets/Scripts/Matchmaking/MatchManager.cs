@@ -37,6 +37,7 @@ namespace ITKombat
 
         private int activeCoroutines = 0;
 
+        [System.Obsolete]
         void Start() 
         {
             // if (ServerBattleRoomState.Instance != null)
@@ -54,7 +55,8 @@ namespace ITKombat
             ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
             // StartCoroutine(ShowRoundStartNotification(1));
-            playerMovement.canMove = false;
+            StartCoroutine(ShowRoundStartNotification(1));
+            StartCoroutine(WaitForPlayer());
         }
 
         private IEnumerator CountedCoroutine(IEnumerator coroutine)
@@ -67,6 +69,10 @@ namespace ITKombat
             activeCoroutines--;
             Debug.Log($"Coroutine finished. Active coroutines: {activeCoroutines}");
         }
+ 
+
+        
+
 
         public void ChangeState(IState newState)
         {
@@ -77,15 +83,26 @@ namespace ITKombat
             Debug.Log("State changed. Current timeoutToTimer.text: " + timeoutToTimer.text);
         }
 
+        
         [System.Obsolete]
+        private IEnumerator WaitForPlayer()
+        {
+            yield return new WaitUntil(() => FindObjectOfType<PlayerMovement_2>() != null);
+            playerMovement = FindObjectOfType<PlayerMovement_2>();
+            playerMovement.canMove = false; // Atur setelah player ditemukan
+        }
         private void Awake()
         {
+            if (Instance != null && Instance != this) {
+            Destroy(gameObject);
+        } else {
+            Instance = this;
+        }
 
             Instance = this;
             // Ensure PlayerState and EnemyState are correctly set up
             playerState = FindObjectOfType<PlayerState>();
             enemyState = FindObjectOfType<EnemyState>();
-            playerMovement = FindObjectOfType<PlayerMovement_2>();
         }
         private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
         {
