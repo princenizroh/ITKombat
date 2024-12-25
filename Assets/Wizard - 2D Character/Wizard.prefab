@@ -11,13 +11,10 @@ GameObject:
   - component: {fileID: 4138214344127816119}
   - component: {fileID: 3561390178849960170}
   - component: {fileID: 675557039451599309}
-  - component: {fileID: 3412460646339693930}
   - component: {fileID: 8921524258825247996}
   - component: {fileID: 8948921144610679621}
   - component: {fileID: 7295078481682966927}
   - component: {fileID: 2729517920992093744}
-  - component: {fileID: 4204236768174900341}
-  - component: {fileID: 6494451047709500524}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Untagged
@@ -76,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 954164544
+  GlobalObjectIdHash: 2533519058
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -89,26 +86,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &3412460646339693930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3198618212327911053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9da139d8b0b7a7949b947fdf87cb2a54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  spawnedObjectPrefab: {fileID: 6806342065592128371, guid: 3ecde94e35d126e41b442d086da4fb23, type: 3}
-  jumpForce: 5
-  moveSpeed: 10
-  direction: 0
-  crouch: 0
-  jumpCooldown: 0
-  movePower: 10
 --- !u!114 &8921524258825247996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,42 +212,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 0.5145035}
   m_EdgeRadius: 0
---- !u!114 &4204236768174900341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3198618212327911053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ae00bd08b7e28a42938fee6eb729657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  attackPoint: {fileID: 9166650560090784585}
-  attackForce: 10
-  attackRadius: 1
-  attackCooldown: 0.5
-  maxCombo: 4
-  comboResetTime: 2.5
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 8
---- !u!114 &6494451047709500524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3198618212327911053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80fc26dc972a680479572ffee41d8c87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 0
-  forceJump: 0
 --- !u!1 &3821880668199319560
 GameObject:
   m_ObjectHideFlags: 0

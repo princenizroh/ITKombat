@@ -19,17 +19,7 @@ namespace ITKombat
         // Animator
         private Animator animator;
 
-        // VFX Right
-        [SerializeField] private ParticleSystem Attack1_Right = null;
-        [SerializeField] private ParticleSystem Attack2_Right = null;
-        [SerializeField] private ParticleSystem Attack3_Right = null;
-        [SerializeField] private ParticleSystem Attack4_Right = null;
-
-        // VFX Left
-        [SerializeField] private ParticleSystem Attack1_Left = null;
-        [SerializeField] private ParticleSystem Attack2_Left = null;
-        [SerializeField] private ParticleSystem Attack3_Left = null;
-        [SerializeField] private ParticleSystem Attack4_Left = null;
+        // VFX Rightgc
 
         // Nanti ini taruh audiosource buat masing-masing soundnya
         // AudioSource buat weapon hit
@@ -150,56 +140,56 @@ namespace ITKombat
             switch (combo)
             {
                 case 1:
-                    if (character.IsFacingRight)
-                    {
-                        Attack1_Right.Play();
-                    }
-                    else
-                    {
-                        Attack1_Left.Play();
-                    }
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack1_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack1_Left.Play();
+                    // }
                     PlayAttackSound(1, hitEnemies.Length > 0);
                     animator.SetTrigger("attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
-                    if (character.IsFacingRight)
-                    {
-                        Attack2_Right.Play();
-                    }
-                    else
-                    {
-                        Attack2_Left.Play();
-                    }
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack2_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack2_Left.Play();
+                    // }
                     PlayAttackSound(2, hitEnemies.Length > 0);
                     animator.SetTrigger("attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
-                    if (character.IsFacingRight)
-                    {
-                        Attack3_Right.Play();
-                    }
-                    else
-                    {
-                        Attack3_Left.Play();
-                    }
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack3_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack3_Left.Play();
+                    // }
                     PlayAttackSound(3, hitEnemies.Length > 0);
                     animator.SetTrigger("attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
-                    if (character.IsFacingRight)
-                    {
-                        Attack4_Right.Play();
-                    }
-                    else
-                    {
-                        Attack4_Left.Play();
-                    }
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack4_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack4_Left.Play();
+                    // }
                     PlayAttackSound(4, hitEnemies.Length > 0);
                     animator.SetTrigger("attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));

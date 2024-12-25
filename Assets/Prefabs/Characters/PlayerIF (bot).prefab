@@ -193,16 +193,12 @@ GameObject:
   - component: {fileID: 5188528838505268775}
   - component: {fileID: 3716609825955621141}
   - component: {fileID: 4528333429130472833}
-  - component: {fileID: 7571168033097755824}
-  - component: {fileID: 1593555320093518913}
-  - component: {fileID: 660875470113568699}
+  - component: {fileID: 9060320860004429869}
   - component: {fileID: 189063522151190786}
   - component: {fileID: 4286311451895730719}
   - component: {fileID: 9221864205212673515}
   - component: {fileID: 7635275804717148313}
   - component: {fileID: 3883516181262633831}
-  - component: {fileID: 4375670650902938375}
-  - component: {fileID: 6271457181215855436}
   - component: {fileID: 6211191168650674319}
   - component: {fileID: 8092777801304928371}
   - component: {fileID: 3956095172806333974}
@@ -393,20 +389,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.3, y: 0.6}
   m_EdgeRadius: 0
---- !u!114 &7571168033097755824
+--- !u!114 &9060320860004429869
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   GlobalObjectIdHash: 2371814669
-  InScenePlacedSourceGlobalObjectIdHash: 3978643440
+  InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -418,56 +414,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &1593555320093518913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3327bee03c51724193be5c8b2728d83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  attackPoint: {fileID: 3048261050815633105}
-  attackRadius: 1
-  attackCooldown: 1
-  maxCombo: 4
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  combo: 0
-  hitbox: {fileID: 0}
-  Hiteffect: {fileID: 0}
-  isUsingWeapon: 0
-  characterStats: {fileID: 0}
---- !u!114 &660875470113568699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillSound1: {fileID: 4730498254468617737}
-  skillSound2: {fileID: 5617750406991439197}
-  skillSound3: {fileID: 6055173429794016753}
-  skillSound3Part2: {fileID: 0}
-  isSkill2Active: 0
-  Skill1_VFX_Right: {fileID: 0}
-  Skill2_VFX_Right: {fileID: 0}
-  Skill1_VFX_Left: {fileID: 0}
-  Skill2_VFX_Left: {fileID: 0}
-  attackPoint: {fileID: 0}
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &189063522151190786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,57 +507,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isBlocking: 0
   criticalProximity: 2.5
-  blockChance: 0
+  blockChance: 0.2
   blockDuration: 2
---- !u!114 &4375670650902938375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acc6c4455eb144048bcb9c51a41cba7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 6271457181215855436}
-  anim: {fileID: 0}
-  dashSpeed: 5
-  dashDuration: 0.2
-  dashCooldown: 1
-  moveSpeed: 50
-  isBlocking: 0
-  canMove: 1
---- !u!114 &6271457181215855436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_JumpForce: 300
-  m_CrouchSpeed: 0.36
-  m_MovementSmoothing: 0.05
-  m_AirControl: 1
-  m_WhatIsGround:
-    serializedVersion: 2
-    m_Bits: 8
-  m_GroundCheck: {fileID: 6594988523134191143}
-  m_CeilingCheck: {fileID: 2982411179668835359}
-  m_CrouchDisableCollider: {fileID: 4528333429130472833}
-  m_FacingRight: 1
-  OnLandEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCrouchEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &6211191168650674319
 MonoBehaviour:
   m_ObjectHideFlags: 0
