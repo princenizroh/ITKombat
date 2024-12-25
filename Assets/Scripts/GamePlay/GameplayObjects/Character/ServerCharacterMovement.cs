@@ -81,9 +81,9 @@ namespace ITKombat
             {
                 LocalInstance = this;
             }
-
-            transform.position = spawnPositionList[NetworkManager.Singleton.ConnectedClients.Count - 1];
-            // transform.position = spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)];
+            
+            // transform.position = spawnPositionList[NetworkManager.Singleton.ConnectedClients.Count - 1]; 
+            transform.position = spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)]; 
             OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
 
             if (IsServer)
