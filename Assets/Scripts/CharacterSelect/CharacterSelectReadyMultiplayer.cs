@@ -76,7 +76,7 @@ namespace ITKombat
                 LobbyRoomManager.Instance.DeleteLobby();
                 Debug.Log("Lobby Deleted");
 
-                Loader.LoadNetwork(Loader.Scene.ClientTest);
+                Loader.LoadNetwork(Loader.Scene.Multiplayer);
             }
         }
 

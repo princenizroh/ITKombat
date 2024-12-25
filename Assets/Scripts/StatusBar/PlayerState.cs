@@ -5,13 +5,13 @@ namespace ITKombat
 {
     public class PlayerState : MonoBehaviour
     {
+        public FelixStateMachine stateMachine;
         public static PlayerState Instance;
         public float maxHealth = 100f;
         public float currentHealth;
         public string attackTag = "Attack"; 
         public HealthBar healthBar;
         public MatchManager matchManager;
-        private Animator playerAnimator;
         public AudioSource[] hitAudioSources;
         public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };
         public string idleAnimationTrigger = "Idle";
@@ -20,6 +20,9 @@ namespace ITKombat
         public event DamageTaken OnTakeDamage; // Event to notify damage taken
         public delegate void DamageTaken(GameObject player);
 
+
+        public bool canAttack;
+        public bool checkDamage = false;
 
         private void Awake()
         {
@@ -69,11 +72,37 @@ namespace ITKombat
             }
             else
             {
+                checkDamage = true;
+                canAttack = false;
+                PlayerIFAttack.Instance.GetCanAttack(canAttack);
+                PlayerDamageChecker.Instance.OnEnemyDamaged();
+                StartCoroutine(ResetCheckDamage());
+                StartCoroutine(ResetCanAttack());
                 // ApplyKnockback();
+                Debug.Log(currentHealth);
                 AttackedAnimation(combo);
                 // PlayRandomHitSound();
             }
             OnTakeDamage?.Invoke(gameObject);
+                // AttackedAnimation(combo);
+                // PlayRandomHitSound();
+            
+            checkDamage = false;
+        }
+
+        private IEnumerator ResetCheckDamage()
+        {
+            yield return new WaitForSeconds(0.1f); // Sesuaikan durasi ini sesuai kebutuhan.
+            checkDamage = false;
+            Debug.Log("Pemain tidak lagi menerima serangan.");
+        }
+
+         private IEnumerator ResetCanAttack()
+        {
+            yield return new WaitForSeconds(1f); // Sesuaikan durasi 
+            canAttack = true;
+            PlayerIFAttack.Instance.GetCanAttack(canAttack);
+            Debug.Log("Berhasil Reset Can Attack Player Menjadi" + canAttack);
         }
 
         public void TakeDamageFromSkill(float skillDamage)

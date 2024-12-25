@@ -558,6 +558,8 @@ MonoBehaviour:
   idleAnimationTrigger: Idle
   rb: {fileID: 497928446}
   knockbackForce: 1
+  checkDamage: 0
+  canAttack: 0
 --- !u!1 &9976146
 GameObject:
   m_ObjectHideFlags: 0
@@ -4044,7 +4046,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5096538126159116306, guid: 50d8af2cb0c4a75408f32d0a05ba1579, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1974657273
+      value: 2134559500
       objectReference: {fileID: 0}
     - target: {fileID: 5096538126159116306, guid: 50d8af2cb0c4a75408f32d0a05ba1579, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -5364,7 +5366,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3322623907
+      value: 3639110086
       objectReference: {fileID: 0}
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -6577,7 +6579,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 528613808056271421, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 631515244
+      value: 1287903974
       objectReference: {fileID: 0}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8227,7 +8229,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1093448963568404082, guid: 51595d0a88be2f24e93ab66284b7e78b, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 903968005
+      value: 2544609960
       objectReference: {fileID: 0}
     - target: {fileID: 1093448963568404082, guid: 51595d0a88be2f24e93ab66284b7e78b, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -9023,7 +9025,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 162062da5feb92442ac783d56d6b27af, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000022888184
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 162062da5feb92442ac783d56d6b27af, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9771,7 +9773,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7571168033097755824, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3188006907
+      value: 2596258312
       objectReference: {fileID: 0}
     - target: {fileID: 7814952906632176184, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13206,7 +13208,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0.000015258789}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -0.00011444, y: -0.000030518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &342338592
@@ -17823,6 +17825,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8681b938b58ba8147a28b0235399a65f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateMachine: {fileID: 0}
   maxHealth: 100
   currentHealth: 0
   attackTag: Attack
@@ -17836,6 +17839,8 @@ MonoBehaviour:
   idleAnimationTrigger: Idle
   rb: {fileID: 1036487381}
   knockbackForce: 1
+  canAttack: 0
+  checkDamage: 0
 --- !u!1 &477549228
 GameObject:
   m_ObjectHideFlags: 0
@@ -23095,7 +23100,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.002532959, y: 0.000015258789}
+  m_AnchoredPosition: {x: -0.0025024414, y: 0}
   m_SizeDelta: {x: -0.0050049, y: 0.000030518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &650057502
@@ -23825,7 +23830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 684803961
+  GlobalObjectIdHash: 843727850
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -31055,7 +31060,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 3510968045
+      value: 2212501562
       objectReference: {fileID: 0}
     - target: {fileID: 675557039451599309, guid: ebea5f8b8163f9a4ab9d9a1b45444e28, type: 3}
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
@@ -39904,7 +39909,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00970459, y: 2.081253}
+  m_AnchoredPosition: {x: -0.009765625, y: 2.0812378}
   m_SizeDelta: {x: -0.0194, y: -4.5575}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1080315446
@@ -66738,7 +66743,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.10801697, y: -0.21499634}
+  m_AnchoredPosition: {x: -0.10803223, y: -0.21499634}
   m_SizeDelta: {x: -0.21603, y: 0.42999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1737161109
@@ -74424,7 +74429,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -123.68384, y: 0.000015258789}
+  m_AnchoredPosition: {x: -123.68384, y: 0.000030517578}
   m_SizeDelta: {x: -336.2721, y: -286.3486}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1945751401
@@ -81669,7 +81674,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 875917125148578433, guid: d2f72740ad76c26479f1311b6c2666db, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 586739075
+      value: 369967865
       objectReference: {fileID: 0}
     - target: {fileID: 4461272860668923110, guid: d2f72740ad76c26479f1311b6c2666db, type: 3}
       propertyPath: m_Name

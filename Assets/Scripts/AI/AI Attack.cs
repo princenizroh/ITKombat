@@ -11,10 +11,11 @@ namespace ITKombat
         public float attackPower = 3f;
         public float attackRadius = 1f;
         public Transform attackPoint;
-        public float attackCooldown = 0.7f;      // Cooldown between each attack
+        public float attackCooldown = 2f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
+        public bool newCanAttack = true;
 
         public int currentCombo = 0;            // Tracks the current combo
         public float lastAttackTime = 0f;       // Time of the last attack
@@ -23,20 +24,21 @@ namespace ITKombat
         private Animator anim;
         private bool isBlocked = false;
 
-        // VFX Right
-        [SerializeField] private ParticleSystem Attack1_Right = null;
-        [SerializeField] private ParticleSystem Attack2_Right = null;
-        [SerializeField] private ParticleSystem Attack3_Right = null;
-        [SerializeField] private ParticleSystem Attack4_Right = null;
+        // // VFX Right
+        // [SerializeField] private ParticleSystem Attack1_Right = null;
+        // [SerializeField] private ParticleSystem Attack2_Right = null;
+        // [SerializeField] private ParticleSystem Attack3_Right = null;
+        // [SerializeField] private ParticleSystem Attack4_Right = null;
 
-        // VFX Left
-        [SerializeField] private ParticleSystem Attack1_Left = null;
-        [SerializeField] private ParticleSystem Attack2_Left = null;
-        [SerializeField] private ParticleSystem Attack3_Left = null;
-        [SerializeField] private ParticleSystem Attack4_Left = null;
+        // // VFX Left
+        // [SerializeField] private ParticleSystem Attack1_Left = null;
+        // [SerializeField] private ParticleSystem Attack2_Left = null;
+        // [SerializeField] private ParticleSystem Attack3_Left = null;
+        // [SerializeField] private ParticleSystem Attack4_Left = null;
 
         private void Awake()
         {
+            
             anim = GetComponent<Animator>();
 
             if (Instance == null)
@@ -60,7 +62,7 @@ namespace ITKombat
 
         public void Attack()
         {
-            if (canAttack && Time.time - lastAttackTime > attackCooldown)
+            if (newCanAttack && canAttack && Time.time - lastAttackTime > attackCooldown)
             {
                 if (currentCombo == 0 || Time.time - lastAttackTime > attackCooldown*2)
                 {
@@ -77,48 +79,64 @@ namespace ITKombat
                 foreach (Collider2D player in hitPlayer)
                 {
                     Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
-                    PlayerMovement_2 playerMovement = player.GetComponent<PlayerMovement_2>();
+                    // PlayerMovement_2 playerMovement = player.GetComponent<PlayerMovement_2>();
                     
-                    if(playerMovement.isBlocking == true){
-                        isBlocked = true;
-                    }
-                    else{
-                        isBlocked = false;
-                    }
+                    // if (playerMovement != null)
+                    // {
+                        // if(playerMovement.isBlocking == true){
+                        //     isBlocked = true;
+                        // }
+                        // else{
+                        //     isBlocked = false;
+                        // }
 
-                    if (playerRB != null)
-                    {
-                        GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
-                        if (playerStateObject != null)
+                        if (playerRB != null)
                         {
-                            PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
-                            if (playerState != null)
+                            GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
+                            if (playerStateObject != null)
                             {
-                                if(!playerMovement.isBlocking){
-                                ApplyKnockback(player,currentCombo);
-                                playerState.TakeDamage(attackPower,currentCombo);
+                                PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
+                                if (playerState != null)
+                                {
+                                    // if(!playerMovement.isBlocking){
+                                        ApplyKnockback(player,currentCombo);
+                                        playerState.TakeDamage(attackPower,currentCombo);
+                                    // }
+                                }
+                                else
+                                {
+                                    Debug.Log("PlayerState not found.");
                                 }
                             }
-                            else
-                            {
-                                Debug.Log("PlayerState not found.");
-                            }
                         }
-                        // Debug.Log("Enemy performs attack : Attack" + (currentCombo));
-                        StartCoroutine(AttackCooldown());
-                        if (currentCombo >= maxCombo)
-                            {
-                                currentCombo = 0;
-                                StartCoroutine(ComboCooldown());
-                            }
-                    }
+                    // } 
+                    // else 
+                    // {
+                    //     Debug.Log("PlayerMovement not found.");
+                    // }
                 }
                 AttackAnimation(hitPlayer, isBlocked);
+                // AttackAnimation(hitPlayer);
+
+                // Debug.Log("Enemy performs attack : Attack" + currentCombo);
+                StartCoroutine(AttackCooldown());
+                if (currentCombo >= maxCombo)
+                    {
+                        currentCombo = 0;
+                        StartCoroutine(ComboCooldown());
+                    }
             }
             else
             {
                  anim.SetTrigger("Idle");
             }
+        }
+
+        public bool GetCanAttack (bool CanAttack)
+        {
+            newCanAttack = CanAttack;
+            Debug.Log("Berhasil Get AI Can Attack = " + CanAttack);
+            return newCanAttack;
         }
 
         void ApplyKnockback(Collider2D playerCollider, float currentCombo)
@@ -133,7 +151,7 @@ namespace ITKombat
                             float attackForce = playerCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
                             Vector2 direction = (playerCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
 
-                            playerRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+                            playerRb.AddForce(direction * attackForce, ForceMode2D.Force);
                         }
                 }
                 else
@@ -146,68 +164,127 @@ namespace ITKombat
                 Debug.LogWarning("No player detected within knockback radius.");
             }
         }
-
-        
-        private void AttackAnimation(Collider2D[] hitPlayer, bool isBlocked)
+         private void AttackAnimation(Collider2D[] hitPlayer, bool isBlocked)
         {
             CharacterController2D1 character = GetComponent<CharacterController2D1>();
             if (character == null) return;
             switch (currentCombo)
             {
                 case 1:
-                    if (character.IsFacingRight)
-                    {
-                        Attack1_Right.Play();
-                    }
-                    else
-                    {
-                        Attack1_Left.Play();
-                    }
-                    PlayAttackSound(1,hitPlayer.Length > 0,isBlocked);
-                    anim.SetTrigger("attack1");
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack1_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack1_Left.Play();
+                    // }
+                    PlayAttackSound(1,hitPlayer.Length > 0, isBlocked);
+                    anim.SetTrigger("Attack1");
                     // Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
-                    if (character.IsFacingRight)
-                    {
-                        Attack2_Right.Play();
-                    }
-                    else
-                    {
-                        Attack2_Left.Play();
-                    }
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack2_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack2_Left.Play();
+                    // }
                     PlayAttackSound(2,hitPlayer.Length > 0, isBlocked);
-                    anim.SetTrigger("attack2");
+                    anim.SetTrigger("Attack2");
                     // Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
-                    if (character.IsFacingRight)
-                    {
-                        Attack3_Right.Play();
-                    }
-                    else
-                    {
-                        Attack3_Left.Play();
-                    }
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack3_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack3_Left.Play();
+                    // }
                     PlayAttackSound(3,hitPlayer.Length > 0, isBlocked);
-                    anim.SetTrigger("attack3");
+                    anim.SetTrigger("Attack3");
                     // Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
-                    if (character.IsFacingRight)
-                    {
-                        Attack4_Right.Play();
-                    }
-                    else
-                    {
-                        Attack4_Left.Play();
-                    }
-                    PlayAttackSound(4,hitPlayer.Length > 0,isBlocked);
-                    anim.SetTrigger("attack4");
+                    // if (character.IsFacingRight)
+                    // {
+                    //     Attack4_Right.Play();
+                    // }
+                    // else
+                    // {
+                    //     Attack4_Left.Play();
+                    // }
+                    PlayAttackSound(4,hitPlayer.Length > 0, isBlocked);
+                    anim.SetTrigger("Attack4");
                     // Debug.Log("Attack 4 triggered");
                     break;
             }
         }
+        
+        // private void AttackAnimation(Collider2D[] hitPlayer, bool isBlocked)
+        // {
+        //     CharacterController2D1 character = GetComponent<CharacterController2D1>();
+        //     if (character == null) return;
+        //     switch (currentCombo)
+        //     {
+        //         case 1:
+        //             if (character.IsFacingRight)
+        //             {
+        //                 Attack1_Right.Play();
+        //             }
+        //             else
+        //             {
+        //                 Attack1_Left.Play();
+        //             }
+        //             PlayAttackSound(1,hitPlayer.Length > 0, isBlocked);
+        //             anim.SetTrigger("Attack1");
+        //             // Debug.Log("Attack 1 triggered");
+        //             break;
+        //         case 2:
+        //             if (character.IsFacingRight)
+        //             {
+        //                 Attack2_Right.Play();
+        //             }
+        //             else
+        //             {
+        //                 Attack2_Left.Play();
+        //             }
+        //             PlayAttackSound(2,hitPlayer.Length > 0, isBlocked);
+        //             anim.SetTrigger("Attack2");
+        //             // Debug.Log("Attack 2 triggered");
+        //             break;
+        //         case 3:
+        //             if (character.IsFacingRight)
+        //             {
+        //                 Attack3_Right.Play();
+        //             }
+        //             else
+        //             {
+        //                 Attack3_Left.Play();
+        //             }
+        //             PlayAttackSound(3,hitPlayer.Length > 0, isBlocked);
+        //             anim.SetTrigger("Attack3");
+        //             // Debug.Log("Attack 3 triggered");
+        //             break;
+        //         case 4:
+        //             if (character.IsFacingRight)
+        //             {
+        //                 Attack4_Right.Play();
+        //             }
+        //             else
+        //             {
+        //                 Attack4_Left.Play();
+        //             }
+        //             PlayAttackSound(4,hitPlayer.Length > 0, isBlocked);
+        //             anim.SetTrigger("Attack4");
+        //             // Debug.Log("Attack 4 triggered");
+        //             break;
+        //     }
+        // }
 
         private void PlayAttackSound(int comboNumber, bool hitPlayer, bool isBlocked)
         {
@@ -259,7 +336,7 @@ namespace ITKombat
             }
         }
 
-        private IEnumerator AttackCooldown()
+        public IEnumerator AttackCooldown()
         {
             canAttack = false;
             yield return new WaitForSeconds(attackCooldown);

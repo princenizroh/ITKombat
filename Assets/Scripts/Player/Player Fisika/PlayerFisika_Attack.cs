@@ -105,7 +105,7 @@ namespace ITKombat
                             if (enemyState != null)
                             {
                                 ApplyKnockback(enemy, combo);
-                                enemyState.TakeDamage(attackPower, combo);
+                                enemyState.TakeDamage(attackPower);
                             }
                         }
                         else

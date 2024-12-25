@@ -81,7 +81,7 @@ namespace ITKombat
             if (PlayerDatas != null)
             {
                 usernameText.text = PlayerDatas.username;
-                levelText.text = PlayerDatas.level;
+                // levelText.text = PlayerDatas.level;
                 ktmText.text = PlayerDatas.ktm;
                 danusText.text = PlayerDatas.danus;
                 playerEmailText.text = PlayerDatas.email;
@@ -106,7 +106,7 @@ namespace ITKombat
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            UpdateSaveUIFromInspector();
+            // UpdateSaveUIFromInspector();
         }
 #endif
 
