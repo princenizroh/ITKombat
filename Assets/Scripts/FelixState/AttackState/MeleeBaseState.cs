@@ -91,9 +91,13 @@ namespace ITKombat
                     {
       
                         Debug.Log("Menjalankan IF 2");
-                        if (enemyRb != null && (enemyDefense == null || !enemyDefense.isBlocking))
+                        if (enemyDefense != null && enemyDefense.isBlocking)
                         {
                             isBlocked = true;
+                        }
+
+                        if (enemyRb != null && !enemyDefense.isBlocking)
+                        {
                             Debug.Log("Menjalankan IF 3");
                             Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
 
@@ -122,12 +126,8 @@ namespace ITKombat
                         }
                         PlayerIFAttack.Instance.PlayAttackSound(attackIndex, collidersToDamage.Length > 0, isBlocked);
                     }
+                }
             }
-            
         }
-        
-        
-    }
-
     }
 }
