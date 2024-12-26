@@ -20,8 +20,8 @@ namespace ITKombat
             return 
                 clientId == other.clientId &&
                 prefabId == other.prefabId && 
-                playerName == other.playerName;
-                // playerId == other.playerId;
+                playerName == other.playerName &&
+                playerId == other.playerId;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {

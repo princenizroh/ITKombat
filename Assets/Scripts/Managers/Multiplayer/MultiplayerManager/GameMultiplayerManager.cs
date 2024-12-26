@@ -20,9 +20,11 @@ namespace ITKombat
         public event EventHandler OnTryingToJoinGame;
         public event EventHandler OnFailedToJoinGame;
         public event EventHandler OnPlayerDataNetworkListChanged;
-
+        public event EventHandler OnDataInitialized;
+        
         [SerializeField] private List<GameObject> playerPrefabsList;
         private NetworkList<PlayerDataMultiplayer> playerDataNetworkList;
+        public Dictionary<int, CharacterStat> characterStatDictionary;
 
         private string playerName;
 
@@ -48,11 +50,24 @@ namespace ITKombat
         }
 
         private void Start() {
+            InitializeCharacterStats();
             if (!playMultiplayer) {
                 // Singleplayer
                 StartHost();
                 Loader.LoadNetwork(Loader.Scene.Multiplayer);
             }
+        }
+        private void InitializeCharacterStats()
+        {
+            characterStatDictionary = new Dictionary<int, CharacterStat>
+            {
+                { 0, Resources.Load<CharacterStat>("Characters/IFStats") },
+                { 1, Resources.Load<CharacterStat>("Characters/MesinStats") },
+                { 2, Resources.Load<CharacterStat>("Characters/FisikaStats") },
+                { 3, Resources.Load<CharacterStat>("Characters/KimiaStats") },
+                { 4, Resources.Load<CharacterStat>("Characters/KelautanStats") },
+            };
+            OnDataInitialized?.Invoke(this, EventArgs.Empty);
         }
 
         private void PlayerDataNetworkList_OnListChanged(NetworkListEvent<PlayerDataMultiplayer> changeEvent) {
@@ -220,6 +235,15 @@ namespace ITKombat
         {
             ChangePlayerPrefabServerRpc(prefabId);
         }
+        public CharacterStat GetUpdateCharacterInfo(int prefabId) {
+            if (characterStatDictionary.TryGetValue(prefabId, out var characterStat))
+            {
+                return characterStat;
+            }
+
+            Debug.Log("Character Stat not found");
+            return null;
+        }
 
 
         [ServerRpc(RequireOwnership = false)]
@@ -263,5 +287,8 @@ namespace ITKombat
             }
             return -1;
         }
+
+        
+
     }
 }
