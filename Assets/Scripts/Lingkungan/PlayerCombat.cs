@@ -32,8 +32,8 @@ namespace ITKombat
         {
             if (buildingCollider != null && buildingCollider.CanActivateCanvas())
             {
-                buildingCollider.ActivateCanvas();
                 NewSoundManager.Instance.PlaySound("Button_Click", transform.position);
+                buildingCollider.ActivateCanvas();
 
             }
             else if (doorCollider != null && doorCollider.CanActivateScene())
@@ -42,8 +42,8 @@ namespace ITKombat
             }
             else if (pialaCollider != null && pialaCollider.CanActivateCanvas())
             {
-                pialaCollider.ActivateCanvas();
                 NewSoundManager.Instance.PlaySound("Button_Click", transform.position);
+                pialaCollider.ActivateCanvas();
             }
         }
 

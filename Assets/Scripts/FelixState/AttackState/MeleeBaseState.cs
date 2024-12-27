@@ -90,12 +90,16 @@ namespace ITKombat
                     if (hitTeamComponent != null && hitTeamComponent.teamIndex == TeamIndex.Enemy)
                     {
       
-                        // Debug.Log("Menjalankan IF 2");
-                        if (enemyRb != null && (enemyDefense == null || !enemyDefense.isBlocking))
+                        Debug.Log("Menjalankan IF 2");
+                        if (enemyDefense != null && enemyDefense.isBlocking)
                         {
                             isBlocked = true;
-                            // Debug.Log("Menjalankan IF 3");
-                            // Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
+                        }
+
+                        if (enemyRb != null && !enemyDefense.isBlocking)
+                        {
+                            Debug.Log("Menjalankan IF 3");
+                            Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
 
                             GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
                             // Debug.Log("Jalan");
@@ -122,12 +126,8 @@ namespace ITKombat
                         }
                         PlayerIFAttack.Instance.PlayAttackSound(attackIndex, collidersToDamage.Length > 0, isBlocked);
                     }
+                }
             }
-            
         }
-        
-        
-    }
-
     }
 }

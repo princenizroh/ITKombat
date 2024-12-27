@@ -56,6 +56,7 @@ namespace ITKombat
 
         private void HandleCharacterSelection(SelectCharFelix character, Transform optionTransform, TextMeshProUGUI statusText)
         {
+            NewSoundManager.Instance.PlaySound2D("Button_Click");
             if (isSelectingForAI)
             {
                 GameManagerSelect.instance.SetAICharacter(character);
