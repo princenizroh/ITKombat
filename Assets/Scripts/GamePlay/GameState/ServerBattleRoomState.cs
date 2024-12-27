@@ -132,6 +132,12 @@ namespace ITKombat
                     Debug.LogError("Player prefab does not have a NetworkObject component.");
                     return;
                 }
+                // Change Tag
+                if (playerData.clientId == NetworkManager.Singleton.LocalClientId) {
+                    playerInstance.tag = "Player";
+                } else {
+                    playerInstance.tag = "Enemy";
+                }
 
                 networkObject.SpawnAsPlayerObject(client.ClientId);
             }

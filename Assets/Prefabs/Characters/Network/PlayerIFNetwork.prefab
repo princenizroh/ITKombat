@@ -726,6 +726,9 @@ GameObject:
   - component: {fileID: -8582768902996552125}
   - component: {fileID: -3266782377933127762}
   - component: {fileID: -8871836207627147301}
+  - component: {fileID: 4772469935015682330}
+  - component: {fileID: 6465470303988156125}
+  - component: {fileID: -5085211008805681587}
   m_Layer: 6
   m_Name: PlayerIFNetwork
   m_TagString: Player
@@ -920,7 +923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4189139311
+  GlobalObjectIdHash: 1294152250
   InScenePlacedSourceGlobalObjectIdHash: 791524057
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1035,15 +1038,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   attackPoint: {fileID: 2367255546564158636}
-  attackForce: 5
   attackRadius: 1
   attackCooldown: 0.5
-  attackPower: 25
   maxCombo: 4
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 128
+  hitbox: {fileID: 5221232932234922960}
   isUsingWeapon: 0
+  characterStats: {fileID: 11400000, guid: 6116ba2c7533cb943b4dee504b9dad49, type: 2}
 --- !u!114 &-8582768902996552125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1252,6 +1255,44 @@ MonoBehaviour:
     TriggerNameHash: 2081823275
     TransitionIndex: 0
   m_Animator: {fileID: 9153942728937895027}
+--- !u!114 &4772469935015682330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241197333450775901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4d384b02bb356e49ab7e5ff00d5ea0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customName: Combat
+--- !u!114 &6465470303988156125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241197333450775901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa3c1b5e41b10341a3f405937c1c246, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customName: Kombat
+--- !u!114 &-5085211008805681587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241197333450775901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 422df14c5bab8a648ad6bb3eb3538743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5244280488557939331
 GameObject:
   m_ObjectHideFlags: 0

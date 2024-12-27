@@ -29,7 +29,19 @@ namespace ITKombat
             base.OnEnter(_stateMachine);
             animator = GetComponent<Animator>();
             collidersDamaged = new List<Collider2D>();
-            hitCollider = GetComponent<PlayerIFAttack>().hitbox;
+            if (hitCollider == null)
+            {
+                hitCollider = GetComponent<PlayerIFAttack>().hitbox;
+            }
+            else if (hitCollider == null)
+            {
+                hitCollider = GetComponent<ServerCharacterAction>().hitbox;
+            }
+            else 
+            {
+                Debug.Log("HitCollider is not assigned!");
+            }
+            
         }
 
         public override void OnUpdate()
@@ -68,7 +80,7 @@ namespace ITKombat
 
             if (hitCollider == null)
             {
-                // Debug.LogError("HitCollider is not assigned!");
+                Debug.LogError("HitCollider is not assigned!");
                 return;
             }
             
