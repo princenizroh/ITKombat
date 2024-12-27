@@ -88,42 +88,22 @@ namespace ITKombat
             
         }
         public override void OnNetworkSpawn() {
-          Debug.Log("ServerBattleRoomState OnNetworkSpawn" + state.Value);
             state.OnValueChanged += State_OnValueChanged;
-            Debug.Log("ServerBattleRoomState OnNetworkSpawn" + state.Value);
              // Memanggil CheckDirtyState() setelah semua perubahan selesai
             state.CheckDirtyState();
-            Debug.Log("Check Dirty State "+ state.CheckDirtyState());
             // isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
-            Debug.Log("ServerBattleRoomState OnNetworkSpawn" + isGamePaused.Value);
 
             Debug.Log("IsServer: " + IsServer);
             if (IsServer) {
-                Debug.Log("ServerBattleRoomState OnNetworkSpawn, inside IsServer block");
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
                 Debug.Log("ServerBattleRoomState OnNetworkSpawn, ConnectedClientsIds: " + string.Join(", ", NetworkManager.Singleton.ConnectedClientsIds));                
                 Debug.Log("ServerBattleRoomState OnNetworkSpawn, connectedHostIds: " + string.Join(", ", NetworkManager.Singleton.ConnectedHostname));
                 NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
             
             }
-
-            Debug.Log("ServerBattleRoomState OnNetworkSpawn");
         }
 
         private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut) {
-            Debug.Log("SceneManager_OnLoadEventCompleted: " + sceneName);
-            // foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
-            //     if (NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject == null)
-            //     {
-            //         Transform playerTransform = Instantiate(playerPrefab);
-            //         playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-            //         Debug.Log("Player spawned for clientId: " + clientId);
-            //     }
-            //     else
-            //     {
-            //         Debug.Log("Player object already exists for clientId: " + clientId);
-            //     }
-            // }
             SpawnPlayers();
         }
         private void SpawnPlayers() {

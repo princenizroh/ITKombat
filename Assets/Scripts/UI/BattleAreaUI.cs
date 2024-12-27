@@ -42,7 +42,7 @@ namespace ITKombat
 
                     else if (playerIFStateNonNetwork != null)
                     {
-                        playerIFStateNonNetwork.PerformAttack();
+                        playerIFStateNonNetwork.OnButtonDown();
                     }
 
                     else
