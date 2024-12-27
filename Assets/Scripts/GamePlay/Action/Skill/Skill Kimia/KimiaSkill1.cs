@@ -18,6 +18,8 @@ namespace ITKombat
             if (isFirstSequenceActive)
             {
                 isFirstSequenceActive = true;
+                // suara skill 1 tahap 1
+                // NewSoundManager.Instance.PlaySound("Kimia_Skill1_Part1", parent.transform.position);
                 sequenceTimer = timeToActivateSecondSequence;
                 Debug.Log("Tahap pertama aktif. Lanjutkan ke tahap kedua dalam " + timeToActivateSecondSequence + " detik.");
             }

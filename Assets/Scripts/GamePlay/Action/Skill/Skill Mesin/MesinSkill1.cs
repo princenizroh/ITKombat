@@ -19,6 +19,9 @@ namespace ITKombat
             Vector2 knockback = (target.transform.position - parent.transform.position).normalized * knockbackForce;
             rb.AddForce(knockback, ForceMode2D.Impulse);
             Debug.Log("Thrust attack performed with knockback.");*/
+
+            // Suara skill 1 mesin
+            // NewSoundManager.Instance.PlaySound("Mesin_Skill1", parent.transform.position);
         }
 
         public override void BeginCooldown(GameObject parent)
