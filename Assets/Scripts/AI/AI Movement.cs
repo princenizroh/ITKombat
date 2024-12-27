@@ -6,10 +6,10 @@ namespace ITKombat
     public class AI_Movement : MonoBehaviour
     {
         [Header("Movement")]
-        public float moveSpeed = 3f;
+        public float moveSpeed = 0.5f;
         public float movementStep = 0f;
-        public float maxStep = 2f;
-        public float maxDistance = 15f;
+        public float timeMoving = 1.5f; 
+        public float maxDistance = 2f;
         public bool facingPlayer = true;
         public bool canMove = true;
 

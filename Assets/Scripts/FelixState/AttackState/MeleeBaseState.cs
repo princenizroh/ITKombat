@@ -63,12 +63,12 @@ namespace ITKombat
             Collider2D[] collidersToDamage = new Collider2D[10];
             ContactFilter2D filter = new ContactFilter2D();
             filter.useTriggers = true;
-            Debug.Log("ATTACK JALAN");
+            // Debug.Log("ATTACK JALAN");
             bool isBlocked = false;
 
             if (hitCollider == null)
             {
-                Debug.LogError("HitCollider is not assigned!");
+                // Debug.LogError("HitCollider is not assigned!");
                 return;
             }
             
@@ -76,7 +76,7 @@ namespace ITKombat
 
             for (int i = 0; i < colliderCount; i++)
             {
-                Debug.Log("MENJALANKAN FOR");
+                // Debug.Log("MENJALANKAN FOR");
                 Collider2D targetCollider = collidersToDamage[i];
 
                 if (!collidersDamaged.Contains(targetCollider))
@@ -90,25 +90,25 @@ namespace ITKombat
                     if (hitTeamComponent != null && hitTeamComponent.teamIndex == TeamIndex.Enemy)
                     {
       
-                        Debug.Log("Menjalankan IF 2");
+                        // Debug.Log("Menjalankan IF 2");
                         if (enemyRb != null && (enemyDefense == null || !enemyDefense.isBlocking))
                         {
                             isBlocked = true;
-                            Debug.Log("Menjalankan IF 3");
-                            Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
+                            // Debug.Log("Menjalankan IF 3");
+                            // Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
 
                             GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
-                            Debug.Log("Jalan");
-                            Debug.Log(enemyStateObject);
+                            // Debug.Log("Jalan");
+                            // Debug.Log(enemyStateObject);
 
                             if (enemyStateObject != null)
                             {
-                                Debug.Log("Menjalankan IF 4");
+                                // Debug.Log("Menjalankan IF 4");
                                 EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                                 if (enemyState != null)
                                 {
                                     enemyState.TakeDamage(attackIndex * 5);
-                                    Debug.Log("Berhasil Kesini");
+                                    // Debug.Log("Berhasil Kesini");
 
                                 }
                             }

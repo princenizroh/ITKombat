@@ -59,9 +59,9 @@ namespace ITKombat
                 checkDamage = true;
                 canAttack = false;
                 AI_Attack.Instance.GetCanAttack(canAttack);
-                Debug.Log("Check Damage" + checkDamage);
+                // Debug.Log("Check Damage" + checkDamage);
 
-                Debug.Log("Memanggil OnEnemyDamaged");
+                // Debug.Log("Memanggil OnEnemyDamaged");
                 AIDamageChecker.Instance.OnEnemyDamaged();
                 StartCoroutine(ResetCheckDamage()); // Atur ulang ke false setelah durasi tertentu.
                 StartCoroutine(ResetAICanAttack());
@@ -77,14 +77,14 @@ namespace ITKombat
         {
             yield return new WaitForSeconds(0.1f); // Sesuaikan durasi ini sesuai kebutuhan.
             checkDamage = false;
-            Debug.Log("Pemain tidak lagi menerima serangan.");
+            // Debug.Log("Pemain tidak lagi menerima serangan.");
         }
 
         private IEnumerator ResetAICanAttack()
         {
             Debug.Log("Tunggu 5 Detik");
 
-            yield return new WaitForSeconds(10f); // Sesuaikan durasi 
+            yield return new WaitForSeconds(1f); // Sesuaikan durasi 
             Debug.Log("Sudah 5 Detik");
             canAttack = true;
             AI_Attack.Instance.GetCanAttack(canAttack);

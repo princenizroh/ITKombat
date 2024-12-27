@@ -15,13 +15,13 @@ namespace ITKombat
         {
             if (mainStateType == null)
             {
-                Debug.LogWarning("mainStateType is not initialized. Setting default state...");
+                // Debug.LogWarning("mainStateType is not initialized. Setting default state...");
                 InitializeDefaultState(); // Inisialisasi default jika tidak diatur di Editor
             }
 
             if (mainStateType == null)
             {
-                Debug.LogError("mainStateType is null! Cannot set initial state.");
+                // Debug.LogError("mainStateType is null! Cannot set initial state.");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ITKombat
             }
             else
             {
-                Debug.LogError("Unknown customName: " + customName);
+                // Debug.LogError("Unknown customName: " + customName);
             }
         }
 
@@ -67,7 +67,7 @@ namespace ITKombat
             }
             else
             {
-                Debug.LogError("Failed to set new state. CurrentState is null!");
+                // Debug.LogError("Failed to set new state. CurrentState is null!");
             }
         }
 
