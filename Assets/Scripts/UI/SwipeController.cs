@@ -9,8 +9,8 @@ namespace ITKombat
     [Serializable]
     public class PageElement
     {
-        public int id;                  // ID halaman
-        public GameObject pageObject;  // Objek terkait halaman
+        public int id;               
+        public GameObject pageObject; 
     }
 
     public class SwipeController : MonoBehaviour, IEndDragHandler
