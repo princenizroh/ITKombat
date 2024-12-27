@@ -13,7 +13,7 @@ namespace ITKombat{
         attackIndex = 3;
         duration = 0.6f;
         animator.SetTrigger("Attack" + attackIndex);
-        Debug.Log("Player Attack " + attackIndex + " Fired!");
+        // Debug.Log("Player Attack " + attackIndex + " Fired!");
     }
 
     public override void OnUpdate()

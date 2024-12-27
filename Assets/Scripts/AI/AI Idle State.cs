@@ -30,7 +30,6 @@ namespace ITKombat
         {
             aiMovement.StopMovement();
             IdleTimer -= Time.deltaTime;
-            Debug.Log(IdleTimer);
 
             if (IdleTimer <= 0)
             {
@@ -51,7 +50,7 @@ namespace ITKombat
                 }
                 else
                 {
-                    if (Random.value < 0.75)
+                    if (Random.value < 0.80)
                     {
                         manager.SwitchState(manager.ApproachState); // 75% maju
                     }                    
