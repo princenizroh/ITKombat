@@ -21,7 +21,7 @@ namespace ITKombat
 
         public void OnEnemyDamaged()
         {
-            Debug.Log("Enemy terkena damage!");
+            // Debug.Log("Enemy terkena damage!");
 
             if (meleeStateMachine == null)
             {

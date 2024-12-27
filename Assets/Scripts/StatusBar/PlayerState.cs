@@ -79,7 +79,7 @@ namespace ITKombat
                 StartCoroutine(ResetCheckDamage());
                 StartCoroutine(ResetCanAttack());
                 // ApplyKnockback();
-                Debug.Log(currentHealth);
+                // Debug.Log(currentHealth);
                 // AttackedAnimation(combo);
                 // PlayRandomHitSound();
             }

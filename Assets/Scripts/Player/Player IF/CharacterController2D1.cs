@@ -1,9 +1,10 @@
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.EnhancedTouch;
 
-public class CharacterController2D1 : MonoBehaviour
+public class CharacterController2D1 : NetworkBehaviour
 {
     [SerializeField] private float m_JumpForce = 250f;                          
     [Range(0, 1)][SerializeField] private float m_CrouchSpeed = .36f;            
@@ -12,7 +13,8 @@ public class CharacterController2D1 : MonoBehaviour
     [SerializeField] private LayerMask m_WhatIsGround;                          
     [SerializeField] private Transform m_GroundCheck;                            
     [SerializeField] private Transform m_CeilingCheck;                          
-    [SerializeField] private Collider2D m_CrouchDisableCollider;                
+    // [SerializeField] private Collider2D m_CrouchDisableCollider;
+    [SerializeField] private BoxCollider2D meleeHitbox;
     const float k_GroundedRadius = .2f;
     private bool m_Grounded;         
     const float k_CeilingRadius = .2f; 
@@ -94,13 +96,13 @@ public class CharacterController2D1 : MonoBehaviour
                     m_wasCrouching = true;
                     OnCrouchEvent.Invoke(true);
                 }
-                if (m_CrouchDisableCollider != null)
-                    m_CrouchDisableCollider.enabled = false;
+                // if (m_CrouchDisableCollider != null)
+                //     m_CrouchDisableCollider.enabled = false;
             }
             else
             {
-                if (m_CrouchDisableCollider != null)
-                    m_CrouchDisableCollider.enabled = true;
+                // if (m_CrouchDisableCollider != null)
+                //     m_CrouchDisableCollider.enabled = true;
 
                 if (m_wasCrouching)
                 {
@@ -142,6 +144,13 @@ public class CharacterController2D1 : MonoBehaviour
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         m_FacingRight = !m_FacingRight;
+        BoxCollider2D hitboxCollider = meleeHitbox.GetComponent<BoxCollider2D>();
+        if (meleeHitbox != null)
+        {
+            Vector2 offset = meleeHitbox.offset;
+            offset.x = -offset.x; // Balik posisi X offset
+            meleeHitbox.offset = offset;
+        }
         /*
                 Vector3 theScale = transform.localScale;
                 theScale.x *= -1;

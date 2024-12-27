@@ -13,7 +13,7 @@ namespace ITKombat
             aiAttack = manager.aiAttack;
             aiDefense = manager.aiDefense;
 
-            Debug.Log("Attack State");
+            // Debug.Log("Attack State");
         }
 
         public override void UpdateState(AIStateManager manager, float distance){
