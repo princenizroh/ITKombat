@@ -18,8 +18,6 @@ namespace ITKombat
         private MatchManager matchManager;
         
         [Tooltip("Tempat Spawn player berada")]
-        [SerializeField] private Transform[] m_PlayerSpawnPoints;
-        private List<Transform> m_PlayerSpawnPointsList = null;
         public event EventHandler OnStateChanged;
         public event EventHandler OnLocalGamePaused;
         public event EventHandler OnLocalGameUnpaused;
@@ -27,7 +25,9 @@ namespace ITKombat
         public event EventHandler OnMultiplayerGameUnpaused;
         public event EventHandler OnLocalPlayerReadyChanged;
 
-        [SerializeField] private Transform playerPrefab;
+        [SerializeField] private Transform[] playerSpawnPoints;
+        private List<Transform> playerSpawnPointsList = null;
+        [SerializeField] private GameObject playerPrefab;
 
         // Network Variable untuk menyimpan state game
         private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
@@ -51,7 +51,6 @@ namespace ITKombat
         private bool autoTestGamePausedState;
 
         [Inject] PersistentGameState m_PersistentGameState;
-        [SerializeField ]private GameObject quantumConsole;
 
         
         private void Awake() {
@@ -113,12 +112,66 @@ namespace ITKombat
 
         private void SceneManager_OnLoadEventCompleted(string sceneName, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut) {
             Debug.Log("SceneManager_OnLoadEventCompleted: " + sceneName);
-            foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
-                Transform playerTransform = Instantiate(playerPrefab);
-                playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
-                Debug.Log("Player spawned for clientId: " + clientId);
+            // foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+            //     if (NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject == null)
+            //     {
+            //         Transform playerTransform = Instantiate(playerPrefab);
+            //         playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
+            //         Debug.Log("Player spawned for clientId: " + clientId);
+            //     }
+            //     else
+            //     {
+            //         Debug.Log("Player object already exists for clientId: " + clientId);
+            //     }
+            // }
+            SpawnPlayers();
+        }
+        private void SpawnPlayers() {
+            foreach (var client in NetworkManager.Singleton.ConnectedClientsList) {
+                var spawnPoint = GetSpawnPoint();
+                if (spawnPoint == null) {
+                    Debug.LogError("No spawn point available.");
+                    return;
+                }
+
+                PlayerDataMultiplayer playerData = GameMultiplayerManager.Instance.GetPlayerDataFromClientId(client.ClientId);
+                if (playerData.Equals(default(PlayerDataMultiplayer))) {
+                    Debug.LogError("Player data not found for clientId: " + client.ClientId);
+                    continue;
+                }
+
+                var playerPrefab = GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId);
+                if (playerPrefab == null) {
+                    Debug.LogError("Player prefab not found for prefabId: " + playerData.prefabId);
+                    continue;
+                }
+
+                var playerInstance = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+                var networkObject = playerInstance.GetComponent<NetworkObject>();
+                if (networkObject == null) {
+                    Debug.LogError("Player prefab does not have a NetworkObject component.");
+                    return;
+                }
+
+                networkObject.SpawnAsPlayerObject(client.ClientId);
             }
         }
+
+        private Transform GetSpawnPoint() {
+            if (playerSpawnPointsList == null || playerSpawnPointsList.Count == 0) {
+                playerSpawnPointsList = new List<Transform>(playerSpawnPoints);
+            }
+
+            if (playerSpawnPointsList.Count == 0) {
+                Debug.LogError("No spawn points available.");
+                return null;
+            }
+
+            var spawnPoint = playerSpawnPointsList[0];
+            playerSpawnPointsList.RemoveAt(0);
+            return spawnPoint;
+        }
+        
 
         private void NetworkManager_OnClientDisconnectCallback(ulong clientId) {
             Debug.Log("Client disconnected: " + clientId);

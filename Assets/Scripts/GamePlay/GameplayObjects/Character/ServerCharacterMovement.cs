@@ -29,7 +29,7 @@ namespace ITKombat
         bool useKeyboardInput = true;
         bool jump = false;
         public bool canMove = true;
-        [SerializeField] private List<Vector3> spawnPositionList;
+        // [SerializeField] private List<Vector3> spawnPositionList;
         // [SerializeField] private CharacterSelectVisual characterSelectVisual;
         private void Start()
         {
@@ -40,7 +40,7 @@ namespace ITKombat
             {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             }
-            PlayerDataMultiplayer playerData = GameMultiplayerManager.Instance.GetPlayerDataFromClientId(OwnerClientId);
+            // PlayerDataMultiplayer playerData = GameMultiplayerManager.Instance.GetPlayerDataFromClientId(OwnerClientId);
             // characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId));
         }
 
@@ -83,15 +83,14 @@ namespace ITKombat
             }
             
             // transform.position = spawnPositionList[NetworkManager.Singleton.ConnectedClients.Count - 1]; 
-             transform.position = spawnPositionList[(int)OwnerClientId];
+            //  transform.position = spawnPositionList[(int)OwnerClientId];
             // transform.position = spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)]; 
-            OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
+            // OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
 
             if (IsServer)
             {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             }
-            
         }
         private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
         {
