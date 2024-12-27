@@ -24,12 +24,16 @@ namespace ITKombat
         // Input buffer Timer
         private float AttackPressedTimer = 0;
 
+        private bool hasPlayedMissSound = false;
+
+
         public override void OnEnter(FelixStateMachine _stateMachine)
         {
             base.OnEnter(_stateMachine);
             animator = GetComponent<Animator>();
             collidersDamaged = new List<Collider2D>();
             hitCollider = GetComponent<PlayerIFAttack>().hitbox;
+            hasPlayedMissSound = false; // Reset flag
         }
 
         public override void OnUpdate()
@@ -56,6 +60,7 @@ namespace ITKombat
         public override void OnExit()
         {
             base.OnExit();
+            hasPlayedMissSound = false; // Reset flag
         }
 
         protected void Attack()
@@ -73,6 +78,9 @@ namespace ITKombat
             }
             
             int colliderCount = Physics2D.OverlapCollider(hitCollider, filter, collidersToDamage);
+
+
+
 
             for (int i = 0; i < colliderCount; i++)
             {
@@ -113,7 +121,6 @@ namespace ITKombat
                                 {
                                     enemyState.TakeDamage(attackIndex * 5);
                                     // Debug.Log("Berhasil Kesini");
-
                                 }
                             }
                             else
@@ -124,10 +131,19 @@ namespace ITKombat
                             collidersDamaged.Add(targetCollider);
                             
                         }
-                        PlayerIFAttack.Instance.PlayAttackSound(attackIndex, collidersToDamage.Length > 0, isBlocked);
+                        PlayerIFAttack.Instance.PlayAttackSound(attackIndex, colliderCount > 0, isBlocked);
+                        
                     }
+                    
                 }
             }
+
+            if (colliderCount == 0 && !hasPlayedMissSound)
+            {
+                PlayerIFAttack.Instance.PlayMissSound(attackIndex); // Memainkan suara pukulan meleset
+                hasPlayedMissSound = true; // Set flag agar suara tidak diputar ulang
+            }
+            
         }
     }
 }

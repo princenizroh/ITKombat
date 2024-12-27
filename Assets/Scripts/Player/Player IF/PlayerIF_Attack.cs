@@ -315,7 +315,7 @@ namespace ITKombat
             }
         }
 
-        private void PlayMissSound(int comboNumber)
+        public void PlayMissSound(int comboNumber)
         {
             switch (comboNumber)
             {
