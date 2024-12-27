@@ -8,13 +8,13 @@ namespace ITKombat
         public CharacterController2D1 controller;
         public Animator anim;
 
-        public float dashSpeed = 50f;
+        public float dashSpeed = 5f;
         public float dashDuration = 0.2f;
         public float dashCooldown = 1f;
         private bool canDash = true;
         private bool isDashing = false;
 
-        public float moveSpeed = 50f;
+        public float moveSpeed = 25f;
         float horizontalMove = 0f;
         public bool isBlocking = false;
         private bool isCrouching = false;

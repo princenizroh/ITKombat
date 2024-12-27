@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine.VFX;
 using System.Runtime.CompilerServices;
 using UnityEngine.Audio;
+using Mono.CSharp;
 
 namespace ITKombat
 {
@@ -14,7 +15,7 @@ namespace ITKombat
 
         public static PlayerIFAttack Instance;
         public Transform attackPoint;
-        public float attackRadius = 1f;
+        public float attackRadius = 0.15f;
         public float attackCooldown = 0.5f;
         public int maxCombo = 4;
         public LayerMask enemyLayer;
@@ -81,13 +82,13 @@ namespace ITKombat
         {
             if (meleeStateMachine == null)
             {
-                Debug.LogError("FelixStateMachine is null! Ensure it's added to the GameObject.");
+                // Debug.LogError("FelixStateMachine is null! Ensure it's added to the GameObject.");
                 return;
             }
 
             if (meleeStateMachine.CurrentState == null)
             {
-                Debug.LogError("CurrentState is null! Check the state initialization in FelixStateMachine.");
+                // Debug.LogError("CurrentState is null! Check the state initialization in FelixStateMachine.");
                 return;
             }
 
@@ -103,7 +104,7 @@ namespace ITKombat
         public bool GetCanAttack (bool CanAttack)
         {
             canAttack = CanAttack;
-            Debug.Log("Berhasil Get Player Can Attack = " + CanAttack);
+            // Debug.Log("Berhasil Get Player Can Attack = " + CanAttack);
             return canAttack;
         }
 
@@ -140,6 +141,7 @@ namespace ITKombat
                 // Debug.Log("Combo: " + combo);
 
                 float attackPower = characterStats.characterBaseAtk;
+                
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
                 // Debug.Log("Hit " + hitEnemies.Length + " enemies.");
@@ -202,19 +204,17 @@ namespace ITKombat
                 }
                 else
                 {
-                    Debug.LogWarning("No Rigidbody2D found on the enemy.");
+                    // Debug.LogWarning("No Rigidbody2D found on the enemy.");
                 }
             }
             else
             {
-                Debug.LogWarning("No enemy detected within knockback radius.");
+                // Debug.LogWarning("No enemy detected within knockback radius.");
             }
         }
 
         private void AttackAnimation(Collider2D[] hitEnemies, bool isBlocked)
         {
-            CharacterController2D1 character = GetComponent<CharacterController2D1>();
-            if (character == null) return;
             switch (combo)
             {
                 case 1:
@@ -287,19 +287,18 @@ namespace ITKombat
 
         public void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
         {
-            if (isBlocked)
+            if (isBlocked == true)
             {
                 PlayBlockedSound(comboNumber);
+                return;
             }
-
-            else if (hitEnemies)
+        
+            if (hitEnemies)
             {
                 PlayHitSound(comboNumber);
+                return;
             }
-            else
-            {
-                PlayMissSound(comboNumber);
-            }
+            PlayMissSound(comboNumber);
         }
 
 
@@ -343,6 +342,7 @@ namespace ITKombat
         private void OnDrawGizmosSelected()
         {
             if (attackPoint == null) return;
+            Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }

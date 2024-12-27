@@ -194,11 +194,10 @@ GameObject:
   - component: {fileID: 3716609825955621141}
   - component: {fileID: 4528333429130472833}
   - component: {fileID: 9060320860004429869}
-  - component: {fileID: 189063522151190786}
   - component: {fileID: 4286311451895730719}
   - component: {fileID: 9221864205212673515}
   - component: {fileID: 7635275804717148313}
-  - component: {fileID: 3883516181262633831}
+  - component: {fileID: 4337540012179774795}
   - component: {fileID: 6211191168650674319}
   - component: {fileID: 8092777801304928371}
   - component: {fileID: 3956095172806333974}
@@ -414,23 +413,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &189063522151190786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4ae807d776dcb4d8f14fa42077f9a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  aimovement: {fileID: 0}
-  aiAttack: {fileID: 0}
-  aiDefense: {fileID: 0}
-  player: {fileID: 0}
-  waitingTime: 0.5
 --- !u!114 &4286311451895730719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,7 +443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   movementStep: 0
-  maxStep: 2
+  timeMoving: 2
   maxDistance: 15
   facingPlayer: 1
   canMove: 1
@@ -493,7 +475,7 @@ MonoBehaviour:
   playerlayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &3883516181262633831
+--- !u!114 &4337540012179774795
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -506,9 +488,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBlocking: 0
-  criticalProximity: 2.5
   blockChance: 0.2
-  blockDuration: 2
+  blockDuration: 0.7
 --- !u!114 &6211191168650674319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,7 +497,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 777159a8662bd3d4eab28c8899b67c4d, type: 3}
   m_Name: 
@@ -532,7 +513,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3081762322249640699}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a0f17658b90c304e8363f0fb13c930e, type: 3}
   m_Name: 

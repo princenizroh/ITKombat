@@ -5,7 +5,6 @@ namespace ITKombat
     public class AI_Defense : MonoBehaviour
     {
         public bool isBlocking = false;
-        public float criticalProximity = 3f;
         public float blockChance = 0.2f;
         public float blockDuration = 0.7f;
         [Header("Others")]

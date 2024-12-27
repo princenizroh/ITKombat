@@ -80,7 +80,7 @@ namespace ITKombat
                 StartCoroutine(ResetCanAttack());
                 // ApplyKnockback();
                 Debug.Log(currentHealth);
-                AttackedAnimation(combo);
+                // AttackedAnimation(combo);
                 // PlayRandomHitSound();
             }
             OnTakeDamage?.Invoke(gameObject);
@@ -94,7 +94,7 @@ namespace ITKombat
         {
             yield return new WaitForSeconds(0.1f); // Sesuaikan durasi ini sesuai kebutuhan.
             checkDamage = false;
-            Debug.Log("Pemain tidak lagi menerima serangan.");
+            // Debug.Log("Pemain tidak lagi menerima serangan.");
         }
 
          private IEnumerator ResetCanAttack()
@@ -102,7 +102,7 @@ namespace ITKombat
             yield return new WaitForSeconds(1f); // Sesuaikan durasi 
             canAttack = true;
             PlayerIFAttack.Instance.GetCanAttack(canAttack);
-            Debug.Log("Berhasil Reset Can Attack Player Menjadi" + canAttack);
+            // Debug.Log("Berhasil Reset Can Attack Player Menjadi" + canAttack);
         }
 
         public void TakeDamageFromSkill(float skillDamage)

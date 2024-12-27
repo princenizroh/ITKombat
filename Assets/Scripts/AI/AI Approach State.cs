@@ -34,7 +34,7 @@ namespace ITKombat
                         manager.SwitchState(manager.DefenseState); // 30% bertahan
                     }
             }
-            else if (steps >= aiMovement.maxStep)
+            else if (steps >= aiMovement.timeMoving)
             {
                 manager.SwitchState(manager.IdleState);
             }
