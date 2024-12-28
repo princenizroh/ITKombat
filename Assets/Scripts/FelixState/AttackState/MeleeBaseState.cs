@@ -152,18 +152,18 @@ namespace ITKombat
                             collidersDamaged.Add(targetCollider);
                             Debug.Log("Collider added to damaged list");
                         }
-                        PlayerIFAttack.Instance.PlayAttackSound(attackIndex, colliderCount > 0, isBlocked);
+                        // PlayerIFAttack.Instance.PlayAttackSound(attackIndex, collidersToDamage.Length > 0, isBlocked);
                         
                     }
                     
                 }
             }
 
-            if (colliderCount == 0 && !hasPlayedMissSound)
-            {
-                PlayerIFAttack.Instance.PlayMissSound(attackIndex); // Memainkan suara pukulan meleset
-                hasPlayedMissSound = true; // Set flag agar suara tidak diputar ulang
-            }
+            // if (colliderCount == 0 && !hasPlayedMissSound)
+            // {
+            //     PlayerIFAttack.Instance.PlayMissSound(attackIndex); // Memainkan suara pukulan meleset
+            //     hasPlayedMissSound = true; // Set flag agar suara tidak diputar ulang
+            // }
             
         }
     }
