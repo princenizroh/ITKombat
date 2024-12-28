@@ -9,8 +9,8 @@ namespace ITKombat
     [Serializable]
     public class PageElement
     {
-        public int id;                  // ID halaman
-        public GameObject pageObject;  // Objek terkait halaman
+        public int id;               
+        public GameObject pageObject; 
     }
 
     public class SwipeController : MonoBehaviour, IEndDragHandler
@@ -33,7 +33,12 @@ namespace ITKombat
         {
             currentPage = 1;
             targetPos = levelPageRect.localPosition;
-            dragThreshold = Screen.width / 15f; // Threshold untuk mendeteksi swipe
+            dragThreshold = Screen.width / 15f; 
+        }
+
+        private void Start()
+        {
+            
         }
 
         public void Next()
@@ -56,28 +61,28 @@ namespace ITKombat
             }
         }
 
-        public void Selected()
-        {
-            // Cari elemen berdasarkan ID halaman saat ini
-            PageElement selectedPage = pageElements.Find(page => page.id == currentPage);
+public void Selected()
+{
+    // Cari elemen berdasarkan ID halaman saat ini
+    PageElement selectedPage = pageElements.Find(page => page.id == currentPage);
 
-            if (selectedPage != null && selectedPage.pageObject != null)
-            {
-                // Lakukan sesuatu dengan objek terkait halaman
-                Debug.Log($"Selected Page ID: {selectedPage.id}");
-                Debug.Log($"Associated Object: {selectedPage.pageObject.name}");
+    if (selectedPage != null && selectedPage.pageObject != null)
+    {
+        // Lakukan sesuatu dengan objek terkait halaman
+        Debug.Log($"Selected Page ID: {selectedPage.id}");
+        Debug.Log($"Associated Object: {selectedPage.pageObject.name}");
 
-                // Simpan ID halaman yang dipilih
-                PlayerPrefs.SetInt("SelectedPageID", selectedPage.id);
+        // Simpan ID halaman yang dipilih
+        PlayerPrefs.SetInt("SelectedPageID", selectedPage.id);
 
-                // Pindah ke scene (contoh)
-                SceneManager.LoadScene("TargetSceneName");
-            }
-            else
-            {
-                Debug.LogWarning("Page or Object not found for the selected ID!");
-            }
-        }
+        // Pindah ke scene (contoh)
+        SceneManager.LoadScene("TestScenePick");
+    }
+    else
+    {
+        Debug.LogWarning("Page or Object not found for the selected ID!");
+    }
+}
 
         private void MovePage()
         {
