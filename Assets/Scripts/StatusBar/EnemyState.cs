@@ -70,9 +70,10 @@ namespace ITKombat
                 Debug.Log("Check Damage" + checkDamage);
 
                 // Debug.Log("Memanggil OnEnemyDamaged");
-                AIDamageChecker.Instance.OnEnemyDamaged();
+                // AIDamageChecker.Instance.OnEnemyDamaged();
+                // PlayerDamageChecker.Instance.OnEnemyDamaged();
                 StartCoroutine(ResetCheckDamage()); // Atur ulang ke false setelah durasi tertentu.
-                StartCoroutine(ResetAICanAttack());
+                // StartCoroutine(ResetAICanAttack());
                 // ApplyKnockback();
                 // AttackedAnimation(combo);
                 // PlayRandomHitSound();
@@ -190,60 +191,6 @@ namespace ITKombat
                     break;
             }
         }
-
-
-        // [System.Obsolete]
-        // private void OnTriggerEnter2D(Collider2D collision)
-        // {
-        //     if (collision.CompareTag(attackTag))
-        //     {
-        //         Debug.Log("Player attacked by: " + collision.gameObject.name);
-        //         float attackPower = GetDamageFromPlayer();
-        //         Debug.Log("Player attacked power: " + attackPower);
-        //         TakeDamage(attackPower); 
-        //     }
-        // }
-
-        // [System.Obsolete]
-        // public float GetDamageFromPlayer()
-        // {
-        //     PlayerIFAttack playerAttack = FindObjectOfType<PlayerIFAttack>(); // Mengambil dari objek pemain secara global
-        //     if (playerAttack != null)
-        //     {
-        //         float damage = playerAttack.attackPower;
-        //         if (damage > 0)
-        //         {
-        //             return damage; // Pastikan nilai lebih dari 0
-        //         }
-        //     }
-        //     return 0f;
-        // }
-
-        // private void EndGame()
-        // {
-        //     Debug.Log("Game Berakhir");
-        //     // Implementasikan logika end game, bisa panggil UI atau lainnya.
-        // }
-
-        // private void Die()
-        // {
-        //     Debug.Log("Enemy mati!");
-        //     // Implementasi logika kematian enemy
-        // }
-
-        // private void ApplyKnockback()
-        // {
-        //     Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
-        //     rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-        // }
-
-        // private IEnumerator PlayRandomHitAnimation()
-        // {
-        //     string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
-        //     enemyAnimator.SetTrigger(randomHitAnimation);
-        //     yield return new WaitForSeconds(0.5f);
-        //     enemyAnimator.SetTrigger(idleAnimationTrigger);
-        // }
 
         private void PlayRandomHitSound()
         {

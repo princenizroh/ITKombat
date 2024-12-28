@@ -24,7 +24,6 @@ namespace ITKombat
         private Animator animator;
 
         [SerializeField] public Collider2D hitbox;
-        [SerializeField] public GameObject Hiteffect;
 
         // VFX Right
         // [SerializeField] private ParticleSystem Attack1_Right = null;

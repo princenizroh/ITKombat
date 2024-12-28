@@ -74,10 +74,10 @@ namespace ITKombat
             {
                 checkDamage = true;
                 canAttack = false;
-                PlayerIFAttack.Instance.GetCanAttack(canAttack);
-                PlayerDamageChecker.Instance.OnEnemyDamaged();
+                // PlayerIFAttack.Instance.GetCanAttack(canAttack);
+                // PlayerDamageChecker.Instance.OnEnemyDamaged();
                 StartCoroutine(ResetCheckDamage());
-                StartCoroutine(ResetCanAttack());
+                // StartCoroutine(ResetCanAttack());
                 // ApplyKnockback();
                 // Debug.Log(currentHealth);
                 // AttackedAnimation(combo);
