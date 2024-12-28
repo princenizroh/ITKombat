@@ -96,8 +96,8 @@ namespace ITKombat
                 }
 
                 anim.SetTrigger("skill1");
-                PlaySound(skillSound1);
                 isSkill1Active = true;
+                PlaySound(skillSound1);
                 skill1CooldownTimer = skill1Cooldown;
 
                 Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, skill1AttackRadius, enemyLayer);

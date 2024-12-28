@@ -15,6 +15,7 @@ namespace ITKombat
         {
             attacksBlocked = 0;
             skillActive = true;
+            // NewSoundManager.Instance.PlaySound("IF_Skill2", parent.transform.position);
             // Debug.Log("Skill 2 Aktif");
         }
 
@@ -24,7 +25,7 @@ namespace ITKombat
             // Debug.Log("Skill 2 Cooldown");
         }
 
-        public bool BlockAttack()
+        public bool BlockAttack() //tambahkan GameObject parent di argument ini
         {
             if (!skillActive) return false;
 
@@ -36,6 +37,7 @@ namespace ITKombat
                 if (attacksBlocked >= maxBlocks)
                 {
                     skillActive = false;
+                    // NewSoundManager.Instance.PlaySound("IF_Skill2_Pecah", parent.transform.position);
                     Debug.Log("Skill 2 habis");
                 }
 

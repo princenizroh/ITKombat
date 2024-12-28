@@ -30,6 +30,7 @@ namespace ITKombat
                 if (targetPlayerState != null && hitCollider.CompareTag("Enemy"))
                 {
                     targetPlayerState.TakeDamageFromSkill(damage); // Berikan damage ke target menggunakan PlayerState
+                    // NewSoundManager.Instance.PlaySound("Fisika_Skill1", parent.transform.position);
                     Debug.Log("Skill 1 Aktif - Memberikan " + damage + " damage ke " + hitCollider.gameObject.name);
                 }
             }

@@ -14,5 +14,10 @@ namespace ITKombat
         {
             NewSoundManager.Instance.PlaySound2D("Books");
         }
+
+        public void soundSelectChar()
+        {
+            NewSoundManager.Instance.PlaySound2D("Select_Character");
+        }
     }
 }

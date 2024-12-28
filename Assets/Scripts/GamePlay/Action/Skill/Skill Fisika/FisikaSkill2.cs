@@ -19,6 +19,9 @@ namespace ITKombat
             stats.attackPower += attackBuff;
             stats.defensePower += defenseBuff;
 
+            // suara skill 2
+            // NewSoundManager.Instance.PlaySound("Fisika_Skill2", parent.transform.position);
+
             Debug.Log("Attack and defense buffed.");*/
         }
 

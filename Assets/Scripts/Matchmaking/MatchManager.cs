@@ -52,10 +52,10 @@ namespace ITKombat
             // {
             //     Debug.LogError("ServerBattleRoomState.Instance is NULL.");
             // }
-            ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
-            // StartCoroutine(ShowRoundStartNotification(1));
-            StartCoroutine(WaitForPlayer());
+            StartCoroutine(ShowRoundStartNotification(1));
+            // StartCoroutine(WaitForPlayer());
         }
 
         private IEnumerator CountedCoroutine(IEnumerator coroutine)
@@ -68,10 +68,6 @@ namespace ITKombat
             activeCoroutines--;
             Debug.Log($"Coroutine finished. Active coroutines: {activeCoroutines}");
         }
- 
-
-        
-
 
         public void ChangeState(IState newState)
         {
@@ -90,6 +86,8 @@ namespace ITKombat
             playerMovement = FindObjectOfType<PlayerMovement_2>();
             playerMovement.canMove = false; // Atur setelah player ditemukan
         }
+
+        [System.Obsolete]
         private void Awake()
         {
             if (Instance != null && Instance != this) {
@@ -126,14 +124,6 @@ namespace ITKombat
             }
         }
         
-
-    // private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e) {
-    //     if (KitchenGameManager.Instance.IsCountdownToStartActive()) {
-    //         Show();
-    //     } else {
-    //         Hide();
-    //     }
-    // }
         void Update()
         {
             timerText.text = matchTimer.GetStageTimeInSecond().ToString();

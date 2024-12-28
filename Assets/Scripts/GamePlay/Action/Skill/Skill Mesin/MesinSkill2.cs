@@ -28,6 +28,9 @@ namespace ITKombat
                 // Deal damage to the other player
                 target.GetComponent<Health>().TakeDamage(damage);
 
+                // suara skill2 mesin
+                // NewSoundManager.Instance.PlaySound("Mesin_Skill2", parent.transform.position);
+
                 // Apply knockback
                 Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
                 Vector2 knockback = (target.transform.position - parent.transform.position).normalized * knockbackForce;

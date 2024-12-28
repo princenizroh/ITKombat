@@ -30,10 +30,10 @@ namespace ITKombat
             {
                 MusicManager.Instance.PlayMusic("Mars_ITKombat");
             }
-            // else if(currentSceneName == "NewSoundMulti")
-            // {
-            //     MusicManager.Instance.PlayMusic("Battle_2");
-            // }
+            else if(currentSceneName == "NewSoundMulti")
+            {
+                MusicManager.Instance.PlayMusic("Battle_2");
+            }
         }
     };
 };

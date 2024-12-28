@@ -45,7 +45,12 @@ namespace ITKombat
             foreach (Collider2D enemy in hitEnemies)
             {
                 enemy.GetComponent<Health>().TakeDamage(damagePerSecond * Time.deltaTime);
-            }*/
+
+                // suara skill 3 ketika kena
+                // NewSoundManager.Instance.PlaySound("Mesin_Skill3_Hit", parent.transform.position);
+            }*/ 
+
+            // suara skill 3 tidak kena (blm tau taro dimana)
         }
     }
 }

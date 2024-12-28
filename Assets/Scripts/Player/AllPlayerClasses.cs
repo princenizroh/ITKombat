@@ -10,6 +10,6 @@ namespace ITKombat
         public PlayerSkill playerSkill;
         public PlayerState playerState;
         public CharacterController2D1 characterController;
-        public GameManagerButton gameManagerButton;
+        
     }
 }
