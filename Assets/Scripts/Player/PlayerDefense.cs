@@ -17,7 +17,7 @@ namespace ITKombat
         private bool isParrying = false;
 
         [Header("Colliders")]
-        public Transform defensePoint;
+        private BoxCollider2D defensePoint;
         public LayerMask enemyLayer;
         public float defenseRadius = 1f;
 
@@ -25,22 +25,13 @@ namespace ITKombat
         private GameObject parentPlayer;
 
         private AI_Attack aiAttack;
-        private PlayerIFAttack playerAttack;
         public CharacterStat characterStats;
 
         private void Start()
         {
             parentPlayer = transform.root.gameObject;
             anim = GetComponent<Animator>();
- 
-
-            if (aiAttack == null)
-            {
-                Debug.Log("AI_Attack script is missing on the player GameObject!");
-                aiAttack = parentPlayer.GetComponent<AI_Attack>();
-                Debug.Log("Ai_Attack has been assigned");
-            }
-            Debug.Log("Start of PlayerDefense");
+            defensePoint = GetComponent<BoxCollider2D>();
         }
 
         public void StartBlocking()
@@ -64,10 +55,20 @@ namespace ITKombat
             if (collision.CompareTag("Attack"))
             {
                 GameObject attacker = collision.transform.root.gameObject;
-
+                
                 // Handle attacks from both players and AI
-                if (attacker != parentPlayer && (attacker.CompareTag("Enemy") || attacker.GetComponent<AI_Attack>()))
+                if (attacker != parentPlayer && (attacker.CompareTag("Enemy") || (attacker.GetComponent<AI_Attack>() || attacker.GetComponent<PlayerIFAttack>())))
                 {
+                    if (attacker.GetComponent<AI_Attack>() != null)
+                    {
+                        Debug.Log("Attacker has AI_Attack component.");
+                    }
+
+                    // Check if the attacker has PlayerIFAttack component
+                    if (attacker.GetComponent<PlayerIFAttack>() != null)
+                    {
+                        Debug.Log("Attacker has PlayerIFAttack component.");
+                    }
                     // Handle blocking
                     if (isBlocking)
                     {
@@ -146,7 +147,7 @@ namespace ITKombat
 
                 Debug.Log(gameObject.name + " was hit by " + attacker.name + " for " + finalDamage + " damage after mitigation.");
 
-                GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
+                GameObject playerStateObject = GameObject.FindGameObjectWithTag("EnemyState");
                 if (playerStateObject != null)
                 {
                     PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
@@ -249,6 +250,10 @@ namespace ITKombat
             {
                 attack.enabled = false;
             }
+            else 
+            {
+                Debug.Log("PlayerIFAttack not found");
+            }
         }
 
         private IEnumerator EnableAIAttackCooldown(AI_Attack aiAttacker)
@@ -287,8 +292,7 @@ namespace ITKombat
         {
             if (defensePoint == null)
                 return;
-
-            Gizmos.DrawWireSphere(defensePoint.position, defenseRadius);
+            Gizmos.DrawWireSphere(defensePoint.transform.position, defenseRadius);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace ITKombat
     [SerializeField] private Transform m_GroundCheck;                            
     [SerializeField] private Transform m_CeilingCheck;                          
     [SerializeField] private Collider2D m_CrouchDisableCollider;                
+    [SerializeField] private Transform m_meleeHitbox;
     const float k_GroundedRadius = .2f;
     private bool m_Grounded;         
     const float k_CeilingRadius = .2f; 

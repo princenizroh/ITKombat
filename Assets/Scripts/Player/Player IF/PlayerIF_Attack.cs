@@ -151,13 +151,14 @@ namespace ITKombat
                 {
                     Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
                     AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
+                    PlayerDefense enemyPlayerDefense = enemy.GetComponent<PlayerDefense>();
 
-                    if (enemyDefense != null && enemyDefense.isBlocking)
+                    if ((enemyDefense != null && enemyDefense.isBlocking) || (enemyPlayerDefense != null && enemyPlayerDefense.isBlocking))
                     {
                         isBlocked = true; // Mark if at least one enemy is blocking
                     }
 
-                    if (enemyRb != null && !enemyDefense.isBlocking)
+                    if ((enemyRb != null && !enemyDefense.isBlocking) || (enemyRb != null && !enemyPlayerDefense.isBlocking))
                     {
                         GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
 

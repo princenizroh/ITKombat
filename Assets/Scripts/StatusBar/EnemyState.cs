@@ -48,8 +48,9 @@ namespace ITKombat
         public void TakeDamage(float damage)
         {   
             currentHealth -= damage;
+            Debug.Log("currentHealth " + currentHealth);
             healthBar.UpdateHealth(currentHealth, maxHealth);
-            
+            Debug.Log("currentHealth " + currentHealth);
             if (currentHealth <= 0)
             {
                 HandleDeath();
@@ -58,8 +59,15 @@ namespace ITKombat
             {
                 checkDamage = true;
                 canAttack = false;
-                AI_Attack.Instance.GetCanAttack(canAttack);
-                // Debug.Log("Check Damage" + checkDamage);
+                if (AI_Attack.Instance != null)
+                {
+                    AI_Attack.Instance.GetCanAttack(canAttack);
+                }
+                else
+                {
+                    Debug.LogWarning("AI_Attack.Instance is null. Skipping GetCanAttack.");
+                }
+                Debug.Log("Check Damage" + checkDamage);
 
                 // Debug.Log("Memanggil OnEnemyDamaged");
                 AIDamageChecker.Instance.OnEnemyDamaged();

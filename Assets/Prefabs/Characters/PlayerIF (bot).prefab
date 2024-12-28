@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 6084800645355281657}
   m_Layer: 6
   m_Name: Melee Hitbox
-  m_TagString: Untagged
+  m_TagString: Attack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -246,7 +246,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.01, y: -0.08}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -256,7 +256,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.1, y: 0.22}
   m_EdgeRadius: 0
 --- !u!1 &3081762322249640699
 GameObject:
@@ -455,7 +455,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.05}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -465,7 +465,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.3, y: 0.6}
+  m_Size: {x: 0.2, y: 0.5}
   m_EdgeRadius: 0
 --- !u!114 &9060320860004429869
 MonoBehaviour:
@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 312777763
+  GlobalObjectIdHash: 1862217965
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -526,7 +526,7 @@ MonoBehaviour:
   maxDistance: 15
   facingPlayer: 1
   canMove: 1
-  canJump: 1
+  canJump: 0
   player: {fileID: 0}
 --- !u!114 &7635275804717148313
 MonoBehaviour:
@@ -543,7 +543,7 @@ MonoBehaviour:
   attackRange: 3
   attackPower: 3
   attackRadius: 1
-  attackPoint: {fileID: 3048261050815633105}
+  attackPoint: {fileID: 5725473673307342431}
   attackCooldown: 1
   comboResetTime: 1
   maxCombo: 4

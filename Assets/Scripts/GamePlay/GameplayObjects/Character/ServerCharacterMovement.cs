@@ -21,14 +21,17 @@ namespace ITKombat
         private bool canDash = true;
         private bool isDashing = false;
 
-        [SerializeField] private float moveSpeed = 50f;
+        [SerializeField] private float moveSpeed = 25f;
         float horizontalMove = 0f;
+        
         private bool isBlocking = false;
         private bool isCrouching = false;
         private bool isCrouchAttacking = false;
         bool useKeyboardInput = true;
         bool jump = false;
         public bool canMove = true;
+        private bool isWalking = false;
+        private bool isWalkingSoundPlaying = false;
         // [SerializeField] private List<Vector3> spawnPositionList;
         // [SerializeField] private CharacterSelectVisual characterSelectVisual;
         private void Start()
@@ -46,6 +49,10 @@ namespace ITKombat
 
         private void Update()
         {
+            if(isWalkingSoundPlaying)
+            {
+                NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
+            }
             if (!IsOwner) return;
 
             TestingKey();
@@ -72,6 +79,10 @@ namespace ITKombat
             {
                 // Continuously trigger block animation while blocking
                 anim.SetTrigger("Block");
+            }
+            if (isWalking)
+            {
+                anim.SetTrigger("Walk");
             }
         }
 
@@ -146,21 +157,31 @@ namespace ITKombat
         public void OnMoveLeft()
         {
             if (canMove)
+            {
+                isWalking = true;
                 useKeyboardInput = false;
                 horizontalMove = -moveSpeed;
                 anim.SetTrigger("Walk");
+                isWalkingSoundPlaying = true;
+            }
         }
 
         public void OnMoveRight()
         {
             if (canMove)
+            {
+                isWalking = true;
                 useKeyboardInput = false;
                 horizontalMove = moveSpeed;
                 anim.SetTrigger("Walk");
+                isWalkingSoundPlaying = true;
+            }
         }
 
         public void OnStopMoving()
         {
+            isWalking = false;
+            isWalkingSoundPlaying = false;
             useKeyboardInput = false;
             horizontalMove = 0f;
             anim.SetTrigger("Idle");
@@ -170,18 +191,22 @@ namespace ITKombat
         {
             jump = true;
             anim.SetTrigger("Jump");
+            NewSoundManager.Instance.PlaySound("Jump", transform.position);
         }
 
         public void OnCrouchDown()
         {
             isCrouching = true;
             anim.SetTrigger("Crouch");
+            NewSoundManager.Instance.PlaySound("Crouch", transform.position);
+            Debug.Log("Player is crouching");
         }
 
         public void OnCrouchUp()
         {
             isCrouching = false;
             anim.SetTrigger("Idle");
+            Debug.Log("Player stopped crouching");
         }
         // Metode untuk mulai block
         public void OnBlockDown()
@@ -229,6 +254,7 @@ namespace ITKombat
             isDashing = true;
             canDash = false;
             anim.SetTrigger("Dash");
+            NewSoundManager.Instance.PlaySound("Dash", transform.position);
 
             float dashDirection = controller.m_FacingRight ? 1f : -1f;
             controller.Dash(dashSpeed * dashDirection, dashDuration);

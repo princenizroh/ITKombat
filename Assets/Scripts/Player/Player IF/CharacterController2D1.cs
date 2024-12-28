@@ -14,7 +14,7 @@ public class CharacterController2D1 : NetworkBehaviour
     [SerializeField] private Transform m_GroundCheck;                            
     [SerializeField] private Transform m_CeilingCheck;                          
     // [SerializeField] private Collider2D m_CrouchDisableCollider;
-    [SerializeField] private BoxCollider2D meleeHitbox;
+    [SerializeField] private Transform meleeHitbox;
     const float k_GroundedRadius = .2f;
     private bool m_Grounded;         
     const float k_CeilingRadius = .2f; 
@@ -31,6 +31,8 @@ public class CharacterController2D1 : NetworkBehaviour
 
     private SpriteRenderer spriteRenderer;
     public bool IsFacingRight => m_FacingRight;
+    private NetworkVariable<bool> isFacingRight = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
 
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
@@ -46,6 +48,9 @@ public class CharacterController2D1 : NetworkBehaviour
             OnCrouchEvent = new BoolEvent();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        isFacingRight.Value = m_FacingRight;
+        Debug.Log("isFacingRight: " + isFacingRight.Value);
+        Debug.Log("m_FacingRight: " + m_FacingRight);
     }
 
     private void FixedUpdate()
@@ -144,12 +149,12 @@ public class CharacterController2D1 : NetworkBehaviour
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         m_FacingRight = !m_FacingRight;
-        BoxCollider2D hitboxCollider = meleeHitbox.GetComponent<BoxCollider2D>();
+        
         if (meleeHitbox != null)
         {
-            Vector2 offset = meleeHitbox.offset;
-            offset.x = -offset.x; // Balik posisi X offset
-            meleeHitbox.offset = offset;
+            Vector3 hitBoxScale= meleeHitbox.localScale;
+            hitBoxScale.x *= -1;  // Balik posisi X offset
+            meleeHitbox.localScale = hitBoxScale;
         }
         /*
                 Vector3 theScale = transform.localScale;
