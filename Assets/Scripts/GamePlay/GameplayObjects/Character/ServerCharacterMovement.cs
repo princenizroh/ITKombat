@@ -1,18 +1,14 @@
-using UnityEngine;
+using UnityEngine; 
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using System;
-using Unity.Collections;
-using NUnit.Framework.Internal;
+
 namespace ITKombat
 {
     public class ServerCharacterMovement : NetworkBehaviour
     {
-        // private PlayerController2D controller;
         public static ServerCharacterMovement LocalInstance { get; private set; }
         private CharacterController2D1 controller;
-        public static event EventHandler OnAnyPlayerSpawned;
         private Animator anim;
 
         public float dashSpeed = 50f;
@@ -22,173 +18,168 @@ namespace ITKombat
         private bool isDashing = false;
 
         [SerializeField] private float moveSpeed = 25f;
-        float horizontalMove = 0f;
-        
+        private float horizontalMove = 0f;
+
         private bool isBlocking = false;
         private bool isCrouching = false;
-        private bool isCrouchAttacking = false;
-        bool useKeyboardInput = true;
-        bool jump = false;
-        public bool canMove = true;
         private bool isWalking = false;
         private bool isWalkingSoundPlaying = false;
-        // [SerializeField] private List<Vector3> spawnPositionList;
-        // [SerializeField] private CharacterSelectVisual characterSelectVisual;
+        public bool canMove = true;
+        public bool jump = false;
+        private string currentAnimationState = "";
+        private float animationCooldown = 0.1f; // waktu cooldown animasi
+        private float lastAnimationTime = 0f;
+
+        private NetworkVariable<PlayerState> playerStateNetwork = 
+            new NetworkVariable<PlayerState>(PlayerState.Idle, 
+            NetworkVariableReadPermission.Everyone, 
+            NetworkVariableWritePermission.Server);
+
+        private enum PlayerState
+        {
+            Idle,
+            Walking,
+            Jumping,
+            Blocking,
+        }
+
         private void Start()
         {
             anim = GetComponent<Animator>();
-            // controller = GetComponent<PlayerController2D>();  // Ubah kode ini untuk flip yang udah benar menggunakan spriterenderer
             controller = GetComponent<CharacterController2D1>();
+
             if (IsServer)
             {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             }
-            // PlayerDataMultiplayer playerData = GameMultiplayerManager.Instance.GetPlayerDataFromClientId(OwnerClientId);
-            // characterSelectVisual.SetPlayerPrefab(GameMultiplayerManager.Instance.GetPlayerPrefab(playerData.prefabId));
+
+            playerStateNetwork.OnValueChanged += OnPlayerStateChanged;
         }
 
         private void Update()
         {
-            if(isWalkingSoundPlaying)
+            if (isWalkingSoundPlaying)
             {
                 NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
             }
-            if (!IsOwner) return;
-
-            TestingKey();
-            
-
+            if (IsOwner) return;
             if (!canMove)
             {
-                horizontalMove = 0f;  // Player can't move if canMove is false
+                horizontalMove = 0f;
+                ChangeAnimationState("Idle");
                 return;
             }
 
             if (isCrouching)
             {
-                // Continuously trigger crouch animation while crouching
-                anim.SetTrigger("Crouch");
+                ChangeAnimationState("Crouch");
             }
-            
             else if (!isCrouching && horizontalMove == 0 && !jump && !isDashing)
             {
-                anim.SetTrigger("Idle");
+                ChangeAnimationState("Idle");
             }
-            
+            else if (isWalking)
+            {
+                ChangeAnimationState("Walk");
+            }
+
             if (isBlocking)
             {
-                // Continuously trigger block animation while blocking
-                anim.SetTrigger("Block");
-            }
-            if (isWalking)
-            {
-                anim.SetTrigger("Walk");
+                ChangeAnimationState("Block");
             }
         }
 
-        public override void OnNetworkSpawn()
-        {
-            if (IsOwner)
-            {
-                LocalInstance = this;
-            }
-            
-            // transform.position = spawnPositionList[NetworkManager.Singleton.ConnectedClients.Count - 1]; 
-            //  transform.position = spawnPositionList[(int)OwnerClientId];
-            // transform.position = spawnPositionList[GameMultiplayerManager.Instance.GetPlayerDataIndexFromClientId(OwnerClientId)]; 
-            // OnAnyPlayerSpawned?.Invoke(this, EventArgs.Empty);
-
-            if (IsServer)
-            {
-                NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
-            }
-        }
-        private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
-        {
-            if (clientId == OwnerClientId)
-            {
-                Debug.Log("Server disconnected");
-            }
-        }
         private void FixedUpdate()
         {
-            if (canMove && !isDashing)
+            if (!IsOwner) return;
+
+            if (!isDashing)
             {
-                controller.Move(horizontalMove * Time.deltaTime, isCrouching, jump);
-            }
-            jump = false;
-        }
-        private void TestingKey()
-        { 
-            if (canMove && useKeyboardInput)
-            {
-                horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
-
-                if (Input.GetButtonDown("Crouch"))
-                {
-                    OnCrouchDown();
-                }
-                else if (Input.GetButtonUp("Crouch"))
-                {
-                    OnCrouchUp();
-                }
-                // Handle dash input (e.g., double-tap right or press a dash key)
-                if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
-                {
-                    StartCoroutine(Dash());
-                }
-
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    OnJump();
-                }
-
-                if (Input.GetKey(KeyCode.E))
-                {
-                    OnBlockDown();
-                }
-                else
-                {
-                    OnBlockUp();
-                }
-               
+                controller.Move(horizontalMove * Time.deltaTime, isCrouching, false);
             }
         }
+
+        private void UpdateAnimation(PlayerState state)
+        {
+            string currentStateName = anim.GetCurrentAnimatorStateInfo(0).IsName(state.ToString()) ? state.ToString() : "";
+            if (currentStateName == state.ToString()) return;
+            switch (state)
+            {
+                case PlayerState.Idle:
+                    anim.SetTrigger("Idle");
+                    break;
+                case PlayerState.Walking:
+                    anim.SetTrigger("Walk");
+                    break;
+                case PlayerState.Jumping:
+                    anim.SetTrigger("Jump");
+                    break;
+                case PlayerState.Blocking:
+                    anim.SetTrigger("Block");
+                    break;
+            }
+        }
+        private void ChangeAnimationState(string newState)
+        {
+            if (currentAnimationState == newState || Time.time - lastAnimationTime < animationCooldown) return;
+
+            anim.SetTrigger(newState);
+            currentAnimationState = newState;
+            lastAnimationTime = Time.time;
+        }
+
+
+        private void OnPlayerStateChanged(PlayerState oldState, PlayerState newState)
+        {
+            if (oldState == newState) return;
+            Debug.Log($"[Client] State changed from {oldState} to {newState}");
+            UpdateAnimation(newState);
+        }
+
+        [ServerRpc]
+        private void UpdatePlayerStateServerRpc(PlayerState newState)
+        {
+            Debug.Log($"[Server] Updating state to {newState}");
+            if (playerStateNetwork.Value != newState)
+            {
+                playerStateNetwork.Value = newState;
+            }
+        }
+
         public void OnMoveLeft()
         {
-            if (canMove)
-            {
-                isWalking = true;
-                useKeyboardInput = false;
-                horizontalMove = -moveSpeed;
-                anim.SetTrigger("Walk");
-                isWalkingSoundPlaying = true;
-            }
+            if (!canMove || horizontalMove < 0) return;
+
+            isWalking = true;
+            horizontalMove = -moveSpeed;
+            isWalkingSoundPlaying = true;
+            UpdatePlayerStateServerRpc(PlayerState.Walking);
         }
+        
 
         public void OnMoveRight()
         {
-            if (canMove)
-            {
-                isWalking = true;
-                useKeyboardInput = false;
-                horizontalMove = moveSpeed;
-                anim.SetTrigger("Walk");
-                isWalkingSoundPlaying = true;
-            }
+            if (!canMove || horizontalMove > 0) return;
+
+            isWalking = true;
+            horizontalMove = moveSpeed;
+            isWalkingSoundPlaying = true;
+            UpdatePlayerStateServerRpc(PlayerState.Walking);
         }
 
         public void OnStopMoving()
         {
+            if (horizontalMove == 0) return;
             isWalking = false;
-            isWalkingSoundPlaying = false;
-            useKeyboardInput = false;
             horizontalMove = 0f;
-            anim.SetTrigger("Idle");
+            isWalkingSoundPlaying = false;
+            UpdatePlayerStateServerRpc(PlayerState.Idle);
         }
 
         public void OnJump()
         {
+            if (!canMove) return;
+
             jump = true;
             anim.SetTrigger("Jump");
             NewSoundManager.Instance.PlaySound("Jump", transform.position);
@@ -199,54 +190,31 @@ namespace ITKombat
             isCrouching = true;
             anim.SetTrigger("Crouch");
             NewSoundManager.Instance.PlaySound("Crouch", transform.position);
-            Debug.Log("Player is crouching");
         }
 
         public void OnCrouchUp()
         {
             isCrouching = false;
             anim.SetTrigger("Idle");
-            Debug.Log("Player stopped crouching");
         }
-        // Metode untuk mulai block
+
         public void OnBlockDown()
         {
             isBlocking = true;
-            anim.SetTrigger("Block"); // Memicu animasi Block
+            anim.SetTrigger("Block");
         }
 
         public void OnBlockUp()
         {
             isBlocking = false;
-            anim.SetTrigger("Idle"); // Kembali ke animasi Idle setelah block selesai
-        }
-
-        public void OnCrouchAttack()
-        {
-            if (isCrouching && !isCrouchAttacking)
-            {
-                Debug.Log("Player is performing a crouch attack");
-                anim.SetTrigger("CrouchAttack");
-                isCrouchAttacking = true;
-
-                StartCoroutine(CrouchAttackCooldown(0.5f));
-            }
-        }
-
-        public bool IsCrouching { get { return isCrouching; } }
-
-        private IEnumerator CrouchAttackCooldown(float duration)
-        {
-            yield return new WaitForSeconds(duration);
-            isCrouchAttacking = false;
+            anim.SetTrigger("Idle");
         }
 
         public void OnDash()
         {
-            if (canDash)
-            {
-                StartCoroutine(Dash());
-            }
+            if (!canDash) return;
+
+            StartCoroutine(Dash());
         }
 
         private IEnumerator Dash()
@@ -265,6 +233,14 @@ namespace ITKombat
 
             yield return new WaitForSeconds(dashCooldown);
             canDash = true;
+        }
+
+        private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+        {
+            if (clientId == OwnerClientId)
+            {
+                Debug.Log("Server disconnected");
+            }
         }
     }
 }
