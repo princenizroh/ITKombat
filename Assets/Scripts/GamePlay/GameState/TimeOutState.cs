@@ -48,12 +48,12 @@ namespace ITKombat
             }
             else
             {
-                if (matchManager.playerState.currentHealth == matchManager.enemyState.currentHealth)
+                if (matchManager.playerState.currentHealth == matchManager.enemyState.currentHealth.Value)
                 {
                     matchManager.timeoutToTimer.text = "DRAW";
                     Debug.Log("Draw");
                 }
-                else if (matchManager.playerState.currentHealth > matchManager.enemyState.currentHealth)
+                else if (matchManager.playerState.currentHealth > matchManager.enemyState.currentHealth.Value)
                 {
                     matchManager.PlayerVictory();
                     Debug.Log("Player Win by health");

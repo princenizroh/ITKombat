@@ -38,7 +38,7 @@ namespace ITKombat
                 EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                 if (enemyState != null)
                 {
-                    if (enemyState.currentHealth <= enemyState.maxHealth * 0.7f && chance < skill1Chance)
+                    if (enemyState.currentHealth.Value <= enemyState.maxHealth.Value * 0.7f && chance < skill1Chance)
                     {
                         skillsHolder.ActivateSkill2();
                     }

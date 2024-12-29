@@ -135,7 +135,7 @@ namespace ITKombat
                             if (enemyState != null)
                             {
                                 ApplyKnockback(enemy,combo);
-                                enemyState.TakeDamage(attackPower);
+                                enemyState.TakeDamageServerRpc(attackPower);
                             }
                         }
                         else
