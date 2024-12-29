@@ -3,13 +3,11 @@ using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using System.Threading.Tasks;
-using System.Linq;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
-using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
+
 
 namespace ITKombat
 {
@@ -65,7 +63,7 @@ namespace ITKombat
                 if (dependencyStatus == DependencyStatus.Available)
                 {
                     //If they are avalible Initialize Firebase
-                    // InitializeFirebase();
+                    InitializeFirebase();
                 }
                 else
                 {
@@ -78,7 +76,7 @@ namespace ITKombat
         {
             // Initialize the CustomSceneManager
             customSceneManager = new CustomSceneManager();
-            InitializeFirebase();
+            // InitializeFirebase();
         }
 
         private void InitializeFirebase()
