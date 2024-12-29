@@ -549,6 +549,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9802369}
+  - component: {fileID: 9802371}
   - component: {fileID: 9802370}
   m_Layer: 0
   m_Name: EnemyStateSystem
@@ -584,8 +585,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce418386f2ee9546832036dc05acb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth:
+    m_InternalValue: 100
+  currentHealth:
+    m_InternalValue: 100
   attackTag: Attack
   healthBar: {fileID: 958082479}
   matchManager: {fileID: 947725189}
@@ -599,6 +603,31 @@ MonoBehaviour:
   knockbackForce: 1
   checkDamage: 0
   canAttack: 0
+--- !u!114 &9802371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9802368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1174082977
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &10709375
 GameObject:
   m_ObjectHideFlags: 0
@@ -15601,6 +15630,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 472047334}
+  - component: {fileID: 472047336}
   - component: {fileID: 472047335}
   m_Layer: 0
   m_Name: PlayerStateSystem
@@ -15636,9 +15666,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8681b938b58ba8147a28b0235399a65f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   stateMachine: {fileID: 0}
-  maxHealth: 100
-  currentHealth: 0
+  maxHealth:
+    m_InternalValue: 100
+  currentHealth:
+    m_InternalValue: 100
   attackTag: Attack
   healthBar: {fileID: 477051914}
   matchManager: {fileID: 947725189}
@@ -15652,6 +15685,31 @@ MonoBehaviour:
   knockbackForce: 1
   canAttack: 0
   checkDamage: 0
+--- !u!114 &472047336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 472047333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3882696291
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &477051914 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5725557622391810209, guid: bee6d146361f093438d328912436ffbb, type: 3}
@@ -43208,6 +43266,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2372064731142742259, guid: 9e7a790042a28224e883f297dff49164, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1229629347}
     - targetCorrespondingSourceObject: {fileID: 7141050312273056136, guid: 9e7a790042a28224e883f297dff49164, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1229629353}
@@ -43237,6 +43298,11 @@ MonoBehaviour:
 --- !u!1 &1229629342 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2474046058576007019, guid: 9e7a790042a28224e883f297dff49164, type: 3}
+  m_PrefabInstance: {fileID: 1229629339}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1229629343 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2372064731142742259, guid: 9e7a790042a28224e883f297dff49164, type: 3}
   m_PrefabInstance: {fileID: 1229629339}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1229629344 stripped
@@ -43272,6 +43338,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1229629347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229629343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2761752109
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &1229629349 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7827500495666293364, guid: 9e7a790042a28224e883f297dff49164, type: 3}
@@ -67759,7 +67850,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5965319745082861204, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: timerStart
-      value: 5
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 5965319745082861204, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: statusMatch

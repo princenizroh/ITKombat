@@ -652,6 +652,7 @@ GameObject:
   - component: {fileID: 6465470303988156125}
   - component: {fileID: -5085211008805681587}
   - component: {fileID: 8658192427048226887}
+  - component: {fileID: 2401844188546915755}
   m_Layer: 6
   m_Name: PlayerIFNetwork
   m_TagString: Player
@@ -946,7 +947,7 @@ MonoBehaviour:
   dashSpeed: 50
   dashDuration: 0.2
   dashCooldown: 1
-  moveSpeed: 50
+  moveSpeed: 10
   canMove: 1
 --- !u!114 &6431890359573803304
 MonoBehaviour:
@@ -1230,6 +1231,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _teamIndex: 2
+--- !u!114 &2401844188546915755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5241197333450775901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e6dd2f3ae58c84a814478767f9de62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockCooldown: 1
+  isBlocking: 0
+  defenseMultiplier: 0.7
+  parryWindow: 0.2
+  parryDamage: 10
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 192
+  defenseRadius: 1
+  characterStats: {fileID: 11400000, guid: 6116ba2c7533cb943b4dee504b9dad49, type: 2}
 --- !u!1 &5244280488557939331
 GameObject:
   m_ObjectHideFlags: 0
