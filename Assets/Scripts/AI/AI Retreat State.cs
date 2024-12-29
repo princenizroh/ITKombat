@@ -20,7 +20,7 @@ namespace ITKombat
             aiMovement.Retreat();
             steps = aiMovement.movementStep;
 
-            if (steps >= 1){ 
+            if (steps >= 0.5){ 
                 if (distance <= aiAttack.attackRange)
                 {
                     aiMovement.StopMovement();
@@ -33,7 +33,7 @@ namespace ITKombat
                             manager.SwitchState(manager.DefenseState); // 30% bertahan
                         }
                 }
-                else if (steps >= aiMovement.maxStep || distance > aiMovement.maxDistance)
+                else if (steps >= aiMovement.timeMoving || distance > aiMovement.maxDistance)
                 {
                     manager.SwitchState(manager.IdleState);
                 }

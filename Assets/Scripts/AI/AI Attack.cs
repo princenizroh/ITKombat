@@ -7,11 +7,11 @@ namespace ITKombat
     public class AI_Attack : MonoBehaviour
     {
         public static AI_Attack Instance;
-        public float attackRange = 2.7f;         // Range within which the enemy can attack
+        public float attackRange = 0.35f;         // Range within which the enemy can attack
         public float attackPower = 3f;
-        public float attackRadius = 1f;
+        public float attackRadius = 0.2f;
         public Transform attackPoint;
-        public float attackCooldown = 2f;      // Cooldown between each attack
+        public float attackCooldown = 0.7f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack
@@ -166,8 +166,6 @@ namespace ITKombat
         }
          private void AttackAnimation(Collider2D[] hitPlayer, bool isBlocked)
         {
-            CharacterController2D1 character = GetComponent<CharacterController2D1>();
-            if (character == null) return;
             switch (currentCombo)
             {
                 case 1:
@@ -353,6 +351,7 @@ namespace ITKombat
         private void OnDrawGizmosSelected()
         {
             if (attackPoint == null) return;
+            Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }

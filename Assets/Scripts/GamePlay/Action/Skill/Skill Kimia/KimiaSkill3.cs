@@ -14,6 +14,9 @@ namespace ITKombat
 /*            var playerStats = parent.GetComponent<PlayerStats>(); // Assuming there's a PlayerStats script
             playerStats.attackPower *= attackBoostMultiplier;
             playerStats.defensePower *= defenseBoostMultiplier;
+
+            // suara skill 3 
+            // NewSoundManager.Instance.PlaySound("Kimia_Skill3", parent.transform.position);
             Debug.Log("Attack and defense boosted.")*/;
         }
 

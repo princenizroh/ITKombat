@@ -873,7 +873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboard: 0
   leaderboardCanvas: {fileID: 448132913}
-  exitButton: {fileID: 0}
+  exitButton: {fileID: 662181278}
   canvasDead: {fileID: 787333233}
   pauseButton: {fileID: 0}
   outline: {fileID: 1842973978}
@@ -5383,6 +5383,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 835865081}
+        m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
+        m_MethodName: soundButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &741574741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7878,6 +7890,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1134995141}
+  - component: {fileID: 1134995142}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -7903,6 +7916,22 @@ Transform:
   - {fileID: 698277278}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1134995142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134995140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e81de3af58f839b41b5f4c0dfdcd8dee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerdata: {fileID: 11400000, guid: 5304e22bb01192246a07c8ced449bd7b, type: 2}
+  playerName: {fileID: 2094199173}
+  playerUkt: {fileID: 268002067}
+  playerDanus: {fileID: 183027253}
 --- !u!1 &1148335316
 GameObject:
   m_ObjectHideFlags: 0
@@ -10482,8 +10511,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mode: 0
-  PageFlipTime: 1
-  TimeBetweenPages: 1
+  PageFlipTime: 0.1
+  TimeBetweenPages: 0.1
   DelayBeforeStarting: 0
   AutoStartFlip: 0
   ControledBook: {fileID: 0}
@@ -12533,6 +12562,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 835865081}
+        m_TargetAssemblyTypeName: ITKombat.Button_Click, Assembly-CSharp
+        m_MethodName: soundButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1993746295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13597,6 +13638,26 @@ PrefabInstance:
       propertyPath: actionButtonImage
       value: 
       objectReference: {fileID: 1444533507}
+    - target: {fileID: 1690286861129067624, guid: ff4270fba0f3a4f4abb3b9dd7699ff2c, type: 3}
+      propertyPath: interactionSprites.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1690286861129067624, guid: ff4270fba0f3a4f4abb3b9dd7699ff2c, type: 3}
+      propertyPath: interactionSprites.Array.data[3].sprite
+      value: 
+      objectReference: {fileID: 633218748477426386, guid: d092884bc8c94704c9768843013b4214, type: 3}
+    - target: {fileID: 1690286861129067624, guid: ff4270fba0f3a4f4abb3b9dd7699ff2c, type: 3}
+      propertyPath: interactionSprites.Array.data[4].sprite
+      value: 
+      objectReference: {fileID: 3496996903020787579, guid: 13145c7596a161045838808473a0fdb6, type: 3}
+    - target: {fileID: 1690286861129067624, guid: ff4270fba0f3a4f4abb3b9dd7699ff2c, type: 3}
+      propertyPath: interactionSprites.Array.data[3].tagName
+      value: TopUp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1690286861129067624, guid: ff4270fba0f3a4f4abb3b9dd7699ff2c, type: 3}
+      propertyPath: interactionSprites.Array.data[4].tagName
+      value: ShopItem
+      objectReference: {fileID: 0}
     - target: {fileID: 3454932741231133774, guid: ff4270fba0f3a4f4abb3b9dd7699ff2c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.926

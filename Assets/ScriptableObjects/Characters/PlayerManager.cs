@@ -20,7 +20,7 @@ public class PlayerManager : MonoBehaviour
             playerData.audioPlayerTest.PlayBackgroundMusic();
             playerData.characterController.Move(playerData.moveSpeed, false, false);
             playerData.playerState.UpdateHealth();
-            playerData.playerAttack.PerformAttack();
+            playerData.playerAttack.OnButtonDown();
         }
     }
 }

@@ -18,6 +18,7 @@ namespace ITKombat
             // Instantiate AoE effect at a specific point
             aoeInstance = Instantiate(aoePrefab, parent.transform.position, Quaternion.identity);
             isAoEActive = true;
+            // NewSoundManager.Instance.PlaySound("Fisika_Skill3", parent.transform.position);
             Debug.Log("AoE slow activated.");
         }
 

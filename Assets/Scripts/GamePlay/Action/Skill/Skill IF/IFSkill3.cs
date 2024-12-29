@@ -11,6 +11,7 @@ namespace ITKombat
         {
             // Mulai efek menghilang pada karakter
             parent.GetComponent<MonoBehaviour>().StartCoroutine(VanishEffect(parent));
+            // NewSoundManager.Instance.PlaySound("IF_Skill3_1", parent.transform.position);
             Debug.Log("Skill 3 Aktif - Karakter menghilang sementara");
         }
 
@@ -44,6 +45,7 @@ namespace ITKombat
             if (spriteRenderer != null)
             {
                 spriteRenderer.enabled = true; // Menampilkan kembali sprite
+                // NewSoundManager.Instance.PlaySound("IF_Skill3_2", parent.transform.position);
             }
 
             // Menghapus event cancel vanish

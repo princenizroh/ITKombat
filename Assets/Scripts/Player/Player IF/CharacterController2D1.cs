@@ -1,9 +1,11 @@
 using System.Collections;
+using ITKombat;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem.EnhancedTouch;
 
-public class CharacterController2D1 : MonoBehaviour
+public class CharacterController2D1 : NetworkBehaviour
 {
     [SerializeField] private float m_JumpForce = 250f;                          
     [Range(0, 1)][SerializeField] private float m_CrouchSpeed = .36f;            
@@ -12,7 +14,8 @@ public class CharacterController2D1 : MonoBehaviour
     [SerializeField] private LayerMask m_WhatIsGround;                          
     [SerializeField] private Transform m_GroundCheck;                            
     [SerializeField] private Transform m_CeilingCheck;                          
-    [SerializeField] private Collider2D m_CrouchDisableCollider;                
+    // [SerializeField] private Collider2D m_CrouchDisableCollider;
+    [SerializeField] private Transform meleeHitbox;
     const float k_GroundedRadius = .2f;
     private bool m_Grounded;         
     const float k_CeilingRadius = .2f; 
@@ -29,6 +32,8 @@ public class CharacterController2D1 : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     public bool IsFacingRight => m_FacingRight;
+    private NetworkVariable<bool> isFacingRight = new NetworkVariable<bool>(true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
 
     [System.Serializable]
     public class BoolEvent : UnityEvent<bool> { }
@@ -44,6 +49,9 @@ public class CharacterController2D1 : MonoBehaviour
             OnCrouchEvent = new BoolEvent();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        isFacingRight.Value = m_FacingRight;
+        Debug.Log("isFacingRight: " + isFacingRight.Value);
+        Debug.Log("m_FacingRight: " + m_FacingRight);
     }
 
     private void FixedUpdate()
@@ -94,13 +102,13 @@ public class CharacterController2D1 : MonoBehaviour
                     m_wasCrouching = true;
                     OnCrouchEvent.Invoke(true);
                 }
-                if (m_CrouchDisableCollider != null)
-                    m_CrouchDisableCollider.enabled = false;
+                // if (m_CrouchDisableCollider != null)
+                //     m_CrouchDisableCollider.enabled = false;
             }
             else
             {
-                if (m_CrouchDisableCollider != null)
-                    m_CrouchDisableCollider.enabled = true;
+                // if (m_CrouchDisableCollider != null)
+                //     m_CrouchDisableCollider.enabled = true;
 
                 if (m_wasCrouching)
                 {
@@ -120,11 +128,25 @@ public class CharacterController2D1 : MonoBehaviour
 
             if (move > 0 && !m_FacingRight)
             {
-                Flip();
+                if(GetComponent<ServerCharacterMovement>())
+                {
+                    FlipServerRpc(true);
+                }
+                else if(GetComponent<PlayerMovement_2>())
+                {
+                    Flip();
+                } 
             }
             else if (move < 0 && m_FacingRight)
             {
-                Flip();
+                if(GetComponent<ServerCharacterMovement>())
+                {
+                    FlipServerRpc(false);
+                }
+                else if(GetComponent<PlayerMovement_2>())
+                {
+                    Flip();
+                } 
             }
         }
     }
@@ -138,14 +160,39 @@ public class CharacterController2D1 : MonoBehaviour
         }
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void FlipServerRpc(bool facingRight)
+    {
+        if (isFacingRight.Value != facingRight)
+        {
+            isFacingRight.Value = facingRight;
+            FlipClientRpc(facingRight);
+        }
+    }
+
+    [ClientRpc]
+    public void FlipClientRpc(bool facingRight)
+    {
+        spriteRenderer.flipX = !facingRight;
+        m_FacingRight = facingRight;
+        if (meleeHitbox != null)
+        {
+            Vector3 hitBoxScale = meleeHitbox.localScale;
+            hitBoxScale.x *= -1;  // Balik posisi X offset
+            meleeHitbox.localScale = hitBoxScale;
+        }
+    }
     public void Flip()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
         m_FacingRight = !m_FacingRight;
-        /*
-                Vector3 theScale = transform.localScale;
-                theScale.x *= -1;
-                transform.localScale = theScale;*/
+        
+        if (meleeHitbox != null)
+        {
+            Vector3 hitBoxScale= meleeHitbox.localScale;
+            hitBoxScale.x *= -1; 
+            meleeHitbox.localScale = hitBoxScale;
+        }
     }
 
     public void Dash(float dashSpeed, float dashDuration)

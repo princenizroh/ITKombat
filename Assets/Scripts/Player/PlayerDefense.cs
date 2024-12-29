@@ -17,33 +17,21 @@ namespace ITKombat
         private bool isParrying = false;
 
         [Header("Colliders")]
-        public Transform defensePoint;
+        private BoxCollider2D defensePoint;
         public LayerMask enemyLayer;
         public float defenseRadius = 1f;
 
         private Animator anim;
         private GameObject parentPlayer;
-        private PlayerState playerState;
 
         private AI_Attack aiAttack;
-        private PlayerIFAttack playerAttack;
         public CharacterStat characterStats;
 
         private void Start()
         {
             parentPlayer = transform.root.gameObject;
             anim = GetComponent<Animator>();
-            playerState = parentPlayer.GetComponent<PlayerState>();
-
-            if (playerState == null)
-            {
-                Debug.LogError("PlayerState script is missing on the player GameObject!");
-            }
-
-            if (aiAttack == null)
-            {
-                Debug.LogError("AI_Attack script is missing on the player GameObject!");
-            }
+            defensePoint = GetComponent<BoxCollider2D>();
         }
 
         public void StartBlocking()
@@ -67,10 +55,20 @@ namespace ITKombat
             if (collision.CompareTag("Attack"))
             {
                 GameObject attacker = collision.transform.root.gameObject;
-
+                
                 // Handle attacks from both players and AI
-                if (attacker != parentPlayer && (attacker.CompareTag("Enemy") || attacker.GetComponent<AI_Attack>()))
+                if (attacker != parentPlayer && (attacker.CompareTag("Enemy") || (attacker.GetComponent<AI_Attack>() || attacker.GetComponent<PlayerIFAttack>())))
                 {
+                    if (attacker.GetComponent<AI_Attack>() != null)
+                    {
+                        Debug.Log("Attacker has AI_Attack component.");
+                    }
+
+                    // Check if the attacker has PlayerIFAttack component
+                    if (attacker.GetComponent<PlayerIFAttack>() != null)
+                    {
+                        Debug.Log("Attacker has PlayerIFAttack component.");
+                    }
                     // Handle blocking
                     if (isBlocking)
                     {
@@ -93,30 +91,40 @@ namespace ITKombat
 
         private void HandleAttack(Collider2D attack, GameObject attacker)
         {
+            Debug.Log("HandleAction is Running");
             // Determine attack power from either AI or player attacks
             if (attacker.GetComponent<PlayerIFAttack>() != null)
             {
+                Debug.Log("PlayerIFAttack is Running");
                 PlayerIFAttack playerAttackScript = attacker.GetComponent<PlayerIFAttack>();
+                Debug.Log("PlayerIFAttack : " + playerAttackScript);
 
                 // Use characterStats to get the base attack power
                 float attackPower = playerAttackScript.characterStats.characterBaseAtk;
+                Debug.Log("Attack Power : " + attackPower);
 
                 // Get the defender's base defense and apply the defense multiplier
                 float defenderBaseDef = characterStats.characterBaseDef;
+                Debug.Log("Defender Base Defense : " + defenderBaseDef);
 
                 // Calculate the total defense
                 float totalDefense = defenderBaseDef * defenseMultiplier;
+                Debug.Log("Total Defense : " + totalDefense);
 
                 // Apply the damage mitigation formula
                 float mitigation = 1 - (defenderBaseDef / (defenderBaseDef + 100));
+                Debug.Log("Mitigation : " + mitigation);
 
                 // Calculate the damage multiplier based on the combo stage
                 float damageMultiplier = 0.2f;  // Default to the 1st and 2nd combo
+                Debug.Log("Damage Multiplier : " + damageMultiplier);
 
                 // Check the combo stage for the attack
                 if (playerAttackScript != null)
                 {
+                    Debug.Log("PlayerAttackScript is Running");
                     int comboStage = playerAttackScript.combo; // Get the current combo stage
+                    Debug.Log("Combo Stage : " + comboStage);
 
                     // Adjust the multiplier based on the combo stage
                     if (comboStage == 3)
@@ -131,38 +139,56 @@ namespace ITKombat
 
                 // Calculate the damage after applying defense and mitigation
                 float damageAfterDefense = (attackPower - totalDefense) * damageMultiplier;
+                Debug.Log("Damage After Defense : " + damageAfterDefense);
 
                 // Apply mitigation to the damage
                 float finalDamage = damageAfterDefense * mitigation;
+                Debug.Log("Final Damage : " + finalDamage);
 
                 Debug.Log(gameObject.name + " was hit by " + attacker.name + " for " + finalDamage + " damage after mitigation.");
 
-                // Use PlayerState for health management
-                if (playerState != null)
+                GameObject playerStateObject = GameObject.FindGameObjectWithTag("EnemyState");
+                if (playerStateObject != null)
                 {
-                    playerState.TakeDamage(finalDamage, 1); // Combo set to 1 for simplicity
+                    PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
+                    // Use PlayerState for health management
+                    if (playerState != null)
+                    {
+                        playerState.TakeDamageServerRpc(finalDamage, 1); // Combo set to 1 for simplicity
+                    }
+                }
+                else {
+                    Debug.Log("EnemyState not found");
                 }
             }
             else if (attacker.GetComponent<AI_Attack>() != null)
             {
+                Debug.Log("AI_Attack is Running");
                 float attackPower = attacker.GetComponent<AI_Attack>().attackPower;
+                Debug.Log("Attack Power : " + attackPower);
 
                 // Get the defender's base defense and apply the defense multiplier
                 float defenderBaseDef = characterStats.characterBaseDef;
+                Debug.Log("Defender Base Defense : " + defenderBaseDef);
 
                 // Calculate the total defense
                 float totalDefense = defenderBaseDef * defenseMultiplier;
+                Debug.Log("Total Defense : " + totalDefense);
 
                 // Apply the damage mitigation formula
                 float mitigation = 1 - (defenderBaseDef / (defenderBaseDef + 100));
+                Debug.Log("Mitigation : " + mitigation);
 
                 // Calculate the damage multiplier based on the combo stage
                 float damageMultiplier = 0.2f;  // Default to the 1st and 2nd combo
+                Debug.Log("Damage Multiplier : " + damageMultiplier);
 
                 // Check the combo stage for the attack
                 if (attacker.GetComponent<AI_Attack>() != null)
                 {
+                    Debug.Log("AI_Attack is Running");
                     int comboStage = attacker.GetComponent<AI_Attack>().currentCombo; // Get the current combo stage
+                    Debug.Log("Combo Stage : " + comboStage);
 
                     // Adjust the multiplier based on the combo stage
                     if (comboStage == 3)
@@ -177,16 +203,26 @@ namespace ITKombat
 
                 // Calculate the damage after applying defense and mitigation
                 float damageAfterDefense = (attackPower - totalDefense) * damageMultiplier;
+                Debug.Log("Damage After Defense : " + damageAfterDefense);
 
                 // Apply mitigation to the damage
                 float finalDamage = damageAfterDefense * mitigation;
+                Debug.Log("Final Damage : " + finalDamage);
 
                 Debug.Log(gameObject.name + " was hit by AI for " + finalDamage + " damage after mitigation.");
 
-                // Use PlayerState for health management
-                if (playerState != null)
+                GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
+                if (playerStateObject != null)
                 {
-                    playerState.TakeDamage(finalDamage, 1); // Combo set to 1 for simplicity
+                    PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
+                    // Use PlayerState for health management
+                    if (playerState != null)
+                    {
+                        playerState.TakeDamage(finalDamage, 1); // Combo set to 1 for simplicity
+                    }
+                }
+                else {
+                    Debug.Log("EnemyState not found");
                 }
             }
         }
@@ -213,6 +249,10 @@ namespace ITKombat
             if (playerAttack != null)
             {
                 attack.enabled = false;
+            }
+            else 
+            {
+                Debug.Log("PlayerIFAttack not found");
             }
         }
 
@@ -252,8 +292,7 @@ namespace ITKombat
         {
             if (defensePoint == null)
                 return;
-
-            Gizmos.DrawWireSphere(defensePoint.position, defenseRadius);
+            Gizmos.DrawWireSphere(defensePoint.transform.position, defenseRadius);
         }
     }
 }

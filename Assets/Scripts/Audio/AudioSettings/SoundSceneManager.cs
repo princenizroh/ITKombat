@@ -26,9 +26,13 @@ namespace ITKombat
             {
                 MusicManager.Instance.PlayMusic("Battle_1");
             }
-            else if(currentSceneName == "Lingkungan 1")
+            else if(currentSceneName == "Lingkungan")
             {
                 MusicManager.Instance.PlayMusic("Mars_ITKombat");
+            }
+            else if(currentSceneName == "NewSoundMulti")
+            {
+                MusicManager.Instance.PlayMusic("Battle_2");
             }
         }
     };

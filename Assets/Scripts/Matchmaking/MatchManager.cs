@@ -23,6 +23,7 @@ namespace ITKombat
 
 
         private PlayerMovement_2 playerMovement;
+        private ServerCharacterMovement serverCharacterMovement;
 
         // Reference to PlayerState and EnemyState
         public PlayerState playerState;
@@ -52,9 +53,9 @@ namespace ITKombat
             // {
             //     Debug.LogError("ServerBattleRoomState.Instance is NULL.");
             // }
-            ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
-            // StartCoroutine(ShowRoundStartNotification(1));
+            StartCoroutine(ShowRoundStartNotification(1));
             StartCoroutine(WaitForPlayer());
         }
 
@@ -68,10 +69,6 @@ namespace ITKombat
             activeCoroutines--;
             Debug.Log($"Coroutine finished. Active coroutines: {activeCoroutines}");
         }
- 
-
-        
-
 
         public void ChangeState(IState newState)
         {
@@ -88,8 +85,26 @@ namespace ITKombat
         {
             yield return new WaitUntil(() => FindObjectOfType<PlayerMovement_2>() != null);
             playerMovement = FindObjectOfType<PlayerMovement_2>();
-            playerMovement.canMove = false; // Atur setelah player ditemukan
+            if (playerMovement == null)
+            {
+                Debug.Log("playerMovement tidak ditemukan, menggunakan serverCharacterMovement sebagai gantinya.");
+                serverCharacterMovement = FindObjectOfType<ServerCharacterMovement>();
+                if (serverCharacterMovement != null)
+                {
+                    serverCharacterMovement.canMove = false;
+                }
+                else
+                {
+                    Debug.LogError("serverCharacterMovement juga tidak ditemukan.");
+                }
+            }
+            else
+            {
+                playerMovement.canMove = false; // Atur setelah player ditemukan
+            }
         }
+
+        [System.Obsolete]
         private void Awake()
         {
             if (Instance != null && Instance != this) {
@@ -126,14 +141,6 @@ namespace ITKombat
             }
         }
         
-
-    // private void KitchenGameManager_OnStateChanged(object sender, System.EventArgs e) {
-    //     if (KitchenGameManager.Instance.IsCountdownToStartActive()) {
-    //         Show();
-    //     } else {
-    //         Hide();
-    //     }
-    // }
         void Update()
         {
             timerText.text = matchTimer.GetStageTimeInSecond().ToString();
@@ -204,25 +211,40 @@ namespace ITKombat
                 Debug.Log("Before Round Start Notification");
                 currentRoundNotif.SetActive(true);
                 Debug.Log("Round Start Notification");
-                ServerBattleRoomState.Instance.IsCountdownToStartActive();
+                // ServerBattleRoomState.Instance.IsCountdownToStartActive();
                 yield return new WaitForSeconds(2f);
                 Debug.Log("After WaitForsecond");
                 currentRoundNotif.SetActive(false);
                 Debug.Log("After Round Start Notification");
-                playerMovement.canMove = false;
+                
+                if (playerMovement != null)
+                {
+                    playerMovement.canMove = true;
+                }
+                else if (serverCharacterMovement != null)
+                {
+                    serverCharacterMovement.canMove = true;
+                }
                 matchTimer.ChangeMatchStatus(true);
 
                 if (roundNumber == 1)
                 {
                     FightNotif.SetActive(true);
-                    ServerBattleRoomState.Instance.IsGamePlaying();
+                    // ServerBattleRoomState.Instance.IsGamePlaying();
                     Debug.Log("Before Fight Notification");
                     NewSoundManager.Instance.PlaySound2D("Fight");
                     Debug.Log("Before WaitForSeconds 1.5f");
                     yield return new WaitForSeconds(1.5f);
                     Debug.Log("After WaitForSeconds 1.5f");
                     FightNotif.SetActive(false);
-                    playerMovement.canMove = true;
+                    if (playerMovement != null)
+                    {
+                        playerMovement.canMove = true;
+                    }
+                    else if (serverCharacterMovement != null)
+                    {
+                        serverCharacterMovement.canMove = true;
+                    }
                 }
             }
         }
@@ -288,7 +310,7 @@ namespace ITKombat
             TimeoutNotif.SetActive(true);
             Debug.Log("3 Match Timeout");
             timeoutToTimer.text = "TIME OUT";
-            ServerBattleRoomState.Instance.IsWaitingTime();
+            // ServerBattleRoomState.Instance.IsWaitingTime();
             Debug.Log("4 Match Timeout");
             
             yield return new WaitForSeconds(3f);
@@ -302,7 +324,7 @@ namespace ITKombat
             {
                 if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true) 
                 {
-                    if (playerState.currentHealth > enemyState.currentHealth) 
+                    if (playerState.currentHealth.Value > enemyState.currentHealth.Value) 
                     {
                         PlayerVictory();  // Player menang di final round
                         timeoutToTimer.text = "PLAYER WON FINAL ROUND";
@@ -318,11 +340,11 @@ namespace ITKombat
                 else 
                 {
                     // Jika bukan final round, cek pemenang biasa berdasarkan health
-                    if (playerState.currentHealth == enemyState.currentHealth) 
+                    if (playerState.currentHealth.Value == enemyState.currentHealth.Value) 
                     {
                         DrawRound();  // Tambahkan poin draw untuk kedua pihak
                     }
-                    else if (playerState.currentHealth > enemyState.currentHealth) 
+                    else if (playerState.currentHealth.Value > enemyState.currentHealth.Value) 
                     {
                         PlayerVictory();  // Player menang jika health lebih besar
                     }
@@ -360,7 +382,7 @@ namespace ITKombat
         private IEnumerator HandleDrawTransition()
         {
             // Cek apakah ada draw
-            if (playerState.currentHealth == enemyState.currentHealth) 
+            if (playerState.currentHealth.Value == enemyState.currentHealth.Value) 
             {   
                 yield return StartCoroutine(ShowRoundStartNotification(6)); // Tampilkan Notifikasi Draw
             }
@@ -387,14 +409,21 @@ namespace ITKombat
         {
             currentRound++;
             Debug.Log($"Moving to next round: {currentRound}");
-            playerMovement.canMove = false;
+            if (playerMovement != null)
+            {
+                playerMovement.canMove = true;
+            }
+            else if (serverCharacterMovement != null)
+            {
+                serverCharacterMovement.canMove = true;
+            }
             TimeoutNotif.SetActive(true);
             // Kondisi untuk menentukan siapa yang memenangkan ronde terakhir
-            if (playerState.currentHealth > enemyState.currentHealth)
+            if (playerState.currentHealth.Value > enemyState.currentHealth.Value)
             {
                 timeoutToTimer.text = "PLAYER WON";
             }
-            else if (playerState.currentHealth < enemyState.currentHealth)
+            else if (playerState.currentHealth.Value < enemyState.currentHealth.Value)
             {
                 timeoutToTimer.text = "ENEMY WON";
             }
@@ -432,7 +461,14 @@ namespace ITKombat
             {     
                 NextRound();
             }
-            playerMovement.canMove = true;
+            if (playerMovement != null)
+            {
+                playerMovement.canMove = true;
+            }
+            else if (serverCharacterMovement != null)
+            {
+                serverCharacterMovement.canMove = true;
+            }
             StartNormalTimer();
         }
 

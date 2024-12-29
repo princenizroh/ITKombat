@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace ITKombat
 {
@@ -8,6 +9,7 @@ namespace ITKombat
         [SerializeField] private int prefabId;
         [SerializeField] private Image image;
         [SerializeField] private GameObject selectedGameObject;
+        [SerializeField] private SelectCharacterInfoBox chararacterInfoBox;
 
         private void Awake()
         {
@@ -16,16 +18,36 @@ namespace ITKombat
                 Debug.Log("Change player prefab");
                 GameMultiplayerManager.Instance.ChangePlayerPrefab(prefabId);
                 Debug.Log("Change player prefab done");
+                var characterInfo = GameMultiplayerManager.Instance.GetUpdateCharacterInfo(prefabId);
+                if (characterInfo != null)
+                {
+                    chararacterInfoBox.UpdateCharacterInfo(characterInfo);
+                }
+                else
+                {
+                    chararacterInfoBox.Hide();
+                }
+
             });
         }
+        
         private void Start()
         {
+            chararacterInfoBox.Hide();
             GameMultiplayerManager.Instance.OnPlayerDataNetworkListChanged += GameMultiplayerManager_OnPlayerDataNetworkListChanged;
-            Debug.Log("PlayerDataNetworkListChanged");
+            GameMultiplayerManager.Instance.OnDataInitialized += GameMultiplayerManager_OnDataInitialized;
+            if (GameMultiplayerManager.Instance.characterStatDictionary != null) {
+                InitializeUI();
+            }
+            
+        }
+        private void GameMultiplayerManager_OnDataInitialized(object sender, EventArgs e) {
+            InitializeUI();
+        }
+
+        private void InitializeUI() {
             image.sprite = GameMultiplayerManager.Instance.GetPlayerPrefab(prefabId).GetComponentInChildren<SpriteRenderer>().sprite;
-            Debug.Log("Image Sprite");
             UpdateIsSelected();
-            Debug.Log("UpdateIsSelected");
         }
         private void GameMultiplayerManager_OnPlayerDataNetworkListChanged(object sender, System.EventArgs e) {
             UpdateIsSelected();

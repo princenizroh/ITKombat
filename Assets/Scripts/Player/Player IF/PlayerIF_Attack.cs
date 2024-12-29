@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine.VFX;
 using System.Runtime.CompilerServices;
 using UnityEngine.Audio;
+using Mono.CSharp;
 
 namespace ITKombat
 {
@@ -13,9 +14,6 @@ namespace ITKombat
         private FelixStateMachine meleeStateMachine;
 
         public static PlayerIFAttack Instance;
-        public Transform attackPoint;
-        public float attackRadius = 1f;
-        public float attackCooldown = 0.5f;
         public int maxCombo = 4;
         public LayerMask enemyLayer;
         public int combo = 0;
@@ -26,7 +24,6 @@ namespace ITKombat
         private Animator animator;
 
         [SerializeField] public Collider2D hitbox;
-        [SerializeField] public GameObject Hiteffect;
 
         // VFX Right
         // [SerializeField] private ParticleSystem Attack1_Right = null;
@@ -74,236 +71,50 @@ namespace ITKombat
             meleeStateMachine = GetComponent<FelixStateMachine>();
         }
 
-    // Update is called once per frame
         public void OnButtonDown()
         {
-        if (canAttack)
-        {
-            if (meleeStateMachine == null)
+            if (canAttack)
             {
-                Debug.LogError("FelixStateMachine is null! Ensure it's added to the GameObject.");
-                return;
-            }
+                if (meleeStateMachine == null)
+                {
+                    // Debug.LogError("FelixStateMachine is null! Ensure it's added to the GameObject.");
+                    return;
+                }
 
-            if (meleeStateMachine.CurrentState == null)
-            {
-                Debug.LogError("CurrentState is null! Check the state initialization in FelixStateMachine.");
-                return;
-            }
+                if (meleeStateMachine.CurrentState == null)
+                {
+                    // Debug.LogError("CurrentState is null! Check the state initialization in FelixStateMachine.");
+                    return;
+                }
 
-            if (meleeStateMachine.CurrentState.GetType() == typeof(IdleCombatState))
-            {
-                meleeStateMachine.SetNextState(new GroundEntryState());
+                if (meleeStateMachine.CurrentState.GetType() == typeof(IdleCombatState))
+                {
+                    meleeStateMachine.SetNextState(new GroundEntryState());
+                }
             }
-        }
-            
-
         }
 
         public bool GetCanAttack (bool CanAttack)
         {
             canAttack = CanAttack;
-            Debug.Log("Berhasil Get Player Can Attack = " + CanAttack);
             return canAttack;
         }
 
-
-
-        public void OnAttackButtonPressed()
-        {
-            if (IsOwner)
-            {
-                PerformAttack();
-            }
-        }
-
-        public void PerformAttack()
-        {
-            // Debug.Log("Performing attack...");
-            if (Time.time - timeSinceLastAttack > attackCooldown)
-            {
-                // Jika cooldown terlampaui sebelum serangan berikutnya, reset combo ke 1
-                if (combo == 0 || Time.time - timeSinceLastAttack > attackCooldown * 2)
-                {
-                    combo = 1; // Reset ke serangan pertama jika waktu terlalu lama
-                }
-                else
-                {
-                    combo++; // Lanjutkan ke serangan berikutnya jika waktu masih dalam cooldown
-                    if (combo > maxCombo)
-                    {
-                        combo = 1; // Kembali ke serangan pertama jika melebihi maxCombo
-                    }
-                }
-
-                timeSinceLastAttack = Time.time; // Simpan waktu serangan terakhir
-                // Debug.Log("Combo: " + combo);
-
-                float attackPower = characterStats.characterBaseAtk;
-
-                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
-                // Debug.Log("Hit " + hitEnemies.Length + " enemies.");
-                bool isBlocked = false;
-
-                foreach (Collider2D enemy in hitEnemies)
-                {
-                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                    AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
-
-                    if (enemyDefense != null && enemyDefense.isBlocking)
-                    {
-                        isBlocked = true; // Mark if at least one enemy is blocking
-                    }
-
-                    if (enemyRb != null && !enemyDefense.isBlocking)
-                    {
-                        GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
-
-                        if (enemyStateObject != null)
-                        {
-                            EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
-                            if (enemyState != null)
-                            {
-                                ApplyKnockback(enemy,combo);
-                                enemyState.TakeDamage(attackPower);
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("EnemyState not found.");
-                        }
-                    }
-                }
-                // Pass the isBlocked state to AttackAnimation
-                AttackAnimation(hitEnemies, isBlocked);
-                // Debug.Log("Performed attack.");
-            }
-            else
-            {
-                animator.SetTrigger("Idle");
-                // Debug.Log("Cooldown not exceeded, going to idle.");
-            }
-        }
-
-        public void ApplyKnockback(Collider2D enemyCollider, float currentCombo)
-        {
-            if (enemyCollider != null)
-            {
-                Rigidbody2D enemyRb = enemyCollider.GetComponent<Rigidbody2D>();
-                if (enemyRb != null)
-                {
-                    if (currentCombo == 4) // knockback hanya untuk hit ke 4
-                        {
-                            float attackForce = enemyCollider.bounds.size.magnitude; // penyesuaian attack force sesuai size karakter
-                            Vector2 direction = (enemyCollider.transform.position - attackPoint.position).normalized; // penyesuaian arah knockback
-
-                            enemyRb.AddForce(direction * attackForce, ForceMode2D.Impulse);
-                        }
-                }
-                else
-                {
-                    Debug.LogWarning("No Rigidbody2D found on the enemy.");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("No enemy detected within knockback radius.");
-            }
-        }
-
-        private void AttackAnimation(Collider2D[] hitEnemies, bool isBlocked)
-        {
-            CharacterController2D1 character = GetComponent<CharacterController2D1>();
-            if (character == null) return;
-            switch (combo)
-            {
-                case 1:
-                    // if (character.IsFacingRight)
-                    // {
-                    //     // Attack1_Right.Play();
-                    // }
-                    // else
-                    // {
-                    //     // Attack1_Left.Play();
-                    // }
-                    PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("Attack1");
-                    StartCoroutine(ResetToIdleAfterTime(1f)); 
-                    // Debug.Log("Attack 1 triggered");
-                    break;
-                case 2:
-                    // if (character.IsFacingRight)
-                    // {
-                    //     Attack2_Right.Play();
-                    // }
-                    // else
-                    // {
-                    //     Attack2_Left.Play();
-                    // }
-                    PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("Attack2");
-                    StartCoroutine(ResetToIdleAfterTime(1f));
-                    // Debug.Log("Attack 2 triggered");
-                    break;
-                case 3:
-                    // if (character.IsFacingRight)
-                    // {
-                    //     Attack3_Right.Play();
-                    // }
-                    // else
-                    // {
-                    //     Attack3_Left.Play();
-                    // }
-                    PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("Attack3");
-                    StartCoroutine(ResetToIdleAfterTime(1f)); 
-                    // Debug.Log("Attack 3 triggered");
-                    break;
-                case 4:
-                    // if (character.IsFacingRight)
-                    // {
-                    //     Attack4_Right.Play();
-                    // }
-                    // else
-                    // {
-                    //     Attack4_Left.Play();
-                    // }
-                    PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
-                    animator.SetTrigger("Attack4");
-                    StartCoroutine(ResetToIdleAfterTime(1f));
-                    // Debug.Log("Attack 4 triggered");
-                    break;
-            }
-        }
-
-        private IEnumerator ResetToIdleAfterTime(float time)
-        {
-            yield return new WaitForSeconds(time); 
-            animator.SetTrigger("Idle"); 
-            // Debug.Log("Reset to Idle after " + time + " seconds.");
-        }
-
-        // Untuk determinasi apakah attacknya kena atau tidak
-
         public void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
         {
-            if (isBlocked)
+            if (isBlocked == true)
             {
                 PlayBlockedSound(comboNumber);
+                return;
             }
-
-            else if (hitEnemies)
+        
+            if (hitEnemies)
             {
                 PlayHitSound(comboNumber);
+                return;
             }
-            else
-            {
-                PlayMissSound(comboNumber);
-            }
+            PlayMissSound(comboNumber);
         }
-
-
-        // Taruh hit dan miss soundnya disini
         
         private void PlayHitSound(int comboNumber)
         {
@@ -316,7 +127,7 @@ namespace ITKombat
             }
         }
 
-        private void PlayMissSound(int comboNumber)
+        public void PlayMissSound(int comboNumber)
         {
             switch (comboNumber)
             {
@@ -337,13 +148,6 @@ namespace ITKombat
                 case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
                 case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
             }
-        }
-
-
-        private void OnDrawGizmosSelected()
-        {
-            if (attackPoint == null) return;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
     }
 }
