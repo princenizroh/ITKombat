@@ -292,7 +292,7 @@ namespace ITKombat
             {
                 if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true) 
                 {
-                    if (playerState.currentHealth > enemyState.currentHealth.Value) 
+                    if (playerState.currentHealth.Value > enemyState.currentHealth.Value) 
                     {
                         PlayerVictory();  // Player menang di final round
                         timeoutToTimer.text = "PLAYER WON FINAL ROUND";
@@ -308,11 +308,11 @@ namespace ITKombat
                 else 
                 {
                     // Jika bukan final round, cek pemenang biasa berdasarkan health
-                    if (playerState.currentHealth == enemyState.currentHealth.Value) 
+                    if (playerState.currentHealth.Value == enemyState.currentHealth.Value) 
                     {
                         DrawRound();  // Tambahkan poin draw untuk kedua pihak
                     }
-                    else if (playerState.currentHealth > enemyState.currentHealth.Value) 
+                    else if (playerState.currentHealth.Value > enemyState.currentHealth.Value) 
                     {
                         PlayerVictory();  // Player menang jika health lebih besar
                     }
@@ -350,7 +350,7 @@ namespace ITKombat
         private IEnumerator HandleDrawTransition()
         {
             // Cek apakah ada draw
-            if (playerState.currentHealth == enemyState.currentHealth.Value) 
+            if (playerState.currentHealth.Value == enemyState.currentHealth.Value) 
             {   
                 yield return StartCoroutine(ShowRoundStartNotification(6)); // Tampilkan Notifikasi Draw
             }
@@ -380,11 +380,11 @@ namespace ITKombat
             playerMovement.canMove = false;
             TimeoutNotif.SetActive(true);
             // Kondisi untuk menentukan siapa yang memenangkan ronde terakhir
-            if (playerState.currentHealth > enemyState.currentHealth.Value)
+            if (playerState.currentHealth.Value > enemyState.currentHealth.Value)
             {
                 timeoutToTimer.text = "PLAYER WON";
             }
-            else if (playerState.currentHealth < enemyState.currentHealth.Value)
+            else if (playerState.currentHealth.Value < enemyState.currentHealth.Value)
             {
                 timeoutToTimer.text = "ENEMY WON";
             }

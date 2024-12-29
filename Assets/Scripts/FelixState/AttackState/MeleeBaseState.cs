@@ -73,6 +73,14 @@ namespace ITKombat
             hasPlayedMissSound = false; // Reset flag
         }
 
+        private void DamagePlayerHandler()
+        {
+
+        }
+        private void DamageEnemyHandler()
+        {
+
+        }
         protected void Attack()
         {
             Debug.Log("Attack method called");
@@ -143,7 +151,6 @@ namespace ITKombat
                                     {
                                         Debug.Log("EnemyState component found");
                                         enemyState.TakeDamage(attackIndex * 5);
-                                        // enemyState.TakeDamageServerRpc(attackIndex * 5);
                                         Debug.Log("Damage applied to enemy");
                                     }
                                 }
@@ -156,7 +163,7 @@ namespace ITKombat
                                 Debug.Log("Collider added to damaged list");
                             }
                         }
-                        else if (enemyPlayerDefense != null)
+                        else if (enemyPlayerDefense != null && enemyPlayerDefense.CompareTag("Enemy"))
                         {
                             Debug.Log("Enemy has Player_Defense component");
                             Debug.Log("Target is an enemy");
@@ -166,7 +173,7 @@ namespace ITKombat
                                 isBlocked = true;
                             }
 
-                            if (enemyRb )
+                            if (enemyRb != null)
                             {
                                 Debug.Log("Enemy is not blocking and has Rigidbody2D");
                                 Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
@@ -194,7 +201,45 @@ namespace ITKombat
                                 collidersDamaged.Add(targetCollider);
                                 Debug.Log("Collider added to damaged list");
                             }
+                        }
+                        else if (enemyPlayerDefense != null && enemyPlayerDefense.CompareTag("Player"))
+                        {
+                            Debug.Log("Enemy has Player_Defense component");
+                            Debug.Log("Target is an enemy");
+                            if (enemyPlayerDefense != null && enemyPlayerDefense.isBlocking)
+                            {
+                                Debug.Log("Enemy is blocking");
+                                isBlocked = true;
+                            }
 
+                            if (enemyRb != null)
+                            {
+                                Debug.Log("Enemy is not blocking and has Rigidbody2D");
+                                Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
+
+                                GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
+
+
+                                if (playerStateObject != null)
+                                {
+                                    Debug.Log("EnemyState object found");
+                                    PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
+                                    if (playerState != null)
+                                    {
+                                        Debug.Log("EnemyState component found");
+                                        // enemyState.TakeDamage(attackIndex * 5);
+                                        playerState.TakeDamageServerRpc(attackIndex * 5, 1);
+                                        Debug.Log("Damage applied to enemy");
+                                    }
+                                }
+                                else
+                                {
+                                    Debug.LogError("EnemyState object not found!");
+                                }
+                                
+                                collidersDamaged.Add(targetCollider);
+                                Debug.Log("Collider added to damaged list");
+                            }
                         }
                         
                         // PlayerIFAttack.Instance.PlayAttackSound(attackIndex, collidersToDamage.Length > 0, isBlocked);

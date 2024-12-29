@@ -270,19 +270,19 @@ namespace ITKombat
 
         private void DetermineRoundOutcome()
         {
-            if (matchManager.playerState.currentHealth == matchManager.enemyState.currentHealth.Value)
+            if (matchManager.playerState.currentHealth.Value == matchManager.enemyState.currentHealth.Value)
             {
                 Debug.Log("Draw");
                 winState.Value = WinState.Draw;
                 Debug.Log("State winState: " + winState.Value);
                 Debug.Log("State: " + state.Value);
             }
-            else if (matchManager.playerState.currentHealth > matchManager.enemyState.currentHealth.Value)
+            else if (matchManager.playerState.currentHealth.Value > matchManager.enemyState.currentHealth.Value)
             {
                 Debug.Log("Player 1 win");
                 winState.Value = WinState.Player1Win;
             }
-            else if (matchManager.playerState.currentHealth < matchManager.enemyState.currentHealth.Value)
+            else if (matchManager.playerState.currentHealth.Value < matchManager.enemyState.currentHealth.Value)
             {
                 Debug.Log("Player 2 win");
                 winState.Value = WinState.Player2Win;

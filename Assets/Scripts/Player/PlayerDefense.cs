@@ -154,7 +154,7 @@ namespace ITKombat
                     // Use PlayerState for health management
                     if (playerState != null)
                     {
-                        playerState.TakeDamage(finalDamage, 1); // Combo set to 1 for simplicity
+                        playerState.TakeDamageServerRpc(finalDamage, 1); // Combo set to 1 for simplicity
                     }
                 }
                 else {

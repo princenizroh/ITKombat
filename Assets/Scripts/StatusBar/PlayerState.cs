@@ -1,14 +1,16 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Netcode;
+using Unity.Services.Matchmaker.Models;
 
 namespace ITKombat
 {
-    public class PlayerState : MonoBehaviour
+    public class PlayerState : NetworkBehaviour
     {
         public FelixStateMachine stateMachine;
         public static PlayerState Instance;
-        public float maxHealth = 100f;
-        public float currentHealth;
+        public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+        public NetworkVariable<float> currentHealth = new NetworkVariable<float>(100f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         public string attackTag = "Attack"; 
         public HealthBar healthBar;
         public MatchManager matchManager;
@@ -37,13 +39,47 @@ namespace ITKombat
         }
         private void Start()
         {
-            currentHealth = maxHealth;
-            healthBar.SetMaxHealth(maxHealth);
+            if (IsServer)
+            {
+                maxHealth.Value = 100f;
+                currentHealth.Value = maxHealth.Value;
+            }
+            Debug.Log("Current Health: " + currentHealth.Value);
+            if (healthBar != null)
+            {
+                healthBar.SetMaxHealth(maxHealth.Value);
+                healthBar.UpdateHealth(currentHealth.Value, maxHealth.Value);
+            }
+
+            // healthBar.SetMaxHealth(maxHealth);
 
             // Dapatkan referensi ke MatchManager
             if (matchManager == null)
             {
                 matchManager = MatchManager.Instance;
+            }
+        }
+        public override void OnNetworkSpawn()
+        {
+            Debug.Log("OnNetworkSpawn");
+            maxHealth.OnValueChanged += OnMaxHealthChanged;
+            currentHealth.OnValueChanged += OnCurrentHealthChanged;
+        }
+        private void OnMaxHealthChanged(float oldValue, float newValue)
+        {
+            if (healthBar != null)
+            {
+                Debug.Log("On Max Health Max health changed to: " + newValue);
+                healthBar.SetMaxHealth(newValue);
+                Debug.Log("On Max Health currentHealth.Value " + currentHealth.Value);
+            }
+        }
+
+        private void OnCurrentHealthChanged(float oldValue, float newValue)
+        {
+            if (healthBar != null)
+            {
+                healthBar.UpdateHealth(newValue, maxHealth.Value);
             }
         }
 
@@ -52,21 +88,22 @@ namespace ITKombat
             // float attackPower = GetDamageFromPlayer();
             if (Input.GetKeyDown(KeyCode.O))
             {
-                TakeDamage(10f,1f);
+                TakeDamageServerRpc(10f,1f);
             }
         }
 
         public void UpdateHealth()
         {
             // Update health or perform any logic when health is updated
-            healthBar.UpdateHealth(currentHealth, maxHealth);
+            healthBar.UpdateHealth(currentHealth.Value, maxHealth.Value);
         }
-
+        
+        [Tooltip("Take Damage SinglePlayer with AI ")]
         public void TakeDamage(float damage,float combo)
         {
-            currentHealth -= damage;
-            healthBar.UpdateHealth(currentHealth, maxHealth);
-            if (currentHealth <= 0)
+            currentHealth.Value -= damage;
+            healthBar.UpdateHealth(currentHealth.Value, maxHealth.Value);
+            if (currentHealth.Value <= 0)
             {
                 HandleDeath();
             }
@@ -74,14 +111,14 @@ namespace ITKombat
             {
                 checkDamage = true;
                 canAttack = false;
-                // PlayerIFAttack.Instance.GetCanAttack(canAttack);
-                // PlayerDamageChecker.Instance.OnEnemyDamaged();
+                PlayerIFAttack.Instance.GetCanAttack(canAttack);
+                PlayerDamageChecker.Instance.OnEnemyDamaged();
                 StartCoroutine(ResetCheckDamage());
-                // StartCoroutine(ResetCanAttack());
+                StartCoroutine(ResetCanAttack());
                 // ApplyKnockback();
-                // Debug.Log(currentHealth);
-                // AttackedAnimation(combo);
-                // PlayRandomHitSound();
+                Debug.Log(currentHealth.Value);
+                AttackedAnimation(combo);
+                PlayRandomHitSound();
             }
             OnTakeDamage?.Invoke(gameObject);
                 // AttackedAnimation(combo);
@@ -89,6 +126,39 @@ namespace ITKombat
             
             checkDamage = false;
         }
+
+        [Tooltip("Take Damage Multiplayer")]
+        [ServerRpc(RequireOwnership = false)]
+        public void TakeDamageServerRpc(float damage, float combo)
+        {
+            if (!IsServer) 
+            {
+                Debug.LogWarning("TakeDamageServerRpc called on client!");
+                return;
+            }
+            if (damage >= currentHealth.Value)
+            {
+                damage = currentHealth.Value; 
+            }
+            currentHealth.Value -= damage;
+            Debug.Log($"Damage taken: {damage}, Remaining health: {currentHealth.Value}");
+
+            healthBar.UpdateHealth(currentHealth.Value, maxHealth.Value);
+
+            if (currentHealth.Value <= 0)
+            {
+                HandleDeath();
+            }
+            else
+            {
+                checkDamage = true;
+                canAttack = false;
+                StartCoroutine(ResetCheckDamage());
+            }
+            checkDamage = false;
+            OnTakeDamage?.Invoke(gameObject);
+        }
+
 
         private IEnumerator ResetCheckDamage()
         {
@@ -107,11 +177,11 @@ namespace ITKombat
 
         public void TakeDamageFromSkill(float skillDamage)
         {
-            currentHealth -= skillDamage;
+            currentHealth.Value -= skillDamage;
         
-            healthBar.UpdateHealth(currentHealth, maxHealth);
+            healthBar.UpdateHealth(currentHealth.Value, maxHealth.Value);
 
-            if (currentHealth <= 0)
+            if (currentHealth.Value <= 0)
             {
                 HandleDeath();
             }
@@ -242,9 +312,9 @@ namespace ITKombat
         // Reset health to maxHealth
         public void ResetHealth()
         {
-            currentHealth = maxHealth;
-            healthBar.UpdateHealth(currentHealth,maxHealth);
-            Debug.Log("" + currentHealth);
+            currentHealth.Value = maxHealth.Value;
+            healthBar.UpdateHealth(currentHealth.Value,maxHealth.Value);
+            Debug.Log("" + currentHealth.Value);
         }
     }
 }
