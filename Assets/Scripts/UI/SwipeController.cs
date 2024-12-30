@@ -76,7 +76,7 @@ public void Selected()
         PlayerPrefs.SetInt("SelectedPageID", selectedPage.id);
 
         // Pindah ke scene (contoh)
-        SceneManager.LoadScene("TestScenePick");
+        SceneManager.LoadScene("NewSoundMulti");
     }
     else
     {
