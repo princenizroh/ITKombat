@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5223643651272067196}
   - component: {fileID: 8245239657173932073}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2507123742335072157}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CellingCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 739441322381472889}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: attackPoint
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 5435511599066036442}
   - component: {fileID: 5030583593944312544}
   - component: {fileID: 2066687201768848424}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AudioAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +581,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1999075866747364058}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: playerAttackPoint
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 7359187673690506650}
   - component: {fileID: 5375353834398298265}
   - component: {fileID: 5703283387646772013}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AudioSkill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -953,8 +953,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3704999413505226322}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.74201983, y: -0.13651502, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1016,7 +1016,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1051044678632798529}
   - component: {fileID: 4965710858921569190}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1072,7 +1072,7 @@ GameObject:
   - component: {fileID: 9175207747001220652}
   - component: {fileID: 498822443650919284}
   - component: {fileID: 5175814729791286490}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AudioBasicScene1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1491,7 +1491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 945119169207020794}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GrouncCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1535,7 +1535,8 @@ GameObject:
   - component: {fileID: 2950625026052775896}
   - component: {fileID: 2274442212735398570}
   - component: {fileID: 7331337234332358959}
-  m_Layer: 0
+  - component: {fileID: 4341661169844107471}
+  m_Layer: 6
   m_Name: Player_Fisika
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1726,7 +1727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 658461165
+  GlobalObjectIdHash: 3584745374
   InScenePlacedSourceGlobalObjectIdHash: 658461165
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1788,7 +1789,7 @@ MonoBehaviour:
   attackPoint: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!114 &518055844919232928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1824,10 +1825,10 @@ MonoBehaviour:
   m_JumpForce: 250
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.05
-  m_AirControl: 0
+  m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_GroundCheck: {fileID: 945119169207020794}
   m_CeilingCheck: {fileID: 2507123742335072157}
   m_CrouchDisableCollider: {fileID: 0}
@@ -1892,3 +1893,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422df14c5bab8a648ad6bb3eb3538743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4341661169844107471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020879151175104176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e6dd2f3ae58c84a814478767f9de62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockCooldown: 1
+  isBlocking: 0
+  defenseMultiplier: 0.7
+  parryWindow: 0.2
+  parryDamage: 10
+  defensePoint: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  defenseRadius: 1
+  characterStats: {fileID: 11400000, guid: 683a4fd5b8e86ae4bb286a16a1a2b493, type: 2}

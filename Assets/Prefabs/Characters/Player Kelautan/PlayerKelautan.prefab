@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1176427946130540997}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GrouncCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8563641022283373202}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: attackPoint
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -82,9 +82,10 @@ GameObject:
   - component: {fileID: 4635113837618248992}
   - component: {fileID: 896392927101638150}
   - component: {fileID: 8557314786012320048}
-  m_Layer: 0
+  - component: {fileID: 5634498406051486787}
+  m_Layer: 6
   m_Name: PlayerKelautan
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2753784218
+  GlobalObjectIdHash: 993394021
   InScenePlacedSourceGlobalObjectIdHash: 328291922
   DeferredDespawnTick: 0
   Ownership: 1
@@ -323,7 +324,7 @@ MonoBehaviour:
   m_AirControl: 0
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_GroundCheck: {fileID: 1176427946130540997}
   m_CeilingCheck: {fileID: 6550965696071414830}
   m_CrouchDisableCollider: {fileID: 0}
@@ -366,12 +367,12 @@ MonoBehaviour:
   maxCombo: 4
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   combo: 0
   hitbox: {fileID: 8562111767277180724}
   Hiteffect: {fileID: 0}
   isUsingWeapon: 0
-  characterStats: {fileID: 0}
+  characterStats: {fileID: 11400000, guid: 50c5a8ddef21890438eb902881f6e490, type: 2}
 --- !u!114 &896392927101638150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,6 +398,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422df14c5bab8a648ad6bb3eb3538743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5634498406051486787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4516920418924127975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e6dd2f3ae58c84a814478767f9de62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockCooldown: 1
+  isBlocking: 0
+  defenseMultiplier: 0.7
+  parryWindow: 0.2
+  parryDamage: 10
+  defensePoint: {fileID: 0}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  defenseRadius: 1
+  characterStats: {fileID: 11400000, guid: 50c5a8ddef21890438eb902881f6e490, type: 2}
 --- !u!1 &5885989710511321314
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,7 +430,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6550965696071414830}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CellingCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -437,7 +461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4455718214430311545}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: playerAttackPoint
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -469,7 +493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4289364702434411531}
   - component: {fileID: 3361728228018148978}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
