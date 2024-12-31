@@ -171,7 +171,7 @@ namespace ITKombat
                         break;
                 }
             }
-            [ServerRpc]
+            [ServerRpc(RequireOwnership = false)]
             private void SetAnimationStateServerRpc(AnimationState state)
             {
                 if (animationStateNetwork.Value != state)

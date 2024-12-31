@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 namespace ITKombat
 {
@@ -47,6 +48,12 @@ namespace ITKombat
         }
         public GameObject startgameobject;
 
+        public Toggle unityLoginToggle;
+        private string playerId;
+        private string playerEmail;
+        private string playerPassword;
+        public GameObject loginArea;
+
         void Awake()
         {
             if (instance == null)
@@ -65,7 +72,7 @@ namespace ITKombat
                 if (dependencyStatus == DependencyStatus.Available)
                 {
                     //If they are avalible Initialize Firebase
-                    InitializeFirebase();
+                    // InitializeFirebase();
                 }
                 else
                 {
@@ -78,8 +85,89 @@ namespace ITKombat
         {
             // Initialize the CustomSceneManager
             customSceneManager = new CustomSceneManager();
-            // InitializeFirebase();
+            InitializeFirebase();
+
+            string deviceID = SystemInfo.deviceUniqueIdentifier;
+            CheckDeviceAuthorization(deviceID);
         }
+
+        private async void CheckDeviceAuthorization(string deviceID)
+        {
+            bool deviceCheck = await CheckPlayerAuthorizedDevice(deviceID);
+
+            if (!deviceCheck)
+            {
+                Debug.Log("Device not registered, log in like normal");
+            }
+            else
+            {
+                Debug.Log("Device authorized, proceed with auto-login");
+                loginArea.SetActive(false);
+                _ = CompareId(playerId);
+                StartCoroutine(firebaseAuhenticationLogin(playerId, playerId));
+            }
+        }
+
+        private async Task<bool> CheckPlayerAuthorizedDevice(string deviceID)
+        {
+            var authorizedDeviceCheck = await DBreference.Child("authorized_device").GetValueAsync();
+
+            if (authorizedDeviceCheck.Exists)
+            {
+                foreach (var childSnapshot in authorizedDeviceCheck.Children)
+                {
+                    string databaseDeviceID = childSnapshot.Key; // Device ID stored as the key
+                    if (deviceID == databaseDeviceID)
+                    {
+                        Debug.Log("Device is authorized!");
+
+                        string playerId_data = childSnapshot.Child("player_id").Value.ToString();
+                        string email_data = childSnapshot.Child("email").Value.ToString();
+                        string password_data = childSnapshot.Child("password").Value.ToString();
+
+                        playerId = playerId_data;
+                        playerEmail = email_data;
+                        playerPassword = password_data;
+
+                        return true;
+                    }
+                }
+            }
+
+            Debug.Log("Device is not authorized!");
+            return false;
+        }
+
+        public async void logoutAccount()
+        {
+            if (auth.CurrentUser != null)
+            {
+                string deviceID = SystemInfo.deviceUniqueIdentifier;
+
+                try
+                {
+                    // Remove the device from the "authorized_device" node
+                    await DBreference.Child("authorized_device").Child(deviceID).RemoveValueAsync();
+                    Debug.Log($"Device {deviceID} successfully removed from authorized devices.");
+
+                    // Sign out the current user
+                    auth.SignOut();
+                    Debug.Log("User successfully logged out.");
+
+                    // Optionally, redirect to login area
+                    loginArea.SetActive(true);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Error during logout: {ex.Message}");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No user is currently logged in.");
+            }
+        }
+
 
         private void InitializeFirebase()
         {
@@ -270,6 +358,23 @@ namespace ITKombat
 
             if (Login.Exception != null) {
                 Debug.Log("Login sucessfuly");
+
+                if (unityLoginToggle.isOn == true) {
+
+                    string deviceID = SystemInfo.deviceUniqueIdentifier;
+                    
+                    var devicePlayerData = new Dictionary<string, object>
+                    {
+                        { "player_id", player_id },
+                        { "email", player_id + "@itkombat.net" },
+                        { "password", player_id },
+                        { "device_id", deviceID},
+                    };
+
+                    DBreference.Child("authorized_device").Child(deviceID).SetValueAsync(devicePlayerData);
+
+                }
+
                 checkIfUsernameStillDefault();
             } else {
                 Debug.Log("Login failed");
