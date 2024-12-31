@@ -267,6 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_JumpForce: 150
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.05
@@ -276,7 +277,7 @@ MonoBehaviour:
     m_Bits: 8
   m_GroundCheck: {fileID: 601585874806723066}
   m_CeilingCheck: {fileID: 8859175304729047845}
-  m_CrouchDisableCollider: {fileID: 4151144456075853919}
+  meleeHitbox: {fileID: 0}
   m_FacingRight: 1
   OnLandEvent:
     m_PersistentCalls:
@@ -348,6 +349,7 @@ MonoBehaviour:
   dashCooldown: 1
   moveSpeed: 50
   canMove: 1
+  jump: 0
 --- !u!114 &2641886314747720454
 MonoBehaviour:
   m_ObjectHideFlags: 0

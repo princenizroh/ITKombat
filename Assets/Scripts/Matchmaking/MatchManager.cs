@@ -53,9 +53,9 @@ namespace ITKombat
             // {
             //     Debug.LogError("ServerBattleRoomState.Instance is NULL.");
             // }
-            // ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
             Debug.Log("MatchManager Start");
-            StartCoroutine(ShowRoundStartNotification(1));
+            // StartCoroutine(ShowRoundStartNotification(1));
             StartCoroutine(WaitForPlayer());
         }
 

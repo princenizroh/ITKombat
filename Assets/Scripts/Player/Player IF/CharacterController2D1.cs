@@ -17,7 +17,7 @@ public class CharacterController2D1 : NetworkBehaviour
     // [SerializeField] private Collider2D m_CrouchDisableCollider;
     [SerializeField] private Transform meleeHitbox;
     const float k_GroundedRadius = .2f;
-    private bool m_Grounded;         
+    public bool m_Grounded;         
     const float k_CeilingRadius = .2f; 
     private Rigidbody2D m_Rigidbody2D;
     public bool m_FacingRight = true;
