@@ -24,7 +24,6 @@ namespace ITKombat
     public enum State {
         TimeOut,
         WaitingToStart,
-        WaitingTime,
         CountdownToStart,
         GamePlaying,
         GameOver,

@@ -5729,6 +5729,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7657135482207842403, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1571850602
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -38805,6 +38809,10 @@ PrefabInstance:
       propertyPath: 'playerSpawnPoints.Array.data[1]'
       value: 
       objectReference: {fileID: 1307742030}
+    - target: {fileID: 2784935224523575564, guid: 51595d0a88be2f24e93ab66284b7e78b, type: 3}
+      propertyPath: countdownToStartTimer.m_InternalValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3521080859138851109, guid: 51595d0a88be2f24e93ab66284b7e78b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 721.1434
@@ -47032,7 +47040,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1848154952}
   - {fileID: 1221288712}
   - {fileID: 1076469354}
   m_Father: {fileID: 0}
@@ -60655,7 +60662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224130951485110974, guid: 162062da5feb92442ac783d56d6b27af, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.000015258789
       objectReference: {fileID: 0}
     - target: {fileID: 224166536479716514, guid: 162062da5feb92442ac783d56d6b27af, type: 3}
       propertyPath: m_AnchorMax.y
@@ -66534,50 +66541,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &1848154950
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1848154952}
-  - component: {fileID: 1848154951}
-  m_Layer: 0
-  m_Name: GameButtonManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1848154951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848154950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83e768fd05d8a8b479f49c0016b4489b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1848154952
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848154950}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.7879314, y: 1.2111857, z: -0.012970727}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1325530322}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1854739081
 GameObject:
   m_ObjectHideFlags: 0
@@ -67850,7 +67813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5965319745082861204, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: timerStart
-      value: 120
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5965319745082861204, guid: 73203c2ed6cab814e984ee635ec1616d, type: 3}
       propertyPath: statusMatch
@@ -72320,6 +72283,10 @@ PrefabInstance:
     - target: {fileID: 3642847710929717529, guid: 3edb31789d77b054e97361dc2624f30b, type: 3}
       propertyPath: m_Name
       value: RoundUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774584897610935169, guid: 3edb31789d77b054e97361dc2624f30b, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
