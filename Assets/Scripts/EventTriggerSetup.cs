@@ -68,7 +68,7 @@ namespace ITKombat
             pointerUpEntry.callback.AddListener((data) => { playerMovement.OnStopMoving(); });
             leftButtonTrigger.triggers.Add(pointerUpEntry);
 
-            Debug.Log("Left button events set up successfully.");
+            // Debug.Log("Left button events set up successfully.");
         }
 
         private void SetupRightButtonEvents(PlayerMovement_2 playerMovement)
@@ -95,7 +95,7 @@ namespace ITKombat
             pointerUpEntry.callback.AddListener((data) => { playerMovement.OnStopMoving(); });
             rightButtonTrigger.triggers.Add(pointerUpEntry);
 
-            Debug.Log("Right button events set up successfully.");
+            // Debug.Log("Right button events set up successfully.");
         }
 
         private void SetupBlockButtonEvents(PlayerMovement_2 playerMovement)
@@ -122,7 +122,7 @@ namespace ITKombat
             pointerUpEntry.callback.AddListener((data) => { playerMovement.OnBlockUp(); });
             blockButtonTrigger.triggers.Add(pointerUpEntry);
 
-            Debug.Log("Right button events set up successfully.");
+            // Debug.Log("Right button events set up successfully.");
         }
 
         private void SetupCrouchButtonEvents(PlayerMovement_2 playerMovement)
@@ -149,7 +149,7 @@ namespace ITKombat
             pointerUpEntry.callback.AddListener((data) => { playerMovement.OnCrouchUp(); });
             crouchButtonTrigger.triggers.Add(pointerUpEntry);
 
-            Debug.Log("Right button events set up successfully.");
+            // Debug.Log("Right button events set up successfully.");
         }
     }
 }

@@ -18,8 +18,12 @@ MonoBehaviour:
   m_PlatformBuildProfile:
     rid: 2797609927566426133
   m_Scenes:
-  - m_enabled: 1
+  - m_enabled: 0
     m_path: Assets/Scenes/DebugScene.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Authentication/(new)LoginRegister.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Authentication/SelectCharacterFirstTime.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Room/Asrama.unity
   - m_enabled: 1
@@ -27,7 +31,23 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/Multiplayer/ClientTest.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/Load/LoadingScene.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/BattleTesting/SoundMultiplayer.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/BattleTesting/TestSelectScene.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/BattleTesting/NewSoundMulti.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Room/(new)Laboratory.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/Room/Lingkungan.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Multiplayer/Multiplayer.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Room/WaitingRoom/WaitingUnranked.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/SelectCharacterFelix.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings:
@@ -208,8 +228,8 @@ MonoBehaviour:
     - line: '|     tvOS: 0'
     - line: '|   overrideDefaultApplicationIdentifier: 0'
     - line: '|   AndroidBundleVersionCode: 42'
-    - line: '|   AndroidMinSdkVersion: 33'
-    - line: '|   AndroidTargetSdkVersion: 33'
+    - line: '|   AndroidMinSdkVersion: 34'
+    - line: '|   AndroidTargetSdkVersion: 35'
     - line: '|   AndroidPreferredInstallLocation: 1'
     - line: '|   aotOptions: '
     - line: '|   stripEngineCode: 1'
@@ -837,10 +857,12 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 2797609927566426133
       type: {class: AndroidPlatformBuildSettings, ns: UnityEditor.Android, asm: UnityEditor.Android.Extensions}
       data:
-        m_Development: 0
+        m_Development: 1
         m_ConnectProfiler: 0
         m_BuildWithDeepProfilingSupport: 0
         m_AllowDebugging: 0
@@ -857,7 +879,7 @@ MonoBehaviour:
         m_DebugSymbolLevel: 1
         m_DebugSymbolFormat: 5
         m_CurrentDeploymentTargetId: __builtin__target_default
-        m_BuildType: 2
+        m_BuildType: 1
         m_BuildAppBundle: 0
         m_IPAddressToConnect: 
         m_SymlinkSources: 0

@@ -19,6 +19,7 @@ namespace ITKombat
         public override void Activate(GameObject parent)
         {
             // Masukin sound dan anim disini
+            // NewSoundManager.Instance.PlaySound("IF_Skill1", parent.transform.position);
 
             if (parent.CompareTag("Player"))
             {

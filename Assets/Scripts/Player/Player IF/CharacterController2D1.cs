@@ -12,7 +12,9 @@ public class CharacterController2D1 : MonoBehaviour
     [SerializeField] private LayerMask m_WhatIsGround;                          
     [SerializeField] private Transform m_GroundCheck;                            
     [SerializeField] private Transform m_CeilingCheck;                          
-    [SerializeField] private Collider2D m_CrouchDisableCollider;                
+    [SerializeField] private Collider2D m_CrouchDisableCollider;
+    [SerializeField] private Transform meleeHitbox; // Referensi ke melee hitbox
+
     const float k_GroundedRadius = .2f;
     private bool m_Grounded;         
     const float k_CeilingRadius = .2f; 
@@ -146,6 +148,14 @@ public class CharacterController2D1 : MonoBehaviour
                 Vector3 theScale = transform.localScale;
                 theScale.x *= -1;
                 transform.localScale = theScale;*/
+
+        // Balikkan hitbox dengan mengalikan scale X dengan -1
+        if (meleeHitbox != null)
+        {
+            Vector3 hitboxScale = meleeHitbox.localScale;
+            hitboxScale.x *= -1; // Balik skala X
+            meleeHitbox.localScale = hitboxScale;
+        }
     }
 
     public void Dash(float dashSpeed, float dashDuration)

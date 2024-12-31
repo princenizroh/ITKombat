@@ -24,12 +24,16 @@ namespace ITKombat
         // Input buffer Timer
         private float AttackPressedTimer = 0;
 
+        private bool hasPlayedMissSound = false;
+
+
         public override void OnEnter(FelixStateMachine _stateMachine)
         {
             base.OnEnter(_stateMachine);
             animator = GetComponent<Animator>();
             collidersDamaged = new List<Collider2D>();
             hitCollider = GetComponent<PlayerIFAttack>().hitbox;
+            hasPlayedMissSound = false; // Reset flag
         }
 
         public override void OnUpdate()
@@ -56,6 +60,7 @@ namespace ITKombat
         public override void OnExit()
         {
             base.OnExit();
+            hasPlayedMissSound = false; // Reset flag
         }
 
         protected void Attack()
@@ -63,20 +68,23 @@ namespace ITKombat
             Collider2D[] collidersToDamage = new Collider2D[10];
             ContactFilter2D filter = new ContactFilter2D();
             filter.useTriggers = true;
-            Debug.Log("ATTACK JALAN");
+            // Debug.Log("ATTACK JALAN");
             bool isBlocked = false;
 
             if (hitCollider == null)
             {
-                Debug.LogError("HitCollider is not assigned!");
+                // Debug.LogError("HitCollider is not assigned!");
                 return;
             }
             
             int colliderCount = Physics2D.OverlapCollider(hitCollider, filter, collidersToDamage);
 
+
+
+
             for (int i = 0; i < colliderCount; i++)
             {
-                Debug.Log("MENJALANKAN FOR");
+                // Debug.Log("MENJALANKAN FOR");
                 Collider2D targetCollider = collidersToDamage[i];
 
                 if (!collidersDamaged.Contains(targetCollider))
@@ -91,25 +99,28 @@ namespace ITKombat
                     {
       
                         Debug.Log("Menjalankan IF 2");
-                        if (enemyRb != null && (enemyDefense == null || !enemyDefense.isBlocking))
+                        if (enemyDefense != null && enemyDefense.isBlocking)
                         {
                             isBlocked = true;
+                        }
+
+                        if (enemyRb != null && !enemyDefense.isBlocking)
+                        {
                             Debug.Log("Menjalankan IF 3");
                             Debug.Log($"Enemy {targetCollider.name} has taken {attackIndex * 10} damage.");
 
                             GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
-                            Debug.Log("Jalan");
-                            Debug.Log(enemyStateObject);
+                            // Debug.Log("Jalan");
+                            // Debug.Log(enemyStateObject);
 
                             if (enemyStateObject != null)
                             {
-                                Debug.Log("Menjalankan IF 4");
+                                // Debug.Log("Menjalankan IF 4");
                                 EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
                                 if (enemyState != null)
                                 {
                                     enemyState.TakeDamage(attackIndex * 5);
-                                    Debug.Log("Berhasil Kesini");
-
+                                    // Debug.Log("Berhasil Kesini");
                                 }
                             }
                             else
@@ -120,14 +131,19 @@ namespace ITKombat
                             collidersDamaged.Add(targetCollider);
                             
                         }
-                        PlayerIFAttack.Instance.PlayAttackSound(attackIndex, collidersToDamage.Length > 0, isBlocked);
+                        PlayerIFAttack.Instance.PlayAttackSound(attackIndex, colliderCount > 0, isBlocked);
+                        
                     }
+                    
+                }
+            }
+
+            if (colliderCount == 0 && !hasPlayedMissSound)
+            {
+                PlayerIFAttack.Instance.PlayMissSound(attackIndex); // Memainkan suara pukulan meleset
+                hasPlayedMissSound = true; // Set flag agar suara tidak diputar ulang
             }
             
         }
-        
-        
-    }
-
     }
 }
