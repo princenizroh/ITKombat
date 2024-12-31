@@ -5,9 +5,9 @@ namespace ITKombat
 {
     public class GameManagerScene : MonoBehaviour
     {
-        public static GameManagerScene instance; 
-        public SelectScene[] scenes; 
-        public SelectScene currentScene; 
+        public static GameManagerScene instance;
+        public SelectScene[] scenes;
+        public SelectScene currentScene;
 
         private void Awake()
         {
@@ -33,7 +33,8 @@ namespace ITKombat
                 {
                     currentScene = selectedScene;
                     Debug.Log($"Scene dengan ID {selectedPageID} dipilih.");
-                    Instantiate(currentScene.prefab, transform.position, Quaternion.identity);
+                    // Spawn di posisi (0, -0.1, 0)
+                    Instantiate(currentScene.prefab, new Vector3(-0.1f, -0.1f, 0), Quaternion.identity);
                 }
                 else
                 {
@@ -58,12 +59,11 @@ namespace ITKombat
             currentScene = scene;
         }
     }
-    
+
     [System.Serializable]
     public class SelectScene
     {
-        public int id; 
-        public GameObject prefab; 
+        public int id;
+        public GameObject prefab;
     }
-
 }
