@@ -35,10 +35,6 @@ namespace ITKombat
             {
                 mainStateType = new HitIdleCombatState();
             }
-            else
-            {
-                Debug.LogError("Unknown customName: " + customName);
-            }
         }
 
         void Update()

@@ -48,13 +48,11 @@ namespace ITKombat
 
         private void Show()
         {
-            Debug.Log("Show");
             gameObject.SetActive(true);
         }
 
         private void Hide()
         {
-            Debug.Log("Hide");
             gameObject.SetActive(false);
         }
     }
