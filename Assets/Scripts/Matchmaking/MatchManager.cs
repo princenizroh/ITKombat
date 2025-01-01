@@ -121,12 +121,9 @@ namespace ITKombat
                     isSoundFight = true;
                 }
                 Debug.Log("State Handle Timeout Timer" + ServerBattleRoomState.Instance.state.Value);
-                ServerBattleRoomState.Instance.ChangeState(State.GamePlaying);
             }
             else{
                 isSoundFight = false;
-                TimeoutNotif.SetActive(false);
-
             }
         }
         
@@ -158,13 +155,13 @@ namespace ITKombat
         
             if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
             {
-                // Debug.Log("CountdownToStart is active");
+                Debug.Log("CountdownToStart is active");
         
                 if (!isCountdownCoroutineStarted)
                 {
-                    // Debug.Log($"Couroutine started for Round {currentRound}");
+                    Debug.Log($"Couroutine started for Round {currentRound}");
                     StartCoroutine(ShowRoundStartNotification(currentRound));
-                    // Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
+                    Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
                     isCountdownCoroutineStarted = true;
                 }
             }
@@ -207,9 +204,9 @@ namespace ITKombat
                     yield return null;
                 }
 
-
                 yield return new WaitForSeconds(0.5f);
                 FightNotif.SetActive(false);
+                Debug.Log("After FightNotif");
 
                 if (playerMovement != null)
                 {
@@ -489,8 +486,8 @@ namespace ITKombat
             timeoutTriggered = false;
             ServerBattleRoomState.Instance.RoundOutcomeDeterminedServerRpc();
 
-            playerState.ResetHealth();
-            enemyState.ResetHealth();
+            playerState.ResetHealthServerRpc();
+            enemyState.ResetHealthServerRpc();
         }
     }
 }
