@@ -9,7 +9,7 @@ namespace ITKombat
     public class CharacterStat : ScriptableObject
     {
         public string characterName;
-        public string characterClass;
+        public CharacterTypeEnum characterClass;
         public string characterTier;        
         public int characterBaseAtk;
         public int characterBaseDef;

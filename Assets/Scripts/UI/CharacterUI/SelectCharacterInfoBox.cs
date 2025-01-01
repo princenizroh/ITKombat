@@ -28,7 +28,7 @@ namespace ITKombat
         {
             hideWhenNoCharacterSelected.SetActive(true);
             characterNameText.text = characterStat.characterName;
-            characterClassText.text = characterStat.characterClass;
+            characterClassText.text = characterStat.characterClass.ToString();
             characterTierText.text = characterStat.characterTier;
             characterBaseAtkText.text = characterStat.characterBaseAtk.ToString();
             characterBaseDefText.text = characterStat.characterBaseDef.ToString();
