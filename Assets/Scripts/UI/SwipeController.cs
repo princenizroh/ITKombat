@@ -61,28 +61,27 @@ namespace ITKombat
             }
         }
 
-public void Selected()
-{
-    // Cari elemen berdasarkan ID halaman saat ini
-    PageElement selectedPage = pageElements.Find(page => page.id == currentPage);
+        public void Selected()
+        {
+            // Cari elemen berdasarkan ID halaman saat ini
+            PageElement selectedPage = pageElements.Find(page => page.id == currentPage);
 
-    if (selectedPage != null && selectedPage.pageObject != null)
-    {
-        // Lakukan sesuatu dengan objek terkait halaman
-        Debug.Log($"Selected Page ID: {selectedPage.id}");
-        Debug.Log($"Associated Object: {selectedPage.pageObject.name}");
+            if (selectedPage != null && selectedPage.pageObject != null)
+            {
+                // Lakukan sesuatu dengan objek terkait halaman
+                Debug.Log($"Selected Page ID: {selectedPage.id}");
+                Debug.Log($"Associated Object: {selectedPage.pageObject.name}");
 
-        // Simpan ID halaman yang dipilih
-        PlayerPrefs.SetInt("SelectedPageID", selectedPage.id);
+                // Simpan ID halaman yang dipilih
+                PlayerPrefs.SetInt("SelectedPageID", selectedPage.id);
 
-        // Pindah ke scene (contoh)
-        SceneManager.LoadScene("NewSoundMulti");
-    }
-    else
-    {
-        Debug.LogWarning("Page or Object not found for the selected ID!");
-    }
-}
+                // Pindah ke scene (contoh)
+                SceneManager.LoadScene("NewSoundMulti");
+            }
+            else
+            {
+            }
+        }
 
         private void MovePage()
         {

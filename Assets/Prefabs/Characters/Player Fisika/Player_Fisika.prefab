@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 499871125234930744}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.6920198, y: -1.116515, z: -0.014004162}
+  m_LocalPosition: {x: 0, y: -1.116515, z: -0.014004162}
   m_LocalScale: {x: 1.25, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 1122190387651369428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.74201983, y: 0.853485, z: 0}
+  m_LocalPosition: {x: 0, y: 0.853485, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1507,7 +1507,7 @@ Transform:
   m_GameObject: {fileID: 5582103430201783428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.74201983, y: -1.096515, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1777,9 +1777,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillSound1: {fileID: 0}
-  skillSound2: {fileID: 0}
-  skillSound3: {fileID: 0}
+  skillSound1: {fileID: 7359187673690506650}
+  skillSound2: {fileID: 7359187673690506650}
+  skillSound3: {fileID: 7359187673690506650}
   skillSound3Part2: {fileID: 0}
   isSkill2Active: 0
   Skill1_VFX_Right: {fileID: 0}
@@ -1789,7 +1789,7 @@ MonoBehaviour:
   attackPoint: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
 --- !u!114 &518055844919232928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1822,7 +1822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 250
+  m_JumpForce: 150
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.05
   m_AirControl: 1
@@ -1832,7 +1832,7 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 945119169207020794}
   m_CeilingCheck: {fileID: 2507123742335072157}
   m_CrouchDisableCollider: {fileID: 0}
-  meleeHitbox: {fileID: 0}
+  meleeHitbox: {fileID: 7655229661152023746}
   m_FacingRight: 1
   OnLandEvent:
     m_PersistentCalls:
@@ -1847,15 +1847,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7020879151175104176}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 777159a8662bd3d4eab28c8899b67c4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentSkills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 655c117f24391dc4593a085d40c6e473, type: 2}
+  - {fileID: 11400000, guid: 5d443d70ed0e0724f87e8298c1f63f37, type: 2}
+  - {fileID: 11400000, guid: 5feacb1e4eb27a046b8226c2542eaa9e, type: 2}
 --- !u!114 &2950625026052775896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1901,7 +1901,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7020879151175104176}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15e6dd2f3ae58c84a814478767f9de62, type: 3}
   m_Name: 
