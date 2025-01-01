@@ -608,12 +608,12 @@ GameObject:
   - component: {fileID: 2101417576004801582}
   - component: {fileID: -1396629927428436699}
   m_Layer: 6
-  m_Name: PlayerMesin
+  m_Name: Player_Kelautan
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2492884473718834363
 Transform:
   m_ObjectHideFlags: 0
@@ -680,12 +680,12 @@ SpriteRenderer:
   m_SortingLayerID: -911367517
   m_SortingLayer: 4
   m_SortingOrder: 200
-  m_Sprite: {fileID: -4820413359228249351, guid: 5e023c28e29f10c4db38d2cba40f65ec, type: 3}
+  m_Sprite: {fileID: -1916608203, guid: a148de7daed43944d8fe8b27a0151571, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.64, y: 0.74}
+  m_Size: {x: 1.40625, y: 1.875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -701,7 +701,7 @@ Animator:
   m_GameObject: {fileID: 1502064381268693709}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d95be9760b211624fafac69ddd1e3f2a, type: 2}
+  m_Controller: {fileID: 9100000, guid: df705dddebd49fb4aa0618e12afe052c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -774,12 +774,12 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.15}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.64, y: 0.74}
-    newSize: {x: 0.64, y: 0.74}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1.40625, y: 1.875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -798,8 +798,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2650164575
-  InScenePlacedSourceGlobalObjectIdHash: 2185716170
+  GlobalObjectIdHash: 4016930313
+  InScenePlacedSourceGlobalObjectIdHash: 3314525760
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -848,7 +848,7 @@ MonoBehaviour:
   hitbox: {fileID: 5308142314798569208}
   Hiteffect: {fileID: 0}
   isUsingWeapon: 0
-  characterStats: {fileID: 11400000, guid: efe015c3c014c7645863373b3c58654d, type: 2}
+  characterStats: {fileID: 11400000, guid: 50c5a8ddef21890438eb902881f6e490, type: 2}
 --- !u!114 &9109292694492900449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1808,7 +1808,7 @@ Transform:
   m_GameObject: {fileID: 5931117110381450160}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.1218109, z: -0.014004162}
+  m_LocalPosition: {x: 0, y: -1, z: -0.014004162}
   m_LocalScale: {x: 1.25, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1894,7 +1894,7 @@ Transform:
   m_GameObject: {fileID: 8519453916349804225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.848189, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
