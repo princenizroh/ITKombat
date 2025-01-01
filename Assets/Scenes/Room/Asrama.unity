@@ -4548,6 +4548,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 594545678}
   m_CullTransparentMesh: 0
+--- !u!1 &608678542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 608678543}
+  - component: {fileID: 608678544}
+  m_Layer: 0
+  m_Name: SoundSceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &608678543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608678542}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.2868462, y: -5.801146, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1631117505}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &608678544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608678542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c199bb3d2380cf48945a2c27143fc48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &611839181
 GameObject:
   m_ObjectHideFlags: 0
@@ -10596,6 +10640,7 @@ Transform:
   - {fileID: 1263022422}
   - {fileID: 1813825113}
   - {fileID: 835865080}
+  - {fileID: 608678543}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1639594780
@@ -11300,7 +11345,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1813825113}
   - component: {fileID: 1813825111}
-  - component: {fileID: 1813825114}
   m_Layer: 0
   m_Name: SettingManager
   m_TagString: Untagged
@@ -11339,18 +11383,6 @@ Transform:
   - {fileID: 566341903}
   m_Father: {fileID: 1631117505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1813825114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813825110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c199bb3d2380cf48945a2c27143fc48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1815569471
 GameObject:
   m_ObjectHideFlags: 0
