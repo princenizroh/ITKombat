@@ -61,7 +61,7 @@ namespace ITKombat
 
         public int GetResetTimerStart()
         {
-            timerStart = 2;
+            timerStart = 5;
             return Mathf.FloorToInt(timerStart);
         }
 

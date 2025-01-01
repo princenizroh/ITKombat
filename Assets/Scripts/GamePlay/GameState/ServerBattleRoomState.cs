@@ -5,8 +5,6 @@ using Unity.Netcode;
 using VContainer;
 // using Unity.Services.Multiplay;
 using UnityEngine;
-using QFSW.QC.Actions;
-using Unity.VisualScripting;
 
 namespace ITKombat
 {
@@ -38,7 +36,7 @@ namespace ITKombat
         [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(5f);
         private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
 
-        private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(2f);
+        private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
 
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
         [SerializeField] private const float gamePlayingTimerMax = 5f;
@@ -352,15 +350,6 @@ namespace ITKombat
         public bool IsCountdownToStartFinished() {
             return state.Value == State.CountdownToStart && countdownToStartTimer.Value < 0f;
         }
-
-        public float GetCountdownToStartTimer() {
-            return countdownToStartTimer.Value;
-        }
-
-        public float GetResetCountdownToStartTimer() {
-            countdownToStartTimer.Value = 5f;
-            return countdownToStartTimer.Value;
-        }
         public bool IsGameOver() {
             return state.Value == State.GameOver;
         }
@@ -373,6 +362,15 @@ namespace ITKombat
         public bool IsLocalPlayerReady() {
             Debug.Log("IsLocalPlayerReady: " + isLocalPlayerReady);
             return isLocalPlayerReady.Value;
+        }
+
+        public float GetCountdownToStartTimer() {
+            return countdownToStartTimer.Value;
+        }
+
+        public float GetResetCountdownToStartTimer() {
+            countdownToStartTimer.Value = 5f;
+            return countdownToStartTimer.Value;
         }
 
         public int GetGamePlayingTimerNormalized() {
