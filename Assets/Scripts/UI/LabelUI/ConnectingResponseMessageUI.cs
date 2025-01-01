@@ -16,6 +16,7 @@ namespace ITKombat
             closeButton.onClick.AddListener(() =>
             {
                 Hide();
+                NewSoundManager.Instance.PlaySound2D("Button_Click");
             });
         }
 
