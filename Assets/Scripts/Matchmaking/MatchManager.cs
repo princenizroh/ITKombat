@@ -18,77 +18,111 @@ namespace ITKombat
         public bool timeoutTriggered = false;
         public bool timeoutTimer = false;
         public bool finalRound = false;
-        //Audio Source Sound Manager
         private bool isSoundFight = false;
-
-
         private PlayerMovement_2 playerMovement;
         private ServerCharacterMovement serverCharacterMovement;
-
-        // Reference to PlayerState and EnemyState
         public PlayerState playerState;
         public EnemyState enemyState;
         public SoundManager soundManager;
 
         private int currentRound = 1;
-
-        private IState currentState;
-        
         private bool isCountdownCoroutineStarted = false;
-
-        private int activeCoroutines = 0;
-
-        [System.Obsolete]
+        
         void Start() 
         {
-            // if (ServerBattleRoomState.Instance != null)
-            // {
-            //     Debug.Log("Instance is not null, registering OnStateChanged.");
-            //     ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
-            // 
-            //     // Cek apakah event handler sudah terdaftar
-            //     Debug.Log("OnStateChanged registered successfully.");
-            // }
-            // else
-            // {
-            //     Debug.LogError("ServerBattleRoomState.Instance is NULL.");
-            // }
             ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
-            Debug.Log("MatchManager Start");
             // StartCoroutine(ShowRoundStartNotification(1));
             StartCoroutine(WaitForPlayer());
         }
-
-        private IEnumerator CountedCoroutine(IEnumerator coroutine)
+        private void Awake()
         {
-            activeCoroutines++;
-            Debug.Log($"Coroutine started. Active coroutines: {activeCoroutines}");
-            
-            yield return StartCoroutine(coroutine);
-            
-            activeCoroutines--;
-            Debug.Log($"Coroutine finished. Active coroutines: {activeCoroutines}");
-        }
+            if (Instance != null && Instance != this) {
+                Destroy(gameObject);
+            } else {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
 
-        public void ChangeState(IState newState)
-        {
-            Debug.Log("Changing state to: " + newState.GetType().Name);
-            currentState.Exit();
-            currentState = newState; // Ubah state ke state baru
-            currentState.Enter(); // Panggil Enter pada state baru
-            Debug.Log("State changed. Current timeoutToTimer.text: " + timeoutToTimer.text);
+            Instance = this;
+            playerState = FindFirstObjectByType<PlayerState>();
+            enemyState = FindFirstObjectByType<EnemyState>();
         }
 
         
-        [System.Obsolete]
+        void Update()
+        {
+            if (ServerBattleRoomState.Instance != null)
+            {
+                UpdateTimerUI();
+            }
+            // timerText.text = matchTimer.GetStageTimeInSecond().ToString();
+            
+
+            // vpPlayer.text = playerVictoryPoint.ToString();
+            // vpEnemy.text = enemyVictoryPoint.ToString();
+            
+            // if (matchTimer.GetStageTimeInSecond() == 0 && !timeoutTriggered) 
+            if(ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized() == 0 && !timeoutTriggered)
+            {
+                HandleTimeout();
+            } 
+            else if (timeoutTimer == true) 
+            {   
+                HandleTimeoutTimer();
+            }
+            
+        }
+
+        private void UpdateTimerUI()
+        {
+            float gamePlayingTimer = ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized();
+            if (ServerBattleRoomState.Instance.state.Value == State.GamePlaying)
+            {
+                timerText.text = Mathf.CeilToInt(gamePlayingTimer).ToString();
+            }
+         
+        }
+
+        private void HandleTimeout()
+        {            
+            // ChangeState(new TimeOutState(this));
+            // currentState.Execute();
+            timeoutTriggered = true;
+            StartCoroutine(MatchTimeout());
+        }
+
+        private void HandleTimeoutTimer()
+        {
+            float normalTime = ServerBattleRoomState.Instance.GetCountdownToStartTimer();
+            timeoutToTimer.text = Mathf.CeilToInt(normalTime).ToString();
+            // matchTimer.ChangeMatchStatus(false);
+            // timeoutToTimer.text = matchTimer.GetNormalTimeInSecond().ToString();
+            // timeoutToTimer.text = ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized().ToString();
+            TimeoutNotif.SetActive(true);
+            // if (matchTimer.GetNormalTimeInSecond() <= 0f) 
+            if (normalTime <= 0f)
+            {
+                TimeoutNotif.SetActive(false);
+                matchTimer.ChangeMatchStatus(true);
+                if(!isSoundFight){
+                    FightNotif.SetActive(true);
+                    NewSoundManager.Instance.PlaySound2D("Fight");
+                    isSoundFight = true;
+                }
+            }
+            else{
+                isSoundFight = false;
+            }
+        }
+        
         private IEnumerator WaitForPlayer()
         {
-            yield return new WaitUntil(() => FindObjectOfType<PlayerMovement_2>() != null);
-            playerMovement = FindObjectOfType<PlayerMovement_2>();
+            yield return new WaitUntil(() => FindFirstObjectByType<PlayerMovement_2>() != null);
+            playerMovement = FindFirstObjectByType<PlayerMovement_2>();
             if (playerMovement == null)
             {
                 Debug.Log("playerMovement tidak ditemukan, menggunakan serverCharacterMovement sebagai gantinya.");
-                serverCharacterMovement = FindObjectOfType<ServerCharacterMovement>();
+                serverCharacterMovement = FindFirstObjectByType<ServerCharacterMovement>();
                 if (serverCharacterMovement != null)
                 {
                     serverCharacterMovement.canMove = false;
@@ -103,33 +137,18 @@ namespace ITKombat
                 playerMovement.canMove = false; // Atur setelah player ditemukan
             }
         }
-
-        [System.Obsolete]
-        private void Awake()
-        {
-            if (Instance != null && Instance != this) {
-            Destroy(gameObject);
-        } else {
-            Instance = this;
-        }
-
-            Instance = this;
-            // Ensure PlayerState and EnemyState are correctly set up
-            playerState = FindObjectOfType<PlayerState>();
-            enemyState = FindObjectOfType<EnemyState>();
-        }
         private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
         {
-            // Debug.Log("Checking IsCountdownToStartActive");
+            Debug.Log("Checking IsCountdownToStartActive");
         
             if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
             {
-                // Debug.Log("CountdownToStart is active");
+                Debug.Log("CountdownToStart is active");
         
                 if (!isCountdownCoroutineStarted)
                 {
                     Debug.Log($"Couroutine started for Round {currentRound}");
-                    StartCoroutine(CountedCoroutine(ShowRoundStartNotification(currentRound)));
+                    StartCoroutine(ShowRoundStartNotification(currentRound));
                     // Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
                     isCountdownCoroutineStarted = true;
                 }
@@ -138,57 +157,6 @@ namespace ITKombat
             {
                 Debug.Log("CountdownToStart is NOT active");
                 isCountdownCoroutineStarted = false;
-            }
-        }
-        
-        void Update()
-        {
-            timerText.text = matchTimer.GetStageTimeInSecond().ToString();
-            // int normalizedTime = Mathf.Max(0, ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized());
-            // timerText.text = normalizedTime.ToString();
-            
-
-            vpPlayer.text = playerVictoryPoint.ToString();
-            vpEnemy.text = enemyVictoryPoint.ToString();
-            
-            if (matchTimer.GetStageTimeInSecond() == 0 && !timeoutTriggered) 
-            // if(ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized() == 0 && !timeoutTriggered)
-            {
-                HandleTimeout();
-            } 
-            else if (timeoutTimer == true) 
-            {   
-                HandleTimeoutTimer();
-            }
-            
-        }
-
-        private void HandleTimeout()
-        {            
-            // ChangeState(new TimeOutState(this));
-            // currentState.Execute();
-            StartCoroutine(CountedCoroutine(MatchTimeout()));
-            timeoutTriggered = true;
-        }
-
-        private void HandleTimeoutTimer()
-        {
-            matchTimer.ChangeMatchStatus(false);
-            timeoutToTimer.text = matchTimer.GetNormalTimeInSecond().ToString();
-            // timeoutToTimer.text = ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized().ToString();
-
-            if (matchTimer.GetNormalTimeInSecond() <= 0f) 
-            // if (ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized() <= 0f)
-            {
-                matchTimer.ChangeMatchStatus(true);
-                if(!isSoundFight){
-                    NewSoundManager.Instance.PlaySound2D("Fight");
-                    isSoundFight = true;
-                }
-                timeoutToTimer.text = "FIGHT";
-            }
-            else{
-                isSoundFight = false;
             }
         }
 
@@ -211,12 +179,23 @@ namespace ITKombat
                 Debug.Log("Before Round Start Notification");
                 currentRoundNotif.SetActive(true);
                 Debug.Log("Round Start Notification");
-                // ServerBattleRoomState.Instance.IsCountdownToStartActive();
                 yield return new WaitForSeconds(2f);
                 Debug.Log("After WaitForsecond");
                 currentRoundNotif.SetActive(false);
-                Debug.Log("After Round Start Notification");
-                
+                if (currentRound > 1 && currentRound < 6)
+                {
+                    yield return new WaitForSeconds(1f);
+                    timeoutTimer = true;
+                }
+                ServerBattleRoomState.Instance.IsCountdownToStartActive();
+                while (ServerBattleRoomState.Instance.IsCountdownToStartActive())
+                {
+                    HandleTimeoutTimer();
+                    yield return null;
+                }
+                yield return new WaitForSeconds(0.5f);
+                FightNotif.SetActive(false);
+
                 if (playerMovement != null)
                 {
                     playerMovement.canMove = true;
@@ -225,27 +204,8 @@ namespace ITKombat
                 {
                     serverCharacterMovement.canMove = true;
                 }
-                matchTimer.ChangeMatchStatus(true);
+                
 
-                if (roundNumber == 1)
-                {
-                    FightNotif.SetActive(true);
-                    // ServerBattleRoomState.Instance.IsGamePlaying();
-                    Debug.Log("Before Fight Notification");
-                    NewSoundManager.Instance.PlaySound2D("Fight");
-                    Debug.Log("Before WaitForSeconds 1.5f");
-                    yield return new WaitForSeconds(1.5f);
-                    Debug.Log("After WaitForSeconds 1.5f");
-                    FightNotif.SetActive(false);
-                    if (playerMovement != null)
-                    {
-                        playerMovement.canMove = true;
-                    }
-                    else if (serverCharacterMovement != null)
-                    {
-                        serverCharacterMovement.canMove = true;
-                    }
-                }
             }
         }
 
@@ -293,7 +253,7 @@ namespace ITKombat
 
         public IEnumerator ShowEndGame()
         {
-            matchTimer.ChangeMatchStatus(false);  // Stop the timer when match ends
+            // matchTimer.ChangeMatchStatus(false);  // Stop the timer when match ends
             if (Reward != null)
             {
                 Reward.SetActive(true);
@@ -310,7 +270,9 @@ namespace ITKombat
             TimeoutNotif.SetActive(true);
             Debug.Log("3 Match Timeout");
             timeoutToTimer.text = "TIME OUT";
-            // ServerBattleRoomState.Instance.IsWaitingTime();
+            Debug.Log("State Macth Timeout" + ServerBattleRoomState.Instance.state.Value);
+            ServerBattleRoomState.Instance.ChangeState(State.WaitingToStart);
+            Debug.Log("State Macth Timeout 2" + ServerBattleRoomState.Instance.state.Value);
             Debug.Log("4 Match Timeout");
             
             yield return new WaitForSeconds(3f);
@@ -390,16 +352,21 @@ namespace ITKombat
             // Cek apakah kedua pemain mendapatkan poin kemenangan
             if (playerVictoryPoint == 1 && enemyVictoryPoint == 1)
             {
-                yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint)); // Tampilkan Notifikasi Ronde 2
+                Debug.Log("Moving to next round: 2");
+                currentRound = playerVictoryPoint + enemyVictoryPoint;
+                Debug.Log("Current Round in Handle draw: " + currentRound);
+                // yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint)); // Tampilkan Notifikasi Ronde 2
             }
             // Jika hanya musuh yang mencapai 4 poin, lanjutkan ke ronde berikutnya
             else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2)
             {
-                yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint - 1)); // Tampilkan Notifikasi Ronde 2
+                Debug.Log("Moving to next round: 3");
+                currentRound = playerVictoryPoint + enemyVictoryPoint - 1;
+                Debug.Log("Current Round in Handle draw: " + currentRound);
+                // yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint - 1)); // Tampilkan Notifikasi Ronde 2
             }
-
+            Debug.Log("Moving to next round: 2 iffiifififis");
             StartNormalTimer(); // Mulai timer untuk ronde baru
-            currentRound++;
             Debug.Log($"Moving to next round: {currentRound}");
         }
 
@@ -477,47 +444,52 @@ namespace ITKombat
             isSoundFight = false;
 
             int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
-                
+            
+            currentRound = nextRound;
             // yield return StartCoroutine(ShowRoundStartNotification(nextRound));
         }
 
         void StartNormalTimer()
         {
+            Debug.Log("Current Round in Start Normal Timer: " + currentRound);
             Debug.Log("Starting normal timer");
-            TimeoutNotif.SetActive(true);
+            // TimeoutNotif.SetActive(true);
+            Debug.Log("State Start Normal Timer" + ServerBattleRoomState.Instance.state.Value);
+            Debug.Log("State Start Normal Timer 2" + ServerBattleRoomState.Instance.state.Value);
             Debug.Log("Starting normal timer 2");
-            matchTimer.GetNormalTimeInSecond();
-            Debug.Log("Starting normal timer 3 " + matchTimer.GetNormalTimeInSecond());
-            // ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized();
-            // Debug.Log("Starting normal timer 3" + ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized());
-            timeoutTimer = true;
-            
+            // matchTimer.GetResetNormalTimerStart();
+            // matchTimer.GetNormalTimeInSecond();
+    
+            // Debug.Log("Starting normal timer 3 " + matchTimer.GetNormalTimeInSecond());
+
+            ServerBattleRoomState.Instance.ChangeState(State.CountdownToStart);
+            ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized();
+            ServerBattleRoomState.Instance.GetResetCountdownToStartTimer();
+            Debug.Log("State Start Normal Timer 3" + ServerBattleRoomState.Instance.state.Value);  
             StartCoroutine(WaitAndResetTimeout());
+            Debug.Log("Starting normal timer 4");
         }
 
         IEnumerator WaitAndResetTimeout()
         {
             yield return new WaitForSeconds(5f);
+            
             TimeoutNotif.SetActive(false);
             Debug.Log("Resetting timer");
             timeoutTimer = false;
-            matchTimer.ChangeMatchStatus(true);
+            // matchTimer.ChangeMatchStatus(true);
 
             Debug.Log("Resetting timer 2");
             // Reset timer
-            matchTimer.GetResetTimerStart();
-            Debug.Log("Resetting timer 3 " + matchTimer.GetResetTimerStart());
+            // matchTimer.GetResetTimerStart();
+            // Debug.Log("Resetting timer 3 " + matchTimer.GetResetTimerStart());
             // ServerBattleRoomState.Instance.GetResetGamePlayingTimerNormalized();
             // Debug.Log("Resetting timer 3" + ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized());
-            timeoutTriggered = false;
+            // timeoutTriggered = false;
 
             // Reset health
             playerState.ResetHealth();
             enemyState.ResetHealth();
-        }
-
-        public int IsActiveCoroutine() {
-            return activeCoroutines;
         }
     }
 }

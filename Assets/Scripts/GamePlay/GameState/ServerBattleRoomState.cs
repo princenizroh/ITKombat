@@ -5,8 +5,6 @@ using Unity.Netcode;
 using VContainer;
 // using Unity.Services.Multiplay;
 using UnityEngine;
-using QFSW.QC.Actions;
-using Unity.VisualScripting;
 
 namespace ITKombat
 {
@@ -30,12 +28,12 @@ namespace ITKombat
         [SerializeField] private GameObject playerPrefab;
 
         // Network Variable untuk menyimpan state game
-        private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
+        public NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
         
         // private State state;
         [SerializeField] private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
         [SerializeField] private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
-        [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
+        [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(5f);
         private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
 
         private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
@@ -78,7 +76,7 @@ namespace ITKombat
             Camera.main.enabled = false;
     #endif
         }
-        private void ChangeState(State newState) {
+        public void ChangeState(State newState) {
             if (state.Value != newState)
             {
                 state.Value = newState;
@@ -89,9 +87,7 @@ namespace ITKombat
         }
         public override void OnNetworkSpawn() {
             state.OnValueChanged += State_OnValueChanged;
-             // Memanggil CheckDirtyState() setelah semua perubahan selesai
             state.CheckDirtyState();
-            // isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
 
             Debug.Log("IsServer: " + IsServer);
             if (IsServer) {
@@ -178,6 +174,7 @@ namespace ITKombat
         // }
 
         private void State_OnValueChanged(State previousValue, State newValue) {
+            Debug.Log("State_OnValueChanged: " + previousValue);
             Debug.Log("State_OnValueChanged: " + newValue);
             OnStateChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -234,7 +231,7 @@ namespace ITKombat
                     countdownToStartTimer.Value -= Time.deltaTime;
                     Debug.Log("Countdown to start: " + countdownToStartTimer.Value);
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
-                    if (countdownToStartTimer.Value < 0f) {
+                    if (countdownToStartTimer.Value <= 0f) {
                         Debug.Log("Countdown to start finished." + countdownToStartTimer.Value);
                         state.Value = State.GamePlaying;
                         gamePlayingTimer.Value = gamePlayingTimerMax;
@@ -243,18 +240,17 @@ namespace ITKombat
                 case State.GamePlaying:
                     gamePlayingTimer.Value -= Time.deltaTime;
                     if (gamePlayingTimer.Value <= 0f && !isRoundOutcomeDetermined) {
-                        DetermineRoundOutcome();
+                        OnStateChanged?.Invoke(this, EventArgs.Empty);
                         isRoundOutcomeDetermined = true;
-                        state.Value = State.WaitingTime;
+                        state.Value = State.WaitingToStart;
+                        DetermineRoundOutcome();
+
                         Debug.Log("State winState: " + state.Value);
                         Debug.Log("Next round.");
-                        GetResetCountdownToStartTimer();
                         if (winState.Value == WinState.Victory || winState.Value == WinState.Defeat) {
                             Debug.Log("Game over.");
                         }
                     }
-                    break;
-                case State.WaitingTime:
                     break;
                 case State.GameOver:
                     break;
@@ -344,28 +340,15 @@ namespace ITKombat
         }
 
         public bool IsGamePlaying() {
-            Debug.Log("State: " + state.Value);
-            ChangeState(State.GamePlaying);
-            
             return state.Value == State.GamePlaying;
         }
 
         public bool IsCountdownToStartActive() {
-            Debug.Log("State: " + state.Value);
             return state.Value == State.CountdownToStart && countdownToStartTimer.Value > 0f;
         }
 
-        public bool IsWaitingTime() {
-            return state.Value == State.WaitingTime;
-        }
-
-        public float GetCountdownToStartTimer() {
-            return countdownToStartTimer.Value;
-        }
-
-        public float GetResetCountdownToStartTimer() {
-            countdownToStartTimer.Value = 3f;
-            return countdownToStartTimer.Value;
+        public bool IsCountdownToStartFinished() {
+            return state.Value == State.CountdownToStart && countdownToStartTimer.Value < 0f;
         }
         public bool IsGameOver() {
             return state.Value == State.GameOver;
@@ -381,9 +364,18 @@ namespace ITKombat
             return isLocalPlayerReady.Value;
         }
 
+        public float GetCountdownToStartTimer() {
+            return countdownToStartTimer.Value;
+        }
+
+        public float GetResetCountdownToStartTimer() {
+            countdownToStartTimer.Value = 5f;
+            return countdownToStartTimer.Value;
+        }
+
         public int GetGamePlayingTimerNormalized() {
             float normalizedTime = Mathf.Max(0, gamePlayingTimer.Value);
-            return Mathf.FloorToInt(gamePlayingTimer.Value);
+            return Mathf.FloorToInt(normalizedTime);
             // return 3 - (gamePlayingTimer.Value / gamePlayingTimerMax);
         }
 

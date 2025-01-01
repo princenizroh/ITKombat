@@ -23,7 +23,10 @@ namespace ITKombat
 
         void Update()
         {
-            if (statusMatch == true) {
+            // if (statusMatch == true) 
+
+            if (statusMatch == true && ServerBattleRoomState.Instance.IsGamePlaying()) 
+            {
 
                 if (timerStart >= timerSet)
                 {
@@ -31,11 +34,13 @@ namespace ITKombat
                     timerStart -= Time.deltaTime; 
                 }
 
-            } else {
-
+            } 
+            // else 
+            else if (statusMatch == false && ServerBattleRoomState.Instance.IsCountdownToStartActive())
+            {
                 if (normalTimerStart >= normalTimerSet)
                 {
-                    // Debug.Log("Normal Timer Start: " + normalTimerStart);
+                    Debug.Log("Normal Timer Start: " + normalTimerStart);
                     normalTimerStart -= Time.deltaTime;
                 }
                 
@@ -56,7 +61,7 @@ namespace ITKombat
 
         public int GetResetTimerStart()
         {
-            timerStart = 120;
+            timerStart = 5;
             return Mathf.FloorToInt(timerStart);
         }
 
@@ -67,14 +72,14 @@ namespace ITKombat
 
         public int GetNormalTimeInSecond()
         {
-            Debug.Log("Normal Timer Start: " + normalTimerStart);
+            // Debug.Log("Normal Timer Start: " + normalTimerStart);
             return Mathf.FloorToInt(normalTimerStart);
         }
 
         public int GetResetNormalTimerStart()
         {
-            normalTimerStart = 5f;
-            Debug.Log("Normal Timer Start Reset: " + normalTimerStart);
+            normalTimerStart = 3f;
+            // Debug.Log("Normal Timer Start Reset: " + normalTimerStart);
             return Mathf.FloorToInt(normalTimerStart);
         }
     }
