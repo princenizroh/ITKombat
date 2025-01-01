@@ -13,9 +13,11 @@ namespace ITKombat
         {
             createPublicButton.onClick.AddListener(() => {
                 LobbyRoomManager.Instance.CreateLobby(lobbyNameInputField.text, false);
+                NewSoundManager.Instance.PlaySound2D("Button_Click");
             });
             createPrivateButton.onClick.AddListener(() => {
                 LobbyRoomManager.Instance.CreateLobby(lobbyNameInputField.text, true);
+                NewSoundManager.Instance.PlaySound2D("Button_Click");
             });
         }
     }
