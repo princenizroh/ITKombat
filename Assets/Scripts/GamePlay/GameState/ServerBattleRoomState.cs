@@ -31,13 +31,16 @@ namespace ITKombat
         // private State state;
         [SerializeField] private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
         [SerializeField] private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
-        [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(5f);
+        [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(countdownToStartTimerMax);
         private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
 
-        [SerializeField] private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
+        [SerializeField] private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(gamePlayingTimerMax);
 
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
-        public const float gamePlayingTimerMax = 5f;
+        private const float gamePlayingTimerMax = 5f;
+        private const float countdownToStartTimerMax = 5f;
+        private const float countdownToStartTimerMin = -0.1f;
+        private const float limitCountdownToStartTimer = 0.5f;
         private bool isLocalGamePaused = false;
         private bool isCountdownCoroutineStarted = false;
         private bool isRoundOutcomeDetermined = false;
@@ -180,10 +183,7 @@ namespace ITKombat
         public void OnInteractAction(object sender, EventArgs e) {
             Debug.Log("OnInteractAction");
             if (state.Value == State.WaitingToStart) {
-                Debug.Log("State from GameInputOnInteractAction: " + state.Value);
-                Debug.Log("Local player is ready." + isLocalPlayerReady);
-                isLocalPlayerReady.Value = true;
-                OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
+                SetLocalPlayerReadyServerRpc();
 
                 Debug.Log("After Local player is ready." + isLocalPlayerReady);
                 SetPlayerReadyServerRpc();
@@ -229,7 +229,7 @@ namespace ITKombat
                     countdownToStartTimer.Value -= Time.deltaTime;
                     Debug.Log("Countdown to start: " + countdownToStartTimer.Value);
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
-                    if (countdownToStartTimer.Value <= -0.1f) {
+                    if (countdownToStartTimer.Value <= countdownToStartTimerMin) {
                         Debug.Log("Countdown to start finished." + countdownToStartTimer.Value);
                         gamePlayingTimer.Value = gamePlayingTimerMax;
                         state.Value = State.GamePlaying;
@@ -238,7 +238,7 @@ namespace ITKombat
                 case State.GamePlaying:
                     gamePlayingTimer.Value -= Time.deltaTime;
                     Debug.Log("Game playing: " + gamePlayingTimer.Value);
-                    if (gamePlayingTimer.Value <= -0.1f && !isRoundOutcomeDetermined) {
+                    if (gamePlayingTimer.Value <= countdownToStartTimerMin && !isRoundOutcomeDetermined) {
                         OnStateChanged?.Invoke(this, EventArgs.Empty);
                         isRoundOutcomeDetermined = true;
                         state.Value = State.WaitingTime;
@@ -375,6 +375,10 @@ namespace ITKombat
             return isLocalPlayerReady.Value;
         }
 
+        public float GetLimitCountdownToStartTimer() {
+            return limitCountdownToStartTimer;
+        }
+
         public float GetCountdownToStartTimer() {
             return countdownToStartTimer.Value;
         }
@@ -396,20 +400,40 @@ namespace ITKombat
         [ServerRpc(RequireOwnership = false)]
         public void ResetCountdownToStartTimerServerRpc()
         {
-            countdownToStartTimer.Value = 5f;
+            GetResetCountdownToStartTimer();
         }
 
         [ServerRpc(RequireOwnership = false)]
         public void ResetGamePlayingTimerNormalizedServerRpc()
         {
-            gamePlayingTimer.Value = gamePlayingTimerMax;
+            GetResetGamePlayingTimerNormalized();
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void RoundOutcomeDeterminedServerRpc()
+        {
+            IsRoundOutcomeDetermined();
+        }        
 
         [ServerRpc(RequireOwnership = false)]
         public void ChangeStateServerRpc(State newState)
         {
             ChangeState(newState);
         }   
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SetLocalPlayerReadyServerRpc()
+        {
+            isLocalPlayerReady.Value = true;
+            OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        [ClientRpc]
+        public void UpdateTimeoutNotificationClientRpc(bool isActive)
+        {
+            MatchManager.Instance.UpdateTimeoutNotification(isActive);
+        }
+        
         // public void TogglePauseGame() {
         //     isLocalGamePaused = !isLocalGamePaused;
         //     if (isLocalGamePaused) {

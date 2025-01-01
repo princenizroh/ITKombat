@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using NUnit.Framework.Internal;
+using Unity.Netcode;
+using System.Threading;
 
 namespace ITKombat
 {
@@ -95,20 +97,23 @@ namespace ITKombat
             StartCoroutine(MatchTimeout());
         }
 
+        public void UpdateTimeoutNotification(bool isActive)
+        {
+            Debug.Log("Timeout timer");
+            TimeoutNotif.SetActive(isActive);
+        }
+
         private void HandleTimeoutTimer()
         {
-            float normalTime = ServerBattleRoomState.Instance.GetCountdownToStartTimer();
+            float normalTime = ServerBattleRoomState.Instance.GetCountdownToStartTimer(); // 120f
+            float limitNormalTime = ServerBattleRoomState.Instance.GetLimitCountdownToStartTimer(); //  0.5f
             timeoutToTimer.text = Mathf.CeilToInt(normalTime).ToString();
             Debug.Log("Normal Time: " + normalTime);
-            // matchTimer.ChangeMatchStatus(false);
-            // timeoutToTimer.text = matchTimer.GetNormalTimeInSecond().ToString();
             TimeoutNotif.SetActive(true);
-            // if (matchTimer.GetNormalTimeInSecond() <= 0f) 
-            if (normalTime <= 0.1f)
+            if (normalTime <= limitNormalTime && ServerBattleRoomState.Instance.IsGamePlaying())
             {
                 Debug.Log("Timeout Timer");
                 TimeoutNotif.SetActive(false);
-                // matchTimer.ChangeMatchStatus(true);
                 if(!isSoundFight){
                     Debug.Log("Sound Fight");
                     FightNotif.SetActive(true);
@@ -458,43 +463,28 @@ namespace ITKombat
         void StartNormalTimer()
         {
             Debug.Log("Current Round in Start Normal Timer: " + currentRound);
-            Debug.Log("Starting normal timer");
-            // TimeoutNotif.SetActive(true);
             Debug.Log("State Start Normal Timer" + ServerBattleRoomState.Instance.state.Value);
-            Debug.Log("State Start Normal Timer 2" + ServerBattleRoomState.Instance.state.Value);
             Debug.Log("Starting normal timer 2");
-            // matchTimer.GetResetNormalTimerStart();
-            // matchTimer.GetNormalTimeInSecond();
-    
-            // Debug.Log("Starting normal timer 3 " + matchTimer.GetNormalTimeInSecond());
 
-            ServerBattleRoomState.Instance.ChangeState(State.CountdownToStart);
-            ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized();
-            ServerBattleRoomState.Instance.GetResetCountdownToStartTimer();
-            Debug.Log("State Start Normal Timer 3" + ServerBattleRoomState.Instance.state.Value);  
-            WaitAndResetTimeout();
-            Debug.Log("Starting normal timer 4");
+
+            ServerBattleRoomState.Instance.ChangeStateServerRpc(State.CountdownToStart);
+            ServerBattleRoomState.Instance.ResetCountdownToStartTimerServerRpc();
+            StartCoroutine(WaitAndResetTimeout());
         }
 
-        private void WaitAndResetTimeout()
+        private IEnumerator WaitAndResetTimeout()
         {
-            // yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             
-            TimeoutNotif.SetActive(false);
+            // TimeoutNotif.SetActive(false);
             Debug.Log("Resetting timer");
             timeoutTimer = false;
-            // matchTimer.ChangeMatchStatus(true);
 
             Debug.Log("Resetting timer 2");
-            // Reset timer
-            // matchTimer.GetResetTimerStart();
-            // Debug.Log("Resetting timer 3 " + matchTimer.GetResetTimerStart());
-            ServerBattleRoomState.Instance.GetResetGamePlayingTimerNormalized();
-            // Debug.Log("Resetting timer 3" + ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized());
+            ServerBattleRoomState.Instance.ResetGamePlayingTimerNormalizedServerRpc();
             timeoutTriggered = false;
-            ServerBattleRoomState.Instance.IsRoundOutcomeDetermined();
+            ServerBattleRoomState.Instance.RoundOutcomeDeterminedServerRpc();
 
-            // Reset health
             playerState.ResetHealth();
             enemyState.ResetHealth();
         }
