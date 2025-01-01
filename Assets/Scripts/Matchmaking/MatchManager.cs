@@ -110,7 +110,7 @@ namespace ITKombat
             timeoutToTimer.text = Mathf.CeilToInt(normalTime).ToString();
             Debug.Log("Normal Time: " + normalTime);
             TimeoutNotif.SetActive(true);
-            if (normalTime <= limitNormalTime && ServerBattleRoomState.Instance.IsGamePlaying())
+            if (normalTime <= limitNormalTime )
             {
                 Debug.Log("Timeout Timer");
                 TimeoutNotif.SetActive(false);
@@ -125,6 +125,8 @@ namespace ITKombat
             }
             else{
                 isSoundFight = false;
+                TimeoutNotif.SetActive(false);
+
             }
         }
         
@@ -204,6 +206,8 @@ namespace ITKombat
                     HandleTimeoutTimer();
                     yield return null;
                 }
+
+
                 yield return new WaitForSeconds(0.5f);
                 FightNotif.SetActive(false);
 
