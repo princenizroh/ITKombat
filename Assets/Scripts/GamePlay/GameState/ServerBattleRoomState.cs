@@ -14,8 +14,6 @@ namespace ITKombat
         
         // [SerializeField] PersistentGameState persistentGameState;
         private MatchManager matchManager;
-        
-        [Tooltip("Tempat Spawn player berada")]
         public event EventHandler OnStateChanged;
         public event EventHandler OnLocalGamePaused;
         public event EventHandler OnLocalGameUnpaused;
@@ -36,10 +34,10 @@ namespace ITKombat
         [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(5f);
         private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
 
-        private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
+        [SerializeField] private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(5f);
 
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
-        [SerializeField] private const float gamePlayingTimerMax = 5f;
+        public const float gamePlayingTimerMax = 5f;
         private bool isLocalGamePaused = false;
         private bool isCountdownCoroutineStarted = false;
         private bool isRoundOutcomeDetermined = false;
@@ -231,18 +229,19 @@ namespace ITKombat
                     countdownToStartTimer.Value -= Time.deltaTime;
                     Debug.Log("Countdown to start: " + countdownToStartTimer.Value);
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
-                    if (countdownToStartTimer.Value <= 0f) {
+                    if (countdownToStartTimer.Value <= -0.1f) {
                         Debug.Log("Countdown to start finished." + countdownToStartTimer.Value);
-                        state.Value = State.GamePlaying;
                         gamePlayingTimer.Value = gamePlayingTimerMax;
+                        state.Value = State.GamePlaying;
                     }
                     break;
                 case State.GamePlaying:
                     gamePlayingTimer.Value -= Time.deltaTime;
-                    if (gamePlayingTimer.Value <= 0f && !isRoundOutcomeDetermined) {
+                    Debug.Log("Game playing: " + gamePlayingTimer.Value);
+                    if (gamePlayingTimer.Value <= -0.1f && !isRoundOutcomeDetermined) {
                         OnStateChanged?.Invoke(this, EventArgs.Empty);
                         isRoundOutcomeDetermined = true;
-                        state.Value = State.WaitingToStart;
+                        state.Value = State.WaitingTime;
                         DetermineRoundOutcome();
 
                         Debug.Log("State winState: " + state.Value);
@@ -251,6 +250,8 @@ namespace ITKombat
                             Debug.Log("Game over.");
                         }
                     }
+                    break;
+                case State.WaitingTime:
                     break;
                 case State.GameOver:
                     break;
@@ -359,6 +360,16 @@ namespace ITKombat
             return state.Value == State.WaitingToStart;
         }
 
+        public bool IsWaitingTime() {
+            return state.Value == State.WaitingTime;
+        }
+
+        public bool IsRoundOutcomeDetermined() 
+        {
+            isRoundOutcomeDetermined = false;
+            return isRoundOutcomeDetermined;
+        }
+
         public bool IsLocalPlayerReady() {
             Debug.Log("IsLocalPlayerReady: " + isLocalPlayerReady);
             return isLocalPlayerReady.Value;
@@ -373,16 +384,32 @@ namespace ITKombat
             return countdownToStartTimer.Value;
         }
 
-        public int GetGamePlayingTimerNormalized() {
-            float normalizedTime = Mathf.Max(0, gamePlayingTimer.Value);
-            return Mathf.FloorToInt(normalizedTime);
-            // return 3 - (gamePlayingTimer.Value / gamePlayingTimerMax);
+        public float GetGamePlayingTimerNormalized() {
+            return gamePlayingTimer.Value;
         }
 
         public int GetResetGamePlayingTimerNormalized() {
-            return Mathf.FloorToInt(gamePlayingTimerMax);
+            gamePlayingTimer.Value = gamePlayingTimerMax;
+            return Mathf.FloorToInt(gamePlayingTimer.Value);
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void ResetCountdownToStartTimerServerRpc()
+        {
+            countdownToStartTimer.Value = 5f;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void ResetGamePlayingTimerNormalizedServerRpc()
+        {
+            gamePlayingTimer.Value = gamePlayingTimerMax;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void ChangeStateServerRpc(State newState)
+        {
+            ChangeState(newState);
+        }   
         // public void TogglePauseGame() {
         //     isLocalGamePaused = !isLocalGamePaused;
         //     if (isLocalGamePaused) {

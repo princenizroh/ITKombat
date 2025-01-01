@@ -62,8 +62,9 @@ namespace ITKombat
             // vpEnemy.text = enemyVictoryPoint.ToString();
             
             // if (matchTimer.GetStageTimeInSecond() == 0 && !timeoutTriggered) 
-            if(ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized() == 0 && !timeoutTriggered)
+            if(ServerBattleRoomState.Instance.IsWaitingTime() && !timeoutTriggered)
             {
+                Debug.Log("Timeout Triggered");
                 HandleTimeout();
             } 
             else if (timeoutTimer == true) 
@@ -80,6 +81,8 @@ namespace ITKombat
             {
                 timerText.text = Mathf.CeilToInt(gamePlayingTimer).ToString();
             }
+            vpPlayer.text = playerVictoryPoint.ToString();
+            vpEnemy.text = enemyVictoryPoint.ToString();
          
         }
 
@@ -87,6 +90,7 @@ namespace ITKombat
         {            
             // ChangeState(new TimeOutState(this));
             // currentState.Execute();
+            Debug.Log("Handle Timeout");
             timeoutTriggered = true;
             StartCoroutine(MatchTimeout());
         }
@@ -95,20 +99,24 @@ namespace ITKombat
         {
             float normalTime = ServerBattleRoomState.Instance.GetCountdownToStartTimer();
             timeoutToTimer.text = Mathf.CeilToInt(normalTime).ToString();
+            Debug.Log("Normal Time: " + normalTime);
             // matchTimer.ChangeMatchStatus(false);
             // timeoutToTimer.text = matchTimer.GetNormalTimeInSecond().ToString();
-            // timeoutToTimer.text = ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized().ToString();
             TimeoutNotif.SetActive(true);
             // if (matchTimer.GetNormalTimeInSecond() <= 0f) 
-            if (normalTime <= 0f)
+            if (normalTime <= 0.1f)
             {
+                Debug.Log("Timeout Timer");
                 TimeoutNotif.SetActive(false);
-                matchTimer.ChangeMatchStatus(true);
+                // matchTimer.ChangeMatchStatus(true);
                 if(!isSoundFight){
+                    Debug.Log("Sound Fight");
                     FightNotif.SetActive(true);
                     NewSoundManager.Instance.PlaySound2D("Fight");
                     isSoundFight = true;
                 }
+                Debug.Log("State Handle Timeout Timer" + ServerBattleRoomState.Instance.state.Value);
+                ServerBattleRoomState.Instance.ChangeState(State.GamePlaying);
             }
             else{
                 isSoundFight = false;
@@ -139,15 +147,15 @@ namespace ITKombat
         }
         private void ServerBattleRoomState_OnStateChanged(object sender, System.EventArgs e)
         {
-            Debug.Log("Checking IsCountdownToStartActive");
+            // Debug.Log("Checking IsCountdownToStartActive");
         
             if (ServerBattleRoomState.Instance.IsCountdownToStartActive())
             {
-                Debug.Log("CountdownToStart is active");
+                // Debug.Log("CountdownToStart is active");
         
                 if (!isCountdownCoroutineStarted)
                 {
-                    Debug.Log($"Couroutine started for Round {currentRound}");
+                    // Debug.Log($"Couroutine started for Round {currentRound}");
                     StartCoroutine(ShowRoundStartNotification(currentRound));
                     // Debug.Log($"CountdownToStart coroutine started for Round {currentRound}");
                     isCountdownCoroutineStarted = true;
@@ -182,12 +190,10 @@ namespace ITKombat
                 yield return new WaitForSeconds(2f);
                 Debug.Log("After WaitForsecond");
                 currentRoundNotif.SetActive(false);
-                if (currentRound > 1 && currentRound < 6)
-                {
-                    yield return new WaitForSeconds(1f);
-                    timeoutTimer = true;
-                }
-                ServerBattleRoomState.Instance.IsCountdownToStartActive();
+                // if (currentRound > 1 && currentRound < 6)
+                // {
+                //     timeoutTimer = true;
+                // }
                 while (ServerBattleRoomState.Instance.IsCountdownToStartActive())
                 {
                     HandleTimeoutTimer();
@@ -271,7 +277,7 @@ namespace ITKombat
             Debug.Log("3 Match Timeout");
             timeoutToTimer.text = "TIME OUT";
             Debug.Log("State Macth Timeout" + ServerBattleRoomState.Instance.state.Value);
-            ServerBattleRoomState.Instance.ChangeState(State.WaitingToStart);
+            ServerBattleRoomState.Instance.ChangeState(State.WaitingTime);
             Debug.Log("State Macth Timeout 2" + ServerBattleRoomState.Instance.state.Value);
             Debug.Log("4 Match Timeout");
             
@@ -466,13 +472,13 @@ namespace ITKombat
             ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized();
             ServerBattleRoomState.Instance.GetResetCountdownToStartTimer();
             Debug.Log("State Start Normal Timer 3" + ServerBattleRoomState.Instance.state.Value);  
-            StartCoroutine(WaitAndResetTimeout());
+            WaitAndResetTimeout();
             Debug.Log("Starting normal timer 4");
         }
 
-        IEnumerator WaitAndResetTimeout()
+        private void WaitAndResetTimeout()
         {
-            yield return new WaitForSeconds(5f);
+            // yield return new WaitForSeconds(1f);
             
             TimeoutNotif.SetActive(false);
             Debug.Log("Resetting timer");
@@ -483,9 +489,10 @@ namespace ITKombat
             // Reset timer
             // matchTimer.GetResetTimerStart();
             // Debug.Log("Resetting timer 3 " + matchTimer.GetResetTimerStart());
-            // ServerBattleRoomState.Instance.GetResetGamePlayingTimerNormalized();
+            ServerBattleRoomState.Instance.GetResetGamePlayingTimerNormalized();
             // Debug.Log("Resetting timer 3" + ServerBattleRoomState.Instance.GetGamePlayingTimerNormalized());
-            // timeoutTriggered = false;
+            timeoutTriggered = false;
+            ServerBattleRoomState.Instance.IsRoundOutcomeDetermined();
 
             // Reset health
             playerState.ResetHealth();
