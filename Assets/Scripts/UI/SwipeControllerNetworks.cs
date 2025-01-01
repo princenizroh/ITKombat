@@ -6,15 +6,16 @@ using UnityEngine.SceneManagement;
 
 namespace ITKombat
 {
-    [Serializable]
-    public class PageElement
-    {
-        public int id;               
-        public GameObject pageObject; 
-    }
 
-    public class SwipeController : MonoBehaviour, IEndDragHandler
-    {
+    public class SwipeControllerNetworks : MonoBehaviour, IEndDragHandler
+    {    
+        [Serializable]
+        public class PageElement
+        {
+            public int id;               
+            public GameObject pageObject; 
+        }
+
         [SerializeField] private int maxPage;
         private int currentPage;
 
@@ -63,7 +64,6 @@ namespace ITKombat
 
         public void Selected()
         {
-            // Cari elemen berdasarkan ID halaman saat ini
             PageElement selectedPage = pageElements.Find(page => page.id == currentPage);
 
             if (selectedPage != null && selectedPage.pageObject != null)
@@ -76,7 +76,7 @@ namespace ITKombat
                 PlayerPrefs.SetInt("SelectedPageID", selectedPage.id);
 
                 // Pindah ke scene (contoh)
-                SceneManager.LoadScene("NewSoundMulti");
+                SceneManager.LoadScene("");
             }
             else
             {
