@@ -48,6 +48,7 @@ namespace ITKombat
             Instance = this;
             playerState = FindFirstObjectByType<PlayerState>();
             enemyState = FindFirstObjectByType<EnemyState>();
+            
         }
 
         
@@ -83,8 +84,8 @@ namespace ITKombat
             {
                 timerText.text = Mathf.CeilToInt(gamePlayingTimer).ToString();
             }
-            vpPlayer.text = playerVictoryPoint.ToString();
-            vpEnemy.text = enemyVictoryPoint.ToString();
+            // vpPlayer.text = ServerBattleRoomState.Instance.GetPlayerVictoryPoint().ToString();
+            // vpEnemy.text = ServerBattleRoomState.Instance.GetEnemyVictoryPoint().ToString();
          
         }
 
@@ -224,7 +225,7 @@ namespace ITKombat
         public void PlayerDied()
         {
             // Logika untuk ketika player mati
-            if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound)
+            if ( playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound)
             {
                 // Kondisi final round
                 EnemyVictory();
@@ -330,7 +331,6 @@ namespace ITKombat
             }
         }
 
-
         public void DrawRound()
         {
             playerVictoryPoint += 1;
@@ -381,8 +381,6 @@ namespace ITKombat
             StartNormalTimer(); // Mulai timer untuk ronde baru
             Debug.Log($"Moving to next round: {currentRound}");
         }
-
-
 
         private IEnumerator HandleRoundTransition()
         {
