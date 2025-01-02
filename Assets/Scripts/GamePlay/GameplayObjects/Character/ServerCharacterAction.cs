@@ -8,7 +8,6 @@ namespace ITKombat
         
         public static ServerCharacterAction Instance;
         private FelixStateMachine meleeStateMachine;
-        public Transform attackPoint;
 
         public int maxCombo = 4;
         public LayerMask enemyLayer;
