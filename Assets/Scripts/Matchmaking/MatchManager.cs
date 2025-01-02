@@ -338,9 +338,9 @@ namespace ITKombat
             if (ServerBattleRoomState.Instance.IsServer)
             {
                 ServerBattleRoomState.Instance.IncrementPlayerVictoryPointServerRpc();
-                NewSoundManager.Instance.PlaySound2D("Player_Won");
-                StartCoroutine(HandleRoundTransition());
             }
+            NewSoundManager.Instance.PlaySound2D("Player_Won");
+            StartCoroutine(HandleRoundTransition());
         }
 
         public void EnemyVictory()
@@ -348,9 +348,9 @@ namespace ITKombat
             if (ServerBattleRoomState.Instance.IsServer)
             {
                 ServerBattleRoomState.Instance.IncrementEnemyVictoryPointServerRpc();
-                NewSoundManager.Instance.PlaySound2D("Enemy_Won");
-                StartCoroutine(HandleRoundTransition());
             }
+            NewSoundManager.Instance.PlaySound2D("Enemy_Won");
+            StartCoroutine(HandleRoundTransition());
         }
 
         public void DrawRound()
@@ -359,10 +359,11 @@ namespace ITKombat
             if (ServerBattleRoomState.Instance.IsServer)
             {
                 ServerBattleRoomState.Instance.IncrementDrawVictoryPointServerRpc();
-                NewSoundManager.Instance.PlaySound2D("Draw");
                 Debug.Log("Draw Round Is Server");
-                StartCoroutine(HandleDrawTransition());
+
             }
+            NewSoundManager.Instance.PlaySound2D("Draw");
+            StartCoroutine(HandleDrawTransition());
         }
 
 
