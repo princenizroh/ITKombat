@@ -22,7 +22,7 @@ namespace ITKombat
         public int combo = 0;
         private float timeSinceLastAttack;
 
-        private bool canAttack = true;
+        public bool canAttack = true;
         // Animator
         private Animator animator;
 
