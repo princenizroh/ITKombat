@@ -46,5 +46,10 @@ namespace ITKombat
 
             return false;
         }
+
+        public bool IsActive()
+        {
+            return skillActive;
+        }
     }
 }

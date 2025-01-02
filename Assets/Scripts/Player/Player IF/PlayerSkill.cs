@@ -9,6 +9,10 @@ namespace ITKombat
 {
     public class PlayerSkill : MonoBehaviour
     {
+        [SerializeField] private IFSkill1 skill1Asset;
+        [SerializeField] public IFSkill2 skill2Asset;
+        [SerializeField] private IFSkill3 skill3Asset;
+
         public AudioSource skillSound1;
         public AudioSource skillSound2;
         public AudioSource skillSound3;
@@ -84,58 +88,28 @@ namespace ITKombat
 
         public void Skill1()
         {
-            CharacterController2D1 character = GetComponent<CharacterController2D1>();
-            if (character == null) return;
-
             if (skill1CooldownTimer <= 0 && anim != null && !isSkill1Active)
             {
                 // Trigger VFX based on direction
-                if (character.IsFacingRight)
+                CharacterController2D1 character = GetComponent<CharacterController2D1>();
+                if (character != null)
                 {
-                    PlayVFX(Skill1_VFX_Right);
-                }
-                else
-                {
-                    PlayVFX(Skill1_VFX_Left);
+                    if (character.IsFacingRight)
+                    {
+                        PlayVFX(Skill1_VFX_Right);
+                    }
+                    else
+                    {
+                        PlayVFX(Skill1_VFX_Left);
+                    }
                 }
 
                 anim.SetTrigger("skill1");
                 isSkill1Active = true;
                 PlaySound(skillSound1);
-                skill1CooldownTimer = skill1Cooldown;
 
-                // Detect enemies in range
-                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, skill1AttackRadius, enemyLayer);
-                foreach (Collider2D enemy in hitEnemies)
-                {
-                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                    AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
-
-                    if (enemyRb != null && (enemyDefense == null))
-                    {
-                        // Apply force to enemy
-                        Vector2 forceDirection = character.IsFacingRight ? Vector2.right : Vector2.left;
-                        enemyRb.AddForce(forceDirection * skill1Force, ForceMode2D.Impulse);
-
-                        // Apply damage to the enemy
-                        GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
-                        if (enemyStateObject != null)
-                        {
-                            EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
-
-                            if (enemyState != null)
-                            {
-                                enemyState.TakeDamageFromSkill(skill1Damage);
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("EnemyState component not found on enemy.");
-                        }
-                    }
-                }
-
-                StartCoroutine(ResetToIdleAfterTime(1f));
+                // Activate the skill from the ScriptableObject
+                skill1Asset.Activate(gameObject);
             }
             else
             {
@@ -163,7 +137,9 @@ namespace ITKombat
                 anim.SetTrigger("skill2");
                 PlaySound(skillSound2);
                 isSkill2Active = true;
-                shieldCounter = maxShieldHits;
+                // Activate the skill from the ScriptableObject
+                skill2Asset.Activate(gameObject);
+
                 skill2CooldownTimer = skill2Cooldown;
 
                 Debug.Log("Shield activated. Max hits: " + maxShieldHits);
@@ -194,20 +170,13 @@ namespace ITKombat
 
         public void TakeDamage(float damage)
         {
-            if (isSkill2Active && shieldCounter > 0)
+            if (skill2Asset != null && skill2Asset.IsActive() && skill2Asset.BlockAttack())
             {
-                shieldCounter--; // Reduce shield hits
-                Debug.Log("Shield blocked damage. Remaining hits: " + shieldCounter);
-
-                if (shieldCounter <= 0)
-                {
-                    isSkill2Active = false; // Deactivate shield when hits are exhausted
-                    Debug.Log("Shield is now inactive.");
-                }
-                return; // Do not apply damage
+                Debug.Log("Attack blocked by Skill 2.");
+                return; // Damage is blocked
             }
 
-            // Apply damage if no shield is active
+            // Apply damage if not blocked
             PlayerState playerState = GetComponent<PlayerState>();
             if (playerState != null)
             {
