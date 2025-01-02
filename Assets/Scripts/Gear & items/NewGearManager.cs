@@ -15,6 +15,7 @@ namespace ITKombat
         // Main Data Ref
 
         public class InventoryListAll {
+            public int item_id_pos;
             public int item_id;
             public int item_type_id;
             public int item_level;
@@ -82,6 +83,7 @@ namespace ITKombat
         private int stat2value;
 
         // Card Detail Ref
+        private int gearIdPos;
         private int gearId;
         private int geartypeid;
         private int gearName;
@@ -92,6 +94,7 @@ namespace ITKombat
 
         // Value Ref -> UnityUI
         public TMP_Text TMP_gearName;
+        public TMP_Text TMP_gearTypeName;
         public TMP_Text TMP_gearClass;
         public TMP_Text TMP_gearLevel;
         public TMP_Text TMP_gearDesc;
@@ -202,6 +205,7 @@ namespace ITKombat
                 foreach (var playerData in playerDataList) {
                     
                     InventoryListAll appendItem = new InventoryListAll {
+                        item_id_pos = playerData.item_id_pos,
                         item_id = playerData.item_id,
                         item_type_id = playerData.item_type_id,
                         item_level = playerData.item_level,
@@ -223,6 +227,7 @@ namespace ITKombat
                 foreach (var playerData in playerDataList) {
                     
                     InventoryListAll appendItem = new InventoryListAll {
+                        item_id_pos = playerData.item_id_pos,
                         item_id = playerData.item_id,
                         item_type_id = playerData.item_type_id,
                         item_level = playerData.item_level,
@@ -244,6 +249,7 @@ namespace ITKombat
                 foreach (var playerData in playerDataList) {
                     
                     InventoryListAll appendItem = new InventoryListAll {
+                        item_id_pos = playerData.item_id_pos,
                         item_id = playerData.item_id,
                         item_type_id = playerData.item_type_id,
                         item_level = playerData.item_level,
@@ -360,6 +366,9 @@ namespace ITKombat
                     }
                 }
 
+                Debug.Log("item_id_pos "+ itemButton.itemData.item_id_pos);
+
+                gearIdPos = itemButton.itemData.item_id_pos;
                 gearId = itemButton.itemData.item_id;
                 geartypeid = itemButton.itemData.item_type_id;
                 gearLevel = itemButton.itemData.item_level;
@@ -367,6 +376,12 @@ namespace ITKombat
                 currentGearExp = itemButton.itemData.item_current_exp;
                 gearLevel = itemButton.itemData.item_level;
                 gearAscendLevel = itemButton.itemData.item_ascend;
+
+                if (gearAscendLevel == 1) {
+
+                    TMP_gearTypeName.text = "Equipped";
+
+                }
 
                 // mainstatid = 
                 // mainstatValue = 
@@ -495,20 +510,33 @@ namespace ITKombat
             }
         }
 
-        public async void gearUpgradeButtonPressed() {
-            gearUpgradeMenu.SetActive(true);
+        public void gearUpgradeButtonPressed() {
 
-            // Display initial upgrade info
-            gearUpgradeAscend_Text.text = gearAscendLevel.ToString();
-            gearUpgradeLevel_Text.text = gearLevel.ToString();
-            gearUpgradeExp_Text.text = currentGearExp.ToString() + "/" + gearExpMaximum.ToString();
+            if (gearAscendLevel == 0) {
+                
+                StartCoroutine(gameFirebase.ChangeValueIntegerForGear(playerScriptableObject.player_id, "inventory", gearIdPos.ToString(), "item_ascend",1));
 
-            // Clear previous consumable data
-            consumableListAlls.Clear();
+            } else {
 
-            // Fetch and then display data
-            await getPlayerConsumableData(); // Ensure the data is fetched before proceeding
-            showConsumableData(consumableListAlls); // Display data after it's ready
+                StartCoroutine(gameFirebase.ChangeValueIntegerForGear(playerScriptableObject.player_id, "inventory", gearIdPos.ToString(), "item_ascend",0));
+                TMP_gearTypeName.text = "Not Equipped";
+
+            }
+
+
+            // gearUpgradeMenu.SetActive(true);
+
+            // // Display initial upgrade info
+            // gearUpgradeAscend_Text.text = gearAscendLevel.ToString();
+            // gearUpgradeLevel_Text.text = gearLevel.ToString();
+            // gearUpgradeExp_Text.text = currentGearExp.ToString() + "/" + gearExpMaximum.ToString();
+
+            // // Clear previous consumable data
+            // consumableListAlls.Clear();
+
+            // // Fetch and then display data
+            // await getPlayerConsumableData(); // Ensure the data is fetched before proceeding
+            // showConsumableData(consumableListAlls); // Display data after it's ready
         }
 
 
