@@ -5,63 +5,105 @@ namespace ITKombat
     [CreateAssetMenu(fileName = "Mesin_Skill2", menuName = "Skills/Mesin/Mesin_Skill2", order = 2)]
     public class MesinSkill2 : Skills
     {
-        // Masukin sound dan anim disini
+        [SerializeField] private float dashDistance = 5f;
+        [SerializeField] private float dashDuration = 0.2f;
 
-        public float dashDistance = 5f;
-        public float damage = 20f;
-        public float knockbackForce = 7f;
+        [SerializeField] private float damage = 20f;
+        [SerializeField] private float knockbackForce = 7f;
 
-        private bool isDashing = false;  // Track if the dash is active
+        [SerializeField] private Vector2 hitboxSize = new Vector2(2f, 2f);
+        [SerializeField] private Vector2 hitboxOffset = Vector2.zero;
+
+        public LayerMask enemyLayer;
+        public LayerMask playerLayer;
+
+        private bool isDashing = false;
 
         public override void Activate(GameObject parent)
         {
-       /*     isDashing = true;
+            if (isDashing) return; // Prevent multiple activations during a dash
 
-            // Dash forward
             Rigidbody2D rb = parent.GetComponent<Rigidbody2D>();
-            rb.velocity = new Vector2(dashDistance * parent.transform.localScale.x, rb.velocity.y); // Dash direction based on player facing
+            if (rb == null) return;
 
-            // Detect if the player hits another player during the dash
-            GameObject target = DetectEnemy(player);
-            if (target != null)
+            string targetTag = parent.CompareTag("Player") ? "EnemyState" : "PlayerState";
+            LayerMask targetLayer = parent.CompareTag("Player") ? enemyLayer : playerLayer;
+            Vector2 dashDirection = new Vector2(parent.transform.localScale.x, 0).normalized;
+
+            MonoBehaviour monoBehaviour = parent.GetComponent<MonoBehaviour>();
+            if (monoBehaviour != null)
             {
-                // Deal damage to the other player
-                target.GetComponent<Health>().TakeDamage(damage);
-
-                // suara skill2 mesin
-                // NewSoundManager.Instance.PlaySound("Mesin_Skill2", parent.transform.position);
-
-                // Apply knockback
-                Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
-                Vector2 knockback = (target.transform.position - parent.transform.position).normalized * knockbackForce;
-                targetRb.AddForce(knockback, ForceMode2D.Impulse);
-
-                Debug.Log("Dash attack hit the target and dealt significant damage.");
-            }*/
-        }
-            
-        public override void BeginCooldown(GameObject parent)
-        {
-            // Reset velocity to stop further movement after the dash
-            Rigidbody2D rb = parent.GetComponent<Rigidbody2D>();
-            rb.linearVelocity = Vector2.zero;  // Stop the player from moving further
-            Debug.Log("Skill 1 Cooldown");
+                monoBehaviour.StartCoroutine(DashCoroutine(rb, dashDirection, parent, targetLayer, damage, targetTag, hitboxSize, hitboxOffset));
+            }
         }
 
-        private GameObject DetectEnemy (GameObject player)
+        private System.Collections.IEnumerator DashCoroutine(Rigidbody2D rb, Vector2 direction, GameObject parent, LayerMask targetLayer, float damage, string targetTag, Vector2 hitboxSize, Vector2 hitboxOffset)
         {
-            float detectionRadius = 1.5f; // Define the radius in which to detect enemies
-            LayerMask enemyLayer = LayerMask.GetMask("Enemy"); // Assume enemies are in a layer called "Enemy"
+            isDashing = true;
 
-            Collider2D[] enemiesInRange = Physics2D.OverlapCircleAll(player.transform.position, detectionRadius, enemyLayer);
+            Vector2 initialPosition = rb.position;
+            Vector2 targetPosition = initialPosition + direction * dashDistance;
+            float elapsedTime = 0f;
 
-            if (enemiesInRange.Length > 0)
+            while (elapsedTime < dashDuration)
             {
-                // Return the first detected enemy (or handle multiple as needed)
-                return enemiesInRange[0].gameObject;
+                rb.MovePosition(Vector2.Lerp(initialPosition, targetPosition, elapsedTime / dashDuration));
+                elapsedTime += Time.deltaTime;
+
+                Vector2 hitboxPosition = rb.position + new Vector2(hitboxOffset.x * Mathf.Sign(direction.x), hitboxOffset.y);
+                DetectAndDamageEnemies(hitboxPosition, hitboxSize, targetLayer, damage, parent, targetTag);
+
+                yield return null;
             }
 
-            return null; // No enemies detected
+            rb.linearVelocity = Vector2.zero;
+            isDashing = false;
+        }
+
+        private void DetectAndDamageEnemies(Vector2 position, Vector2 size, LayerMask layer, float damage, GameObject parent, string targetTag)
+        {
+            Collider2D[] hitTargets = Physics2D.OverlapBoxAll(position, size, 0f, layer);
+
+            foreach (Collider2D target in hitTargets)
+            {
+                Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
+                if (targetRb != null)
+                {
+                    Vector2 direction = (target.transform.position - parent.transform.position).normalized;
+                    targetRb.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
+
+                    if (targetTag == "EnemyState")
+                    {
+                        EnemyState enemyState = target.GetComponent<EnemyState>();
+                        if (enemyState != null)
+                        {
+                            enemyState.TakeDamageFromSkill(damage);
+                            Debug.Log($"Enemy {target.name} took {damage} damage.");
+                        }
+                    }
+                    else if (targetTag == "PlayerState")
+                    {
+                        PlayerState playerState = target.GetComponent<PlayerState>();
+                        if (playerState != null)
+                        {
+                            playerState.TakeDamageFromSkill(damage);
+                            Debug.Log($"Player {target.name} took {damage} damage.");
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void BeginCooldown(GameObject parent)
+        {
+            Debug.Log("Skill 2 Cooldown started.");
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.red;
+            Vector3 gizmoPosition = (Vector3)hitboxOffset;
+            Gizmos.DrawWireCube(gizmoPosition, hitboxSize);
         }
     }
 }

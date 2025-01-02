@@ -158,13 +158,20 @@ public class CharacterController2D1 : MonoBehaviour
         }
     }
 
-    public void Dash(float dashSpeed, float dashDuration)
+    public void Dash(float dashForce, float duration)
     {
-        float dashDirection = m_FacingRight ? 1f : -1f;
-        Vector2 dashVelocity = new(dashSpeed * dashDirection, m_Rigidbody2D.linearVelocity.y);
-        m_Rigidbody2D.linearVelocity = dashVelocity;
+        StartCoroutine(DashRoutine(dashForce, duration));
+    }
 
-        StartCoroutine(StopDashAfterDuration(dashDuration));
+    private IEnumerator DashRoutine(float dashForce, float duration)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            transform.Translate(Vector3.right * dashForce * Time.deltaTime);
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     private IEnumerator StopDashAfterDuration(float duration)
