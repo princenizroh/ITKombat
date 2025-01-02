@@ -131,7 +131,7 @@ namespace ITKombat
                             collidersDamaged.Add(targetCollider);
                             
                         }
-                        PlayerIFAttack.Instance.PlayAttackSound(attackIndex, colliderCount > 0, isBlocked);
+                        soundPlayerIF.Instance.PlayAttackSound(attackIndex, colliderCount > 0, isBlocked);
                         
                     }
                     
@@ -140,7 +140,7 @@ namespace ITKombat
 
             if (colliderCount == 0 && !hasPlayedMissSound)
             {
-                PlayerIFAttack.Instance.PlayMissSound(attackIndex); // Memainkan suara pukulan meleset
+                soundPlayerIF.Instance.PlayMissSound(attackIndex); // Memainkan suara pukulan meleset
                 hasPlayedMissSound = true; // Set flag agar suara tidak diputar ulang
             }
             
