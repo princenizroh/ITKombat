@@ -35,7 +35,7 @@ namespace ITKombat
             {
                 if (distance <= aiAttack.attackRange)
                 {
-                    if (Random.value < 0.7f)
+                    if (Random.value < 0.8f)
                     {
                         manager.SwitchState(manager.AttackState); // 70% menyerang
                     }
@@ -50,7 +50,7 @@ namespace ITKombat
                 }
                 else
                 {
-                    if (Random.value < 0.80)
+                    if (Random.value < 0.75)
                     {
                         manager.SwitchState(manager.ApproachState); // 75% maju
                     }                    

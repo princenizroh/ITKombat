@@ -53,7 +53,6 @@ namespace ITKombat
             if (Instance == null)
             {
                 Instance = this;
-                Debug.Log("PlayerIFAttack Instance initialized.");
             }
             else
             {
@@ -227,8 +226,8 @@ namespace ITKombat
                     // {
                     //     // Attack1_Left.Play();
                     // }
+                    PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("Attack1");
-                    soundPlayerIF.Instance.PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     // Debug.Log("Attack 1 triggered");
                     break;
@@ -241,8 +240,8 @@ namespace ITKombat
                     // {
                     //     Attack2_Left.Play();
                     // }
+                    PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("Attack2");
-                    soundPlayerIF.Instance.PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     // Debug.Log("Attack 2 triggered");
                     break;
@@ -255,8 +254,8 @@ namespace ITKombat
                     // {
                     //     Attack3_Left.Play();
                     // }
+                    PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("Attack3");
-                    soundPlayerIF.Instance.PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
                     StartCoroutine(ResetToIdleAfterTime(1f)); 
                     // Debug.Log("Attack 3 triggered");
                     break;
@@ -269,8 +268,8 @@ namespace ITKombat
                     // {
                     //     Attack4_Left.Play();
                     // }
+                    PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("Attack4");
-                    soundPlayerIF.Instance.PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     // Debug.Log("Attack 4 triggered");
                     break;
@@ -283,6 +282,62 @@ namespace ITKombat
             animator.SetTrigger("Idle"); 
             // Debug.Log("Reset to Idle after " + time + " seconds.");
         }
+
+        // Untuk determinasi apakah attacknya kena atau tidak
+
+        public void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
+        {
+            if (isBlocked == true)
+            {
+                PlayBlockedSound(comboNumber);
+                return;
+            }
+        
+            if (hitEnemies)
+            {
+                PlayHitSound(comboNumber);
+                return;
+            }
+            PlayMissSound(comboNumber);
+        }
+
+
+        // Taruh hit dan miss soundnya disini
+        
+        private void PlayHitSound(int comboNumber)
+        {
+            switch (comboNumber)
+            {
+                case 1: NewSoundManager.Instance.PlaySound("IF_Attack1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("IF_Attack2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("IF_Attack3", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
+            }
+        }
+
+        private void PlayMissSound(int comboNumber)
+        {
+            switch (comboNumber)
+            {
+                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss2", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Kick_Miss", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
+                
+            }
+        }
+
+        private void PlayBlockedSound(int comboNumber)
+        {
+            switch (comboNumber)
+            {
+                case 1: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+                case 2: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+                case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+                case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+            }
+        }
+
 
         private void OnDrawGizmosSelected()
         {

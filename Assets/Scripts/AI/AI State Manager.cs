@@ -14,6 +14,7 @@ namespace ITKombat
         public AIDefenseState DefenseState = new AIDefenseState(blockDuration : 0.7f);
         public AIApproachState ApproachState = new AIApproachState();
         public AIRetreatState RetreatState = new AIRetreatState();
+        public AIDashState DashState = new AIDashState();
         public AIIdleState IdleState = new AIIdleState(IdleDuration : 2f);
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
