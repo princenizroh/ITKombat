@@ -30,40 +30,40 @@ namespace ITKombat
         }
         public void Execute()
         {
-            Debug.Log("Executing Timeout State");
-            if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2 && matchManager.finalRound == true)
-            {
-                if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint()> ServerBattleRoomState.Instance.GetEnemyVictoryPoint())
-                {
-                    matchManager.PlayerVictory();
-                    matchManager.timeoutToTimer.text = "PLAYER WON FINAL ROUND";
-                    Debug.Log("Player Win the final round by health");
-                }
-                else
-                {
-                    matchManager.EnemyVictory();
-                    matchManager.timeoutToTimer.text = "ENEMY WON FINAL ROUND ";
-                    Debug.Log("Enemy Win the final round by health");
-                }
-            }
-            else
-            {
-                if (matchManager.playerState.currentHealth.Value == matchManager.enemyState.currentHealth.Value)
-                {
-                    matchManager.timeoutToTimer.text = "DRAW";
-                    Debug.Log("Draw");
-                }
-                else if (matchManager.playerState.currentHealth.Value > matchManager.enemyState.currentHealth.Value)
-                {
-                    matchManager.PlayerVictory();
-                    Debug.Log("Player Win by health");
-                }
-                else
-                {
-                    matchManager.EnemyVictory();
-                    Debug.Log("Enemy Win by health");
-                }
-            }            
+            // Debug.Log("Executing Timeout State");
+            // if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2 && matchManager.finalRound == true)
+            // {
+            //     if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint()> ServerBattleRoomState.Instance.GetEnemyVictoryPoint())
+            //     {
+            //         matchManager.PlayerVictory();
+            //         matchManager.timeoutToTimer.text = "PLAYER WON FINAL ROUND";
+            //         Debug.Log("Player Win the final round by health");
+            //     }
+            //     else
+            //     {
+            //         matchManager.EnemyVictory();
+            //         matchManager.timeoutToTimer.text = "ENEMY WON FINAL ROUND ";
+            //         Debug.Log("Enemy Win the final round by health");
+            //     }
+            // }
+            // else
+            // {
+            //     if (matchManager.playerState.currentHealth.Value == matchManager.enemyState.currentHealth.Value)
+            //     {
+            //         matchManager.timeoutToTimer.text = "DRAW";
+            //         Debug.Log("Draw");
+            //     }
+            //     else if (matchManager.playerState.currentHealth.Value > matchManager.enemyState.currentHealth.Value)
+            //     {
+            //         matchManager.PlayerVictory();
+            //         Debug.Log("Player Win by health");
+            //     }
+            //     else
+            //     {
+            //         matchManager.EnemyVictory();
+            //         Debug.Log("Enemy Win by health");
+            //     }
+            // }            
         }
 
         public void Exit()

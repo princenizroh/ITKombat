@@ -1,10 +1,6 @@
 using TMPro;
 using UnityEngine;
 using System.Collections;
-using UnityEngine.SceneManagement;
-using NUnit.Framework.Internal;
-using Unity.Netcode;
-using System.Threading;
 
 namespace ITKombat
 {
@@ -31,8 +27,23 @@ namespace ITKombat
         void Start() 
         {
             ServerBattleRoomState.Instance.OnStateChanged += ServerBattleRoomState_OnStateChanged;
+            ServerBattleRoomState.Instance.OnPlayerVictoryPointChanged += OnPlayerVictoryPointChanged;
+            ServerBattleRoomState.Instance.OnEnemyVictoryPointChanged += OnEnemyVictoryPointChanged;
+
             // StartCoroutine(ShowRoundStartNotification(1));
             StartCoroutine(WaitForPlayer());
+        }
+
+        private void OnPlayerVictoryPointChanged(object sender, System.EventArgs e)
+        {
+            Debug.Log("Player Victory Point Changed");
+            vpPlayer.text = ServerBattleRoomState.Instance.GetPlayerVictoryPoint().ToString();
+        }
+
+        private void OnEnemyVictoryPointChanged(object sender, System.EventArgs e)
+        {
+            Debug.Log("Enemy Victory Point Changed");
+            vpEnemy.text = ServerBattleRoomState.Instance.GetEnemyVictoryPoint().ToString();
         }
         private void Awake()
         {
@@ -322,27 +333,38 @@ namespace ITKombat
             }
         }
 
-        public void DrawRound()
+        public void PlayerVictory()
         {
-            ServerBattleRoomState.Instance.IncrementEnemyVictoryPointServerRpc();
-            ServerBattleRoomState.Instance.IncrementPlayerVictoryPointServerRpc();
-            NewSoundManager.Instance.PlaySound2D("Draw");
-            Debug.Log("Draw round");
-            StartCoroutine(HandleDrawTransition());
-        }
-        public void PlayerVictory() 
-        {
-            ServerBattleRoomState.Instance.IncrementPlayerVictoryPointServerRpc();            
-            NewSoundManager.Instance.PlaySound2D("Player_Won");
-            StartCoroutine(HandleRoundTransition());
+            if (ServerBattleRoomState.Instance.IsServer)
+            {
+                ServerBattleRoomState.Instance.IncrementPlayerVictoryPointServerRpc();
+                NewSoundManager.Instance.PlaySound2D("Player_Won");
+                StartCoroutine(HandleRoundTransition());
+            }
         }
 
-        public void EnemyVictory() 
+        public void EnemyVictory()
         {
-            ServerBattleRoomState.Instance.IncrementEnemyVictoryPointServerRpc();
-            NewSoundManager.Instance.PlaySound2D("Enemy_Won");
-            StartCoroutine(HandleRoundTransition());
+            if (ServerBattleRoomState.Instance.IsServer)
+            {
+                ServerBattleRoomState.Instance.IncrementEnemyVictoryPointServerRpc();
+                NewSoundManager.Instance.PlaySound2D("Enemy_Won");
+                StartCoroutine(HandleRoundTransition());
+            }
         }
+
+        public void DrawRound()
+        {
+            Debug.Log("Draw Round Is Called");
+            if (ServerBattleRoomState.Instance.IsServer)
+            {
+                ServerBattleRoomState.Instance.IncrementDrawVictoryPointServerRpc();
+                NewSoundManager.Instance.PlaySound2D("Draw");
+                Debug.Log("Draw Round Is Server");
+                StartCoroutine(HandleDrawTransition());
+            }
+        }
+
 
         private IEnumerator HandleDrawTransition()
         {

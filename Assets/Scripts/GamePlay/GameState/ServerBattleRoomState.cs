@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
-using VContainer;
 // using Unity.Services.Multiplay;
 using UnityEngine;
 
@@ -14,6 +13,8 @@ namespace ITKombat
         
         // [SerializeField] PersistentGameState persistentGameState;
         private MatchManager matchManager;
+        public event EventHandler OnPlayerVictoryPointChanged;
+        public event EventHandler OnEnemyVictoryPointChanged;
         public event EventHandler OnStateChanged;
         public event EventHandler OnLocalGamePaused;
         public event EventHandler OnLocalGameUnpaused;
@@ -48,8 +49,6 @@ namespace ITKombat
         private Dictionary<ulong, bool> playerReadyDictionary;
         private Dictionary<ulong, bool> playerPausedDictionary;
         private bool autoTestGamePausedState;
-
-        [Inject] PersistentGameState m_PersistentGameState;
 
         
         private void Awake() {
@@ -439,17 +438,32 @@ namespace ITKombat
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void IncrementEnemyVictoryPointServerRpc()
+        public void IncrementPlayerVictoryPointServerRpc()
         {
-            enemyVictoryPoint.Value++;
+            if (!IsServer) return;
+            playerVictoryPoint.Value++;
+            OnPlayerVictoryPointChanged?.Invoke(this, EventArgs.Empty);
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void IncrementPlayerVictoryPointServerRpc()
+        public void IncrementEnemyVictoryPointServerRpc()
         {
-            playerVictoryPoint.Value++;
+            if (!IsServer) return;
+            enemyVictoryPoint.Value++;
+            OnEnemyVictoryPointChanged?.Invoke(this, EventArgs.Empty);
         }
-        
+
+      
+        [ServerRpc(RequireOwnership = false)]
+        public void IncrementDrawVictoryPointServerRpc()
+        {
+            if (!IsServer) return;
+            playerVictoryPoint.Value++;
+            enemyVictoryPoint.Value++;
+            OnPlayerVictoryPointChanged?.Invoke(this, EventArgs.Empty);
+            OnEnemyVictoryPointChanged?.Invoke(this, EventArgs.Empty);
+
+        }        
         
         // public void TogglePauseGame() {
         //     isLocalGamePaused = !isLocalGamePaused;
