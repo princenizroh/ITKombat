@@ -25,7 +25,7 @@ namespace ITKombat
             if (distance <= aiAttack.attackRange)
             {
                 aiMovement.StopMovement();
-                if (Random.value < 0.7f)
+                if (Random.value < 0.8f)
                     {
                         manager.SwitchState(manager.AttackState); // 70% menyerang
                     }

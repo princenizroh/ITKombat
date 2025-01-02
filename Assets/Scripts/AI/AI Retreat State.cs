@@ -13,6 +13,8 @@ namespace ITKombat
             aiAttack = manager.aiAttack;
             aiDefense = manager.aiDefense;
 
+            aiMovement.movementStep = 0f;
+
             // Debug.Log("Retreat State");
         }
 
@@ -20,11 +22,11 @@ namespace ITKombat
             aiMovement.Retreat();
             steps = aiMovement.movementStep;
 
-            if (steps >= 0.5){ 
+            if (steps >= 1.3f){ 
                 if (distance <= aiAttack.attackRange)
                 {
                     aiMovement.StopMovement();
-                    if (Random.value < 0.7f)
+                    if (Random.value < 0.8f)
                         {
                             manager.SwitchState(manager.AttackState); // 70% menyerang
                         }
@@ -36,6 +38,11 @@ namespace ITKombat
                 else if (steps >= aiMovement.timeMoving || distance > aiMovement.maxDistance)
                 {
                     manager.SwitchState(manager.IdleState);
+                }
+            }
+            else if(steps > 1.2f) {
+                if (Random.value < 0.15f && aiMovement.maxDistance > distance){
+                    manager.SwitchState(manager.DashState);
                 }
             }
         }

@@ -17,6 +17,7 @@ namespace ITKombat
             aiDefense = manager.aiDefense;
             aiMovement = manager.aiMovement;
 
+            aiMovement.movementStep = 0f;
             blockTimer = duration;
             // Debug.Log("Defense State");
         }

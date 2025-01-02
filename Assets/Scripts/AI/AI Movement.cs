@@ -10,13 +10,16 @@ namespace ITKombat
         public float movementStep = 0f;
         public float timeMoving = 1.5f; 
         public float maxDistance = 2f;
-        public bool facingPlayer = true;
+        public bool facingLeft = true;
         public bool canMove = true;
 
-        [Header("Jump")]
-        private float jumpForce = 5f;
-        private float jumpCooldown = 2f;
-        [SerializeField] private bool canJump = true;
+        [Header("Dash")]
+        public float dashSpeed = 1f;
+        public float dashDuration = 0.15f;
+        public float dashCooldown = 5f;
+        private bool canDash = true;
+        private bool isDashing = false;
+
 
         [Header("Others")]
         [SerializeField] private Transform player;
@@ -42,7 +45,7 @@ namespace ITKombat
             //Debug.Log("Approach State Called");
             Vector2 ApproachDirection = (player.position - transform.position).normalized;
 
-            if ((ApproachDirection.x > 0 && facingPlayer) || (ApproachDirection.x < 0 && !facingPlayer))
+            if ((ApproachDirection.x > 0 && facingLeft) || (ApproachDirection.x < 0 && !facingLeft))
             {
                 Flip();
             }
@@ -58,6 +61,12 @@ namespace ITKombat
             Vector2 RetreatDirection = (transform.position - player.position).normalized;
 
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
+
+            if (movementStep > 1f &&((RetreatDirection.x > 0 && facingLeft) || (RetreatDirection.x < 0 && !facingLeft)))
+            {
+                Flip();
+            }
+
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;
             NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
@@ -65,29 +74,49 @@ namespace ITKombat
 
         void Flip()
         {
-            facingPlayer = !facingPlayer;
+            facingLeft = !facingLeft;
             Vector2 localScale = transform.localScale;
             localScale.x *= -1;
             transform.localScale = localScale;
         }
 
-        void Jump()
+        public void Dash()
         {
-            if (canJump && Input.GetKeyDown(KeyCode.Space))
+            if (canDash && isDashing == false)
             {
-                // Tambahkan gaya ke atas (lompatan)
-                myRigidbody.linearVelocity = new Vector2(myRigidbody.linearVelocity.x, jumpForce);
-                StartCoroutine(JumpCooldown());
-                anim.SetTrigger("Jump");
-                SoundManager.Instance.PlaySound3D("Jump", transform.position);
+                StartCoroutine(DashRoutine());
             }
         }
 
-        private IEnumerator JumpCooldown()
+        private IEnumerator DashRoutine()
         {
-            canJump = false;
-            yield return new WaitForSeconds(jumpCooldown);
-            canJump = true;
+            isDashing = true;
+            canDash = false;
+            anim.SetTrigger("Dash");
+            NewSoundManager.Instance.PlaySound("Dash", transform.position);
+
+            float dashDirection;
+            if (facingLeft){
+                dashDirection = -1f;
+            }
+            else{
+                dashDirection = 1f;
+            }
+
+            float timer = 0f;
+
+            while (timer < dashDuration)
+            {
+                transform.Translate(Vector3.right * (dashSpeed * dashDirection) * Time.deltaTime);
+                timer += Time.deltaTime;
+            }
+
+            yield return new WaitForSeconds(dashDuration);
+
+            isDashing = false;
+
+            yield return new WaitForSeconds(dashCooldown);
+            canDash = true;
         }
     }
 }

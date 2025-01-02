@@ -7,8 +7,9 @@ namespace ITKombat
     public class AI_Attack : MonoBehaviour
     {
         public static AI_Attack Instance;
-        public float attackRange = 0.35f;         // Range within which the enemy can attack
-        public float attackPower = 3f;
+        private FelixStateMachine meleeStateMachine;
+        public float attackRange = 0.4f;         // Range within which the enemy can attack
+        public float attackPower = 3;
         public float attackRadius = 0.2f;
         public Transform attackPoint;
         public float attackCooldown = 0.7f;      // Cooldown between each attack
@@ -20,6 +21,9 @@ namespace ITKombat
         public int currentCombo = 0;            // Tracks the current combo
         public float lastAttackTime = 0f;       // Time of the last attack
 
+        [SerializeField] public Collider2D hitbox;
+        [SerializeField] public GameObject Hiteffect;
+        public CharacterStat characterStats;
         public LayerMask playerlayer;
         private Animator anim;
         private bool isBlocked = false;
@@ -50,6 +54,29 @@ namespace ITKombat
                 DontDestroyOnLoad(gameObject);
             }
         }
+
+        // public void OnButtonDown()
+        // {
+        //     if (canAttack)
+        //     {
+        //         if (meleeStateMachine == null)
+        //         {
+        //             // Debug.LogError("FelixStateMachine is null! Ensure it's added to the GameObject.");
+        //             return;
+        //         }
+
+        //         if (meleeStateMachine.CurrentState == null)
+        //         {
+        //             // Debug.LogError("CurrentState is null! Check the state initialization in FelixStateMachine.");
+        //             return;
+        //         }
+
+        //         if (meleeStateMachine.CurrentState.GetType() == typeof(IdleCombatState))
+        //         {
+        //             meleeStateMachine.SetNextState(new GroundEntryState());
+        //         }
+        //     }
+        // }
 
         void Start()
         {

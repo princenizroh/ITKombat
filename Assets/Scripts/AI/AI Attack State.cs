@@ -13,6 +13,8 @@ namespace ITKombat
             aiAttack = manager.aiAttack;
             aiDefense = manager.aiDefense;
 
+            aiMovement.movementStep = 0f;
+
             Debug.Log("Attack State");
         }
 
@@ -20,6 +22,7 @@ namespace ITKombat
             if (aiAttack.canAttack){
                 aiAttack.Attack();
             }
+
             if (aiAttack.currentCombo == 0 || distance > aiAttack.attackRange)
             {
                 manager.SwitchState(manager.RetreatState);
