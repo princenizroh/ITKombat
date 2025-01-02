@@ -31,9 +31,9 @@ namespace ITKombat
         public void Execute()
         {
             Debug.Log("Executing Timeout State");
-            if (matchManager.playerVictoryPoint == 2 && matchManager.enemyVictoryPoint == 2 && matchManager.finalRound == true)
+            if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2 && matchManager.finalRound == true)
             {
-                if (matchManager.playerVictoryPoint > matchManager.enemyVictoryPoint)
+                if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint()> ServerBattleRoomState.Instance.GetEnemyVictoryPoint())
                 {
                     matchManager.PlayerVictory();
                     matchManager.timeoutToTimer.text = "PLAYER WON FINAL ROUND";

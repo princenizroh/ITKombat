@@ -32,10 +32,10 @@ namespace ITKombat
         [SerializeField] private NetworkVariable<RoundState> roundState = new NetworkVariable<RoundState>(RoundState.Round1);
         [SerializeField] private NetworkVariable<WinState> winState = new NetworkVariable<WinState>(WinState.Invalid);
         [SerializeField] private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(countdownToStartTimerMax);
-        private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
-
+        [SerializeField] private NetworkVariable<bool> isLocalPlayerReady = new NetworkVariable<bool>(false);
         [SerializeField] private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(gamePlayingTimerMax);
-
+        [SerializeField] private NetworkVariable<int> playerVictoryPoint = new NetworkVariable<int>(0);
+        [SerializeField] private NetworkVariable<int> enemyVictoryPoint = new NetworkVariable<int>(0);
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
         private const float gamePlayingTimerMax = 5f;
         private const float countdownToStartTimerMax = 5f;
@@ -267,41 +267,42 @@ namespace ITKombat
 
         private void DetermineRoundOutcome()
         {
-            if (matchManager.playerState.currentHealth.Value == matchManager.enemyState.currentHealth.Value)
+            if (PlayerState.Instance.GetCurrentHealth() == EnemyState.Instance.GetCurrentHealth())
             {
                 Debug.Log("Draw");
                 winState.Value = WinState.Draw;
                 Debug.Log("State winState: " + winState.Value);
                 Debug.Log("State: " + state.Value);
             }
-            else if (matchManager.playerState.currentHealth.Value > matchManager.enemyState.currentHealth.Value)
+            else if (PlayerState.Instance.GetCurrentHealth() > EnemyState.Instance.GetCurrentHealth())
             {
                 Debug.Log("Player 1 win");
                 winState.Value = WinState.Player1Win;
+                Debug.Log("State winState: " + winState.Value);
+                Debug.Log("State: " + state.Value);
             }
-            else if (matchManager.playerState.currentHealth.Value < matchManager.enemyState.currentHealth.Value)
+            else if (PlayerState.Instance.GetCurrentHealth()< EnemyState.Instance.GetCurrentHealth())
             {
                 Debug.Log("Player 2 win");
                 winState.Value = WinState.Player2Win;
+                Debug.Log("State winState: " + winState.Value);
+                Debug.Log("State: " + state.Value);
             }
 
-            if (matchManager.playerVictoryPoint == 3 || matchManager.enemyVictoryPoint == 3)
+            if (playerVictoryPoint.Value == 3 || enemyVictoryPoint.Value == 3)
             {
                 Debug.Log("Game over");
                 state.Value = State.GameOver;
                 StartCoroutine(HandleGameOver());
             }
-            // else
-            // {
-            //     StartCoroutine(HandleRoundTransition());
-            // }
+            
+            StartCoroutine(HandleRoundTransition());
+            
         }
         private IEnumerator HandleRoundTransition()
         {
             yield return new WaitForSeconds(3f);
-            state.Value = State.CountdownToStart;
-            countdownToStartTimer.Value = 3f;
-
+            // state.Value = State.CountdownToStart;
             // Update round state
             switch (roundState.Value)
             {
@@ -321,8 +322,10 @@ namespace ITKombat
                     state.Value = State.GameOver;
                     break;
             }
-
+            winState.Value = WinState.Invalid;
             gamePlayingTimer.Value = gamePlayingTimerMax;
+            countdownToStartTimer.Value = countdownToStartTimerMax;
+
         }
 
         private IEnumerator HandleGameOver()
@@ -375,6 +378,13 @@ namespace ITKombat
             return isLocalPlayerReady.Value;
         }
 
+        public int GetPlayerVictoryPoint() {
+            return playerVictoryPoint.Value;
+        }
+
+        public int GetEnemyVictoryPoint() {
+            return enemyVictoryPoint.Value;
+        }
         public float GetLimitCountdownToStartTimer() {
             return limitCountdownToStartTimer;
         }
@@ -428,11 +438,18 @@ namespace ITKombat
             OnLocalPlayerReadyChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        [ClientRpc]
-        public void UpdateTimeoutNotificationClientRpc(bool isActive)
+        [ServerRpc(RequireOwnership = false)]
+        public void IncrementEnemyVictoryPointServerRpc()
         {
-            MatchManager.Instance.UpdateTimeoutNotification(isActive);
+            enemyVictoryPoint.Value++;
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void IncrementPlayerVictoryPointServerRpc()
+        {
+            playerVictoryPoint.Value++;
+        }
+        
         
         // public void TogglePauseGame() {
         //     isLocalGamePaused = !isLocalGamePaused;

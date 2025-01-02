@@ -283,5 +283,10 @@ namespace ITKombat
         {
             ResetHealth();
         }   
+
+        public float GetCurrentHealth()
+        {
+            return currentHealth.Value;
+        }
     }
 }

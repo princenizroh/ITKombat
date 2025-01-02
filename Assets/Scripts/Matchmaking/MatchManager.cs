@@ -13,8 +13,6 @@ namespace ITKombat
         public static MatchManager Instance;
         public GameObject ReadyNotif, Round1Notif, Round2Notif, Round3Notif, Round4Notif, FinalRoundNotif, DrawRoundNotif, FightNotif, DefeatNotif, VictoryNotif, TimeoutNotif;
         public GameObject Reward;
-        public int playerVictoryPoint;
-        public int enemyVictoryPoint;
         public MatchTimer matchTimer;
         public TMP_Text timerText, timeoutToTimer, vpPlayer, vpEnemy;
         public bool timeoutTriggered = false;
@@ -84,9 +82,8 @@ namespace ITKombat
             {
                 timerText.text = Mathf.CeilToInt(gamePlayingTimer).ToString();
             }
-            // vpPlayer.text = ServerBattleRoomState.Instance.GetPlayerVictoryPoint().ToString();
-            // vpEnemy.text = ServerBattleRoomState.Instance.GetEnemyVictoryPoint().ToString();
-         
+            vpPlayer.text = ServerBattleRoomState.Instance.GetPlayerVictoryPoint().ToString();
+            vpEnemy.text = ServerBattleRoomState.Instance.GetEnemyVictoryPoint().ToString();
         }
 
         private void HandleTimeout()
@@ -96,12 +93,6 @@ namespace ITKombat
             Debug.Log("Handle Timeout");
             timeoutTriggered = true;
             StartCoroutine(MatchTimeout());
-        }
-
-        public void UpdateTimeoutNotification(bool isActive)
-        {
-            Debug.Log("Timeout timer");
-            TimeoutNotif.SetActive(isActive);
         }
 
         private void HandleTimeoutTimer()
@@ -225,7 +216,7 @@ namespace ITKombat
         public void PlayerDied()
         {
             // Logika untuk ketika player mati
-            if ( playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound)
+            if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2 && finalRound)
             {
                 // Kondisi final round
                 EnemyVictory();
@@ -239,7 +230,7 @@ namespace ITKombat
         public void EnemyDied()
         {
             // Logika untuk ketika enemy mati
-            if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound)
+            if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2 && finalRound)
             {
                 // Kondisi final round
                 PlayerVictory();
@@ -297,9 +288,9 @@ namespace ITKombat
             // Check health via PlayerState and EnemyState
             if (playerState != null && enemyState != null)
             {
-                if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && finalRound == true) 
+                if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2 && finalRound == true) 
                 {
-                    if (playerState.currentHealth.Value > enemyState.currentHealth.Value) 
+                    if (playerState.GetCurrentHealth() > enemyState.GetCurrentHealth()) 
                     {
                         PlayerVictory();  // Player menang di final round
                         timeoutToTimer.text = "PLAYER WON FINAL ROUND";
@@ -315,11 +306,11 @@ namespace ITKombat
                 else 
                 {
                     // Jika bukan final round, cek pemenang biasa berdasarkan health
-                    if (playerState.currentHealth.Value == enemyState.currentHealth.Value) 
+                    if (playerState.GetCurrentHealth() == enemyState.GetCurrentHealth()) 
                     {
                         DrawRound();  // Tambahkan poin draw untuk kedua pihak
                     }
-                    else if (playerState.currentHealth.Value > enemyState.currentHealth.Value) 
+                    else if (playerState.GetCurrentHealth() > enemyState.GetCurrentHealth()) 
                     {
                         PlayerVictory();  // Player menang jika health lebih besar
                     }
@@ -333,22 +324,22 @@ namespace ITKombat
 
         public void DrawRound()
         {
-            playerVictoryPoint += 1;
-            enemyVictoryPoint += 1;
+            ServerBattleRoomState.Instance.IncrementEnemyVictoryPointServerRpc();
+            ServerBattleRoomState.Instance.IncrementPlayerVictoryPointServerRpc();
             NewSoundManager.Instance.PlaySound2D("Draw");
             Debug.Log("Draw round");
             StartCoroutine(HandleDrawTransition());
         }
         public void PlayerVictory() 
         {
-            playerVictoryPoint += 1;
+            ServerBattleRoomState.Instance.IncrementPlayerVictoryPointServerRpc();            
             NewSoundManager.Instance.PlaySound2D("Player_Won");
             StartCoroutine(HandleRoundTransition());
         }
 
         public void EnemyVictory() 
         {
-            enemyVictoryPoint += 1;
+            ServerBattleRoomState.Instance.IncrementEnemyVictoryPointServerRpc();
             NewSoundManager.Instance.PlaySound2D("Enemy_Won");
             StartCoroutine(HandleRoundTransition());
         }
@@ -356,24 +347,24 @@ namespace ITKombat
         private IEnumerator HandleDrawTransition()
         {
             // Cek apakah ada draw
-            if (playerState.currentHealth.Value == enemyState.currentHealth.Value) 
+            if (playerState.GetCurrentHealth() == enemyState.GetCurrentHealth()) 
             {   
-                yield return StartCoroutine(ShowRoundStartNotification(6)); // Tampilkan Notifikasi Draw
+                yield return StartCoroutine(ShowRoundStartNotification(6)); 
             }
 
             // Cek apakah kedua pemain mendapatkan poin kemenangan
-            if (playerVictoryPoint == 1 && enemyVictoryPoint == 1)
+            if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 1 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 1)
             {
                 Debug.Log("Moving to next round: 2");
-                currentRound = playerVictoryPoint + enemyVictoryPoint;
+                currentRound = ServerBattleRoomState.Instance.GetPlayerVictoryPoint() + ServerBattleRoomState.Instance.GetEnemyVictoryPoint();
                 Debug.Log("Current Round in Handle draw: " + currentRound);
                 // yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint)); // Tampilkan Notifikasi Ronde 2
             }
             // Jika hanya musuh yang mencapai 4 poin, lanjutkan ke ronde berikutnya
-            else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2)
+            else if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2)
             {
                 Debug.Log("Moving to next round: 3");
-                currentRound = playerVictoryPoint + enemyVictoryPoint - 1;
+                currentRound = ServerBattleRoomState.Instance.GetPlayerVictoryPoint() + ServerBattleRoomState.Instance.GetEnemyVictoryPoint() - 1;
                 Debug.Log("Current Round in Handle draw: " + currentRound);
                 // yield return StartCoroutine(ShowRoundStartNotification(playerVictoryPoint + enemyVictoryPoint - 1)); // Tampilkan Notifikasi Ronde 2
             }
@@ -410,7 +401,7 @@ namespace ITKombat
             TimeoutNotif.SetActive(false);
 
             // Cek apakah salah satu sudah mencapai 3 poin (kondisi kemenangan)
-            if (playerVictoryPoint == 3) 
+            if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 3) 
             {
                 ShowVictoryNotif(true);
                 NewSoundManager.Instance.PlaySound2D("Victory");
@@ -419,7 +410,7 @@ namespace ITKombat
                 yield return StartCoroutine(ShowEndGame());
             }
             
-            else if (enemyVictoryPoint == 3) 
+            else if (ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 3) 
             {
                 ShowVictoryNotif(false);
                 NewSoundManager.Instance.PlaySound2D("Defeat");
@@ -427,7 +418,7 @@ namespace ITKombat
                 DefeatNotif.SetActive(false);
                 yield return StartCoroutine(ShowEndGame());
             }
-            else if (playerVictoryPoint == 2 && enemyVictoryPoint == 2 && !finalRound)
+            else if (ServerBattleRoomState.Instance.GetPlayerVictoryPoint() == 2 && ServerBattleRoomState.Instance.GetEnemyVictoryPoint() == 2 && !finalRound)
             {
                 finalRound = true;
                 isSoundFight = false;
@@ -453,7 +444,7 @@ namespace ITKombat
         {
             isSoundFight = false;
 
-            int nextRound = playerVictoryPoint + enemyVictoryPoint + 1;
+            int nextRound = ServerBattleRoomState.Instance.GetPlayerVictoryPoint() + ServerBattleRoomState.Instance.GetEnemyVictoryPoint() + 1;
             
             currentRound = nextRound;
             // yield return StartCoroutine(ShowRoundStartNotification(nextRound));
@@ -467,7 +458,7 @@ namespace ITKombat
 
 
             ServerBattleRoomState.Instance.ChangeStateServerRpc(State.CountdownToStart);
-            ServerBattleRoomState.Instance.ResetCountdownToStartTimerServerRpc();
+            // ServerBattleRoomState.Instance.ResetCountdownToStartTimerServerRpc();
             StartCoroutine(WaitAndResetTimeout());
         }
 
@@ -480,7 +471,7 @@ namespace ITKombat
             timeoutTimer = false;
 
             Debug.Log("Resetting timer 2");
-            ServerBattleRoomState.Instance.ResetGamePlayingTimerNormalizedServerRpc();
+            // ServerBattleRoomState.Instance.ResetGamePlayingTimerNormalizedServerRpc();
             timeoutTriggered = false;
             ServerBattleRoomState.Instance.RoundOutcomeDeterminedServerRpc();
 
