@@ -545,11 +545,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce418386f2ee9546832036dc05acb28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
+  ShowTopMostFoldoutHeaderGroup: 1
+  maxHealth:
+    m_InternalValue: 100
+  currentHealth:
+    m_InternalValue: 100
   attackTag: Attack
   healthBar: {fileID: 540476401}
   matchManager: {fileID: 0}
+  matchManagerSinglePlayer: {fileID: 0}
   hitAudioSources: []
   hitAnimationTriggers:
   - Hit1
@@ -6344,6 +6348,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerIF
       objectReference: {fileID: 0}
+    - target: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657135482207842403, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2658756474
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7713,7 +7725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &185423522
 Transform:
   m_ObjectHideFlags: 0
@@ -12460,6 +12472,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6461202943784008833, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -12470,6 +12486,10 @@ PrefabInstance:
     - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: skillSound3Part2
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7657135482207842403, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3794249186
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17017,9 +17037,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8681b938b58ba8147a28b0235399a65f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   stateMachine: {fileID: 0}
-  maxHealth: 100
-  currentHealth: 0
+  maxHealth:
+    m_InternalValue: 100
+  currentHealth:
+    m_InternalValue: 100
   attackTag: Attack
   healthBar: {fileID: 917799101}
   matchManager: {fileID: 0}
@@ -23356,7 +23379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &674574709
 Transform:
   m_ObjectHideFlags: 0
@@ -23469,6 +23492,10 @@ PrefabInstance:
     - target: {fileID: 1502064381268693709, guid: 8eed2aa37e2e5d14a9a2b641b600f0fb, type: 3}
       propertyPath: m_Name
       value: Player_Kelautan
+      objectReference: {fileID: 0}
+    - target: {fileID: 1502064381268693709, guid: 8eed2aa37e2e5d14a9a2b641b600f0fb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2244940380412578456, guid: 8eed2aa37e2e5d14a9a2b641b600f0fb, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -32115,7 +32142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &868313999
 Transform:
   m_ObjectHideFlags: 0
@@ -42226,7 +42253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1142645622
 Transform:
   m_ObjectHideFlags: 0
@@ -45416,8 +45443,7 @@ Transform:
   m_LocalPosition: {x: 0.4004326, y: 1.4158535, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1013168087}
+  m_Children: []
   m_Father: {fileID: 1325530322}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1221288713
@@ -49102,6 +49128,7 @@ Transform:
   - {fileID: 2065698858}
   - {fileID: 1142645622}
   - {fileID: 223219769}
+  - {fileID: 1221288712}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1325530323
@@ -52563,6 +52590,7 @@ GameObject:
   - component: {fileID: 1410365015}
   - component: {fileID: 1410365017}
   - component: {fileID: 1410365016}
+  - component: {fileID: 1410365018}
   m_Layer: 0
   m_Name: RoundManager
   m_TagString: Untagged
@@ -52592,7 +52620,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1410365014}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c69b07fbb1554743a98da1bc2b6f652, type: 3}
   m_Name: 
@@ -52609,8 +52637,6 @@ MonoBehaviour:
   VictoryNotif: {fileID: 732013257}
   TimeoutNotif: {fileID: 72048564}
   Reward: {fileID: 1264487081}
-  playerVictoryPoint: 0
-  enemyVictoryPoint: 0
   matchTimer: {fileID: 1410365017}
   timerText: {fileID: 754093968}
   timeoutToTimer: {fileID: 122789153}
@@ -52641,6 +52667,45 @@ MonoBehaviour:
   normalTimerSet: 0.5
   normalTimerStart: 5
   statusMatch: 1
+--- !u!114 &1410365018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410365014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1867854a3783b34190ce001550e3d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ReadyNotif: {fileID: 2022132896}
+  Round1Notif: {fileID: 2022132896}
+  Round2Notif: {fileID: 1106191134}
+  Round3Notif: {fileID: 1709015296}
+  Round4Notif: {fileID: 1129108554}
+  FinalRoundNotif: {fileID: 497327797}
+  DrawRoundNotif: {fileID: 790310760}
+  FightNotif: {fileID: 378949661}
+  DefeatNotif: {fileID: 421828061}
+  VictoryNotif: {fileID: 732013257}
+  TimeoutNotif: {fileID: 72048564}
+  Reward: {fileID: 1264487081}
+  playerVictoryPoint: 0
+  enemyVictoryPoint: 0
+  matchTimer: {fileID: 1410365017}
+  timerText: {fileID: 754093968}
+  timeoutToTimer: {fileID: 122789153}
+  vpPlayer: {fileID: 780139377}
+  vpEnemy: {fileID: 1826572314}
+  timeoutTriggered: 0
+  timeoutTimer: 0
+  finalRound: 0
+  initialPlayerPosition: {fileID: 1982839471}
+  initialEnemyPosition: {fileID: 2070529809}
+  playerState: {fileID: 0}
+  enemyState: {fileID: 0}
+  soundManager: {fileID: 0}
 --- !u!1 &1410430210
 GameObject:
   m_ObjectHideFlags: 0
@@ -82111,3 +82176,4 @@ SceneRoots:
   - {fileID: 1699781454}
   - {fileID: 1982839473}
   - {fileID: 2070529810}
+  - {fileID: 341337778}

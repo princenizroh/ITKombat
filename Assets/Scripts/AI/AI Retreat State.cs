@@ -40,11 +40,11 @@ namespace ITKombat
                     manager.SwitchState(manager.IdleState);
                 }
             }
-            else if(steps > 1.2f) {
-                if (Random.value < 0.15f && aiMovement.maxDistance > distance){
-                    manager.SwitchState(manager.DashState);
-                }
-            }
+            // else if(steps > 1.2f) {
+            //     if (Random.value < 0.15f && aiMovement.maxDistance > distance){
+            //         manager.SwitchState(manager.DashState);
+            //     }
+            // }
         }
     }
 }

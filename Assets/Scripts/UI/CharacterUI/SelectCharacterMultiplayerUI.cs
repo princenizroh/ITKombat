@@ -2,6 +2,7 @@ using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 namespace ITKombat
 {
     public class SelectCharacterMultiplayerUI : MonoBehaviour
@@ -14,6 +15,8 @@ namespace ITKombat
         {
             readyButton.onClick.AddListener(() =>
             {
+                // ServerBattleRoomState.Instance.OnInteractAction(this, EventArgs.Empty);
+                // Code dibawah ini kalau misal ingin tanpa langsung play matchnya 
                 CharacterSelectReadyMultiplayer.Instance.SetPlayerReady();
             });
         }

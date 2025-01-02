@@ -432,12 +432,7 @@ namespace ITKombat
         private IEnumerator HandleRoundTransition()
         {
             currentRound++;
-            Debug.Log($"Moving to next round: {currentRound}");
-            if (playerMovement != null)
-            {
-                playerMovement.canMove = true;
-            }
-            else if (serverCharacterMovement != null)
+            if (serverCharacterMovement != null)
             {
                 serverCharacterMovement.canMove = true;
             }
@@ -445,16 +440,16 @@ namespace ITKombat
             // Kondisi untuk menentukan siapa yang memenangkan ronde terakhir
             if (playerState.currentHealth.Value > enemyState.currentHealth.Value)
             {
-                playerMovement.canMove = false;
-                playerAttack.canAttack = false;
+                // playerMovement.canMove = false;
+                // playerAttack.canAttack = false;
                 timeoutToTimer.text = "PLAYER WON";
                 ResetPlayerAndEnemyPositions();
                 
             }
             else if (playerState.currentHealth.Value < enemyState.currentHealth.Value)
             {
-                playerMovement.canMove = false;
-                playerAttack.canAttack = false;
+                // playerMovement.canMove = false;
+                // playerAttack.canAttack = false;
                 timeoutToTimer.text = "ENEMY WON";
                 ResetPlayerAndEnemyPositions();
                 
@@ -493,12 +488,12 @@ namespace ITKombat
             {     
                 NextRound();
             }
-            if (playerMovement != null)
-            {
-                playerMovement.canMove = true;
-                playerAttack.canAttack = true;
-            }
-            else if (serverCharacterMovement != null)
+            // if (playerMovement != null)
+            // {
+            //     playerMovement.canMove = true;
+            //     playerAttack.canAttack = true;
+            // }
+            if (serverCharacterMovement != null)
             {
                 serverCharacterMovement.canMove = true;
             }

@@ -614,7 +614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2492884473718834363
 Transform:
   m_ObjectHideFlags: 0
@@ -799,7 +799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2401045406
+  GlobalObjectIdHash: 3314525760
   InScenePlacedSourceGlobalObjectIdHash: 3314525760
   DeferredDespawnTick: 0
   Ownership: 1
@@ -838,9 +838,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  attackPoint: {fileID: 3236485856365906513}
-  attackRadius: 0.15
-  attackCooldown: 0.5
   maxCombo: 4
   enemyLayer:
     serializedVersion: 2
@@ -848,7 +845,6 @@ MonoBehaviour:
   combo: 0
   canAttack: 1
   hitbox: {fileID: 5308142314798569208}
-  Hiteffect: {fileID: 0}
   isUsingWeapon: 0
   characterStats: {fileID: 11400000, guid: 50c5a8ddef21890438eb902881f6e490, type: 2}
 --- !u!114 &9109292694492900449
@@ -892,6 +888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_JumpForce: 150
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.05
@@ -901,8 +898,8 @@ MonoBehaviour:
     m_Bits: 8
   m_GroundCheck: {fileID: 6790953448750938320}
   m_CeilingCheck: {fileID: 4631015729815460197}
-  m_CrouchDisableCollider: {fileID: 0}
   meleeHitbox: {fileID: 8839817715795843334}
+  m_Grounded: 0
   m_FacingRight: 1
   OnLandEvent:
     m_PersistentCalls:
@@ -972,7 +969,6 @@ MonoBehaviour:
   defenseMultiplier: 0.7
   parryWindow: 0.2
   parryDamage: 10
-  defensePoint: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128

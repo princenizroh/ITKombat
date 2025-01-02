@@ -106,7 +106,6 @@ namespace ITKombat
                 controller.Move(horizontalMove * Time.deltaTime, isCrouching, jump);
             }
             isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.5f, LayerMask.GetMask("Ground"));
-            Debug.Log("Is Grounded: " + isGrounded);
             jump = false;
         }
 

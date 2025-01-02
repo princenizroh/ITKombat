@@ -62,10 +62,10 @@ namespace ITKombat
 
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
 
-            if (movementStep > 1f &&((RetreatDirection.x > 0 && facingLeft) || (RetreatDirection.x < 0 && !facingLeft)))
-            {
-                Flip();
-            }
+            // if (movementStep > 1f &&((RetreatDirection.x > 0 && facingLeft) || (RetreatDirection.x < 0 && !facingLeft)))
+            // {
+            //     Flip();
+            // }
 
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;

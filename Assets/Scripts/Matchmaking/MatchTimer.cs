@@ -20,27 +20,19 @@ namespace ITKombat
         void Start() {
             statusMatch = false;
         }
-
         void Update()
         {
-            // if (statusMatch == true) 
-
-            if (statusMatch == true && ServerBattleRoomState.Instance.IsGamePlaying()) 
-            {
+            if (statusMatch == true) {
 
                 if (timerStart >= timerSet)
                 {
-                    // Debug.Log("Timer Start: " + timerStart);
                     timerStart -= Time.deltaTime; 
                 }
 
-            } 
-            // else 
-            else if (statusMatch == false && ServerBattleRoomState.Instance.IsCountdownToStartActive())
-            {
+            } else {
+
                 if (normalTimerStart >= normalTimerSet)
                 {
-                    Debug.Log("Normal Timer Start: " + normalTimerStart);
                     normalTimerStart -= Time.deltaTime;
                 }
                 
@@ -61,7 +53,7 @@ namespace ITKombat
 
         public int GetResetTimerStart()
         {
-            timerStart = 5;
+            timerStart = 120;
             return Mathf.FloorToInt(timerStart);
         }
 
@@ -78,7 +70,7 @@ namespace ITKombat
 
         public int GetResetNormalTimerStart()
         {
-            normalTimerStart = 3f;
+            normalTimerStart = 5f;
             // Debug.Log("Normal Timer Start Reset: " + normalTimerStart);
             return Mathf.FloorToInt(normalTimerStart);
         }

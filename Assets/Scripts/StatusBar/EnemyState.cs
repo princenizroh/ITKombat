@@ -13,6 +13,7 @@ namespace ITKombat
         public string attackTag = "Attack";
         public HealthBar healthBar;
         public MatchManager matchManager;
+        public MatchManagerSinglePlayer matchManagerSinglePlayer;
 
         public AudioSource[] hitAudioSources;
         public string[] hitAnimationTriggers = { "Hit1", "Hit2", "Hit3" };
@@ -45,6 +46,10 @@ namespace ITKombat
             if (matchManager == null)
             {
                 matchManager = MatchManager.Instance;
+            }
+            if (matchManagerSinglePlayer == null)
+            {
+                matchManagerSinglePlayer = MatchManagerSinglePlayer.Instance;
             }
         }
         public override void OnNetworkSpawn()
@@ -105,11 +110,7 @@ namespace ITKombat
                 {
                     Debug.LogWarning("AI_Attack.Instance is null. Skipping GetCanAttack.");
                 }
-                Debug.Log("Check Damage" + checkDamage);
-
-                Debug.Log("Memanggil OnEnemyDamaged");
                 AIDamageChecker.Instance.OnEnemyDamaged();
-                PlayerDamageChecker.Instance.OnEnemyDamaged();
                 StartCoroutine(ResetCheckDamage()); // Atur ulang ke false setelah durasi tertentu.
                 StartCoroutine(ResetAICanAttack());
                 // ApplyKnockback();
@@ -199,6 +200,14 @@ namespace ITKombat
             else
             {
                 Debug.LogWarning("MatchManager not assigned in PlayerState!");
+            }
+            if (matchManagerSinglePlayer != null)
+            {
+                matchManagerSinglePlayer.EnemyDied();
+            }
+            else
+            {
+                Debug.LogWarning("MatchManagerSinglePlayer not assigned in PlayerState!");
             }
         }
 

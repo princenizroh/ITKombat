@@ -38,7 +38,7 @@ namespace ITKombat
         [SerializeField] private NetworkVariable<int> playerVictoryPoint = new NetworkVariable<int>(0);
         [SerializeField] private NetworkVariable<int> enemyVictoryPoint = new NetworkVariable<int>(0);
         private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
-        private const float gamePlayingTimerMax = 5f;
+        private const float gamePlayingTimerMax = 120f;
         private const float countdownToStartTimerMax = 5f;
         private const float countdownToStartTimerMin = -0.1f;
         private const float limitCountdownToStartTimer = 0.5f;
@@ -188,6 +188,7 @@ namespace ITKombat
                 SetPlayerReadyServerRpc();
             }
         }
+        
 
         [ServerRpc(RequireOwnership = false)]
         private void SetPlayerReadyServerRpc(ServerRpcParams serverRpcParams = default) {
