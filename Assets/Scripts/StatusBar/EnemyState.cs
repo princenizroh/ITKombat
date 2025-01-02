@@ -171,11 +171,6 @@ namespace ITKombat
             AI_Attack.Instance.GetCanAttack(canAttack);
         }
 
-        // public void HitAnimation()
-        // {
-        //     stateMachine.SetState(new LightReactionState());
-        // }
-
         public void TakeDamageFromSkill(float skillDamage)
         {
             currentHealth.Value -= skillDamage;
@@ -280,5 +275,11 @@ namespace ITKombat
             healthBar.UpdateHealth(currentHealth.Value,maxHealth.Value);
             Debug.Log("currentHealth.Value " + currentHealth.Value);
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void ResetHealthServerRpc()
+        {
+            ResetHealth();
+        }   
     }
 }

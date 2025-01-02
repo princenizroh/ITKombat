@@ -685,7 +685,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.40625, y: 1.875}
+  m_Size: {x: 0.64, y: 0.74}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -774,17 +774,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.04555675, y: -0.039048582}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.64, y: 0.74}
-    newSize: {x: 1.40625, y: 1.875}
+    newSize: {x: 0.64, y: 0.74}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.3, y: 0.6}
+  m_Size: {x: 0.27396756, y: 0.6780972}
   m_EdgeRadius: 0
 --- !u!114 &2244940380412578456
 MonoBehaviour:
@@ -882,6 +882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_JumpForce: 150
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.05
@@ -891,8 +892,8 @@ MonoBehaviour:
     m_Bits: 8
   m_GroundCheck: {fileID: 6790953448750938320}
   m_CeilingCheck: {fileID: 4631015729815460197}
-  m_CrouchDisableCollider: {fileID: 0}
   meleeHitbox: {fileID: 8839817715795843334}
+  m_Grounded: 0
   m_FacingRight: 1
   OnLandEvent:
     m_PersistentCalls:
@@ -942,7 +943,7 @@ MonoBehaviour:
   dashSpeed: 5
   dashDuration: 0.2
   dashCooldown: 1
-  moveSpeed: 25
+  moveSpeed: 5
   isBlocking: 0
   canMove: 1
 --- !u!114 &-1396629927428436699
@@ -992,7 +993,7 @@ Transform:
   m_GameObject: {fileID: 1797561229698439372}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -73,24 +73,20 @@ namespace ITKombat
                     currentCombo ++;
                 }
                 lastAttackTime = Time.time;
+                bool isBlocked = false;
 
                 // Apply damage to player
                 Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, playerlayer);
                 foreach (Collider2D player in hitPlayer)
                 {
                     Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
-                    // PlayerMovement_2 playerMovement = player.GetComponent<PlayerMovement_2>();
+                    PlayerMovement_2 playerMovement = player.GetComponent<PlayerMovement_2>();
                     
-                    // if (playerMovement != null)
-                    // {
-                        // if(playerMovement.isBlocking == true){
-                        //     isBlocked = true;
-                        // }
-                        // else{
-                        //     isBlocked = false;
-                        // }
+                        if(playerMovement != null && playerMovement.isBlocking){
+                            isBlocked = true;
+                        }
 
-                        if (playerRB != null)
+                        if (playerRB != null && !playerMovement.isBlocking)
                         {
                             GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
                             if (playerStateObject != null)
@@ -114,8 +110,9 @@ namespace ITKombat
                     // {
                     //     Debug.Log("PlayerMovement not found.");
                     // }
+                    AttackAnimation(hitPlayer, isBlocked);
                 }
-                AttackAnimation(hitPlayer, isBlocked);
+                
                 // AttackAnimation(hitPlayer);
 
                 // Debug.Log("Enemy performs attack : Attack" + currentCombo);

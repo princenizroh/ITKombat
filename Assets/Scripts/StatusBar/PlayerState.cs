@@ -261,45 +261,6 @@ namespace ITKombat
             }
         }
 
-        // private void OnTriggerEnter2D(Collider2D collision)
-        // {
-        //     if (collision.CompareTag(attackTag))
-        //     {
-        //         Debug.Log("Player attacked by: " + collision.gameObject.name);
-        //         float attackPower = GetDamageFromPlayer();
-        //         TakeDamage(attackPower); 
-        //     }
-        // }
-
-        // public float GetDamageFromPlayer()
-        // {
-        //     PlayerIFAttack playerAttack = GetComponent<PlayerIFAttack>();
-        //     if (playerAttack != null)
-        //     {
-        //         return playerAttack.attackPower; // Pastikan attackPower bernilai lebih dari 0
-        //     }
-        //     return 0f;
-        // }
-
-        // private void EndGame()
-        // {
-        //     Debug.Log("Game Berakhir");
-        //     // Implementasikan logika end game, bisa panggil UI atau lainnya.
-        // }
-
-        // private void ApplyKnockback()
-        // {
-        //     Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
-        //     rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-        // }
-
-        // private IEnumerator PlayRandomHitAnimation()
-        // {
-        //     string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
-        //     playerAnimator.SetTrigger(randomHitAnimation);
-        //     yield return new WaitForSeconds(0.5f);
-        //     playerAnimator.SetTrigger(idleAnimationTrigger);
-        // }
 
         private void PlayRandomHitSound()
         {
@@ -316,5 +277,11 @@ namespace ITKombat
             healthBar.UpdateHealth(currentHealth.Value,maxHealth.Value);
             Debug.Log("" + currentHealth.Value);
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void ResetHealthServerRpc()
+        {
+            ResetHealth();
+        }   
     }
 }

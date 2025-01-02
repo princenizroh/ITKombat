@@ -229,7 +229,7 @@ namespace ITKombat
                     countdownToStartTimer.Value -= Time.deltaTime;
                     Debug.Log("Countdown to start: " + countdownToStartTimer.Value);
                     OnStateChanged?.Invoke(this, EventArgs.Empty);
-                    if (countdownToStartTimer.Value <= countdownToStartTimerMin) {
+                    if (countdownToStartTimer.Value <= countdownToStartTimerMin) { // countdownToStartTimerMin - 0.1f
                         Debug.Log("Countdown to start finished." + countdownToStartTimer.Value);
                         gamePlayingTimer.Value = gamePlayingTimerMax;
                         state.Value = State.GamePlaying;

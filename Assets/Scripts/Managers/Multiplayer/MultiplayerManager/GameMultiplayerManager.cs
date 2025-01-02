@@ -66,6 +66,8 @@ namespace ITKombat
                 { 2, Resources.Load<CharacterStat>("Characters/FisikaStats") },
                 { 3, Resources.Load<CharacterStat>("Characters/KimiaStats") },
                 { 4, Resources.Load<CharacterStat>("Characters/KelautanStats") },
+                { 5, Resources.Load<CharacterStat>("Characters/FajriStats") },
+                { 6, Resources.Load<CharacterStat>("Characters/BowoStats") },
             };
             OnDataInitialized?.Invoke(this, EventArgs.Empty);
         }

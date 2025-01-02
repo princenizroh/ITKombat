@@ -1507,7 +1507,7 @@ Transform:
   m_GameObject: {fileID: 5582103430201783428}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1803,7 +1803,7 @@ MonoBehaviour:
   dashSpeed: 5
   dashDuration: 0.2
   dashCooldown: 1
-  moveSpeed: 25
+  moveSpeed: 5
   isBlocking: 0
   canMove: 1
 --- !u!114 &3805038923517868702
@@ -1818,6 +1818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57dcaba31ee3ed34592e2c3a41a96b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   m_JumpForce: 150
   m_CrouchSpeed: 0.36
   m_MovementSmoothing: 0.05
@@ -1827,8 +1828,8 @@ MonoBehaviour:
     m_Bits: 8
   m_GroundCheck: {fileID: 945119169207020794}
   m_CeilingCheck: {fileID: 2507123742335072157}
-  m_CrouchDisableCollider: {fileID: 0}
   meleeHitbox: {fileID: 7655229661152023746}
+  m_Grounded: 0
   m_FacingRight: 1
   OnLandEvent:
     m_PersistentCalls:
