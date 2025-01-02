@@ -25,6 +25,9 @@ namespace ITKombat
         private bool isWalking = false;
 
         private bool isWalkingSoundPlaying = false;
+
+        private bool isGrounded = false;
+
         private void Start()
         {
             
@@ -102,6 +105,8 @@ namespace ITKombat
             {
                 controller.Move(horizontalMove * Time.deltaTime, isCrouching, jump);
             }
+            isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.5f, LayerMask.GetMask("Ground"));
+            Debug.Log("Is Grounded: " + isGrounded);
             jump = false;
         }
 
@@ -143,9 +148,13 @@ namespace ITKombat
 
         public void OnJump()
         {
-            jump = true;
-            anim.SetTrigger("Jump");
-            NewSoundManager.Instance.PlaySound("Jump", transform.position);
+            if (isGrounded)
+            {
+                jump = true;
+                anim.SetTrigger("Jump");
+                NewSoundManager.Instance.PlaySound("Jump", transform.position);
+                isGrounded = false; // Set menjadi false saat melompat
+            }
         }
 
         public void OnCrouchDown()

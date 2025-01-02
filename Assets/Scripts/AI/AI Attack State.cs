@@ -13,13 +13,16 @@ namespace ITKombat
             aiAttack = manager.aiAttack;
             aiDefense = manager.aiDefense;
 
-            // Debug.Log("Attack State");
+            aiMovement.movementStep = 0f;
+
+            Debug.Log("Attack State");
         }
 
         public override void UpdateState(AIStateManager manager, float distance){
             if (aiAttack.canAttack){
                 aiAttack.Attack();
             }
+
             if (aiAttack.currentCombo == 0 || distance > aiAttack.attackRange)
             {
                 manager.SwitchState(manager.RetreatState);

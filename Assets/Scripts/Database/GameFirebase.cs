@@ -27,6 +27,7 @@ namespace ITKombat
         public LoginPageUIManager loginPageUIManager;
         public class InventoryItem
         {
+            public int item_id_pos { get; set; }
             public int item_id { get; set; }
             public int item_type_id { get; set; }
             public int item_level { get; set; }
@@ -139,33 +140,10 @@ namespace ITKombat
         }
 
         public async void logoutAccount()
-        {
-            if (auth.CurrentUser != null)
-            {
-                string deviceID = SystemInfo.deviceUniqueIdentifier;
-
-                try
-                {
-                    // Remove the device from the "authorized_device" node
-                    await DBreference.Child("authorized_device").Child(deviceID).RemoveValueAsync();
-                    Debug.Log($"Device {deviceID} successfully removed from authorized devices.");
-
-                    // Sign out the current user
-                    auth.SignOut();
-                    Debug.Log("User successfully logged out.");
-
-                    // Optionally, redirect to login area
-                    loginArea.SetActive(true);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"Error during logout: {ex.Message}");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("No user is currently logged in.");
-            }
+        {   
+            string deviceID = SystemInfo.deviceUniqueIdentifier;
+            await DBreference.Child("authorized_device").Child(deviceID).RemoveValueAsync();
+            
         }
 
 
@@ -270,20 +248,6 @@ namespace ITKombat
                 { "ukt", 0 }    // Default UKK balance
             };
 
-            var inventoryData = new Dictionary<string, object>
-            {
-                { "item_id", 0 },
-                { "item_type_id", 0},
-                { "item_level", 0},
-                { "item_ascend", 0 },
-                { "item_exp_max", 0},
-                { "item_current_exp", 0},
-                { "item_id_type_1", 0 },
-                { "item_id_type_2", 0 },
-                { "item_value_type_1", 0 },
-                { "item_value_type_2", 0 }
-            };
-
             var consumableData = new Dictionary<string, object>
             {
                 { "r1", new Dictionary<string, object>
@@ -348,7 +312,7 @@ namespace ITKombat
             DBreference.Child("players").Child(player_id).SetValueAsync(playerData); // player_id as the key
             DBreference.Child("profiles").Child(player_id).SetValueAsync(profileData); // player_id as the key for profiles
             DBreference.Child("balances").Child(player_id).SetValueAsync(balanceData); // player_id as the key for balances
-            DBreference.Child("inventory").Child(player_id).Child("1").SetValueAsync(inventoryData); // player inventorty data value starter
+            DBreference.Child("inventory").Child(player_id).Push(); // player inventorty data value starter
             DBreference.Child("consumable").Child(player_id).SetValueAsync(consumableData); // player inventorty data value starter
         }
 
@@ -555,50 +519,50 @@ namespace ITKombat
             // randomizer id
             GearStat randomizerid = gearDataArray[UnityEngine.Random.Range(0, 100000)];
 
-            // Fetch the existing inventory data to determine the next index
-            var inventorySnapshot = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
-
-            int nextIndex = 1; // Start at 1
-
-            if (inventorySnapshot.Exists)
-            {
-                // Get the existing keys to find the highest index
-                foreach (var child in inventorySnapshot.Children)
+            try
                 {
-                    if (int.TryParse(child.Key, out int currentIndex))
+                    // Fetch current inventory for the player
+                    var inventorySnapshot = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
+
+                    int nextItemPos = 1; // Default start position
+
+                    // Determine the next `item_id_pos`
+                    if (inventorySnapshot.Exists)
                     {
-                        // Find the maximum index
-                        if (currentIndex >= nextIndex)
+                        foreach (var child in inventorySnapshot.Children)
                         {
-                            nextIndex = currentIndex + 1; // Increment for the next item
+                            if (int.TryParse(child.Child("item_id_pos").Value.ToString(), out int currentPos))
+                            {
+                                nextItemPos = Mathf.Max(nextItemPos, currentPos + 1);
+                            }
                         }
                     }
+
+                    // Create a new inventory item with the next `item_id_pos`
+                    var newItemData = new Dictionary<string, object>
+                    {
+                        { "item_id_pos", nextItemPos },
+                        { "item_id", UnityEngine.Random.Range(1, 100) }, // Example random `item_id`
+                        { "item_type_id", UnityEngine.Random.Range(1, 5) }, // Random type ID
+                        { "item_level", 1 }, // Initial level
+                        { "item_ascend", 0 }, // Initial ascend
+                        { "item_exp_max", 100 }, // Max exp
+                        { "item_current_exp", 0 }, // Current exp
+                        { "item_id_type_1", UnityEngine.Random.Range(1, 3) }, // Random type 1
+                        { "item_id_type_2", UnityEngine.Random.Range(1, 3) }, // Random type 2
+                        { "item_value_type_1", UnityEngine.Random.Range(10, 50) }, // Random value 1
+                        { "item_value_type_2", UnityEngine.Random.Range(10, 50) } // Random value 2
+                    };
+
+                    // Add the new item to Firebase
+                    await DBreference.Child("inventory").Child(player_id).Child(nextItemPos.ToString()).SetValueAsync(newItemData);
+
+                    Debug.Log($"Item added successfully with item_id_pos: {nextItemPos}");
                 }
-            }
-
-            // Create a dictionary for the gear data
-            var gearData = new Dictionary<string, object>
-            {
-                { "item_id", 0 },
-                { "item_type_id", randomizerid},
-                { "item_id", randomGear.gear_type_id },
-                { "item_level", 1 },
-                { "item_ascend", 0 },
-                { "item_exp_max", 100 },
-                { "item_current_exp", 0 },
-                { "item_id_type_1", 0 },
-                { "item_id_type_2", 0 },
-                { "item_value_type_1", 0 },
-                { "item_value_type_2", 0 }
-            };
-
-            // Define the reference location in the database for new data with the next index
-            var DBTask = DBreference.Child("inventory").Child(player_id).Child(nextIndex.ToString());
-
-            // Add data to the database
-            await DBTask.SetValueAsync(gearData);
-
-            Debug.Log("Random gear added to inventory successfully.");
+                catch (Exception ex)
+                {
+                    Debug.LogError($"Error adding inventory item: {ex.Message}");
+                }
         }
 
         // public IEnumerator UpgradeGear(string player_id, int gear_id, int gear_exp_add) 
@@ -671,22 +635,15 @@ namespace ITKombat
 
             try
             {
-                // Await the task to get data from Firebase
-                var DBTask = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
+                var inventorySnapshot = await DBreference.Child("inventory").Child(player_id).GetValueAsync();
 
-                // Check if data exists
-                if (DBTask.Exists)
+                if (inventorySnapshot.Exists)
                 {
-                    Debug.Log("Inventory data found for player: " + player_id);
-
-                    // Iterate over the children (inventory items)
-                    foreach (var childSnapshot in DBTask.Children)
+                    foreach (var childSnapshot in inventorySnapshot.Children)
                     {
-                        // Log the child data being read
-                        Debug.Log("Found child: " + childSnapshot.Key);
-
-                        InventoryItem item = new InventoryItem
+                        var item = new InventoryItem
                         {
+                            item_id_pos = int.Parse(childSnapshot.Child("item_id_pos").Value.ToString()),
                             item_id = int.Parse(childSnapshot.Child("item_id").Value.ToString()),
                             item_type_id = int.Parse(childSnapshot.Child("item_type_id").Value.ToString()),
                             item_level = int.Parse(childSnapshot.Child("item_level").Value.ToString()),
@@ -699,25 +656,19 @@ namespace ITKombat
                             item_value_type_2 = int.Parse(childSnapshot.Child("item_value_type_2").Value.ToString())
                         };
 
-                        // Log the values of the item
-                        Debug.Log($"Item {item.item_id}: Level {item.item_level}, Ascend {item.item_ascend}");
-
                         inventoryList.Add(item);
                     }
 
-                    // Log success after data is fetched and mapped
-                    Debug.Log("Inventory is fetched successfully!");
-
+                    Debug.Log($"Retrieved {inventoryList.Count} items for player: {player_id}");
                 }
                 else
                 {
-                    Debug.LogWarning("No inventory data found for player: " + player_id);
+                    Debug.LogWarning($"No inventory found for player: {player_id}");
                 }
             }
             catch (Exception ex)
             {
-                // Handle errors with detailed logs
-                Debug.LogError("Error fetching inventory: " + ex.Message);
+                Debug.LogError($"Error fetching inventory data: {ex.Message}");
             }
 
             return inventoryList;
@@ -736,6 +687,7 @@ namespace ITKombat
                 // Since gearData is expected to directly contain the item fields, not children.
                 InventoryItem item = new InventoryItem
                 {
+                    item_id_pos = int.Parse(gearData.Child("item_id_pos").Value.ToString()),
                     item_id = int.Parse(gearData.Child("item_id").Value.ToString()),
                     item_type_id = int.Parse(gearData.Child("item_type_id").Value.ToString()),
                     item_level = int.Parse(gearData.Child("item_level").Value.ToString()),
@@ -856,12 +808,13 @@ namespace ITKombat
 
         }
 
-        public async void AddGearToPlayer(string player_id, int gear_type_id, int gear_type_1, int gear_type_2, int gear_value_1, int gear_value_2) {
+        public async void AddGearToPlayer(string player_id, int gear_type_id, int gear_type_1, int gear_type_2, int gear_value_1, int gear_value_2, int pos) {
 
             var randomGear = UnityEngine.Random.Range(0, 100000);
             
             var inventoryData = new Dictionary<string, object>
             {
+                { "item_id_pos", pos },
                 { "item_id", gear_type_id },
                 { "item_level", 0},
                 { "item_ascend", 0 },
@@ -880,10 +833,11 @@ namespace ITKombat
             await DBTask.SetValueAsync(inventoryData);
         }
 
-        public async void GiveRandomGear(string player_id) {
+        public async void GiveRandomGear(string player_id, int pos) {
 
             var inventoryData = new Dictionary<string, object>
             {
+                { "item_id_pos",  pos},
                 { "item_id", UnityEngine.Random.Range(1,3) },
                 { "item_level", 0},
                 { "item_ascend", 0 },
@@ -917,6 +871,17 @@ namespace ITKombat
                 return balanceValue;
             } else {
                 return 0;
+            }
+        }
+
+        public IEnumerator ChangeValueIntegerForGear(string player_id, string subject, string sub_subject, string data_type, int value) {
+            Task DBTask = DBreference.Child(subject).Child(player_id).Child(sub_subject).Child(data_type).SetValueAsync(value);
+            yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+            if (DBTask.Exception != null) {
+                Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+            } else {
+                Debug.Log("data changed succesfuly");
             }
         }
 
