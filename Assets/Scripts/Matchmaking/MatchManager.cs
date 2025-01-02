@@ -24,6 +24,12 @@ namespace ITKombat
 
         private PlayerMovement_2 playerMovement;
 
+        private PlayerIFAttack playerAttack;
+
+
+        public GameObject initialPlayerPosition;
+        public GameObject initialEnemyPosition;
+
         // Reference to PlayerState and EnemyState
         public PlayerState playerState;
         public EnemyState enemyState;
@@ -59,7 +65,9 @@ namespace ITKombat
         {
             yield return new WaitUntil(() => FindObjectOfType<PlayerMovement_2>() != null);
             playerMovement = FindObjectOfType<PlayerMovement_2>();
+            playerAttack = FindFirstObjectByType<PlayerIFAttack>();
             playerMovement.canMove = false; // Atur setelah player ditemukan
+            playerAttack.canAttack = false;
         }
         private void Awake()
         {
@@ -160,19 +168,52 @@ namespace ITKombat
                 currentRoundNotif.SetActive(true);
                 yield return new WaitForSeconds(2f);
                 currentRoundNotif.SetActive(false);
-                playerMovement.canMove = false;
+                
                 matchTimer.ChangeMatchStatus(true);
 
-                if (roundNumber == 1)
-                {
-                    FightNotif.SetActive(true);
-                    NewSoundManager.Instance.PlaySound2D("Fight");
-                    yield return new WaitForSeconds(1.5f);
-                    FightNotif.SetActive(false);
-                    playerMovement.canMove = true;
-                }
+                // if (roundNumber == 1)
+                // {
+                //     FightNotif.SetActive(true);
+                //     NewSoundManager.Instance.PlaySound2D("Fight");
+                //     yield return new WaitForSeconds(1.5f);
+                //     FightNotif.SetActive(false);
+                //     playerMovement.canMove = true;
+                //     playerAttack.canAttack = true;
+                // }
+            }
+            playerMovement.canMove = false;
+            playerAttack.canAttack = false;
+            
+            StartNormalTimer(); // Mulai timer untuk ronde baru
+
+            yield return new WaitForSeconds(1.5f);
+
+            playerMovement.canMove = true;
+            playerAttack.canAttack = true;
+
+        }
+
+        private void ResetPlayerAndEnemyPositions()
+        {
+            if (initialPlayerPosition != null && playerMovement != null)
+            {
+                playerMovement.transform.position = initialPlayerPosition.transform.position; // Reset posisi pemain
+            }
+            else
+            {
+                Debug.LogWarning("Initial Player Position atau Player Movement tidak diatur!");
+            }
+
+            if (initialEnemyPosition != null && enemyState != null)
+            {
+                enemyState.transform.position = initialEnemyPosition.transform.position; // Reset posisi musuh
+            }
+            else
+            {
+                Debug.LogWarning("Initial Enemy Position atau Enemy State tidak diatur!");
             }
         }
+
 
         public void PlayerDied()
         {
@@ -223,7 +264,8 @@ namespace ITKombat
             {
                 Reward.SetActive(true);
                 yield return new WaitForSeconds(1.5f);
-                SceneManager.LoadScene("Asrama");
+                Loader.Load(Loader.Scene.Lingkungan);
+                
             }
         }
 
@@ -322,16 +364,24 @@ namespace ITKombat
 
         private IEnumerator HandleRoundTransition()
         {
-            playerMovement.canMove = false;
+            
             TimeoutNotif.SetActive(true);
             // Kondisi untuk menentukan siapa yang memenangkan ronde terakhir
             if (playerState.currentHealth > enemyState.currentHealth)
             {
+                playerMovement.canMove = false;
+                playerAttack.canAttack = false;
                 timeoutToTimer.text = "PLAYER WON";
+                ResetPlayerAndEnemyPositions();
+                
             }
             else if (playerState.currentHealth < enemyState.currentHealth)
             {
+                playerMovement.canMove = false;
+                playerAttack.canAttack = false;
                 timeoutToTimer.text = "ENEMY WON";
+                ResetPlayerAndEnemyPositions();
+                
             }
 
             yield return new WaitForSeconds(3f);
@@ -368,6 +418,7 @@ namespace ITKombat
                 yield return StartCoroutine(NextRound());
             }
             playerMovement.canMove = true;
+            playerAttack.canAttack = true;
             StartNormalTimer();
         }
 
@@ -391,7 +442,7 @@ namespace ITKombat
 
          IEnumerator WaitAndResetTimeout()
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(2f);
             TimeoutNotif.SetActive(false);
             timeoutTimer = false;
             matchTimer.ChangeMatchStatus(true);

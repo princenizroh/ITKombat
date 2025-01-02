@@ -19,7 +19,7 @@ namespace ITKombat
         public float knockbackForce = 1f;
         public event DamageTaken OnTakeDamage; // Event to notify damage taken
         public delegate void DamageTaken(GameObject player);
-
+        public PlayerSkill playerSkill; // Reference to PlayerSkill
 
         public bool canAttack;
         public bool checkDamage = false;
@@ -60,6 +60,18 @@ namespace ITKombat
 
         public void TakeDamage(float damage,float combo)
         {
+            // Check if Skill 2 is active and block attack
+            PlayerSkill playerSkill = GetComponent<PlayerSkill>();
+            if (playerSkill != null && playerSkill.skill2Asset != null)
+            {
+                var skill2 = playerSkill.skill2Asset;
+                if (skill2.IsActive() && skill2.BlockAttack())
+                {
+                    Debug.Log("Attack blocked by 2nd skill!");
+                    return; // Exit the method, attack is blocked
+                }
+            }
+
             currentHealth -= damage;
             healthBar.UpdateHealth(currentHealth, maxHealth);
             if (currentHealth <= 0)

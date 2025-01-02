@@ -3,11 +3,16 @@ using System.Collections;
 using UnityEngine.TextCore.Text;
 using Unity.VisualScripting;
 using UnityEngine.Audio;
+using Unity.Burst.Intrinsics;
 
 namespace ITKombat
 {
     public class PlayerSkill : MonoBehaviour
     {
+        [SerializeField] private IFSkill1 skill1Asset;
+        [SerializeField] public IFSkill2 skill2Asset;
+        [SerializeField] private IFSkill3 skill3Asset;
+
         public AudioSource skillSound1;
         public AudioSource skillSound2;
         public AudioSource skillSound3;
@@ -26,6 +31,7 @@ namespace ITKombat
 
         // Skill 1 Damage
         [SerializeField] private Transform attackPoint;
+        [SerializeField] public Collider2D hitbox;
         private float skill1AttackRadius = 1f;
         private float skill1Damage = 30f;
         private float skill1Force = 5f;
@@ -82,55 +88,32 @@ namespace ITKombat
 
         public void Skill1()
         {
-            CharacterController2D1 character = GetComponent<CharacterController2D1>();
-            if (character == null) return;
             if (skill1CooldownTimer <= 0 && anim != null && !isSkill1Active)
             {
-                if (character.IsFacingRight)
+                // Trigger VFX based on direction
+                CharacterController2D1 character = GetComponent<CharacterController2D1>();
+                if (character != null)
                 {
-                    PlayVFX(Skill1_VFX_Right);
-                }
-                else
-                {
-                    PlayVFX(Skill1_VFX_Left);
+                    if (character.IsFacingRight)
+                    {
+                        PlayVFX(Skill1_VFX_Right);
+                    }
+                    else
+                    {
+                        PlayVFX(Skill1_VFX_Left);
+                    }
                 }
 
                 anim.SetTrigger("skill1");
                 isSkill1Active = true;
                 PlaySound(skillSound1);
-                skill1CooldownTimer = skill1Cooldown;
 
-                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, skill1AttackRadius, enemyLayer);
-                foreach (Collider2D enemy in hitEnemies)
-                {
-                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                    AI_Defense enemyDefense = enemy.GetComponent<AI_Defense>();
-                    if (enemyRb != null && !enemyDefense.isBlocking)
-                    {
-                        enemyRb.AddForce(transform.right * skill1Force, ForceMode2D.Impulse);
-
-                        GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
-
-                        if (enemyStateObject != null)
-                        {
-                            EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
-                            if (enemyState != null)
-                            {
-                                enemyState.TakeDamageFromSkill(skill1Damage);
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("EnemyState not found.");
-                        }
-                    }
-                }
-
-                StartCoroutine(ResetToIdleAfterTime(1f));
+                // Activate the skill from the ScriptableObject
+                skill1Asset.Activate(gameObject);
             }
             else
             {
-                Debug.Log("Skill 1 masih cooldown.");
+                Debug.Log("Skill 1 is on cooldown.");
             }
         }
 
@@ -138,8 +121,10 @@ namespace ITKombat
         {
             CharacterController2D1 character = GetComponent<CharacterController2D1>();
             if (character == null) return;
+
             if (skill2CooldownTimer <= 0 && anim != null && !isSkill2Active)
             {
+                // Trigger VFX based on direction
                 if (character.IsFacingRight)
                 {
                     PlayVFX(Skill2_VFX_Right);
@@ -148,19 +133,26 @@ namespace ITKombat
                 {
                     PlayVFX(Skill2_VFX_Left);
                 }
+
                 anim.SetTrigger("skill2");
                 PlaySound(skillSound2);
                 isSkill2Active = true;
-                shieldCounter = maxShieldHits;
+                // Activate the skill from the ScriptableObject
+                skill2Asset.Activate(gameObject);
+
                 skill2CooldownTimer = skill2Cooldown;
-                StartCoroutine(ResetToIdleAfterTime(1.2f)); 
+
+                Debug.Log("Shield activated. Max hits: " + maxShieldHits);
+
+                StartCoroutine(ResetToIdleAfterTime(1.2f));
             }
             else
             {
-                Debug.Log("Skill 2 masih cooldown.");
+                Debug.Log("Skill 2 is on cooldown.");
             }
         }
-        
+
+
         public void Skill3()
         {
             if (anim != null && !isSkill3Active)
@@ -178,23 +170,17 @@ namespace ITKombat
 
         public void TakeDamage(float damage)
         {
-            if (shieldCounter > 0)
+            if (skill2Asset != null && skill2Asset.IsActive() && skill2Asset.BlockAttack())
             {
-                shieldCounter--;  // Kurangi hitungan shield
-                Debug.Log("Shield menahan damage, tersisa: " + shieldCounter);
-                if (shieldCounter <= 0)
-                {
-                    isSkill2Active = false;  // Nonaktifkan shield jika hitungan habis
-                }
+                Debug.Log("Attack blocked by Skill 2.");
+                return; // Damage is blocked
             }
-            else
+
+            // Apply damage if not blocked
+            PlayerState playerState = GetComponent<PlayerState>();
+            if (playerState != null)
             {
-                // Jika tidak ada shield, terima damage seperti biasa
-                PlayerState playerState = GetComponent<PlayerState>();
-                if (playerState != null)
-                {
-                    playerState.TakeDamageFromSkill(damage);
-                }
+                playerState.TakeDamageFromSkill(damage);
             }
         }
 

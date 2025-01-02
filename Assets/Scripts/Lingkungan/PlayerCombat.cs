@@ -12,6 +12,7 @@ namespace ITKombat
         private BuildingPunchCollider buildingCollider;
         private DoorPunch doorCollider;
         private ObjectClickHandler pialaCollider;
+        private NewPlayerHelpText helpTextCollider;
 
         private void Awake()
         {
@@ -59,6 +60,11 @@ namespace ITKombat
         public void setPialaCollider(ObjectClickHandler collider)
         {
             pialaCollider = collider;
+        }
+
+        public void setFirstTextCollider(NewPlayerHelpText collider)
+        {
+            helpTextCollider = collider;
         }
     }
 }
