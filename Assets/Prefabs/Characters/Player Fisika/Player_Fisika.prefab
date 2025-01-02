@@ -1536,6 +1536,7 @@ GameObject:
   - component: {fileID: 2274442212735398570}
   - component: {fileID: 7331337234332358959}
   - component: {fileID: 4341661169844107471}
+  - component: {fileID: 9119115947997395698}
   m_Layer: 6
   m_Name: Player_Fisika
   m_TagString: Player
@@ -1727,7 +1728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1946665215
+  GlobalObjectIdHash: 3584745374
   InScenePlacedSourceGlobalObjectIdHash: 658461165
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1761,6 +1762,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   combo: 0
+  canAttack: 1
   hitbox: {fileID: 3919648490940609521}
   Hiteffect: {fileID: 0}
   isUsingWeapon: 0
@@ -1777,6 +1779,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skill1Asset: {fileID: 0}
+  skill2Asset: {fileID: 0}
+  skill3Asset: {fileID: 0}
   skillSound1: {fileID: 7359187673690506650}
   skillSound2: {fileID: 7359187673690506650}
   skillSound3: {fileID: 7359187673690506650}
@@ -1787,6 +1792,7 @@ MonoBehaviour:
   Skill1_VFX_Left: {fileID: 0}
   Skill2_VFX_Left: {fileID: 0}
   attackPoint: {fileID: 0}
+  hitbox: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -1917,3 +1923,15 @@ MonoBehaviour:
     m_Bits: 128
   defenseRadius: 1
   characterStats: {fileID: 11400000, guid: 683a4fd5b8e86ae4bb286a16a1a2b493, type: 2}
+--- !u!114 &9119115947997395698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020879151175104176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa8888040d03ba04dae5db983d824b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
