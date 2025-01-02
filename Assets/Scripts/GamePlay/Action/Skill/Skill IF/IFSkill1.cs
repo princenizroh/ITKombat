@@ -5,87 +5,81 @@ namespace ITKombat
     [CreateAssetMenu(fileName = "IF_Skill1", menuName = "Skills/IF/IF_Skill1", order = 1)]
     public class IFSkill1 : Skills
     {
-        // Masukin sound dan anim disini
+        // Damage and force values
+        [SerializeField] private float damage = 30f;
+        [SerializeField] private float force = 5f;
 
-        [SerializeField] private Transform playerAttackPoint;
-        [SerializeField] private Transform enemyAttackPoint;
-        private float damage = 30f;
-        private float force = 5f;
-        private float radius = 1f;
+        // Hitbox configuration
+        [SerializeField] private Vector2 hitboxSize = new Vector2(2f, 2f);
+        [SerializeField] private Vector2 hitboxOffset = Vector2.zero;
 
+        // Layer masks to determine valid targets
         public LayerMask enemyLayer;
         public LayerMask playerLayer;
 
         public override void Activate(GameObject parent)
         {
-            // Masukin sound dan anim disini
-            // NewSoundManager.Instance.PlaySound("IF_Skill1", parent.transform.position);
+            Vector2 hitboxPosition;
 
             if (parent.CompareTag("Player"))
             {
-                Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(playerAttackPoint.position, radius, enemyLayer);
-                foreach (Collider2D enemy in hitEnemies)
-                {
-                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-                    if (enemyRb != null)
-                    {
-                        Vector2 direction = (enemy.transform.position - playerAttackPoint.position).normalized;
-
-                        enemyRb.AddForce(direction * force, ForceMode2D.Impulse);
-
-                        GameObject enemyStateObject = GameObject.FindGameObjectWithTag("EnemyState");
-
-                        if (enemyStateObject != null)
-                        {
-                            EnemyState enemyState = enemyStateObject.GetComponent<EnemyState>();
-                            if (enemyState != null)
-                            {
-                                enemyState.TakeDamageFromSkill(damage);
-                            }
-                        }
-                        else
-                        {
-                            Debug.Log("EnemyState not found.");
-                        }
-                    }
-                }
+                hitboxPosition = (Vector2)parent.transform.position + hitboxOffset;
+                PerformAttack(hitboxPosition, hitboxSize, enemyLayer, damage, parent, "EnemyState");
             }
             else if (parent.CompareTag("Enemy"))
             {
-                Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(enemyAttackPoint.position, radius, playerLayer);
-                foreach (Collider2D player in hitPlayer)
+                hitboxPosition = (Vector2)parent.transform.position + hitboxOffset;
+                PerformAttack(hitboxPosition, hitboxSize, playerLayer, damage, parent, "PlayerState");
+            }
+        }
+
+        private void PerformAttack(Vector2 position, Vector2 size, LayerMask layer, float damage, GameObject parent, string targetTag)
+        {
+            Collider2D[] hitTargets = Physics2D.OverlapBoxAll(position, size, 0f, layer);
+
+            foreach (Collider2D target in hitTargets)
+            {
+                Rigidbody2D targetRb = target.GetComponent<Rigidbody2D>();
+                if (targetRb != null)
                 {
-                    Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
-                    if (playerRb != null)
+                    Vector2 direction = (target.transform.position - parent.transform.position).normalized;
+                    targetRb.AddForce(direction * force, ForceMode2D.Impulse);
+
+                    GameObject targetStateObject = GameObject.FindGameObjectWithTag(targetTag);
+                    if (targetStateObject != null)
                     {
-                        Vector2 direction = (player.transform.position - enemyAttackPoint.position).normalized;
-
-                        playerRb.AddForce(direction * force, ForceMode2D.Impulse);
-
-                        GameObject playerStateObject = GameObject.FindGameObjectWithTag("PlayerState");
-
-                        if (playerStateObject != null)
+                        if (targetTag == "EnemyState")
                         {
-                            PlayerState playerState = playerStateObject.GetComponent<PlayerState>();
+                            EnemyState enemyState = targetStateObject.GetComponent<EnemyState>();
+                            if (enemyState != null)
+                            {
+                                enemyState.TakeDamageFromSkill(damage);
+                                Debug.Log($"Enemy {target.name} took {damage} damage.");
+                            }
+                        }
+                        else if (targetTag == "PlayerState")
+                        {
+                            PlayerState playerState = targetStateObject.GetComponent<PlayerState>();
                             if (playerState != null)
                             {
                                 playerState.TakeDamageFromSkill(damage);
+                                Debug.Log($"Player {target.name} took {damage} damage.");
                             }
-                        }
-                        else
-                        {
-                            Debug.Log("PlayerState not found.");
                         }
                     }
                 }
             }
         }
 
-
         public override void BeginCooldown(GameObject parent)
         {
-            //Logic cooldown skill di taruh disini
             Debug.Log("Skill 1 Cooldown");
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireCube(Vector3.zero + (Vector3)hitboxOffset, hitboxSize);
         }
     }
 }

@@ -6062,14 +6062,6 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 4107614064
       objectReference: {fileID: 0}
-    - target: {fileID: 5365466274610412425, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_Resource
-      value: 
-      objectReference: {fileID: 8300000, guid: 8f82d73d507a06642bf8f9dd4c36b95e, type: 3}
-    - target: {fileID: 5365466274610412425, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 8f82d73d507a06642bf8f9dd4c36b95e, type: 3}
     - target: {fileID: 5860330647484005856, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1
@@ -6115,18 +6107,23 @@ PrefabInstance:
       value: PlayerIF
       objectReference: {fileID: 0}
     - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
       propertyPath: skillSound3Part2
       value: 
       objectReference: {fileID: 8188070467695362768}
+    - target: {fileID: 6969204201631738373, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+      propertyPath: enemyLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+--- !u!61 &147469102 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6913358028164970780, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
+  m_PrefabInstance: {fileID: 147469101}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &147469103 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8497415400144460812, guid: f197e5154f7a450438b5e6f275c73e70, type: 3}
@@ -16868,6 +16865,7 @@ MonoBehaviour:
   idleAnimationTrigger: Idle
   rb: {fileID: 1036487381}
   knockbackForce: 1
+  playerSkill: {fileID: 0}
   canAttack: 0
   checkDamage: 0
 --- !u!1 &477549228

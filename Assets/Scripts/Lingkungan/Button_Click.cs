@@ -19,5 +19,10 @@ namespace ITKombat
         {
             NewSoundManager.Instance.PlaySound2D("Select_Character");
         }
+
+        public void soundSelectArena()
+        {
+            NewSoundManager.Instance.PlaySound2D("Select_Arena");
+        }
     }
 }

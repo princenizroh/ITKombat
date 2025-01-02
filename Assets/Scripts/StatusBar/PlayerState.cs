@@ -21,7 +21,7 @@ namespace ITKombat
         public float knockbackForce = 1f;
         public event DamageTaken OnTakeDamage; // Event to notify damage taken
         public delegate void DamageTaken(GameObject player);
-
+        public PlayerSkill playerSkill; // Reference to PlayerSkill
 
         public bool canAttack;
         public bool checkDamage = false;
@@ -101,6 +101,18 @@ namespace ITKombat
         [Tooltip("Take Damage SinglePlayer with AI ")]
         public void TakeDamage(float damage,float combo)
         {
+            // Check if Skill 2 is active and block attack
+            PlayerSkill playerSkill = GetComponent<PlayerSkill>();
+            if (playerSkill != null && playerSkill.skill2Asset != null)
+            {
+                var skill2 = playerSkill.skill2Asset;
+                if (skill2.IsActive() && skill2.BlockAttack())
+                {
+                    Debug.Log("Attack blocked by 2nd skill!");
+                    return; // Exit the method, attack is blocked
+                }
+            }
+
             currentHealth.Value -= damage;
             healthBar.UpdateHealth(currentHealth.Value, maxHealth.Value);
             if (currentHealth.Value <= 0)
@@ -261,45 +273,6 @@ namespace ITKombat
             }
         }
 
-        // private void OnTriggerEnter2D(Collider2D collision)
-        // {
-        //     if (collision.CompareTag(attackTag))
-        //     {
-        //         Debug.Log("Player attacked by: " + collision.gameObject.name);
-        //         float attackPower = GetDamageFromPlayer();
-        //         TakeDamage(attackPower); 
-        //     }
-        // }
-
-        // public float GetDamageFromPlayer()
-        // {
-        //     PlayerIFAttack playerAttack = GetComponent<PlayerIFAttack>();
-        //     if (playerAttack != null)
-        //     {
-        //         return playerAttack.attackPower; // Pastikan attackPower bernilai lebih dari 0
-        //     }
-        //     return 0f;
-        // }
-
-        // private void EndGame()
-        // {
-        //     Debug.Log("Game Berakhir");
-        //     // Implementasikan logika end game, bisa panggil UI atau lainnya.
-        // }
-
-        // private void ApplyKnockback()
-        // {
-        //     Vector2 knockbackDirection = (transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition)).normalized;
-        //     rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-        // }
-
-        // private IEnumerator PlayRandomHitAnimation()
-        // {
-        //     string randomHitAnimation = hitAnimationTriggers[Random.Range(0, hitAnimationTriggers.Length)];
-        //     playerAnimator.SetTrigger(randomHitAnimation);
-        //     yield return new WaitForSeconds(0.5f);
-        //     playerAnimator.SetTrigger(idleAnimationTrigger);
-        // }
 
         private void PlayRandomHitSound()
         {
@@ -315,6 +288,17 @@ namespace ITKombat
             currentHealth.Value = maxHealth.Value;
             healthBar.UpdateHealth(currentHealth.Value,maxHealth.Value);
             Debug.Log("" + currentHealth.Value);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void ResetHealthServerRpc()
+        {
+            ResetHealth();
+        }   
+
+        public float GetCurrentHealth()
+        {
+            return currentHealth.Value;
         }
     }
 }

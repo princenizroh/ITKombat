@@ -46,7 +46,7 @@ namespace ITKombat
             {
                 foreach (var networkObject in FindObjectsOfType<NetworkObject>())
                 {
-                    Debug.Log($"Checking object: {networkObject.name}, OwnerClientId: {networkObject.OwnerClientId}, IsOwner: {networkObject.IsOwner}");
+                    // Debug.Log($"Checking object: {networkObject.name}, OwnerClientId: {networkObject.OwnerClientId}, IsOwner: {networkObject.IsOwner}");
 
                     if (networkObject.OwnerClientId == clientId && networkObject.CompareTag("Player"))
                     {

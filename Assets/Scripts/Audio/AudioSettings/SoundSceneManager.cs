@@ -34,6 +34,10 @@ namespace ITKombat
             {
                 MusicManager.Instance.PlayMusic("Battle_2");
             }
+            else if(currentSceneName == "Multiplayer")
+            {
+                MusicManager.Instance.PlayMusic("Battle_2");
+            }
         }
     };
 };

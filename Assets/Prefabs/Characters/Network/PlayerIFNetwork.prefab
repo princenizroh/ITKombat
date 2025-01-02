@@ -53,37 +53,6 @@ MonoBehaviour:
   blockSound: {fileID: 395247683513126860}
   CroucSound: {fileID: 6302230834095249947}
   player: {fileID: 5241197333450775901}
---- !u!1 &761021224909746222
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5809541575920443187}
-  m_Layer: 0
-  m_Name: playerAttackPoint
-  m_TagString: Attack
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5809541575920443187
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761021224909746222}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.61, y: 0.33, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8741227216043461424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2044160910301364866
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,8 +649,6 @@ Transform:
   - {fileID: 157524187806943424}
   - {fileID: 5443843522780081838}
   - {fileID: 174245359061832666}
-  - {fileID: 2367255546564158636}
-  - {fileID: 5809541575920443187}
   - {fileID: 155187893434740440}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -847,7 +814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1294152250
+  GlobalObjectIdHash: 4189139311
   InScenePlacedSourceGlobalObjectIdHash: 791524057
   DeferredDespawnTick: 0
   Ownership: 1
@@ -872,6 +839,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skill1Asset: {fileID: 0}
+  skill2Asset: {fileID: 0}
+  skill3Asset: {fileID: 0}
   skillSound1: {fileID: 3927804014006396606}
   skillSound2: {fileID: 5023220356793625983}
   skillSound3: {fileID: 5147693770286352371}
@@ -882,6 +852,7 @@ MonoBehaviour:
   Skill1_VFX_Left: {fileID: 0}
   Skill2_VFX_Left: {fileID: 2872140471155476405}
   attackPoint: {fileID: 8121571632634033228}
+  hitbox: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -908,6 +879,7 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 4859767854448280819}
   m_CeilingCheck: {fileID: 157524187806943424}
   meleeHitbox: {fileID: 8121571632634033228}
+  m_Grounded: 0
   m_FacingRight: 1
   OnLandEvent:
     m_PersistentCalls:
@@ -962,9 +934,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  attackPoint: {fileID: 2367255546564158636}
-  attackRadius: 1
-  attackCooldown: 0.5
   maxCombo: 4
   enemyLayer:
     serializedVersion: 2
@@ -1362,37 +1331,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.1, y: 0.22}
   m_EdgeRadius: 0
---- !u!1 &6537313807251092168
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2367255546564158636}
-  m_Layer: 0
-  m_Name: attackPoint
-  m_TagString: Attack
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2367255546564158636
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6537313807251092168}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.61, y: 0.33, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8741227216043461424}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7262569889600030360
 GameObject:
   m_ObjectHideFlags: 0

@@ -72,14 +72,7 @@ namespace ITKombat
             hasPlayedMissSound = false; // Reset flag
         }
 
-        private void DamagePlayerHandler()
-        {
 
-        }
-        private void DamageEnemyHandler()
-        {
-
-        }
         protected void Attack()
         {
             Debug.Log("Attack method called");
@@ -97,9 +90,6 @@ namespace ITKombat
             
             int colliderCount = Physics2D.OverlapCollider(hitCollider, filter, collidersToDamage);
             Debug.Log($"Number of colliders detected: {colliderCount}");
-
-
-
 
             for (int i = 0; i < colliderCount; i++)
             {

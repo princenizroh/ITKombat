@@ -1,10 +1,21 @@
 using UnityEngine; 
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Netcode;
 using System;
+using Unity.Collections;
 
 namespace ITKombat
 {
+            public enum AnimationState
+        {
+            Idle = 0,
+            Walk = 1,
+            Block = 2,
+            Crouch = 3,
+            CrouchAttack = 4,
+            Dash = 5,
+        }
     public class ServerCharacterMovement : NetworkBehaviour
     {
         public static ServerCharacterMovement LocalInstance { get; private set; }
@@ -18,30 +29,22 @@ namespace ITKombat
         private bool isDashing = false;
 
         [SerializeField] private float moveSpeed = 25f;
-        private float horizontalMove = 0f;
-
+        float horizontalMove = 0f;
+        
+        
         private bool isBlocking = false;
+        private NetworkVariable<bool> isBlockingNetwork = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         private bool isCrouching = false;
+        private bool isCrouchAttacking = false;
+        bool useKeyboardInput = true;
+        bool jump = false;
+        public bool canMove = true;
         private bool isWalking = false;
         private bool isWalkingSoundPlaying = false;
-        public bool canMove = true;
-        public bool jump = false;
-        private string currentAnimationState = "";
-        private float animationCooldown = 0.1f; // waktu cooldown animasi
-        private float lastAnimationTime = 0f;
 
-        private NetworkVariable<PlayerState> playerStateNetwork = 
-            new NetworkVariable<PlayerState>(PlayerState.Idle, 
-            NetworkVariableReadPermission.Everyone, 
-            NetworkVariableWritePermission.Server);
+        // Menggunakan satu NetworkVariable untuk menyimpan state animasi
+        private NetworkVariable<AnimationState> animationStateNetwork = new NetworkVariable<AnimationState>(AnimationState.Idle, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-        private enum PlayerState
-        {
-            Idle,
-            Walking,
-            Jumping,
-            Blocking,
-        }
 
         private void Start()
         {
@@ -52,9 +55,9 @@ namespace ITKombat
             {
                 NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
             }
-
-            playerStateNetwork.OnValueChanged += OnPlayerStateChanged;
+        
         }
+        
 
         private void Update()
         {
@@ -62,124 +65,175 @@ namespace ITKombat
             {
                 NewSoundManager.Instance.Footstep("Walk_Floor", transform.position);
             }
-            if (IsOwner) return;
+            if (!IsOwner) return;
+    
             if (!canMove)
             {
                 horizontalMove = 0f;
-                ChangeAnimationState("Idle");
                 return;
+            }
+            if (IsHost)
+            {
+                if (Input.GetKey(KeyCode.E))
+                {
+                    OnBlockDown();
+                }
+                else if (Input.GetKeyUp(KeyCode.E))
+                {
+                    OnBlockUp();
+                }
+            }
+
+            if (IsClient)
+            {
+                if (Input.GetKey(KeyCode.R))
+                {
+                    OnBlockDown();
+                }
+                else if (Input.GetKeyUp(KeyCode.R))
+                {
+                    OnBlockUp();
+                }
             }
 
             if (isCrouching)
             {
-                ChangeAnimationState("Crouch");
+                anim.SetTrigger("Crouch");
             }
             else if (!isCrouching && horizontalMove == 0 && !jump && !isDashing)
             {
-                ChangeAnimationState("Idle");
-            }
-            else if (isWalking)
-            {
-                ChangeAnimationState("Walk");
+                anim.SetTrigger("Idle");
             }
 
             if (isBlocking)
             {
-                ChangeAnimationState("Block");
+                anim.SetTrigger("Block");
+            }
+
+            if (isWalking)
+            {
+                anim.SetTrigger("Walk");
+            }
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            if (IsOwner)
+            {
+                LocalInstance = this;
+            }
+            isBlockingNetwork.OnValueChanged += OnIsBlockingChanged;
+            animationStateNetwork.OnValueChanged += OnAnimationStateChanged;
+
+            if (IsServer)
+            {
+                NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+            }
+
+            
+        }
+
+        private void OnIsBlockingChanged(bool oldValue, bool newValue)
+        {
+            // Sinkronisasi animasi block berdasarkan perubahan nilai di network
+            if (newValue)
+            {
+                SetAnimationStateServerRpc(AnimationState.Block);
+            }
+            else
+            {
+                SetAnimationStateServerRpc(AnimationState.Idle);
+            }
+        }
+            private void OnAnimationStateChanged(AnimationState oldState, AnimationState newState)
+            {
+                // Terapkan animasi berdasarkan state
+                switch (newState)
+                {
+                    case AnimationState.Idle:
+                        anim.SetTrigger("Idle");
+                        break;
+                    case AnimationState.Walk:
+                        anim.SetTrigger("Walk");
+                        break;
+                    case AnimationState.Block:
+                        anim.SetTrigger("Block");
+                        break;
+                    case AnimationState.Crouch:
+                        anim.SetTrigger("Crouch");
+                        break;
+                    case AnimationState.CrouchAttack:
+                        anim.SetTrigger("CrouchAttack");
+                        break;
+                    case AnimationState.Dash:
+                        anim.SetTrigger("Dash");
+                        break;
+                }
+            }
+            [ServerRpc(RequireOwnership = false)]
+            private void SetAnimationStateServerRpc(AnimationState state)
+            {
+                if (animationStateNetwork.Value != state)
+                {
+                    animationStateNetwork.Value = state;
+                }
+            }
+
+
+        private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+        {
+            if (clientId == OwnerClientId)
+            {
+                Debug.Log("Server disconnected");
             }
         }
 
         private void FixedUpdate()
         {
             if (!IsOwner) return;
-
-            if (!isDashing)
+            if (canMove && !isDashing)
             {
-                controller.Move(horizontalMove * Time.deltaTime, isCrouching, false);
+                controller.Move(horizontalMove * Time.deltaTime, isCrouching, jump);
             }
-        }
-
-        private void UpdateAnimation(PlayerState state)
-        {
-            string currentStateName = anim.GetCurrentAnimatorStateInfo(0).IsName(state.ToString()) ? state.ToString() : "";
-            if (currentStateName == state.ToString()) return;
-            switch (state)
-            {
-                case PlayerState.Idle:
-                    anim.SetTrigger("Idle");
-                    break;
-                case PlayerState.Walking:
-                    anim.SetTrigger("Walk");
-                    break;
-                case PlayerState.Jumping:
-                    anim.SetTrigger("Jump");
-                    break;
-                case PlayerState.Blocking:
-                    anim.SetTrigger("Block");
-                    break;
-            }
-        }
-        private void ChangeAnimationState(string newState)
-        {
-            if (currentAnimationState == newState || Time.time - lastAnimationTime < animationCooldown) return;
-
-            anim.SetTrigger(newState);
-            currentAnimationState = newState;
-            lastAnimationTime = Time.time;
-        }
-
-
-        private void OnPlayerStateChanged(PlayerState oldState, PlayerState newState)
-        {
-            if (oldState == newState) return;
-            Debug.Log($"[Client] State changed from {oldState} to {newState}");
-            UpdateAnimation(newState);
-        }
-
-        [ServerRpc]
-        private void UpdatePlayerStateServerRpc(PlayerState newState)
-        {
-            Debug.Log($"[Server] Updating state to {newState}");
-            if (playerStateNetwork.Value != newState)
-            {
-                playerStateNetwork.Value = newState;
-            }
+            jump = false;
         }
 
         public void OnMoveLeft()
         {
-            if (!canMove || horizontalMove < 0) return;
-
-            isWalking = true;
-            horizontalMove = -moveSpeed;
-            isWalkingSoundPlaying = true;
-            UpdatePlayerStateServerRpc(PlayerState.Walking);
+            if (canMove)
+            {
+                isWalking = true;
+                useKeyboardInput = false;
+                horizontalMove = -moveSpeed;
+                isWalkingSoundPlaying = true;
+                SetAnimationStateServerRpc(AnimationState.Walk); // Walk
+            }
         }
-        
 
         public void OnMoveRight()
         {
-            if (!canMove || horizontalMove > 0) return;
-
-            isWalking = true;
-            horizontalMove = moveSpeed;
-            isWalkingSoundPlaying = true;
-            UpdatePlayerStateServerRpc(PlayerState.Walking);
+            if (canMove)
+            {
+                isWalking = true;
+                useKeyboardInput = false;
+                horizontalMove = moveSpeed;
+                isWalkingSoundPlaying = true;
+                SetAnimationStateServerRpc(AnimationState.Walk); // Walk
+            }
         }
 
         public void OnStopMoving()
         {
-            if (horizontalMove == 0) return;
             isWalking = false;
-            horizontalMove = 0f;
             isWalkingSoundPlaying = false;
-            UpdatePlayerStateServerRpc(PlayerState.Idle);
+            useKeyboardInput = false;
+            horizontalMove = 0f;
+            SetAnimationStateServerRpc(AnimationState.Idle); // Idle
         }
 
         public void OnJump()
         {
-            if (!canMove) return;
-
             jump = true;
             anim.SetTrigger("Jump");
             NewSoundManager.Instance.PlaySound("Jump", transform.position);
@@ -190,31 +244,67 @@ namespace ITKombat
             isCrouching = true;
             anim.SetTrigger("Crouch");
             NewSoundManager.Instance.PlaySound("Crouch", transform.position);
+            Debug.Log("Player is crouching");
         }
 
         public void OnCrouchUp()
         {
             isCrouching = false;
             anim.SetTrigger("Idle");
+            Debug.Log("Player stopped crouching");
         }
 
         public void OnBlockDown()
         {
+            if (!IsOwner) return;
+
             isBlocking = true;
-            anim.SetTrigger("Block");
+            SetBlockingStateServerRpc(true);
+            SetAnimationStateServerRpc(AnimationState.Block);
         }
 
         public void OnBlockUp()
         {
+            if (!IsOwner) return;
+
             isBlocking = false;
-            anim.SetTrigger("Idle");
+            SetBlockingStateServerRpc(false);
+            SetAnimationStateServerRpc(AnimationState.Idle);
+        }
+
+        [ServerRpc]
+        private void SetBlockingStateServerRpc(bool state)
+        {
+            isBlockingNetwork.Value = state; // Update state di server
+        }
+
+
+        public void OnCrouchAttack()
+        {
+            if (isCrouching && !isCrouchAttacking)
+            {
+                Debug.Log("Player is performing a crouch attack");
+                anim.SetTrigger("CrouchAttack");
+                isCrouchAttacking = true;
+
+                StartCoroutine(CrouchAttackCooldown(0.5f));
+            }
+        }
+
+        public bool IsCrouching { get { return isCrouching; } }
+
+        private IEnumerator CrouchAttackCooldown(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            isCrouchAttacking = false;
         }
 
         public void OnDash()
         {
-            if (!canDash) return;
-
-            StartCoroutine(Dash());
+            if (canDash)
+            {
+                StartCoroutine(Dash());
+            }
         }
 
         private IEnumerator Dash()
@@ -233,14 +323,6 @@ namespace ITKombat
 
             yield return new WaitForSeconds(dashCooldown);
             canDash = true;
-        }
-
-        private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
-        {
-            if (clientId == OwnerClientId)
-            {
-                Debug.Log("Server disconnected");
-            }
         }
     }
 }

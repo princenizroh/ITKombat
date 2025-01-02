@@ -29,12 +29,15 @@ namespace ITKombat
             leaveGameButton.onClick.AddListener(() => {
                 LobbyRoomManager.Instance.LeaveLobby();
                 Loader.Load(Loader.Scene.BattleMode);
+                NewSoundManager.Instance.PlaySound2D("Button_Click");
             });
             quickJoinGameButton.onClick.AddListener(() => {
                 LobbyRoomManager.Instance.QuickJoinLobby();
+                NewSoundManager.Instance.PlaySound2D("Button_Click");
             });
             joinCodeGameButton.onClick.AddListener(() => {
                 LobbyRoomManager.Instance.JoinWithCode(joinCodeInputField.text);
+                NewSoundManager.Instance.PlaySound2D("Button_Click");
             });
             // listLobbiesButton.onClick.AddListener(() => {
                 
