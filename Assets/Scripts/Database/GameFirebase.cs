@@ -72,7 +72,7 @@ namespace ITKombat
                 if (dependencyStatus == DependencyStatus.Available)
                 {
                     //If they are avalible Initialize Firebase
-                    // InitializeFirebase();
+                    InitializeFirebase();
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace ITKombat
         {
             // Initialize the CustomSceneManager
             customSceneManager = new CustomSceneManager();
-            InitializeFirebase();
+            // InitializeFirebase();
 
             string deviceID = SystemInfo.deviceUniqueIdentifier;
             CheckDeviceAuthorization(deviceID);
