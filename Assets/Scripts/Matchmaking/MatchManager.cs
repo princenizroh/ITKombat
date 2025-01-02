@@ -17,6 +17,14 @@ namespace ITKombat
         private bool isSoundFight = false;
         private PlayerMovement_2 playerMovement;
         private ServerCharacterMovement serverCharacterMovement;
+
+        private PlayerIFAttack playerAttack;
+
+
+        public GameObject initialPlayerPosition;
+        public GameObject initialEnemyPosition;
+
+        // Reference to PlayerState and EnemyState
         public PlayerState playerState;
         public EnemyState enemyState;
         public SoundManager soundManager;
@@ -57,7 +65,6 @@ namespace ITKombat
             Instance = this;
             playerState = FindFirstObjectByType<PlayerState>();
             enemyState = FindFirstObjectByType<EnemyState>();
-            
         }
 
         
@@ -132,8 +139,12 @@ namespace ITKombat
         
         private IEnumerator WaitForPlayer()
         {
-            yield return new WaitUntil(() => FindFirstObjectByType<PlayerMovement_2>() != null);
-            playerMovement = FindFirstObjectByType<PlayerMovement_2>();
+
+            yield return new WaitUntil(() => FindObjectOfType<PlayerMovement_2>() != null);
+            playerMovement = FindObjectOfType<PlayerMovement_2>();
+            playerAttack = FindFirstObjectByType<PlayerIFAttack>();
+            playerMovement.canMove = false; // Atur setelah player ditemukan
+            playerAttack.canAttack = false;
             if (playerMovement == null)
             {
                 Debug.Log("playerMovement tidak ditemukan, menggunakan serverCharacterMovement sebagai gantinya.");
@@ -214,6 +225,7 @@ namespace ITKombat
                 if (playerMovement != null)
                 {
                     playerMovement.canMove = true;
+                    playerAttack.canAttack = true;
                 }
                 else if (serverCharacterMovement != null)
                 {
@@ -223,6 +235,27 @@ namespace ITKombat
 
             }
         }
+        private void ResetPlayerAndEnemyPositions()
+        {
+            if (initialPlayerPosition != null && playerMovement != null)
+            {
+                playerMovement.transform.position = initialPlayerPosition.transform.position; // Reset posisi pemain
+            }
+            else
+            {
+                Debug.LogWarning("Initial Player Position atau Player Movement tidak diatur!");
+            }
+
+            if (initialEnemyPosition != null && enemyState != null)
+            {
+                enemyState.transform.position = initialEnemyPosition.transform.position; // Reset posisi musuh
+            }
+            else
+            {
+                Debug.LogWarning("Initial Enemy Position atau Enemy State tidak diatur!");
+            }
+        }
+
 
         public void PlayerDied()
         {
@@ -412,11 +445,19 @@ namespace ITKombat
             // Kondisi untuk menentukan siapa yang memenangkan ronde terakhir
             if (playerState.currentHealth.Value > enemyState.currentHealth.Value)
             {
+                playerMovement.canMove = false;
+                playerAttack.canAttack = false;
                 timeoutToTimer.text = "PLAYER WON";
+                ResetPlayerAndEnemyPositions();
+                
             }
             else if (playerState.currentHealth.Value < enemyState.currentHealth.Value)
             {
+                playerMovement.canMove = false;
+                playerAttack.canAttack = false;
                 timeoutToTimer.text = "ENEMY WON";
+                ResetPlayerAndEnemyPositions();
+                
             }
 
             yield return new WaitForSeconds(3f);
@@ -455,11 +496,13 @@ namespace ITKombat
             if (playerMovement != null)
             {
                 playerMovement.canMove = true;
+                playerAttack.canAttack = true;
             }
             else if (serverCharacterMovement != null)
             {
                 serverCharacterMovement.canMove = true;
             }
+            
             StartNormalTimer();
         }
 

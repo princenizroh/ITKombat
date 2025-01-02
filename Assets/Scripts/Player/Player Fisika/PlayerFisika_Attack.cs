@@ -167,7 +167,7 @@ namespace ITKombat
                     {
                         Attack1_Left_Fisika.Play();
                     }
-                    PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerFisika.Instance.PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("fisika_attack1");
                     StartCoroutine(ResetToIdleAfterTime(0.8f));
                     break;
@@ -180,7 +180,7 @@ namespace ITKombat
                     {
                         Attack2_Left_Fisika.Play();
                     }
-                    PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerFisika.Instance.PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("fisika_attack2");
                     StartCoroutine(ResetToIdleAfterTime(0.8f));
                     break;
@@ -193,7 +193,7 @@ namespace ITKombat
                     {
                         Attack3_Left_Fisika.Play();
                     }
-                    PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerFisika.Instance.PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("fisika_attack3");
                     StartCoroutine(ResetToIdleAfterTime(0.8f));
                     break;
@@ -206,7 +206,7 @@ namespace ITKombat
                     {
                         Attack4_Left_Fisika.Play();
                     }
-                    PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerFisika.Instance.PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("mesin_attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     break;
@@ -219,54 +219,6 @@ namespace ITKombat
             animator.SetTrigger("Idle");
         }
 
-        private void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
-        {
-            if (isBlocked)
-            {
-                PlayBlockedSound(comboNumber);
-            }
-            else if (hitEnemies)
-            {
-                PlayHitSound(comboNumber);
-            }
-            else
-            {
-                PlayMissSound(comboNumber);
-            }
-        }
-
-        private void PlayHitSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Fisika_Attack1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Fisika_Attack2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Fisika_Attack3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Fisika_Attack4", transform.position); break;
-            }
-        }
-
-        private void PlayMissSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
-            }
-        }
-
-        private void PlayBlockedSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-            }
-        }
         private void OnDrawGizmosSelected()
         {
             if (attackPoint == null) return;

@@ -174,8 +174,8 @@ namespace ITKombat
                     // {
                     //     Attack1_Left.Play();
                     // }
-                    PlayAttackSound(1,hitPlayer.Length > 0, isBlocked);
                     anim.SetTrigger("Attack1");
+                    soundPlayerIF.Instance.PlayAttackSound(1,hitPlayer.Length > 0, isBlocked);
                     // Debug.Log("Attack 1 triggered");
                     break;
                 case 2:
@@ -187,8 +187,8 @@ namespace ITKombat
                     // {
                     //     Attack2_Left.Play();
                     // }
-                    PlayAttackSound(2,hitPlayer.Length > 0, isBlocked);
                     anim.SetTrigger("Attack2");
+                    soundPlayerIF.Instance.PlayAttackSound(2,hitPlayer.Length > 0, isBlocked);
                     // Debug.Log("Attack 2 triggered");
                     break;
                 case 3:
@@ -200,8 +200,8 @@ namespace ITKombat
                     // {
                     //     Attack3_Left.Play();
                     // }
-                    PlayAttackSound(3,hitPlayer.Length > 0, isBlocked);
                     anim.SetTrigger("Attack3");
+                    soundPlayerIF.Instance.PlayAttackSound(3,hitPlayer.Length > 0, isBlocked);
                     // Debug.Log("Attack 3 triggered");
                     break;
                 case 4:
@@ -213,8 +213,8 @@ namespace ITKombat
                     // {
                     //     Attack4_Left.Play();
                     // }
-                    PlayAttackSound(4,hitPlayer.Length > 0, isBlocked);
                     anim.SetTrigger("Attack4");
+                    soundPlayerIF.Instance.PlayAttackSound(4,hitPlayer.Length > 0, isBlocked);
                     // Debug.Log("Attack 4 triggered");
                     break;
             }
@@ -281,55 +281,55 @@ namespace ITKombat
         //     }
         // }
 
-        private void PlayAttackSound(int comboNumber, bool hitPlayer, bool isBlocked)
-        {
-            if (isBlocked == true)
-            {
-                PlayBlockedSound(comboNumber);
-                return;
-            }
+        // private void PlayAttackSound(int comboNumber, bool hitPlayer, bool isBlocked)
+        // {
+        //     if (isBlocked == true)
+        //     {
+        //         PlayBlockedSound(comboNumber);
+        //         return;
+        //     }
             
-            if (hitPlayer)
-            {
-                PlayHitSound(comboNumber);
-                return;
-            }
-            PlayMissSound(comboNumber);
+        //     if (hitPlayer)
+        //     {
+        //         PlayHitSound(comboNumber);
+        //         return;
+        //     }
+        //     PlayMissSound(comboNumber);
             
-        }
+        // }
 
-        private void PlayHitSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("IF_Attack1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("IF_Attack2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("IF_Attack3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
-            }
-        }
+        // private void PlayHitSound(int comboNumber)
+        // {
+        //     switch (comboNumber)
+        //     {
+        //         case 1: NewSoundManager.Instance.PlaySound("IF_Attack1", transform.position); break;
+        //         case 2: NewSoundManager.Instance.PlaySound("IF_Attack2", transform.position); break;
+        //         case 3: NewSoundManager.Instance.PlaySound("IF_Attack3", transform.position); break;
+        //         case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
+        //     }
+        // }
 
-        private void PlayMissSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Kick_Miss", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
-            }
-        }
+        // private void PlayMissSound(int comboNumber)
+        // {
+        //     switch (comboNumber)
+        //     {
+        //         case 1: NewSoundManager.Instance.PlaySound("Attack_Miss1", transform.position); break;
+        //         case 2: NewSoundManager.Instance.PlaySound("Attack_Miss2", transform.position); break;
+        //         case 3: NewSoundManager.Instance.PlaySound("Kick_Miss", transform.position); break;
+        //         case 4: NewSoundManager.Instance.PlaySound("IF_Attack4", transform.position); break;
+        //     }
+        // }
 
-        private void PlayBlockedSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
-            }
-        }
+        // private void PlayBlockedSound(int comboNumber)
+        // {
+        //     switch (comboNumber)
+        //     {
+        //         case 1: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+        //         case 2: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+        //         case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+        //         case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_NoWeapon", transform.position); break;
+        //     }
+        // }
 
         public IEnumerator AttackCooldown()
         {

@@ -8,7 +8,6 @@ namespace ITKombat
         public GameObject leaderboardCanvas;
         public GameObject exitButton;
         public GameObject canvasDead;
-        public GameObject pauseButton;
         public GameObject outline;
 
 
@@ -45,7 +44,6 @@ namespace ITKombat
                 leaderboardCanvas.SetActive(true);
                 exitButton.SetActive(true);
                 canvasDead.SetActive(false);
-                pauseButton.SetActive(false);
                 Debug.Log("CanvasActive");
             }
         }

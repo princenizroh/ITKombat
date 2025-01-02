@@ -166,7 +166,7 @@ namespace ITKombat
                     {
                         Attack1_Left_Mesin.Play();
                     }
-                    PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerMesin.Instance.PlayAttackSound(1, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("mesin_attack1");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     break;
@@ -179,7 +179,7 @@ namespace ITKombat
                     {
                         Attack2_Left_Mesin.Play();
                     }
-                    PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerMesin.Instance.PlayAttackSound(2, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("mesin_attack2");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     break;
@@ -192,7 +192,7 @@ namespace ITKombat
                     {
                         Attack3_Left_Mesin.Play();
                     }
-                    PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerMesin.Instance.PlayAttackSound(3, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("mesin_attack3");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     break;
@@ -205,7 +205,7 @@ namespace ITKombat
                     {
                         Attack4_Left_Mesin.Play();
                     }
-                    PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
+                    soundPlayerMesin.Instance.PlayAttackSound(4, hitEnemies.Length > 0, isBlocked);
                     animator.SetTrigger("mesin_attack4");
                     StartCoroutine(ResetToIdleAfterTime(1f));
                     break;
@@ -216,55 +216,6 @@ namespace ITKombat
         {
             yield return new WaitForSeconds(time);
             animator.SetTrigger("Idle");
-        }
-
-        private void PlayAttackSound(int comboNumber, bool hitEnemies, bool isBlocked)
-        {
-            if (isBlocked)
-            {
-                PlayBlockedSound(comboNumber);
-            }
-            else if (hitEnemies)
-            {
-                PlayHitSound(comboNumber);
-            }
-            else
-            {
-                PlayMissSound(comboNumber);
-            }
-        }
-
-        private void PlayHitSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Mesin_Attack1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Mesin_Attack2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Mesin_Attack3", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Mesin_Attack4", transform.position); break;
-            }
-        }
-
-        private void PlayMissSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon1", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Attack_Miss_BluntWeapon2", transform.position); break;
-            }
-        }
-
-        private void PlayBlockedSound(int comboNumber)
-        {
-            switch (comboNumber)
-            {
-                case 1: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-                case 2: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-                case 3: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-                case 4: NewSoundManager.Instance.PlaySound("Block_NoWeapon_vs_Weapon", transform.position); break;
-            }
         }
 
         private void OnDrawGizmosSelected()

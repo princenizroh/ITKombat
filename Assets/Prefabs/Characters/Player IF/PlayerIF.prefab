@@ -688,8 +688,7 @@ GameObject:
   - component: {fileID: 3279438296649871044}
   - component: {fileID: 1392659353134818327}
   - component: {fileID: 4899782935845223400}
-  - component: {fileID: 5140160531463411714}
-  - component: {fileID: 8296908102301463972}
+  - component: {fileID: 4947623594943771153}
   m_Layer: 6
   m_Name: PlayerIF
   m_TagString: Player
@@ -884,7 +883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 791524057
+  GlobalObjectIdHash: 4107614064
   InScenePlacedSourceGlobalObjectIdHash: 791524057
   DeferredDespawnTick: 0
   Ownership: 1
@@ -930,6 +929,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55e828f4821b7646ba092d570939470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skill1Asset: {fileID: 11400000, guid: 655c117f24391dc4593a085d40c6e473, type: 2}
+  skill2Asset: {fileID: 11400000, guid: 5d443d70ed0e0724f87e8298c1f63f37, type: 2}
+  skill3Asset: {fileID: 11400000, guid: 5feacb1e4eb27a046b8226c2542eaa9e, type: 2}
   skillSound1: {fileID: 5365466274610412425}
   skillSound2: {fileID: 8151378584869225897}
   skillSound3: {fileID: 8210727134751375575}
@@ -939,10 +941,11 @@ MonoBehaviour:
   Skill2_VFX_Right: {fileID: 1855001589840395271}
   Skill1_VFX_Left: {fileID: 0}
   Skill2_VFX_Left: {fileID: 8984564073559902340}
-  attackPoint: {fileID: 3725072733727382008}
+  attackPoint: {fileID: 2417947227579106396}
+  hitbox: {fileID: 2496618481757932135}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!114 &8497415400144460812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1048,7 +1051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422df14c5bab8a648ad6bb3eb3538743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5140160531463411714
+--- !u!114 &4947623594943771153
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1057,32 +1060,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6461202943784008833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15e6dd2f3ae58c84a814478767f9de62, type: 3}
+  m_Script: {fileID: 11500000, guid: fa8888040d03ba04dae5db983d824b02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockCooldown: 1
-  isBlocking: 0
-  defenseMultiplier: 0.7
-  parryWindow: 0.2
-  parryDamage: 10
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 192
-  defenseRadius: 1
-  characterStats: {fileID: 11400000, guid: 6116ba2c7533cb943b4dee504b9dad49, type: 2}
---- !u!114 &8296908102301463972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6461202943784008833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70f36f3e2fffcdb4abf230ef8b7b2de6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _teamIndex: 2
 --- !u!1 &8135688871999238110
 GameObject:
   m_ObjectHideFlags: 0
