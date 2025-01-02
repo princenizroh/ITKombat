@@ -22,6 +22,8 @@ namespace ITKombat
             SelectCharacterMultiplayer,
             ClientTest,
             MultiplayerV1,
+
+            Lingkungan,
         }
 
 

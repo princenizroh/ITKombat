@@ -7,11 +7,11 @@ using Unity.Burst.Intrinsics;
 
 namespace ITKombat
 {
-    public class PlayerSkill : MonoBehaviour
+    public class PlayerMesin_Skill : MonoBehaviour
     {
-        [SerializeField] private IFSkill1 skill1Asset;
-        [SerializeField] public IFSkill2 skill2Asset;
-        [SerializeField] private IFSkill3 skill3Asset;
+        [SerializeField] private MesinSkill1 skill1Asset;
+        [SerializeField] public MesinSkill2 skill2Asset;
+        [SerializeField] private MesinSkill3 skill3Asset;
 
         public AudioSource skillSound1;
         public AudioSource skillSound2;
@@ -32,9 +32,6 @@ namespace ITKombat
         // Skill 1 Damage
         [SerializeField] private Transform attackPoint;
         [SerializeField] public Collider2D hitbox;
-        private float skill1AttackRadius = 1f;
-        private float skill1Damage = 30f;
-        private float skill1Force = 5f;
 
         // Skill 2 Shield
         private int shieldCounter = 0;
@@ -49,8 +46,10 @@ namespace ITKombat
         // Cooldown Settings
         private float skill1Cooldown = 10f;
         private float skill2Cooldown = 15f;
+        private float skill3Cooldown = 20f;
         private float skill1CooldownTimer = 0f;
         private float skill2CooldownTimer = 0f;
+        private float skill3CooldownTimer = 0f;
 
         public LayerMask enemyLayer;
 
@@ -66,14 +65,6 @@ namespace ITKombat
 
         public void Update()
         {
-            activationTime += Time.deltaTime;
-            if(invisible && activationTime >= 4)
-            {
-                invisible = false;
-                col.a = 1;
-                character.color = col;
-            }
-
             // Cooldown timers
             if (skill1CooldownTimer > 0)
             {
@@ -83,6 +74,11 @@ namespace ITKombat
             if (skill2CooldownTimer > 0)
             {
                 skill2CooldownTimer -= Time.deltaTime;
+            }
+
+            if (skill3CooldownTimer > 0)
+            {
+                skill3CooldownTimer -= Time.deltaTime;
             }
         }
 
@@ -152,35 +148,38 @@ namespace ITKombat
             }
         }
 
-
         public void Skill3()
         {
-            if (anim != null && !isSkill3Active)
-            {
-                anim.SetTrigger("skill3");
-                invisible = true;
-                activationTime = 0;
-                col.a = .2f;
-                character.color = col;
-                PlaySound(skillSound3);
-                isSkill3Active = true;
-                StartCoroutine(ResetToIdleAfterTime(1.5f));
-            }
-        }
+            CharacterController2D1 character = GetComponent<CharacterController2D1>();
+            if (character == null) return;
 
-        public void TakeDamage(float damage)
-        {
-            if (skill2Asset != null && skill2Asset.IsActive() && skill2Asset.BlockAttack())
+            if (skill3CooldownTimer <= 0 && anim != null && !isSkill3Active)
             {
-                Debug.Log("Attack blocked by Skill 2.");
-                return; // Damage is blocked
-            }
+                // Trigger VFX based on direction
+                if (character.IsFacingRight)
+                {
+                    PlayVFX(Skill2_VFX_Right);
+                }
+                else
+                {
+                    PlayVFX(Skill2_VFX_Left);
+                }
 
-            // Apply damage if not blocked
-            PlayerState playerState = GetComponent<PlayerState>();
-            if (playerState != null)
+                anim.SetTrigger("skill2");
+                PlaySound(skillSound2);
+                isSkill2Active = true;
+                // Activate the skill from the ScriptableObject
+                skill2Asset.Activate(gameObject);
+
+                skill2CooldownTimer = skill2Cooldown;
+
+                Debug.Log("Shield activated. Max hits: " + maxShieldHits);
+
+                StartCoroutine(ResetToIdleAfterTime(1.2f));
+            }
+            else
             {
-                playerState.TakeDamageFromSkill(damage);
+                Debug.Log("Skill 2 is on cooldown.");
             }
         }
 

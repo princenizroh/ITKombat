@@ -786,11 +786,11 @@ Transform:
   m_GameObject: {fileID: 275989005}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.018468505, y: -1.5467973, z: 10.087681}
+  m_LocalPosition: {x: 0.018468505, y: 0, z: 10.087681}
   m_LocalScale: {x: 5.418191, y: 5.630669, z: 5.311952}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1460007802}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &325012831
 GameObject:
@@ -2079,11 +2079,11 @@ Transform:
   m_GameObject: {fileID: 725732963}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.38, y: -1.1767972, z: 10.087681}
+  m_LocalPosition: {x: 0, y: 0, z: 10.087681}
   m_LocalScale: {x: 3.4513662, y: 3.4513662, z: 3.4513662}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1460007802}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &734112570
 GameObject:
@@ -2387,11 +2387,11 @@ Transform:
   m_GameObject: {fileID: 896667653}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.44178283, y: 1.535558, z: 10.087681}
+  m_LocalPosition: {x: 0.44178283, y: 0, z: 10.087681}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1460007802}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &942570566
 GameObject:
@@ -2743,6 +2743,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001326165}
   m_CullTransparentMesh: 1
+--- !u!1 &1014195431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1014195432}
+  m_Layer: 0
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1014195432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1014195431}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 275989007}
+  - {fileID: 725732965}
+  - {fileID: 896667655}
+  - {fileID: 1045724433}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1025375459
 GameObject:
   m_ObjectHideFlags: 0
@@ -3032,11 +3067,11 @@ Transform:
   m_GameObject: {fileID: 1045724431}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.028468505, y: -0.78679717, z: 10.087681}
+  m_LocalPosition: {x: 0, y: 0, z: 10.087681}
   m_LocalScale: {x: 4.1731973, y: 4.1731973, z: 4.1731973}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1460007802}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1068632292
 GameObject:
@@ -4893,7 +4928,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -25}
+  m_AnchoredPosition: {x: 0, y: -24.99997}
   m_SizeDelta: {x: -800, y: -150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1820182573
@@ -5455,6 +5490,9 @@ MonoBehaviour:
   - prefab: {fileID: 7020879151175104176, guid: 600ac547e2114b447a3cc5f218e83c57, type: 3}
     name: Teknik Kimia
     icon: {fileID: 4536328820583874323, guid: ac196cdc63ee6db4e9fc87a37990f715, type: 3}
+  - prefab: {fileID: 1502064381268693709, guid: 8eed2aa37e2e5d14a9a2b641b600f0fb, type: 3}
+    name: Teknik Kelautan
+    icon: {fileID: 1916910699213044910, guid: 600a87ccff84db44bbc2b220b27ddce2, type: 3}
   aiCharacters:
   - prefab: {fileID: 3081762322249640699, guid: 69abf52a040aa5b46a9fc7688901db3e, type: 3}
     name: Informatika
@@ -6028,4 +6066,7 @@ SceneRoots:
   - {fileID: 2048067997}
   - {fileID: 444474014}
   - {fileID: 681520142}
-  - {fileID: 1460007802}
+  - {fileID: 275989007}
+  - {fileID: 725732965}
+  - {fileID: 896667655}
+  - {fileID: 1045724433}
