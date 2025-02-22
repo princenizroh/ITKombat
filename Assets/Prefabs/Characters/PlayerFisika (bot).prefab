@@ -444,9 +444,11 @@ MonoBehaviour:
   movementStep: 0
   timeMoving: 2
   maxDistance: 15
-  facingPlayer: 1
+  facingLeft: 1
   canMove: 1
-  canJump: 1
+  dashSpeed: 1
+  dashDuration: 0.15
+  dashCooldown: 5
   player: {fileID: 0}
 --- !u!114 &7635275804717148313
 MonoBehaviour:
@@ -471,6 +473,9 @@ MonoBehaviour:
   newCanAttack: 1
   currentCombo: 0
   lastAttackTime: 0
+  hitbox: {fileID: 0}
+  Hiteffect: {fileID: 0}
+  characterStats: {fileID: 0}
   playerlayer:
     serializedVersion: 2
     m_Bits: 64
