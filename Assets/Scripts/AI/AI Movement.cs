@@ -17,8 +17,10 @@ namespace ITKombat
         public float dashSpeed = 1f;
         public float dashDuration = 0.15f;
         public float dashCooldown = 5f;
-        private bool canDash = true;
-        private bool isDashing = false;
+        public bool canDash = true;
+        public bool isDashing = false;
+
+        [Header("Jump")]
 
 
         [Header("Others")]
@@ -91,7 +93,7 @@ namespace ITKombat
         private IEnumerator DashRoutine()
         {
             isDashing = true;
-            canDash = false;
+            canDash = true;
             anim.SetTrigger("Dash");
             NewSoundManager.Instance.PlaySound("Dash", transform.position);
 
