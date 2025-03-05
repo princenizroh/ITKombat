@@ -20,9 +20,13 @@ namespace ITKombat
         public bool canDash = true;
         public bool isDashing = false;
 
+<<<<<<< HEAD
 
         [Header("Crouch")]
         public bool isCrouching = false;
+=======
+        [Header("Jump")]
+>>>>>>> 2349877e2bde1d2fca413af0476c9483029ae473
 
 
         [Header("Others")]
@@ -95,7 +99,7 @@ namespace ITKombat
         private IEnumerator DashRoutine()
         {
             isDashing = true;
-            canDash = false;
+            canDash = true;
             anim.SetTrigger("Dash");
             NewSoundManager.Instance.PlaySound("Dash", transform.position);
 
