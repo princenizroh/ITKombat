@@ -16,6 +16,7 @@ namespace ITKombat
         public AIRetreatState RetreatState = new AIRetreatState();
         public AIDashState DashState = new AIDashState();
         public AIIdleState IdleState = new AIIdleState(IdleDuration : 2f);
+        public AICrouchState CrouchState = new AICrouchState();
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {

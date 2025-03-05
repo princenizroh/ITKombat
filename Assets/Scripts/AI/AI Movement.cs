@@ -6,7 +6,7 @@ namespace ITKombat
     public class AI_Movement : MonoBehaviour
     {
         [Header("Movement")]
-        public float moveSpeed = 0.5f;
+        public float moveSpeed = 0.1f;
         public float movementStep = 0f;
         public float timeMoving = 1.5f; 
         public float maxDistance = 2f;
@@ -17,8 +17,12 @@ namespace ITKombat
         public float dashSpeed = 1f;
         public float dashDuration = 0.15f;
         public float dashCooldown = 5f;
-        private bool canDash = true;
-        private bool isDashing = false;
+        public bool canDash = true;
+        public bool isDashing = false;
+
+
+        [Header("Crouch")]
+        public bool isCrouching = false;
 
 
         [Header("Others")]
@@ -62,10 +66,10 @@ namespace ITKombat
 
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
 
-            // if (movementStep > 1f &&((RetreatDirection.x > 0 && facingLeft) || (RetreatDirection.x < 0 && !facingLeft)))
-            // {
-            //     Flip();
-            // }
+            //if (movementStep > 1f && ((RetreatDirection.x > 0 && facingLeft) || (RetreatDirection.x < 0 && !facingLeft)))
+            //{
+            //    Flip();
+            //}
 
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;
@@ -95,28 +99,31 @@ namespace ITKombat
             anim.SetTrigger("Dash");
             NewSoundManager.Instance.PlaySound("Dash", transform.position);
 
-            float dashDirection;
-            if (facingLeft){
-                dashDirection = -1f;
-            }
-            else{
-                dashDirection = 1f;
-            }
-
+            float dashDirection = facingLeft ? -1f : 1f;
             float timer = 0f;
 
             while (timer < dashDuration)
             {
-                transform.Translate(Vector3.right * (dashSpeed * dashDirection) * Time.deltaTime);
+                transform.position += Vector3.right * (dashSpeed * dashDirection * Time.deltaTime);
                 timer += Time.deltaTime;
+                yield return null;
             }
-
-            yield return new WaitForSeconds(dashDuration);
 
             isDashing = false;
 
             yield return new WaitForSeconds(dashCooldown);
             canDash = true;
+        }
+
+        public void CrouchDown()
+        {
+            if (!isCrouching)
+            {
+                isCrouching = true;
+                anim.SetTrigger("Crouch");
+                NewSoundManager.Instance.PlaySound("Crouch", transform.position);
+                Debug.Log("AI is crouching");
+            }
         }
     }
 }
