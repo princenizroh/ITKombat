@@ -12,7 +12,7 @@ namespace ITKombat
         public float attackPower = 3;
         public float attackRadius = 0.2f;
         public Transform attackPoint;
-        public float attackCooldown = 0.7f;      // Cooldown between each attack
+        public float attackCooldown = 0.4f;      // Cooldown between each attack
         public float comboResetTime = 1f;        // Cooldown after completing the combo
         public int maxCombo = 4;                 // Maximum combo count
         public bool canAttack = true;           // Can the AI attack

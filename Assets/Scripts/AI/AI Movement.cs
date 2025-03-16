@@ -17,16 +17,15 @@ namespace ITKombat
         public float dashSpeed = 1f;
         public float dashDuration = 0.15f;
         public float dashCooldown = 5f;
-        public bool canDash = true;
+        public bool canDash = false;
         public bool isDashing = false;
 
-<<<<<<< HEAD
 
         [Header("Crouch")]
         public bool isCrouching = false;
-=======
-        [Header("Jump")]
->>>>>>> 2349877e2bde1d2fca413af0476c9483029ae473
+        public bool isCrouchAttacking = false;
+        public float crouchCooldown = 0.5f;
+        //[Header("Jump")]
 
 
         [Header("Others")]
@@ -70,10 +69,10 @@ namespace ITKombat
 
             myRigidbody.linearVelocity = new Vector2(RetreatDirection.x * moveSpeed, myRigidbody.linearVelocity.y);
 
-            //if (movementStep > 1f && ((RetreatDirection.x > 0 && facingLeft) || (RetreatDirection.x < 0 && !facingLeft)))
-            //{
-            //    Flip();
-            //}
+            if (movementStep > 1f && ((RetreatDirection.x > 0 && facingLeft) || (RetreatDirection.x < 0 && !facingLeft)))
+            {
+                Flip();
+            }
 
             anim.SetTrigger("Walk");
             movementStep += Time.deltaTime;
@@ -113,21 +112,50 @@ namespace ITKombat
                 yield return null;
             }
 
-            isDashing = false;
-
             yield return new WaitForSeconds(dashCooldown);
+            isDashing = false;
             canDash = true;
         }
 
         public void CrouchDown()
         {
+
             if (!isCrouching)
             {
-                isCrouching = true;
-                anim.SetTrigger("Crouch");
                 NewSoundManager.Instance.PlaySound("Crouch", transform.position);
-                Debug.Log("AI is crouching");
             }
+            isCrouching = true;
+                anim.SetTrigger("Crouch");
+                Debug.Log("AI is crouching");
         }
+
+        public void CrouchUp()
+        {
+            isCrouching = false;
+        }
+
+        public void CrouchAttack()
+        {
+            isCrouching = true;
+            Debug.Log("AI is performing a crouch attack");
+            anim.SetTrigger("CrouchAttack");
+            isCrouchAttacking = true;
+            StartCoroutine(CrouchAttackCooldown(0.5f));
+        }
+
+
+        private IEnumerator CrouchAttackCooldown(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            isCrouchAttacking = false;
+        }
+
+        public void OnCrouchAnimationEnd()
+        {
+            isCrouching = false; // AI can transition back to idle now
+        }
+
+
+        public bool IsCrouching { get { return isCrouching; } }
     }
 }

@@ -2,10 +2,9 @@ using UnityEngine;
 
 namespace ITKombat
 {
-    public class AICrouchState : AIBaseState
+    public class AICrouchAttackState : AIBaseState
     {
         private AI_Movement aiMovement;
-
         private bool isCrouchDown = false;
         public override void EnterState(AIStateManager manager)
         {
@@ -13,9 +12,10 @@ namespace ITKombat
 
             if (!isCrouchDown)
             {
-                aiMovement.CrouchDown();
+                aiMovement.CrouchAttack();
                 Debug.Log("Crouching State");
-            } else
+            }
+            else
             {
                 aiMovement.CrouchUp();
             }
@@ -29,9 +29,10 @@ namespace ITKombat
             if (!aiMovement.isCrouching)
             {
                 manager.SwitchState(manager.IdleState);
-            } else
+            }
+            else
             {
-                aiMovement.CrouchDown();
+                aiMovement.CrouchAttack();
             }
         }
     }

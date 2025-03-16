@@ -10,7 +10,8 @@ namespace ITKombat
         private float IdleTime;
         private float IdleTimer;
 
-        public AIIdleState(float IdleDuration){
+        public AIIdleState(float IdleDuration)
+        {
             IdleTime = IdleDuration;
         }
 
@@ -31,36 +32,38 @@ namespace ITKombat
             aiMovement.StopMovement();
             IdleTimer -= Time.deltaTime;
 
-            manager.SwitchState(manager.CrouchState);
-            //if (IdleTimer <= 0)
-            //{
-            //    if (distance <= aiAttack.attackRange)
-            //    {
-            //        if (Random.value < 1f)
-            //        {
-            //            manager.SwitchState(manager.AttackState); // 70% menyerang
-            //        }
-            //        else
-            //        {
-            //            manager.SwitchState(manager.DefenseState); // 30% bertahan
-            //        }
-            //    }
-            //    else if (distance > aiMovement.maxDistance)
-            //    {
-            //        manager.SwitchState(manager.ApproachState);
-            //    }
-            //    else
-            //    {
-            //        if (Random.value < 0.75)
-            //        {
-            //            manager.SwitchState(manager.ApproachState); // 75% maju
-            //        }                    
-            //        else 
-            //        {
-            //            manager.SwitchState(manager.RetreatState); // 25% mundur
-            //        }
-            //    }
-            //}
+            //manager.SwitchState(manager.CrouchAttackState);
+
+            if (IdleTimer <= 0)
+            {
+                if (distance <= aiAttack.attackRange)
+                {
+                    Debug.Log("IdleState: Player berada pada jarak serang AI");
+                    manager.SwitchState(Random.value < 0.7f ? manager.AttackState : manager.DefenseState);
+                }
+                else if (distance > aiMovement.maxDistance)
+                {
+                    manager.SwitchState(Random.value < 0.7f ? manager.DashState : manager.ApproachState);
+                }
+                else
+                {
+                    Debug.Log("IdleState: kondisi tidak diketahui, Memilih opsi gerakan terakhir");
+                    float rand = Random.value;
+                    if (rand < 0.3f) 
+                    {
+                        manager.SwitchState(manager.RetreatState);
+                    }
+                    else if (rand < 0.6f)
+                    {
+                        manager.SwitchState(manager.DashState);
+                    }
+                    else
+                    {
+                        manager.SwitchState(manager.ApproachState);
+                    }
+                }
+            }
         }
+        
     }
 }
